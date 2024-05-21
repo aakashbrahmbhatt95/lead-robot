@@ -2,11 +2,11 @@
 import SearchFilter from "@/components/SearchFilter";
 import Layout from "@/components/Layout";
 import Breadcrumbs from "@/components/BreadCrumbs";
-import caretleft from "../../public/CaretLeft.svg";
+import caretleft from ".././../../public/CaretLeft.svg";
 import { useState } from "react";
 import Image from "next/image";
-import pencilicon from "../../public/PencilSimple.svg";
-import dotsthree from "../../public/DotsThree.svg";
+import pencilicon from ".././../../public/PencilSimple.svg";
+import dotsthree from ".././../../public/DotsThree.svg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Home = () => {
@@ -27,7 +27,6 @@ const Home = () => {
       <Layout>
         <div className="flex flex-col bg-white p-4">
           <Breadcrumbs path="/nav/page/" />
-          {/* <SearchFilter /> */}
           <div className="flex items-center justify-between mt-10">
             <button className="border border-[#E4E4E7] rounded-[6px] h-[32px] w-[32px] flex justify-start items-center p-2">
               <Image src={caretleft} alt="Caret left" className="" />
