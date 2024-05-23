@@ -8,6 +8,7 @@ import Image from "next/image";
 import pencilicon from ".././../../public/PencilSimple.svg";
 import dotsthree from ".././../../public/DotsThree.svg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState<string>("tab1");
@@ -25,29 +26,28 @@ const Home = () => {
   return (
     <main className="">
       <Layout>
-        <div className="flex flex-col bg-white p-4">
+        <div className="flex flex-col bg-white dark:bg-slate-900 p-4">
           <Breadcrumbs path="/nav/page/" />
           <div className="flex items-center justify-between mt-10">
             <button className="border border-[#E4E4E7] rounded-[6px] h-[32px] w-[32px] flex justify-start items-center p-2">
               <Image src={caretleft} alt="Caret left" className="" />
             </button>
-            <button className="bg-[#18181B] text-white w-[100px] h-[40px] rounded-[6px] text-sm">
-              + Action
-            </button>
+            <Button>+ Action</Button>
           </div>
           <div className="flex items-center justify-between mt-6">
             <div className="flex items-center justify-center gap-4">
-              <h2 className="text-[#18181B] text-[30px] font-semibold">
+              <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+                {" "}
                 Title
               </h2>
               <Image src={pencilicon} alt="" className="" />
             </div>
-            <button className="bg-[#F4F4F5] w-[56px] h-[42px] flex justify-center items-center">
+            <button className="bg-[#F4F4F5] w-[56px] h-[42px] flex justify-center items-center rounded-[6px]">
               <Image src={dotsthree} alt="" className="" />
             </button>
           </div>
           <div className="flex items-center justify-between gap-4 mt-6">
-            <p className="text-[#18181B] text-[30px] font-semibold">Subhead </p>
+            <p className="leading-7 [&:not(:first-child)]:mt-6">Subhead</p>
           </div>
           <div className="flex mt-4 space-x-4">
             <Tabs defaultValue="account" className="w-[400px]">

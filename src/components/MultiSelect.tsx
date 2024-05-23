@@ -41,7 +41,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ options }) => {
           className="border p-2 cursor-pointer rounded-[6px] flex items-center justify-center gap-4"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span>Filter</span>
+          <span className="text-black">Filter</span>
           <Image
             src={caretdown}
             alt="Caret Down"
@@ -64,7 +64,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ options }) => {
                   checked={selectedItems.includes(value)}
                   readOnly
                 />
-                {value}
+                <span className="text-black"> {value}</span>
               </div>
             ))}
           </div>
@@ -73,7 +73,9 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ options }) => {
       <div className="flex items-center flex-wrap gap-2">
         <Badge
           className={`h-[30px] cursor-pointer rounded-[4px] ${
-            selectAll ? "bg-black text-white" : "bg-[#dce2f1]"
+            selectAll
+              ? "bg-black text-white dark:bg-white dark:text-black"
+              : "bg-[#dce2f1] dark:text-slate-500"
           }`}
           variant={"outline"}
           onClick={(event) => toggleSelection(event, "All")}

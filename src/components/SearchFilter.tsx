@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/command";
 import MultiSelect from "@/components/MultiSelect";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "./ui/button";
 
 const SearchFilter: NextPage = () => {
   const [checkedTags, setCheckedTags] = useState<string[]>([]);
@@ -140,12 +141,10 @@ const SearchFilter: NextPage = () => {
             </div>
           </Command>
           <div className="flex justify-end mt-4">
-            <button className="bg-[#18181B] w-[75px] h-[40px] text-white rounded-[6px]">
-              Select
-            </button>
+            <Button>Select</Button>
           </div>
         </div>
-        <button className="h-[36px] w-[150px] rounded-[6px] bg-white">
+        <button className="h-[42px] w-[150px] rounded-[6px] border border-slate-200  text-black bg-white ">
           Clear All
         </button>
         <div>

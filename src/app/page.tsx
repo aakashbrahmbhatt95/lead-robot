@@ -8,6 +8,7 @@ import Image from "next/image";
 import pencilicon from "../../public/PencilSimple.svg";
 import dotsthree from "../../public/DotsThree.svg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState<string>("tab1");
@@ -25,53 +26,8 @@ const Home = () => {
   return (
     <main className="">
       <Layout>
-        <div className="flex flex-col bg-white p-4">
-          <Breadcrumbs path="/nav/page/" />
-          {/* <SearchFilter /> */}
-          <div className="flex items-center justify-between mt-10">
-            <button className="border border-[#E4E4E7] rounded-[6px] h-[32px] w-[32px] flex justify-start items-center p-2">
-              <Image src={caretleft} alt="Caret left" className="" />
-            </button>
-            <button className="bg-[#18181B] text-white w-[100px] h-[40px] rounded-[6px] text-sm">
-              + Action
-            </button>
-          </div>
-          <div className="flex items-center justify-between mt-6">
-            <div className="flex items-center justify-center gap-4">
-              <h2 className="text-[#18181B] text-[30px] font-semibold">
-                Title
-              </h2>
-              <Image src={pencilicon} alt="" className="" />
-            </div>
-            <button className="bg-[#F4F4F5] w-[56px] h-[42px] flex justify-center items-center">
-              <Image src={dotsthree} alt="" className="" />
-            </button>
-          </div>
-          <div className="flex items-center justify-between gap-4 mt-6">
-            <p className="text-[#18181B] text-[30px] font-semibold">Subhead </p>
-          </div>
-          <div className="flex mt-4 space-x-4">
-            <Tabs defaultValue="account" className="w-[400px]">
-              <TabsList>
-                {tabs.map((tab) => (
-                  <TabsTrigger
-                    value={tab.id}
-                    onClick={() => handleTabClick(tab.id)}
-                  >
-                    {tab.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-          </div>
-          <div className="flex flex-wrap items-center mt-10 gap-5">
-            <div className="w-[1550px] border border-[#D4D4D8] h-[200px] rounded-[8px]"></div>
-            <div className="w-[750px] border border-[#D4D4D8] h-[200px] rounded-[8px]"></div>
-            <div className="w-[500px] border border-[#D4D4D8] h-[200px] rounded-[8px]"></div>
-            <div className="w-[500px] border border-[#D4D4D8] h-[200px] rounded-[8px]"></div>
-            <div className="w-[500px] border border-[#D4D4D8] h-[200px] rounded-[8px]"></div>
-          </div>
-        </div>
+        <Link href="/shell">Shell</Link>
+        <Link href="/search">Search</Link>
       </Layout>
     </main>
   );
