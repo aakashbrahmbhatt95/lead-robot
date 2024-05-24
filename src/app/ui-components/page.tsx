@@ -305,7 +305,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
- function AccordionDemo() {
+function AccordionDemo() {
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
@@ -332,7 +332,7 @@ import {
   );
 }
 
- function AlertDemo() {
+function AlertDemo() {
   return (
     <Alert>
       <Terminal className="h-4 w-4" />
@@ -344,7 +344,7 @@ import {
   );
 }
 
- function AlertDialogDemo() {
+function AlertDialogDemo() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -367,7 +367,7 @@ import {
   );
 }
 
- function AspectRatioDemo() {
+function AspectRatioDemo() {
   return (
     <AspectRatio ratio={16 / 9} className="bg-muted">
       <Image
@@ -380,7 +380,7 @@ import {
   );
 }
 
- function AvatarDemo() {
+function AvatarDemo() {
   return (
     <Avatar>
       <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
@@ -389,11 +389,11 @@ import {
   );
 }
 
- function BadgeDemo() {
+function BadgeDemo() {
   return <Badge>Badge</Badge>;
 }
 
- function BreadcrumbDemo() {
+function BreadcrumbDemo() {
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -427,11 +427,11 @@ import {
   );
 }
 
- function ButtonDemo() {
+function ButtonDemo() {
   return <Button>Button</Button>;
 }
 
- function CalendarDemo() {
+function CalendarDemo() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   return (
@@ -444,7 +444,7 @@ import {
   );
 }
 
- function CardWithForm() {
+function CardWithForm() {
   return (
     <Card className="w-[350px]">
       <CardHeader>
@@ -482,7 +482,7 @@ import {
     </Card>
   );
 }
- function CarouselDemo() {
+function CarouselDemo() {
   return (
     <Carousel className="w-full max-w-xs">
       <CarouselContent>
@@ -504,7 +504,7 @@ import {
   );
 }
 
- function CheckboxDemo() {
+function CheckboxDemo() {
   return (
     <div className="flex items-center space-x-2">
       <Checkbox id="terms" />
@@ -517,7 +517,7 @@ import {
     </div>
   );
 }
- function CollapsibleDemo() {
+function CollapsibleDemo() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -575,7 +575,7 @@ const frameworks = [
   },
 ];
 
- function ComboboxDemo() {
+function ComboboxDemo() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -624,7 +624,7 @@ const frameworks = [
   );
 }
 
- function CommandDemo() {
+function CommandDemo() {
   return (
     <Command className="rounded-lg border shadow-md">
       <CommandInput placeholder="Type a command or search..." />
@@ -663,7 +663,7 @@ const frameworks = [
   );
 }
 
- function ContextMenuDemo() {
+function ContextMenuDemo() {
   return (
     <ContextMenu>
       <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
@@ -748,7 +748,7 @@ const data: Payment[] = [
   },
 ];
 
- type Payment = {
+type Payment = {
   id: string;
   amount: number;
   status: "pending" | "processing" | "success" | "failed";
@@ -846,7 +846,7 @@ const columns: ColumnDef<Payment>[] = [
   },
 ];
 
- function DataTableDemo({ data, columns }) {
+function DataTableDemo({ data, columns }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -991,7 +991,7 @@ const columns: ColumnDef<Payment>[] = [
   );
 }
 
- function DatePickerDemo() {
+function DatePickerDemo() {
   const [date, setDate] = React.useState<Date>();
 
   return (
@@ -1020,7 +1020,7 @@ const columns: ColumnDef<Payment>[] = [
   );
 }
 
- function DialogDemo() {
+function DialogDemo() {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -1105,7 +1105,7 @@ const chartData = [
   },
 ];
 
- function DrawerDemo() {
+function DrawerDemo() {
   const [goal, setGoal] = React.useState(350);
 
   function onClick(adjustment: number) {
@@ -1182,7 +1182,7 @@ const chartData = [
   );
 }
 
- function DropdownMenuDemo() {
+function DropdownMenuDemo() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -1297,7 +1297,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
   console.log(values);
 }
 
- function ProfileForm() {
+function ProfileForm() {
   // ...
   const form = useForm();
 
@@ -1326,7 +1326,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
   );
 }
 
- function HoverCardDemo() {
+function HoverCardDemo() {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
@@ -1355,7 +1355,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
     </HoverCard>
   );
 }
- function InputDemo() {
+function InputDemo() {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -1369,7 +1369,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
   return <Input type="email" placeholder="Email" />;
 }
 
- function InputOTPDemo() {
+function InputOTPDemo() {
   return (
     <InputOTP maxLength={6}>
       <InputOTPGroup>
@@ -1387,7 +1387,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
   );
 }
 
- function LabelDemo() {
+function LabelDemo() {
   return (
     <div>
       <div className="flex items-center space-x-2">
@@ -1398,7 +1398,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
   );
 }
 
- function MenubarDemo() {
+function MenubarDemo() {
   return (
     <Menubar>
       <MenubarMenu>
@@ -1528,7 +1528,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 
- function NavigationMenuDemo() {
+function NavigationMenuDemo() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -1620,7 +1620,7 @@ const ListItem = React.forwardRef<
 });
 ListItem.displayName = "ListItem";
 
- function PaginationDemo() {
+function PaginationDemo() {
   return (
     <Pagination>
       <PaginationContent>
@@ -1649,7 +1649,7 @@ ListItem.displayName = "ListItem";
   );
 }
 
- function PopoverDemo() {
+function PopoverDemo() {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -1703,7 +1703,7 @@ ListItem.displayName = "ListItem";
   );
 }
 
- function ProgressDemo() {
+function ProgressDemo() {
   const [progress, setProgress] = React.useState(13);
 
   React.useEffect(() => {
@@ -1714,7 +1714,7 @@ ListItem.displayName = "ListItem";
   return <Progress value={progress} className="w-[60%]" />;
 }
 
- function RadioGroupDemo() {
+function RadioGroupDemo() {
   return (
     <RadioGroup defaultValue="comfortable">
       <div className="flex items-center space-x-2">
@@ -1733,7 +1733,7 @@ ListItem.displayName = "ListItem";
   );
 }
 
- function ResizableDemo() {
+function ResizableDemo() {
   return (
     <ResizablePanelGroup
       direction="horizontal"
@@ -1768,7 +1768,7 @@ const tags = Array.from({ length: 50 }).map(
   (_, i, a) => `v1.2.0-beta.${a.length - i}`
 );
 
- function ScrollAreaDemo() {
+function ScrollAreaDemo() {
   return (
     <ScrollArea className="h-72 w-48 rounded-md border">
       <div className="p-4">
@@ -1786,7 +1786,7 @@ const tags = Array.from({ length: 50 }).map(
   );
 }
 
- function SelectDemo() {
+function SelectDemo() {
   return (
     <Select>
       <SelectTrigger className="w-[180px]">
@@ -1806,7 +1806,7 @@ const tags = Array.from({ length: 50 }).map(
   );
 }
 
- function SeparatorDemo() {
+function SeparatorDemo() {
   return (
     <div>
       <div className="space-y-1">
@@ -1827,7 +1827,7 @@ const tags = Array.from({ length: 50 }).map(
   );
 }
 
- function SheetDemo() {
+function SheetDemo() {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -1864,7 +1864,7 @@ const tags = Array.from({ length: 50 }).map(
   );
 }
 
- function SkeletonDemo() {
+function SkeletonDemo() {
   return (
     <div className="flex items-center space-x-4">
       <Skeleton className="h-12 w-12 rounded-full" />
@@ -1878,7 +1878,7 @@ const tags = Array.from({ length: 50 }).map(
 
 type SliderProps = React.ComponentProps<typeof Slider>;
 
- function SliderDemo({ className, ...props }: SliderProps) {
+function SliderDemo({ className, ...props }: SliderProps) {
   return (
     <Slider
       defaultValue={[50]}
@@ -1889,7 +1889,7 @@ type SliderProps = React.ComponentProps<typeof Slider>;
     />
   );
 }
- function SonnerDemo() {
+function SonnerDemo() {
   return (
     <Button
       variant="outline"
@@ -1908,7 +1908,7 @@ type SliderProps = React.ComponentProps<typeof Slider>;
   );
 }
 
- function SwitchDemo() {
+function SwitchDemo() {
   return (
     <div className="flex items-center space-x-2">
       <Switch id="airplane-mode" />
@@ -1962,7 +1962,7 @@ const invoices = [
   },
 ];
 
- function TableDemo() {
+function TableDemo() {
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
@@ -1994,7 +1994,7 @@ const invoices = [
   );
 }
 
- function TabsDemo() {
+function TabsDemo() {
   return (
     <Tabs defaultValue="account" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
@@ -2050,11 +2050,11 @@ const invoices = [
     </Tabs>
   );
 }
- function TextareaDemo() {
+function TextareaDemo() {
   return <Textarea placeholder="Type your message here." />;
 }
 
- function ToastDemo() {
+function ToastDemo() {
   const { toast } = useToast();
 
   return (
@@ -2075,7 +2075,7 @@ const invoices = [
   );
 }
 
- function ToggleDemo() {
+function ToggleDemo() {
   return (
     <Toggle aria-label="Toggle bold">
       <Bold className="h-4 w-4" />
@@ -2083,7 +2083,7 @@ const invoices = [
   );
 }
 
- function ToggleGroupDemo() {
+function ToggleGroupDemo() {
   return (
     <ToggleGroup type="multiple">
       <ToggleGroupItem value="bold" aria-label="Toggle bold">
@@ -2098,7 +2098,7 @@ const invoices = [
     </ToggleGroup>
   );
 }
- function TooltipDemo() {
+function TooltipDemo() {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -2316,4 +2316,4 @@ const Home = () => {
   );
 };
 
- default Home;
+export default Home;
