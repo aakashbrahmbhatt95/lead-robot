@@ -1,33 +1,27 @@
 "use client";
-import SearchFilter from "@/components/SearchFilter";
 import Layout from "@/components/Layout";
-import Breadcrumbs from "@/components/BreadCrumbs";
-import caretleft from "../../public/CaretLeft.svg";
-import { useState } from "react";
-import Image from "next/image";
-import pencilicon from "../../public/PencilSimple.svg";
-import dotsthree from "../../public/DotsThree.svg";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import Link from "next/link";
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState<string>("tab1");
-
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-  };
-
-  const tabs = [
-    { id: "tab1", label: "Tab 1", content: "Content for Tab 1" },
-    { id: "tab2", label: "Tab 2", content: "Content for Tab 2" },
-    { id: "tab3", label: "Tab 3", content: "Content for Tab 3" },
-  ];
-
   return (
     <main className="">
       <Layout>
-        <Link href="/shell">Shell</Link>
-        <Link href="/search">Search</Link>
+        <main className="flex justify-center items-center bg-white min-h-screen">
+          <div className="flex items-center justify-center bg-white w-[578px] rounded-[24px] p-8">
+            <div className="flex flex-col items-start gap-4 w-full max-w-md">
+              <Link href="/shell" className="text-blue-500 underline">
+                Shell
+              </Link>
+              <Link href="/search" className="text-blue-500 underline">
+                Search
+              </Link>
+              <Link href="/ui-components" className="text-blue-500 underline">
+                UI Components
+              </Link>
+            </div>
+          </div>
+        </main>
       </Layout>
     </main>
   );

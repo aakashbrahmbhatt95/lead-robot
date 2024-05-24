@@ -10,12 +10,6 @@ const Sidebar: React.FC = () => {
           <li className="mb-4">
             <Link href="/">Home</Link>
           </li>
-          <li className="mb-4">
-            <Link href="/about">About</Link>
-          </li>
-          <li className="mb-4">
-            <Link href="/contact">Contact</Link>
-          </li>
         </ul>
       </nav>
     </aside>
