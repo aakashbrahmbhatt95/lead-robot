@@ -8,7 +8,6 @@ import Image from "next/image";
 import pencilicon from "../../public/PencilSimple.svg";
 import dotsthree from "../../public/DotsThree.svg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Link from "next/link";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState<string>("tab1");
@@ -26,8 +25,10 @@ const Home = () => {
   return (
     <main className="">
       <Layout>
-        <Link href="/shell">Shell</Link>
-        <Link href="/search">Search</Link>
+        <div className="flex flex-col bg-white dark:bg-slate-900 p-4">
+          <Breadcrumbs path="/nav/page/" />
+          <SearchFilter />
+        </div>
       </Layout>
     </main>
   );
