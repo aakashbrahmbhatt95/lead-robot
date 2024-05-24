@@ -846,14 +846,15 @@ const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-interface Column {
-  Header: string;
-  accessor: string;
+interface DataItem {
+  id: number;
+  name: string;
+  age: number;
 }
 
 interface DataTableDemoProps {
-  data: any[];
-  columns: Column[];
+  data: Payment[];
+  columns: ColumnDef<Payment, any>[];
 }
 
 function DataTableDemo({ data, columns }: DataTableDemoProps) {
@@ -887,7 +888,6 @@ function DataTableDemo({ data, columns }: DataTableDemoProps) {
   });
 
   if (!isMounted) {
-    // Avoid rendering the dropdown menu during SSR
     return null;
   }
 
@@ -1283,7 +1283,7 @@ function DropdownMenuDemo() {
 }
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 
 import {
   Form,
@@ -1301,15 +1301,17 @@ const formSchema = z.object({
   }),
 });
 
-function onSubmit(values: z.infer<typeof formSchema>) {
-  // Do something with the form values.
-  // ✅ This will be type-safe and validated.
-  console.log(values);
+interface ProfileFormValues {
+  username: string;
 }
+
+const onSubmit: SubmitHandler<ProfileFormValues> = (values) => {
+  console.log(values);
+};
 
 function ProfileForm() {
   // ...
-  const form = useForm();
+  const form = useForm<ProfileFormValues>();
 
   return (
     <Form {...form}>
