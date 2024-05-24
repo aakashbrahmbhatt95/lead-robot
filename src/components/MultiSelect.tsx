@@ -35,8 +35,8 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ options }) => {
   };
 
   return (
-    <div className="flex items-center gap-6">
-      <div className="relative w-[150px] bg-white h-[36px] rounded-[6px]">
+    <div className="flex items-start gap-6">
+      <div className="relative min-w-[150px] bg-white h-[36px] rounded-[6px]">
         <div
           className="border p-2 cursor-pointer rounded-[6px] flex items-center justify-center gap-4"
           onClick={() => setIsOpen(!isOpen)}
