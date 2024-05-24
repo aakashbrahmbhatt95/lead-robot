@@ -62,7 +62,7 @@ const SearchFilter: NextPage = () => {
               {checkedTags.map((tag, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Badge className="h-[30px] rounded-[4px] flex items-center gap-4">
-                    {tag}{" "}
+                    <span className="whitespace-nowrap">{tag}</span>
                     <button onClick={() => handleDeleteTag(tag)}>x</button>
                   </Badge>
                 </div>
