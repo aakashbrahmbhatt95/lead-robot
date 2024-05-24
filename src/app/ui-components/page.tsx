@@ -846,7 +846,17 @@ const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-function DataTableDemo({ data, columns }) {
+interface Column {
+  Header: string;
+  accessor: string;
+}
+
+interface DataTableDemoProps {
+  data: any[];
+  columns: Column[];
+}
+
+function DataTableDemo({ data, columns }: DataTableDemoProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
