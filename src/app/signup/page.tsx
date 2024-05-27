@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import watson from "../../../public/Watson.svg";
 import googleicon from "../../../public/Google.svg";
@@ -34,12 +34,12 @@ const Signup = () => {
     setIsMounted(true);
   }, []);
 
-  const validateEmail = (email) => {
+  const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
 
-  const handleEmailSubmit = (e) => {
+  const handleEmailSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!validateEmail(email)) {
       setEmailError("Please enter a valid email address.");
@@ -49,7 +49,7 @@ const Signup = () => {
     }
   };
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (password.length < 10 || password.length > 20) {
       setPasswordError("Password must be between 10 to 20 characters long.");
@@ -302,6 +302,7 @@ const Signup = () => {
                 </p>
                 <Button
                   type="submit"
+                  variant={"soft"}
                   className="w-[93px] ml-auto rounded-[6px]"
                 >
                   Continue
