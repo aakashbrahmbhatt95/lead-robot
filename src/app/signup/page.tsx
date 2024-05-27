@@ -302,7 +302,6 @@ const Signup = () => {
                 </p>
                 <Button
                   type="submit"
-                  variant={"soft"}
                   className="w-[93px] ml-auto rounded-[6px]"
                 >
                   Continue
