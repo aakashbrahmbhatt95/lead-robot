@@ -8,8 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import caretdown from "../../public/CaretDown.svg";
-
+import { CaretDown } from "@phosphor-icons/react";
 interface MultiSelectProps {
   options: string[];
 }
@@ -46,13 +45,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ options }) => {
           <div className="relative min-w-[150px] bg-white h-[36px] rounded-[6px] cursor-pointer">
             <div className="border p-2 flex items-center justify-center gap-4 rounded-[6px]">
               <span className="text-black">Filter</span>
-              <Image
-                src={caretdown}
-                alt="Caret Down"
-                width={12}
-                height={12}
-                className="ml-2"
-              />
+              <CaretDown size={20} weight="light" className="dark:text-black" />
             </div>
           </div>
         </DropdownMenuTrigger>

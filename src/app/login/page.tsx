@@ -13,6 +13,7 @@ import eye from "../../../public/eye.svg";
 import eyeclosed from "../../../public/EyeClosed.svg";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
 
 interface LoginFormValues {
   email: string;
@@ -65,6 +66,17 @@ const Login = () => {
                   <p className="text-[#71717A] text-[14px] ">
                     Continue with Google or your personal Email
                   </p>
+                  <Button
+                    variant={"outline"}
+                    className="rounded-[20px] flex items-center gap-4 w-full"
+                  >
+                    <Image
+                      src={googleicon}
+                      alt="Google Icon"
+                      className="w-6 h-6"
+                    />
+                    Continue with Google
+                  </Button>
                   <div className="relative mt-4">
                     <Label
                       htmlFor="email"
@@ -107,7 +119,7 @@ const Login = () => {
                 className="w-12 border-none"
                 onClick={() => setStep("email")}
               >
-                <Image src={arrowleft} alt="" className="w-full" />
+                <ArrowLeft size={20} weight="light" />
               </Button>
               <p className="text-[#71717A] text-[14px] ">Welcome</p>
               <h2 className="text-[#18181B] text-[30px] font-semibold ">
@@ -145,9 +157,9 @@ const Login = () => {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <Image src={eyeclosed} alt="" className="w-full" />
+                        <Eye size={16} weight="light" />
                       ) : (
-                        <Image src={eye} alt="" className="w-full" />
+                        <EyeClosed size={16} weight="light" />
                       )}
                     </button>
                     <ErrorMessage

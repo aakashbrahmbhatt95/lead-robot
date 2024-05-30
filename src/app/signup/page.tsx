@@ -11,8 +11,6 @@ import arrowleft from "../../../public/ArrowLeft.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
-import eye from "../../../public/eye.svg";
-import eyeclosed from "../../../public/EyeClosed.svg";
 import { Input } from "@/components/ui/input";
 import infoicon from "../../../public/Info.svg";
 import {
@@ -22,6 +20,8 @@ import {
 } from "@/components/ui/hover-card";
 
 import AutoSubmitToken from "@/components/AutoSubmitToken";
+import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
+import { Info, CheckCircle } from "@phosphor-icons/react";
 
 interface FormikInputProps extends FieldAttributes<any> {
   label: string;
@@ -73,7 +73,7 @@ const Signup = () => {
   }, []);
 
   interface PasswordRequirementsProps {
-    password: string | undefined; // Change the type to handle undefined
+    password: string | undefined;
   }
 
   const PasswordRequirements: React.FC<PasswordRequirementsProps> = ({
@@ -104,20 +104,18 @@ const Signup = () => {
 
     return (
       <ul className="p-2">
+        <p className="text-[#18181B] font-medium text-[16px] mb-3">
+          Your password must contain:
+        </p>
         {requirements.map((req, index) => (
-          <li key={index} className="flex items-center gap-2 text-sm">
+          <li
+            key={index}
+            className="flex items-center gap-2 text-[#71717A] text-xs"
+          >
             {password && req.test(password) ? (
-              <Image
-                src={checkcircle}
-                alt=""
-                className=" text-green-700 w-8 h-8"
-              />
+              <CheckCircle size={16} color="#34d399" weight="light" />
             ) : (
-              <Image
-                src={infoicon}
-                alt=""
-                className=" text-green-700 w-8 h-8"
-              />
+              <Info size={16} color="#ef4444" weight="light" />
             )}
             {req.text}
           </li>
@@ -156,7 +154,7 @@ const Signup = () => {
       <div
         className={`flex items-center justify-between bg-white ${
           step === "password" || step === "verification"
-            ? "w-[50%] xl:w-[30%]"
+            ? "w-[60%] xl:w-[47%] 2xl:w-[42%]"
             : "w-[60%]"
         } rounded-[24px] gap-10 p-8 px-10`}
       >
@@ -173,7 +171,7 @@ const Signup = () => {
                 <Form className="flex flex-col gap-4 w-full">
                   <Image src={watson} alt="Logo" className="" />
                   <p className="text-[#71717A] text-[20px] ">Hi!</p>
-                  <h2 className="text-[#18181B] text-[30px] font-semibold ">
+                  <h2 className="text-[#18181B] text-[30px] font-semibold custom-h1">
                     Sign up
                   </h2>
                   <p className="text-[#71717A] text-[14px] ">
@@ -226,10 +224,10 @@ const Signup = () => {
                 className="w-12 border-none"
                 onClick={() => setStep("email")}
               >
-                <Image src={arrowleft} alt="" className="w-full" />
+                <ArrowLeft size={20} weight="light" />
               </Button>
               <p className="text-[#71717A] text-[14px] ">Welcome</p>
-              <h2 className="text-[#18181B] text-[30px] font-semibold ">
+              <h2 className="text-[#18181B] text-[30px] font-semibold custom-h2">
                 Create Account
               </h2>
               <p className="text-[#71717A] text-[14px] ">
@@ -298,7 +296,7 @@ const Signup = () => {
                     className="w-12 border-none"
                     onClick={() => setStep("name")}
                   >
-                    <Image src={arrowleft} alt="Back" className="w-full" />
+                    <ArrowLeft size={20} weight="light" />
                   </Button>
                   <p className="text-[#71717A] text-[14px]">Thank You</p>
                   <h2 className="text-[#18181B] text-[30px] font-semibold">
@@ -317,22 +315,22 @@ const Signup = () => {
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 h-[40px] -right-12 top-9 pr-3 flex items-center text-sm leading-5"
+                      className="absolute inset-y-0 h-[40px] -right-12 top-[40px] w-[36px] flex items-center justify-center text-sm leading-5 rounded-[6px] border border-slate-400"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <Image src={eyeclosed} alt="" className="w-full" />
+                        <EyeClosed size={16} weight="light" />
                       ) : (
-                        <Image src={eye} alt="" className="w-full" />
+                        <Eye size={16} weight="light" />
                       )}
                     </button>
                     <HoverCard>
                       <HoverCardTrigger asChild>
                         <button
                           type="button"
-                          className="absolute top-10 -right-16 "
+                          className="absolute inset-y-0 h-[40px] -right-24 top-[40px] w-[36px] flex items-center justify-center text-sm leading-5 rounded-[6px] border border-slate-400"
                         >
-                          <Image src={infoicon} alt="" className="w-6 h-6" />
+                          <Info size={20} weight="light" color="#ef4444" />
                         </button>
                       </HoverCardTrigger>
                       <HoverCardContent className="w-64 p-4">
@@ -349,15 +347,15 @@ const Signup = () => {
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 h-[40px] -right-12 top-9 pr-3 flex items-center text-sm leading-5"
+                      className="absolute inset-y-0 h-[40px] -right-12 top-[40px] w-[36px] flex items-center justify-center text-sm leading-5 rounded-[6px] border border-slate-400"
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
                     >
                       {showConfirmPassword ? (
-                        <Image src={eyeclosed} alt="" className="w-full" />
+                        <EyeClosed size={16} weight="light" />
                       ) : (
-                        <Image src={eye} alt="" className="w-full" />
+                        <Eye size={16} weight="light" />
                       )}
                     </button>
                   </div>
@@ -376,7 +374,7 @@ const Signup = () => {
             <div className="flex flex-col gap-3 py-6">
               <div className="flex items-center gap-6">
                 <Link href="/login">
-                  <Image src={arrowleft} className="" alt="" />
+                  <ArrowLeft size={20} weight="light" />
                 </Link>
                 <p className="text-[#71717A]">Back to login</p>
               </div>
