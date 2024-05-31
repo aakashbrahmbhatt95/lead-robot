@@ -13,6 +13,14 @@ import eye from "../../../public/eye.svg";
 import eyeclosed from "../../../public/EyeClosed.svg";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { loginAction } from "@/redux/action/login-action";
+import { HttpUtil } from "@/utils/http-util";
+import { BASE_URL, LOGIN_URL } from "@/utils/apiConstants";
+import { TOKEN_KEY, SESSION_KEY } from "@/utils/constants";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from 'next/navigation'
+import { setCookie } from "cookies-next";
 
 interface LoginFormValues {
   email: string;
@@ -32,7 +40,13 @@ const passwordValidationSchema = Yup.object().shape({
 const Login = () => {
   const [step, setStep] = useState("email");
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { toast } = useToast();
+
+  const { login } = useAppSelector((state: any) => state.loginReducer);
 
   useEffect(() => {
     setIsMounted(true);
@@ -49,10 +63,10 @@ const Login = () => {
           {step === "email" ? (
             <>
               <Formik
-                initialValues={{ email: "", password: "" }}
+                initialValues={{ email: "" }}
                 validationSchema={emailValidationSchema}
                 onSubmit={(values: LoginFormValues) => {
-                  console.log(values);
+                  setEmail(values?.email);
                   setStep("password");
                 }}
               >
@@ -117,10 +131,43 @@ const Login = () => {
                 Create an account or login with Google or your personal email.
               </p>
               <Formik
-                initialValues={{ email: "", password: "" }}
+                initialValues={{ password: "" }}
                 validationSchema={passwordValidationSchema}
                 onSubmit={(values: LoginFormValues) => {
-                  console.log(values);
+                  const payload = {
+                    email: email,
+                    password: values?.password,
+                  };
+                  HttpUtil.makePOST(`${BASE_URL}${LOGIN_URL}`, payload)
+                    .then((res) => {
+                      if (res.success && res?.data?.meta?.is_authenticated) {
+                        console.log('res', res?.data?.meta?.is_authenticated)
+                        toast({
+                          description: "User Logged In Successfully",
+                        });
+                        setCookie(TOKEN_KEY, res.data.meta.access_token)
+                        setCookie(SESSION_KEY, res.data.meta.session_token)
+                        router.push('/')
+                      }
+                      if (res.error) {
+                        res.data.errors.map((ele: any) =>
+                          toast({
+                            variant: "destructive",
+                            description:
+                              ele.message ||
+                              "Something went worng, Please try again!",
+                          })
+                        );
+                      }
+                    })
+                    .catch((err: any) => {
+                      console.log('err', err)
+                      toast({
+                        variant: "destructive",
+                        description: JSON.stringify(err),
+                      });
+                    })
+                  // dispatch(loginAction(payload));
                 }}
               >
                 <Form className="flex flex-col gap-4 w-full">

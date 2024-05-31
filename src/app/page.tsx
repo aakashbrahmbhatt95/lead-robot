@@ -1,9 +1,11 @@
 "use client";
 import Layout from "@/components/Layout";
-
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import useLogout from "@/hooks/useLogout";
 
 const Home = () => {
+  const { logout } = useLogout()
   return (
     <main className="">
       <Layout>
@@ -19,6 +21,9 @@ const Home = () => {
               <Link href="/ui-components" className="text-blue-500 underline">
                 UI Components
               </Link>
+              <Button onClick={() => logout()} className="text-blue-500 underline">
+                Logout
+              </Button>
             </div>
           </div>
         </main>
