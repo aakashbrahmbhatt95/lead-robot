@@ -65,7 +65,7 @@ const Login = () => {
               <Formik
                 initialValues={{ email: "" }}
                 validationSchema={emailValidationSchema}
-                onSubmit={(values: LoginFormValues) => {
+                onSubmit={(values: any) => {
                   setEmail(values?.email);
                   setStep("password");
                 }}
@@ -133,7 +133,7 @@ const Login = () => {
               <Formik
                 initialValues={{ password: "" }}
                 validationSchema={passwordValidationSchema}
-                onSubmit={(values: LoginFormValues) => {
+                onSubmit={(values: any) => {
                   const payload = {
                     email: email,
                     password: values?.password,
