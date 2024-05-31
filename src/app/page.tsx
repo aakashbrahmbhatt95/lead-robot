@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <main className="">
       <Layout>
-        <main className="flex justify-center items-center bg-white min-h-screen">
+        <main className="flex justify-center items-center bg-[#f4f4f5] min-h-screen">
           <div className="flex items-center justify-center bg-white w-[578px] rounded-[24px] p-8">
             <div className="flex flex-col items-start gap-4 w-full max-w-md">
               <Link href="/shell" className="text-blue-500 underline">

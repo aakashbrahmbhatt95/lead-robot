@@ -2130,195 +2130,195 @@ const Home = () => {
     <main className="">
       <Layout>
         <div className="flex flex-col bg-white dark:bg-slate-900 p-4 gap-5 items-start">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Accordion
           </h1>
           <AccordionDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Alert Demo
           </h1>
           <AlertDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Alert Dialog
           </h1>
           <AlertDialogDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Aspect Ratio
           </h1>
           <AspectRatioDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Avatar
           </h1>
           <AvatarDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Avatar
           </h1>
           <BadgeDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Breadcrumbs
           </h1>
           <BreadcrumbDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Button
           </h1>
           <ButtonDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Calendar
           </h1>
           <CalendarDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Card with Form
           </h1>
           <CardWithForm />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Carousel
           </h1>
           <CarouselDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Checkbox
           </h1>
           <CheckboxDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Collapsible
           </h1>
           <CollapsibleDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Combobox
           </h1>
           <ComboboxDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Command
           </h1>
           <CommandDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Context Menu
           </h1>
           <ContextMenuDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Data Table
           </h1>
           <DataTableDemo data={data} columns={columns} />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Date Picker
           </h1>
           <DatePickerDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Dialog
           </h1>
           <DialogDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Drawer
           </h1>
           <DrawerDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Dropdown Menu
           </h1>
           <DropdownMenuDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Form
           </h1>
           <ProfileForm />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Hovercard
           </h1>
           <HoverCardDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Input
           </h1>
           <InputDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Input OTP
           </h1>
           <InputOTPDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Label
           </h1>
           <LabelDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Menu Bar
           </h1>
           <MenubarDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Navigation Menu
           </h1>
           <NavigationMenuDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Pagination
           </h1>
           <PaginationDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Popover
           </h1>
           <PopoverDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Progress
           </h1>
           <ProgressDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Radio Group
           </h1>
           <RadioGroupDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Resizable
           </h1>
           <ResizableDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Scroll Area
           </h1>
           <ScrollAreaDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Select
           </h1>
           <SelectDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Separator
           </h1>
           <SeparatorDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Sheet
           </h1>
           <SheetDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Skeleton
           </h1>
           <SkeletonDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Slider
           </h1>
           <SliderDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Sonner
           </h1>
           <SonnerDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Switch
           </h1>
           <SwitchDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Table
           </h1>
           <TableDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Tabs
           </h1>
           <TabsDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Textarea
           </h1>
           <TextareaDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Toast
           </h1>
           <ToastDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Toggle
           </h1>
           <ToggleDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Toggle Group
           </h1>
           <ToggleGroupDemo />
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
+          <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Tooltip
           </h1>
           <TooltipDemo />
