@@ -13,13 +13,14 @@ import eye from "../../../public/eye.svg";
 import eyeclosed from "../../../public/EyeClosed.svg";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { loginAction } from "@/redux/action/login-action";
 import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, LOGIN_URL } from "@/utils/apiConstants";
 import { TOKEN_KEY, SESSION_KEY } from "@/utils/constants";
 import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 
 interface LoginFormValues {
@@ -79,6 +80,17 @@ const Login = () => {
                   <p className="text-[#71717A] text-[14px] ">
                     Continue with Google or your personal Email
                   </p>
+                  <Button
+                    variant={"outline"}
+                    className="rounded-[20px] flex items-center gap-4 w-full"
+                  >
+                    <Image
+                      src={googleicon}
+                      alt="Google Icon"
+                      className="w-6 h-6"
+                    />
+                    Continue with Google
+                  </Button>
                   <div className="relative mt-4">
                     <Label
                       htmlFor="email"
@@ -121,7 +133,7 @@ const Login = () => {
                 className="w-12 border-none"
                 onClick={() => setStep("email")}
               >
-                <Image src={arrowleft} alt="" className="w-full" />
+                <ArrowLeft size={20} weight="light" />
               </Button>
               <p className="text-[#71717A] text-[14px] ">Welcome</p>
               <h2 className="text-[#18181B] text-[30px] font-semibold ">
@@ -141,13 +153,13 @@ const Login = () => {
                   HttpUtil.makePOST(`${BASE_URL}${LOGIN_URL}`, payload)
                     .then((res) => {
                       if (res.success && res?.data?.meta?.is_authenticated) {
-                        console.log('res', res?.data?.meta?.is_authenticated)
+                        console.log("res", res?.data?.meta?.is_authenticated);
                         toast({
                           description: "User Logged In Successfully",
                         });
-                        setCookie(TOKEN_KEY, res.data.meta.access_token)
-                        setCookie(SESSION_KEY, res.data.meta.session_token)
-                        router.push('/')
+                        setCookie(TOKEN_KEY, res.data.meta.access_token);
+                        setCookie(SESSION_KEY, res.data.meta.session_token);
+                        router.push("/");
                       }
                       if (res.error) {
                         res.data.errors.map((ele: any) =>
@@ -161,12 +173,12 @@ const Login = () => {
                       }
                     })
                     .catch((err: any) => {
-                      console.log('err', err)
+                      console.log("err", err);
                       toast({
                         variant: "destructive",
                         description: JSON.stringify(err),
                       });
-                    })
+                    });
                   // dispatch(loginAction(payload));
                 }}
               >
@@ -192,9 +204,9 @@ const Login = () => {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <Image src={eyeclosed} alt="" className="w-full" />
+                        <Eye size={16} weight="light" />
                       ) : (
-                        <Image src={eye} alt="" className="w-full" />
+                        <EyeClosed size={16} weight="light" />
                       )}
                     </button>
                     <ErrorMessage

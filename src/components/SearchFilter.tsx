@@ -12,6 +12,7 @@ import {
 import MultiSelect from "@/components/MultiSelect";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "./ui/button";
+import { X } from "@phosphor-icons/react";
 
 const SearchFilter: NextPage = () => {
   const [checkedTags, setCheckedTags] = useState<string[]>([]);
@@ -56,14 +57,16 @@ const SearchFilter: NextPage = () => {
     <main className="flex min-h-screen flex-col items-center justify-between p-4 w-full">
       <div className="flex items-start gap-4 w-full">
         <div className="relative w-[600px] px-4">
-          <Command className="">
+          <Command className="rounded-lg border shadow-md">
             <CommandInput placeholder="Search" className="" />
             <div className="flex items-center gap-4 mt-4 px-4">
               {checkedTags.map((tag, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Badge className="h-[30px] rounded-[4px] flex items-center gap-4">
                     <span className="whitespace-nowrap">{tag}</span>
-                    <button onClick={() => handleDeleteTag(tag)}>x</button>
+                    <button onClick={() => handleDeleteTag(tag)}>
+                      <X size={16} weight="light" />
+                    </button>
                   </Badge>
                 </div>
               ))}
