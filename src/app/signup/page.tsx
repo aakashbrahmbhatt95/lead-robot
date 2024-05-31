@@ -22,6 +22,9 @@ import {
 import AutoSubmitToken from "@/components/AutoSubmitToken";
 import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
 import { Info, CheckCircle } from "@phosphor-icons/react";
+import { HttpUtil } from "@/utils/http-util";
+import { BASE_URL, SIGN_UP_URL } from "@/utils/apiConstants";
+import { useToast } from "@/components/ui/use-toast";
 
 interface FormikInputProps extends FieldAttributes<any> {
   label: string;
@@ -61,16 +64,40 @@ const FormikInput: React.FC<FormikInputProps> = ({ label, ...props }) => {
 };
 
 const Signup = () => {
+  const [details, setDetails] = useState({
+    email: "",
+    password: "",
+  });
   const [step, setStep] = useState("email");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [password, setPassword] = useState("");
   const [formValue, setFormValue] = useState<FormValues | undefined>(undefined);
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const handleRegistration = async (payload: any) => {
+    const res = await HttpUtil.makePOST(`${BASE_URL}${SIGN_UP_URL}`, {
+      email: payload.email,
+      password: payload.password,
+    });
+    if (res.error) {
+      res.data.errors.map((ele: any) =>
+        toast({
+          variant: "destructive",
+          description: ele.message || "Something went worng, Please try again!",
+        })
+      );
+    } else {
+      toast({
+        description: "User Registered Successfully",
+      });
+      setStep("verification");
+    }
+  };
 
   interface PasswordRequirementsProps {
     password: string | undefined;
@@ -147,7 +174,7 @@ const Signup = () => {
       .required("Confirm Password is required"),
   });
 
-  if (!isMounted) return null;
+  if (!isMounted) return <div></div>;
 
   return (
     <main className="flex justify-center items-center bg-[#f4f4f5] min-h-screen">
@@ -163,8 +190,12 @@ const Signup = () => {
             <Formik
               initialValues={{ email: "" }}
               validationSchema={emailValidationSchema}
-              onSubmit={(values) => {
-                setStep("name");
+              onSubmit={(values: any) => {
+                setDetails({
+                  ...details,
+                  email: values.email,
+                });
+                setStep("password");
               }}
             >
               {({ errors, touched }: any) => (
@@ -217,76 +248,16 @@ const Signup = () => {
               )}
             </Formik>
           )}
-          {step === "name" && (
-            <>
-              <Button
-                variant={"outline"}
-                className="w-12 border-none"
-                onClick={() => setStep("email")}
-              >
-                <ArrowLeft size={20} weight="light" />
-              </Button>
-              <p className="text-[#71717A] text-[14px] ">Welcome</p>
-              <h2 className="text-[#18181B] text-[30px] font-semibold custom-h2">
-                Create Account
-              </h2>
-              <p className="text-[#71717A] text-[14px] ">
-                Enter your personal details to get started.
-              </p>
-              <h4 className="text-[20px] font-semibold text-[#18181B]">
-                name@email.com
-              </h4>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setStep("password");
-                }}
-                className="flex flex-col gap-4 w-full"
-              >
-                <div>
-                  <Label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    First Name
-                  </Label>
-                  <Input
-                    id="firstName"
-                    type="text"
-                    placeholder="Enter your first name"
-                    className="rounded-[6px] w-full mt-1"
-                  />
-                </div>
-                <div>
-                  <Label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Last Name
-                  </Label>
-                  <Input
-                    id="lastName"
-                    type="text"
-                    placeholder="Enter your last name"
-                    className="rounded-[6px] w-full mt-1"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="rounded-[6px] w-[93px] ml-auto"
-                >
-                  Continue
-                </Button>
-              </form>
-            </>
-          )}
-
           {step === "password" && (
             <Formik
               initialValues={{ password: "", confirmPassword: "" }}
               validationSchema={passwordValidationSchema}
-              onSubmit={(values) => {
-                setStep("verification");
+              onSubmit={(values: any) => {
+                const payload = {
+                  ...details,
+                  password: values.password,
+                };
+                handleRegistration(payload);
               }}
             >
               {({ errors, touched }: any) => (
@@ -294,7 +265,7 @@ const Signup = () => {
                   <Button
                     variant={"outline"}
                     className="w-12 border-none"
-                    onClick={() => setStep("name")}
+                    onClick={() => setStep("email")}
                   >
                     <ArrowLeft size={20} weight="light" />
                   </Button>
@@ -382,7 +353,7 @@ const Signup = () => {
               <p className="text-[#71717A] text-[14px]">
                 We’ve sent you a link to verify your email to:
               </p>
-              <h4 className="text-[#18181B] font-semibold">name@email.com</h4>
+              <h4 className="text-[#18181B] font-semibold">{details.email}</h4>
               <p className="text-[#171717] text-[14px]">
                 Didn’t receive the email?{" "}
                 <Link href="resend-password-link" className="underline mt-5">
