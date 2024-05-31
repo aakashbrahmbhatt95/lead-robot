@@ -11,12 +11,17 @@ import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import eye from "../../../public/eye.svg";
 import eyeclosed from "../../../public/EyeClosed.svg";
+import { HttpUtil } from "@/utils/http-util";
+import { BASE_URL, LOGIN_URL, REQUEST_PASSWORD } from "@/utils/apiConstants";
+import { useToast } from "@/components/ui/use-toast";
 
 const ForgotPassword = () => {
   const [step, setStep] = useState("email");
+  const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
@@ -25,6 +30,37 @@ const ForgotPassword = () => {
   if (!isMounted) {
     return null;
   }
+
+  const handleForgotPassword = async () => {
+    HttpUtil.makePOST(`${BASE_URL}${REQUEST_PASSWORD}`, {
+      email,
+    })
+      .then((res) => {
+        console.log("res", res);
+        if (res.success) {
+          toast({
+            description:
+              "Instructions to reset your password have been sent to your email ID",
+          });
+        }
+        if (res.error) {
+          res.data.errors.map((ele: any) =>
+            toast({
+              variant: "destructive",
+              description:
+                ele.message || "Something went worng, Please try again!",
+            })
+          );
+        }
+      })
+      .catch((err: any) => {
+        toast({
+          variant: "destructive",
+          description: JSON.stringify(err),
+        });
+      });
+    setStep("checkEmail");
+  };
 
   return (
     <main className="flex justify-center items-center bg-[#f4f4f5] min-h-screen">
@@ -56,7 +92,7 @@ const ForgotPassword = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  setStep("checkEmail");
+                  handleForgotPassword();
                 }}
                 className="flex flex-col gap-4 w-full"
               >
@@ -73,6 +109,7 @@ const ForgotPassword = () => {
                     placeholder="name@company.com"
                     required
                     className="rounded-[6px] w-full mt-1"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="flex items-center">
@@ -104,7 +141,7 @@ const ForgotPassword = () => {
               <p className="text-[#71717A] text-[14px]">
                 Instructions to reset your password have been sent to:
               </p>
-              <h4 className="text-[#18181B] font-semibold">name@email.com</h4>
+              <h4 className="text-[#18181B] font-semibold">{email}</h4>
               <p className="text-[#171717] text-[14px] mt-4">
                 Didn’t receive the email?{" "}
                 <Link href="resend-password-link" className="underline mt-5">
