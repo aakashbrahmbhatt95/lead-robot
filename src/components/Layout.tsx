@@ -10,7 +10,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex h-screen max-w-screen overflow-hidden">
-      <div className="w-64">
+      <div className="min-w-[111px]">
         <Sidebar />
       </div>
       <div className="flex-1 flex flex-col overflow-y-auto">
