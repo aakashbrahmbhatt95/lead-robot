@@ -1,7 +1,7 @@
 // components/Layout.tsx
 import React, { ReactNode } from "react";
 import Header from "./Header";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar/index";
 
 interface LayoutProps {
   children: ReactNode;
