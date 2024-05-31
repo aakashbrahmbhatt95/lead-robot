@@ -26,7 +26,7 @@ const Home = () => {
   return (
     <main className="">
       <Layout>
-        <div className="flex flex-col bg-white dark:bg-slate-900 p-4">
+        <div className="flex flex-col bg-[#f4f4f5] dark:bg-slate-900 p-4">
           <Breadcrumbs path="/nav/page/" />
           <div className="flex items-center justify-between mt-10">
             <button className="border border-[#E4E4E7] rounded-[6px] h-[32px] w-[32px] flex justify-start items-center p-2">
