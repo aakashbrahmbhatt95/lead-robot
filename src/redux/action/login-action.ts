@@ -10,7 +10,7 @@ import { BASE_URL, LOGIN_URL } from "../../utils/apiConstants";
          dispatch(loginReducer(res))
       })
       .catch((err:any) => {
-        dispatch(loginReducer("API fails"))
+        // dispatch(loginReducer("API fails"))
       })
       .finally(() => {
       });
