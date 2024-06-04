@@ -1,11 +1,13 @@
 "use client";
 import Layout from "@/components/Layout";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import useLogout from "@/hooks/useLogout";
+import { Plus } from "@phosphor-icons/react";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { Button } from "@/stories/Button";
 
 const Home = () => {
-  const { logout } = useLogout()
+  const { logout } = useLogout();
   return (
     <main className="">
       <Layout>
@@ -21,9 +23,13 @@ const Home = () => {
               <Link href="/ui-components" className="text-blue-500 underline">
                 UI Components
               </Link>
-              <Button onClick={() => logout()} className="text-blue-500 underline">
-                Logout
-              </Button>
+              <CustomButton variant={"outline"} icon={Plus} iconPosition="left">
+                Add Item
+              </CustomButton>
+              <CustomButton icon={Plus} iconPosition="right" variant="outline">
+                Add Item
+              </CustomButton>
+              <Button label="Logout" onClick={() => logout()} />
             </div>
           </div>
         </main>
