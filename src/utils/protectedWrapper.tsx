@@ -12,7 +12,7 @@ const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
   const pathname = usePathname();
 
   // Define your unprotected routes
-  const notProtectedRoutes = ["/login","/signup"];
+  const notProtectedRoutes = ["/login", "/signup", "/forgot-password", "/account/password/reset/key"];
 
   // Check if the current route is not protected
   const isNotProtectedRoute = notProtectedRoutes.some((route) =>

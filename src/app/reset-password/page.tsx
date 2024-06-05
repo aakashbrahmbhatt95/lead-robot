@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
-import watson from "../../../public/Watson.svg";
-import googleicon from "../../../public/Google.svg";
 import arrowleft from "../../../public/ArrowLeft.svg";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -11,15 +11,77 @@ import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import eye from "../../../public/eye.svg";
 import eyeclosed from "../../../public/EyeClosed.svg";
+import { BASE_URL, CHANGE_PASSWORD } from "@/utils/apiConstants";
+import { HttpUtil } from "@/utils/http-util";
+import { useToast } from "@/components/ui/use-toast";
+import { getCookie, setCookie } from "cookies-next";
+import { SESSION_KEY, TOKEN_KEY } from "@/utils/constants";
+import { useRouter } from "next/navigation";
 
 const ResetPassword = () => {
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const { toast } = useToast();
+  const router = useRouter()
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const validationSchema = Yup.object({
+    currentPassword: Yup.string().required("Current Password is required"),
+    newPassword: Yup.string().required("New Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("newPassword")], "Passwords must match")
+      .required("Confirm Password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      const temp = {
+        "current_password": values?.currentPassword,
+        "new_password": values?.confirmPassword
+      }
+      
+      HttpUtil.makePOST(`${BASE_URL}${CHANGE_PASSWORD}`, temp,{
+        "X-Session-Token": getCookie(SESSION_KEY)
+      })
+                    .then((res) => {
+                      if (res.success && res?.data?.meta?.is_authenticated) {
+                        toast({
+                          description: "Password Changed Successfully",
+                        });
+                        setCookie(SESSION_KEY, res.data.meta.session_token);
+                        router.push("/");
+                      }
+                      if (res.error) {
+                        res.data.errors.map((ele: any) =>
+                          toast({
+                            variant: "destructive",
+                            description:
+                              ele.message ||
+                              "Something went worng, Please try again!",
+                          })
+                        );
+                      }
+                    })
+                    .catch((err: any) => {
+                      console.log("err", err);
+                      toast({
+                        variant: "destructive",
+                        description: JSON.stringify(err),
+                      });
+                    });
+    },
+  });
 
   if (!isMounted) {
     return null;
@@ -40,26 +102,53 @@ const ResetPassword = () => {
             setup a secure password
           </p>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-            className="flex flex-col gap-4 w-full"
-          >
+          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 w-full">
             <div className="relative mt-4">
               <Label
-                htmlFor="password"
+                htmlFor="currentPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Current Password
+              </Label>
+              <Input
+                id="currentPassword"
+                type={showCurrentPassword ? "text" : "password"}
+                placeholder="Current Password"
+                {...formik.getFieldProps("currentPassword")}
+                className="rounded-[6px] mt-1"
+              />
+              {formik.touched.currentPassword && formik.errors.currentPassword ? (
+                <div className="text-red-600 text-sm">{formik.errors.currentPassword}</div>
+              ) : null}
+              <button
+                type="button"
+                className="absolute inset-y-0 h-[40px] -right-12 top-5 pr-3 flex items-center text-sm leading-5"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+              >
+                {showCurrentPassword ? (
+                  <Image src={eyeclosed} alt="" className="w-full" />
+                ) : (
+                  <Image src={eye} alt="" className="w-full" />
+                )}
+              </button>
+            </div>
+            <div className="relative mt-4">
+              <Label
+                htmlFor="newPassword"
                 className="block text-sm font-medium text-gray-700"
               >
                 New Password
               </Label>
               <Input
-                id="password"
+                id="newPassword"
                 type={showPassword ? "text" : "password"}
                 placeholder="New Password"
-                required
+                {...formik.getFieldProps("newPassword")}
                 className="rounded-[6px] mt-1"
               />
+              {formik.touched.newPassword && formik.errors.newPassword ? (
+                <div className="text-red-600 text-sm">{formik.errors.newPassword}</div>
+              ) : null}
               <button
                 type="button"
                 className="absolute inset-y-0 h-[40px] -right-12 top-5 pr-3 flex items-center text-sm leading-5"
@@ -83,9 +172,12 @@ const ResetPassword = () => {
                 id="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
-                required
+                {...formik.getFieldProps("confirmPassword")}
                 className="rounded-[6px] mt-1"
               />
+              {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                <div className="text-red-600 text-sm">{formik.errors.confirmPassword}</div>
+              ) : null}
               <button
                 type="button"
                 className="absolute inset-y-0 h-[40px] -right-12 top-5 pr-3 flex items-center text-sm leading-5"
