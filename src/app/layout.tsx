@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ReduxProvider } from "@/redux/provider";
 import { Toaster } from "@/components/ui/toaster";
+import ProtectedWrapper from "@/utils/protectedWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,7 +27,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ReduxProvider>
+            <ProtectedWrapper>
             {children}
+            </ProtectedWrapper>
             <Toaster />
           </ReduxProvider>
         </ThemeProvider>
