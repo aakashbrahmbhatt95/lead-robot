@@ -1,10 +1,21 @@
 const axios = require("axios");
+import { deleteCookie } from "cookies-next";
+import { SESSION_KEY, TOKEN_KEY } from "./constants";
+
+export const logout = () => {
+  deleteCookie(TOKEN_KEY);
+  deleteCookie(SESSION_KEY);
+  window.location.replace("/login");
+};
 
 const makePOST = async (url, data, headers, parsedError = true) => {
   try {
     let result = await axios.post(url, data, { headers });
     return defaultSuccessHandler(result);
   } catch (e) {
+    if (e?.response?.data?.meta?.is_authenticated === null) {
+      logout();
+    }
     return parsedError ? parseNetworkError(e) : e;
   }
 };
@@ -14,6 +25,9 @@ const makeGET = async (url, params, headers, parsedError = true) => {
     let result = await axios.get(url, { params, headers });
     return defaultSuccessHandler(result);
   } catch (e) {
+    if (e?.response?.data?.meta?.is_authenticated === null) {
+      logout();
+    }
     return parsedError ? parseNetworkError(e) : e;
   }
 };
@@ -23,6 +37,9 @@ const makeDELETE = async (url, params, headers, parsedError = true) => {
     let result = await axios.delete(url, { params, headers });
     return defaultSuccessHandler(result);
   } catch (e) {
+    if (e?.response?.data?.meta?.is_authenticated === null) {
+      logout();
+    }
     return parsedError ? parseNetworkError(e) : e;
   }
 };
@@ -32,6 +49,9 @@ const makePUT = async (url, data, headers, parsedError = true) => {
     let result = await axios.put(url, data, { headers });
     return defaultSuccessHandler(result);
   } catch (e) {
+    if (e?.response?.data?.meta?.is_authenticated === null) {
+      logout();
+    }
     return parsedError ? parseNetworkError(e) : e;
   }
 };
@@ -46,7 +66,7 @@ let defaultSuccessHandler = function (response) {
     success: true,
     status: response.status,
     data: response.data,
-    headers: response.headers
+    headers: response.headers,
   };
 };
 
@@ -65,7 +85,7 @@ const parseNetworkError = (error) => {
       result: "error",
       status: error.response.status,
       data: error.response.data,
-      headers: error.response.headers
+      headers: error.response.headers,
     };
   } else if (axios.isCancel(error)) {
     // This one is intentionally canceled request
@@ -75,7 +95,7 @@ const parseNetworkError = (error) => {
       status: null,
       data: null,
       message: error.message,
-      isCancel: true
+      isCancel: true,
     };
   } else {
     // Something happened in setting up the request that triggered an Error
@@ -86,7 +106,7 @@ const parseNetworkError = (error) => {
       result: "error",
       status: null,
       data: null,
-      message: error.message
+      message: error.message,
     };
   }
 
@@ -112,7 +132,7 @@ let typeOf = function (prop, type) {
     null: "[object Null]",
     promise: "[object Promise]",
     asyncFunction: "[object AsyncFunction]",
-    function: "[object Function]"
+    function: "[object Function]",
   };
 
   return Object.prototype.toString.call(prop) === dataset[type];
@@ -123,5 +143,5 @@ export const HttpUtil = {
   makeDELETE,
   makePOST,
   makePUT,
-  typeOf
+  typeOf,
 };

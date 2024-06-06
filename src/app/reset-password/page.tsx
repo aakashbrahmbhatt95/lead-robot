@@ -15,7 +15,7 @@ import { BASE_URL, CHANGE_PASSWORD } from "@/utils/apiConstants";
 import { HttpUtil } from "@/utils/http-util";
 import { useToast } from "@/components/ui/use-toast";
 import { getCookie, setCookie } from "cookies-next";
-import { SESSION_KEY, TOKEN_KEY } from "@/utils/constants";
+import { SESSION_KEY } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 
 const ResetPassword = () => {
@@ -24,7 +24,7 @@ const ResetPassword = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -45,41 +45,39 @@ const ResetPassword = () => {
       confirmPassword: "",
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: (values: any) => {
       const temp = {
-        "current_password": values?.currentPassword,
-        "new_password": values?.confirmPassword
-      }
-      
-      HttpUtil.makePOST(`${BASE_URL}${CHANGE_PASSWORD}`, temp,{
-        "X-Session-Token": getCookie(SESSION_KEY)
+        current_password: values?.currentPassword,
+        new_password: values?.confirmPassword,
+      };
+
+      HttpUtil.makePOST(`${BASE_URL}${CHANGE_PASSWORD}`, temp, {
+        "X-Session-Token": getCookie(SESSION_KEY),
       })
-                    .then((res) => {
-                      if (res.success && res?.data?.meta?.is_authenticated) {
-                        toast({
-                          description: "Password Changed Successfully",
-                        });
-                        setCookie(SESSION_KEY, res.data.meta.session_token);
-                        router.push("/");
-                      }
-                      if (res.error) {
-                        res.data.errors.map((ele: any) =>
-                          toast({
-                            variant: "destructive",
-                            description:
-                              ele.message ||
-                              "Something went worng, Please try again!",
-                          })
-                        );
-                      }
-                    })
-                    .catch((err: any) => {
-                      console.log("err", err);
-                      toast({
-                        variant: "destructive",
-                        description: JSON.stringify(err),
-                      });
-                    });
+        .then((res) => {
+          if (res.success && res?.data?.meta?.is_authenticated) {
+            toast({
+              description: "Password Changed Successfully",
+            });
+            setCookie(SESSION_KEY, res.data.meta.session_token);
+            router.push("/");
+          }
+          if (res.error) {
+            res.data.errors.map((ele: any) =>
+              toast({
+                variant: "destructive",
+                description:
+                  ele.message || "Something went worng, Please try again!",
+              })
+            );
+          }
+        })
+        .catch((err: any) => {
+          toast({
+            variant: "destructive",
+            description: JSON.stringify(err),
+          });
+        });
     },
   });
 
@@ -102,7 +100,10 @@ const ResetPassword = () => {
             setup a secure password
           </p>
 
-          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 w-full">
+          <form
+            onSubmit={formik.handleSubmit}
+            className="flex flex-col gap-4 w-full"
+          >
             <div className="relative mt-4">
               <Label
                 htmlFor="currentPassword"
@@ -117,8 +118,11 @@ const ResetPassword = () => {
                 {...formik.getFieldProps("currentPassword")}
                 className="rounded-[6px] mt-1"
               />
-              {formik.touched.currentPassword && formik.errors.currentPassword ? (
-                <div className="text-red-600 text-sm">{formik.errors.currentPassword}</div>
+              {formik.touched.currentPassword &&
+              formik.errors.currentPassword ? (
+                <div className="text-red-600 text-sm">
+                  {formik.errors.currentPassword}
+                </div>
               ) : null}
               <button
                 type="button"
@@ -147,7 +151,9 @@ const ResetPassword = () => {
                 className="rounded-[6px] mt-1"
               />
               {formik.touched.newPassword && formik.errors.newPassword ? (
-                <div className="text-red-600 text-sm">{formik.errors.newPassword}</div>
+                <div className="text-red-600 text-sm">
+                  {formik.errors.newPassword}
+                </div>
               ) : null}
               <button
                 type="button"
@@ -175,8 +181,11 @@ const ResetPassword = () => {
                 {...formik.getFieldProps("confirmPassword")}
                 className="rounded-[6px] mt-1"
               />
-              {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                <div className="text-red-600 text-sm">{formik.errors.confirmPassword}</div>
+              {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword ? (
+                <div className="text-red-600 text-sm">
+                  {formik.errors.confirmPassword}
+                </div>
               ) : null}
               <button
                 type="button"
