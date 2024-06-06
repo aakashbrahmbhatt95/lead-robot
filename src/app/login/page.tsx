@@ -11,18 +11,13 @@ import { Label } from "@/components/ui/label";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, LOGIN_URL } from "@/utils/apiConstants";
 import { TOKEN_KEY, SESSION_KEY } from "@/utils/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { getCookie, setCookie } from "cookies-next";
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
 
 const emailValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -40,7 +35,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const { toast } = useToast();
 
   const { login } = useAppSelector((state: any) => state.loginReducer);

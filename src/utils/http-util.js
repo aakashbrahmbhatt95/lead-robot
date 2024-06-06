@@ -2,18 +2,25 @@ const axios = require("axios");
 import { deleteCookie } from "cookies-next";
 import { SESSION_KEY, TOKEN_KEY } from "./constants";
 
+export const deleteCookies = () => {
+  deleteCookie(TOKEN_KEY);
+  deleteCookie(SESSION_KEY);
+};
+
 export const logout = () => {
   deleteCookie(TOKEN_KEY);
   deleteCookie(SESSION_KEY);
   window.location.replace("/login");
 };
 
+const isUnAuthorized = (e) => e?.response?.data?.meta?.is_authenticated === null || e?.response?.data?.meta?.is_authenticated === false
+
 const makePOST = async (url, data, headers, parsedError = true) => {
   try {
     let result = await axios.post(url, data, { headers });
     return defaultSuccessHandler(result);
   } catch (e) {
-    if (e?.response?.data?.meta?.is_authenticated === null) {
+    if (isUnAuthorized(e)) {
       logout();
     }
     return parsedError ? parseNetworkError(e) : e;
@@ -25,7 +32,7 @@ const makeGET = async (url, params, headers, parsedError = true) => {
     let result = await axios.get(url, { params, headers });
     return defaultSuccessHandler(result);
   } catch (e) {
-    if (e?.response?.data?.meta?.is_authenticated === null) {
+    if (isUnAuthorized(e)) {
       logout();
     }
     return parsedError ? parseNetworkError(e) : e;
@@ -37,7 +44,7 @@ const makeDELETE = async (url, params, headers, parsedError = true) => {
     let result = await axios.delete(url, { params, headers });
     return defaultSuccessHandler(result);
   } catch (e) {
-    if (e?.response?.data?.meta?.is_authenticated === null) {
+    if (isUnAuthorized(e)) {
       logout();
     }
     return parsedError ? parseNetworkError(e) : e;
@@ -49,7 +56,7 @@ const makePUT = async (url, data, headers, parsedError = true) => {
     let result = await axios.put(url, data, { headers });
     return defaultSuccessHandler(result);
   } catch (e) {
-    if (e?.response?.data?.meta?.is_authenticated === null) {
+    if (isUnAuthorized(e)) {
       logout();
     }
     return parsedError ? parseNetworkError(e) : e;

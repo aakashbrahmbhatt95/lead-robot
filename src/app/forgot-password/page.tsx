@@ -11,7 +11,7 @@ import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import eye from "../../../public/eye.svg";
 import eyeclosed from "../../../public/EyeClosed.svg";
-import { HttpUtil } from "@/utils/http-util";
+import { deleteCookies, HttpUtil } from "@/utils/http-util";
 import { BASE_URL, LOGIN_URL, REQUEST_PASSWORD } from "@/utils/apiConstants";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -20,23 +20,17 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    setIsMounted(true);
+    deleteCookies()
   }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   const handleForgotPassword = async () => {
     HttpUtil.makePOST(`${BASE_URL}${REQUEST_PASSWORD}`, {
       email,
     })
       .then((res) => {
-        console.log("res", res);
         if (res.success) {
           toast({
             description:
@@ -144,7 +138,7 @@ const ForgotPassword = () => {
               <h4 className="text-[#18181B] font-semibold">{email}</h4>
               <p className="text-[#171717] text-[14px] mt-4">
                 Didn’t receive the email?{" "}
-                <Link href="resend-password-link" className="underline mt-5">
+                <Link href="#" className="underline mt-5" onClick={() => handleForgotPassword()}>
                   Resend password link
                 </Link>
               </p>
@@ -258,7 +252,7 @@ const ForgotPassword = () => {
               <h4 className="text-[#18181B] font-semibold">name@email.com</h4>
               <p className="text-[#171717] text-[14px]">
                 Didn’t receive the email?{" "}
-                <Link href="resend-password-link" className="underline mt-5">
+                <Link href="#" className="underline mt-5" onClick={() => handleForgotPassword()}>
                   Resend password link
                 </Link>
               </p>
