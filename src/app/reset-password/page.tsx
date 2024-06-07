@@ -119,7 +119,7 @@ const ResetPassword = () => {
                 className="rounded-[6px] mt-1"
               />
               {formik.touched.currentPassword &&
-              formik.errors.currentPassword ? (
+              typeof formik.errors.currentPassword === "string" ? (
                 <div className="text-red-600 text-sm">
                   {formik.errors.currentPassword}
                 </div>
@@ -150,11 +150,13 @@ const ResetPassword = () => {
                 {...formik.getFieldProps("newPassword")}
                 className="rounded-[6px] mt-1"
               />
-              {formik.touched.newPassword && formik.errors.newPassword ? (
+              {formik.touched.newPassword &&
+              typeof formik.errors.newPassword === "string" ? (
                 <div className="text-red-600 text-sm">
                   {formik.errors.newPassword}
                 </div>
               ) : null}
+
               <button
                 type="button"
                 className="absolute inset-y-0 h-[40px] -right-12 top-5 pr-3 flex items-center text-sm leading-5"
@@ -182,7 +184,7 @@ const ResetPassword = () => {
                 className="rounded-[6px] mt-1"
               />
               {formik.touched.confirmPassword &&
-              formik.errors.confirmPassword ? (
+              typeof formik.errors.confirmPassword === "string" ? (
                 <div className="text-red-600 text-sm">
                   {formik.errors.confirmPassword}
                 </div>
