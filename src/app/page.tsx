@@ -4,7 +4,7 @@ import Link from "next/link";
 import useLogout from "@/hooks/useLogout";
 import { Plus } from "@phosphor-icons/react";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { Button } from "@/stories/Button";
+import { Button } from "@/components/ui/button";
 
 const Home = () => {
   const { logout } = useLogout();
@@ -29,7 +29,7 @@ const Home = () => {
               <CustomButton icon={Plus} iconPosition="right" variant="outline">
                 Add Item
               </CustomButton>
-              <Button label="Logout" onClick={() => logout()} />
+              <Button onClick={() => logout()} />
             </div>
           </div>
         </main>
