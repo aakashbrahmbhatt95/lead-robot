@@ -4,29 +4,20 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import watson from "../../../public/Watson.svg";
 import googleicon from "../../../public/Google.svg";
-import arrowleft from "../../../public/ArrowLeft.svg";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
-import eye from "../../../public/eye.svg";
-import eyeclosed from "../../../public/EyeClosed.svg";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { loginAction } from "@/redux/action/login-action";
+import { useAppSelector } from "@/redux/store";
 import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, LOGIN_URL } from "@/utils/apiConstants";
 import { TOKEN_KEY, SESSION_KEY } from "@/utils/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { setCookie } from "cookies-next";
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
+import { getCookie, setCookie } from "cookies-next";
 
 const emailValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -44,13 +35,15 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const { toast } = useToast();
 
   const { login } = useAppSelector((state: any) => state.loginReducer);
 
   useEffect(() => {
     setIsMounted(true);
+      if(getCookie(SESSION_KEY)) {
+          router.push('/')
+      }
   }, []);
 
   if (!isMounted) {

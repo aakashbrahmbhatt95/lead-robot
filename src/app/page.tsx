@@ -1,13 +1,12 @@
 "use client";
 import Layout from "@/components/Layout";
 import Link from "next/link";
-import useLogout from "@/hooks/useLogout";
 import { Plus } from "@phosphor-icons/react";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { Button } from "@/components/ui/button";
+import { logout } from "@/utils/http-util";
 
 const Home = () => {
-  const { logout } = useLogout();
   return (
     <main className="">
       <Layout>

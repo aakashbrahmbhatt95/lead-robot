@@ -4,23 +4,20 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
-import arrowleft from "../../../public/ArrowLeft.svg";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
-import eye from "../../../public/eye.svg";
-import eyeclosed from "../../../public/EyeClosed.svg";
-import { BASE_URL, CHANGE_PASSWORD } from "@/utils/apiConstants";
+import eye from "@/../public/eye.svg";
+import eyeclosed from "@/../public/EyeClosed.svg";
+import { BASE_URL, RESET_PASSWORD } from "@/utils/apiConstants";
 import { HttpUtil } from "@/utils/http-util";
 import { useToast } from "@/components/ui/use-toast";
-import { getCookie, setCookie } from "cookies-next";
-import { SESSION_KEY } from "@/utils/constants";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
-const ResetPassword = () => {
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+const ChangePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const params = useParams();
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
@@ -31,7 +28,6 @@ const ResetPassword = () => {
   }, []);
 
   const validationSchema = Yup.object({
-    currentPassword: Yup.string().required("Current Password is required"),
     newPassword: Yup.string().required("New Password is required"),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("newPassword")], "Passwords must match")
@@ -40,27 +36,24 @@ const ResetPassword = () => {
 
   const formik = useFormik({
     initialValues: {
-      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     },
     validationSchema,
-    onSubmit: (values: any) => {
+    onSubmit: (values) => {
       const temp = {
-        current_password: values?.currentPassword,
-        new_password: values?.confirmPassword,
+        key: params?.id,
+        password: values?.confirmPassword,
       };
 
-      HttpUtil.makePOST(`${BASE_URL}${CHANGE_PASSWORD}`, temp, {
-        "X-Session-Token": getCookie(SESSION_KEY),
-      })
+      HttpUtil.makePOST(`${BASE_URL}${RESET_PASSWORD}`, temp)
         .then((res) => {
-          if (res.success && res?.data?.meta?.is_authenticated) {
+          console.log("res", res);
+          if (res.success) {
             toast({
               description: "Password Changed Successfully",
             });
-            setCookie(SESSION_KEY, res.data.meta.session_token);
-            router.push("/");
+            router.push("/login");
           }
           if (res.error) {
             res.data.errors.map((ele: any) =>
@@ -73,6 +66,7 @@ const ResetPassword = () => {
           }
         })
         .catch((err: any) => {
+          console.log("err", err);
           toast({
             variant: "destructive",
             description: JSON.stringify(err),
@@ -89,10 +83,6 @@ const ResetPassword = () => {
     <main className="flex justify-center items-center bg-[#f4f4f5] min-h-screen">
       <div className="flex items-center justify-center bg-white w-[578px] rounded-[24px] p-8">
         <div className="flex flex-col items-start gap-4 w-full max-w-md">
-          <Button variant={"outline"} className="w-12 border-none">
-            <Image src={arrowleft} alt="" className="w-full" />
-          </Button>
-          <p className="text-[#71717A] text-[14px] text-center">Thank You</p>
           <h2 className="text-[#18181B] text-[30px] font-semibold text-center">
             Enter Your Password
           </h2>
@@ -104,38 +94,6 @@ const ResetPassword = () => {
             onSubmit={formik.handleSubmit}
             className="flex flex-col gap-4 w-full"
           >
-            <div className="relative mt-4">
-              <Label
-                htmlFor="currentPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Current Password
-              </Label>
-              <Input
-                id="currentPassword"
-                type={showCurrentPassword ? "text" : "password"}
-                placeholder="Current Password"
-                {...formik.getFieldProps("currentPassword")}
-                className="rounded-[6px] mt-1"
-              />
-              {formik.touched.currentPassword &&
-              formik.errors.currentPassword ? (
-                <div className="text-red-600 text-sm">
-                  {formik.errors.currentPassword}
-                </div>
-              ) : null}
-              <button
-                type="button"
-                className="absolute inset-y-0 h-[40px] -right-12 top-5 pr-3 flex items-center text-sm leading-5"
-                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-              >
-                {showCurrentPassword ? (
-                  <Image src={eyeclosed} alt="" className="w-full" />
-                ) : (
-                  <Image src={eye} alt="" className="w-full" />
-                )}
-              </button>
-            </div>
             <div className="relative mt-4">
               <Label
                 htmlFor="newPassword"
@@ -223,4 +181,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ChangePassword;

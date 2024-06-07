@@ -12,7 +12,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import infoicon from "../../../public/Info.svg";
 import {
   HoverCard,
   HoverCardContent,
@@ -25,6 +24,9 @@ import { Info, CheckCircle } from "@phosphor-icons/react";
 import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, SIGN_UP_URL } from "@/utils/apiConstants";
 import { useToast } from "@/components/ui/use-toast";
+import { getCookie } from "cookies-next";
+import { SESSION_KEY } from "@/utils/constants";
+import { useRouter } from "next/navigation";
 
 interface FormikInputProps extends FieldAttributes<any> {
   label: string;
@@ -41,6 +43,14 @@ interface FormValues {
 
 const FormikInput: React.FC<FormikInputProps> = ({ label, ...props }) => {
   const [field, meta] = useField(props);
+  const router = useRouter();
+
+  useEffect(() => {
+      if(getCookie(SESSION_KEY)) {
+          router.push('/')
+      }
+  }, []);
+
   return (
     <div className="mt-4 relative">
       <Label
