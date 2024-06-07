@@ -59,12 +59,11 @@ const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const Comp = asChild ? Slot : "button";
+    const computedClassName = cn(buttonVariants({ variant, size, className }));
+    console.log("computedClassName:", computedClassName);
+
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      >
+      <Comp className={computedClassName} ref={ref} {...props}>
         {Icon && iconPosition === "left" && <Icon className="mr-2" />}
         {children}
         {Icon && iconPosition === "right" && <Icon className="ml-2" />}
