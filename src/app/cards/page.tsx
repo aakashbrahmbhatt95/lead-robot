@@ -18,7 +18,6 @@ const Cards: React.FC = () => {
             {components.map((component, index) => {
               if (component === "do") return <DoCard key={index} />;
               if (component === "say") return <SayCard key={index} />;
-              if (component === "ask") return <TaskCard key={index} />;
               return null;
             })}
           </div>

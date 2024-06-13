@@ -1,5 +1,11 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Switch } from "./ui/switch";
 import {
   CaretDown,
@@ -7,13 +13,16 @@ import {
   TrashSimple,
   CopySimple,
   Plus,
+  CaretRight,
+  PencilSimple,
 } from "@phosphor-icons/react";
 import { Input } from "./ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import { addComponent } from "@/redux/componentsSlice";
-import DoCard from "./DoCard";
-import SayCard from "./SayCard";
+import { Button } from "./ui/button";
+import { SheetTrigger, SheetContent, Sheet, SheetClose } from "./ui/sheet";
+import Link from "next/link";
 
 const ParentTaskCard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -25,57 +34,94 @@ const ParentTaskCard: React.FC = () => {
 
   return (
     <div>
-      <Card className="w-[330px]">
-        <CardHeader className="bg-[#a7f3d0] h-[52px] flex justify-center">
-          <div className="flex items-center justify-between w-full px-4">
-            <CardTitle className="text-sm">Task Set</CardTitle>
-            <div className="flex items-center gap-3">
-              <DotsThree size={20} />
-              <CopySimple size={20} />
-              <TrashSimple size={20} />
-              <CaretDown size={16} />
+      <Sheet>
+        <Card className="w-[330px]">
+          <SheetTrigger className="w-full">
+            <CardHeader className="bg-[#a7f3d0] h-[52px] flex justify-center w-full">
+              <div className="flex items-center justify-between w-full px-4">
+                <CardTitle className="text-sm">Task Set</CardTitle>
+                <div className="flex items-center gap-3">
+                  <DotsThree size={20} />
+                  <CopySimple size={20} />
+                  <TrashSimple size={20} />
+                  <CaretDown size={16} />
+                </div>
+              </div>
+            </CardHeader>
+          </SheetTrigger>
+          <CardContent className="flex flex-col items-start mt-4">
+            <div className="flex items-center justify-between w-full">
+              <p className="text-[#18181B] text-sm font-semibold">
+                Agent speaks first
+              </p>
+              <Switch />
             </div>
-          </div>
-        </CardHeader>
-        <CardContent className="flex flex-col items-start mt-4">
-          <div className="flex items-center justify-between w-full">
-            <p className="text-[#18181B] text-sm font-semibold">
-              Agent speaks first
-            </p>
-            <Switch />
-          </div>
-          <Input placeholder="AI Responds to user" className="w-full mt-4" />
-          <div className="w-full flex justify-center mt-4 relative">
-            <Popover>
-              <PopoverTrigger>
-                <button>
-                  <Plus />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className=" bg-white border rounded shadow-lg p-2 flex justify-between gap-4 items-center">
-                <button
-                  onClick={() => handleAddComponent("do")}
-                  className="px-4 border rounded-md py-1"
-                >
-                  Do
-                </button>
-                <button
-                  onClick={() => handleAddComponent("say")}
-                  className="px-4 border rounded-md py-1"
-                >
-                  Say
-                </button>
-                <button
-                  onClick={() => handleAddComponent("ask")}
-                  className="px-4 border rounded-md py-1"
-                >
-                  Ask
-                </button>
-              </PopoverContent>
-            </Popover>
-          </div>
-        </CardContent>
-      </Card>
+            <Input placeholder="AI Responds to user" className="w-full mt-4" />
+            <div className="w-full flex justify-center mt-4 relative">
+              <Popover>
+                <PopoverTrigger>
+                  <button>
+                    <Plus />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className=" bg-white border rounded shadow-lg p-2 flex justify-between gap-4 items-center">
+                  <button
+                    onClick={() => handleAddComponent("do")}
+                    className="px-4 border rounded-md py-1"
+                  >
+                    Do
+                  </button>
+                  <button
+                    onClick={() => handleAddComponent("say")}
+                    className="px-4 border rounded-md py-1"
+                  >
+                    Say
+                  </button>
+                  <button
+                    onClick={() => handleAddComponent("ask")}
+                    className="px-4 border rounded-md py-1"
+                  >
+                    Ask
+                  </button>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </CardContent>
+        </Card>
+
+        <SheetContent>
+          <SheetClose />
+          <Card className="w-[330px]">
+            <CardHeader>
+              <div className="flex flex-col items-start">
+                <Button variant={"outline"}>
+                  <CaretRight />
+                </Button>
+                <h4 className="font-semibold">Edit Task Set</h4>
+              </div>
+              <CardDescription>
+                <div className="flex items-center gap-3">
+                  <p className="font-medium">Assist</p>
+                  <PencilSimple />
+                </div>
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="">
+                Explore more in{" "}
+                <Link href="" className="underline">
+                  prompt engineering guide
+                </Link>
+              </div>
+              <div className="w-full flex justify-end mt-4">
+                <Button variant="outline" className=" ">
+                  Save
+                </Button>
+              </div>
+            </CardContent>
+          </Card>{" "}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };

@@ -13,6 +13,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import Plus from "../../../public/Plus.svg";
+import ParentTaskCard from "@/components/ParentTaskCard";
 
 const nodeStyles: any = {
   backgroundColor: "black",
@@ -69,7 +70,7 @@ const initialEdges: any = [
       type: MarkerType.ArrowClosed,
       width: 20,
       height: 20,
-      color: 'black',
+      color: "black",
     },
   },
   {
@@ -82,7 +83,7 @@ const initialEdges: any = [
       type: MarkerType.ArrowClosed,
       width: 20,
       height: 20,
-      color: 'black',
+      color: "black",
     },
   },
   {
@@ -95,7 +96,7 @@ const initialEdges: any = [
       type: MarkerType.ArrowClosed,
       width: 20,
       height: 20,
-      color: 'black',
+      color: "black",
     },
   },
 ];
@@ -121,6 +122,11 @@ const ReactFlowChart = () => {
         },
         data: {
           label: "Add Dummy Data",
+          customComponent: (
+            <div>
+              <ParentTaskCard />
+            </div>
+          ),
         },
         style: {
           backgroundColor: "black",
