@@ -23,10 +23,13 @@ import { addComponent } from "@/redux/componentsSlice";
 import { Button } from "./ui/button";
 import { SheetTrigger, SheetContent, Sheet, SheetClose } from "./ui/sheet";
 import Link from "next/link";
+import SayCard from "./SayCard";
+import DoCard from "./DoCard";
+import AskCard from "./AskCard";
 
 const ParentTaskCard: React.FC = () => {
-  const dispatch = useAppDispatch();
   const components = useAppSelector((state) => state.components.components);
+  const dispatch = useAppDispatch();
 
   const handleAddComponent = (type: string) => {
     dispatch(addComponent(type));
@@ -87,6 +90,14 @@ const ParentTaskCard: React.FC = () => {
               </Popover>
             </div>
           </CardContent>
+          <div className="px-3 flex flex-col justify-center items-center w-full gap-5 py-10">
+            {components.map((component, index) => {
+              if (component === "do") return <DoCard key={index} />;
+              if (component === "say") return <SayCard key={index} />;
+              if (component === "ask") return <AskCard key={index} />;
+              return null;
+            })}
+          </div>
         </Card>
 
         <SheetContent>

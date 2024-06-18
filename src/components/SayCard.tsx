@@ -37,7 +37,7 @@ const SayCard = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <Card className="w-[330px]" onClick={handleCardClick}>
+        <Card className="w-full" onClick={handleCardClick}>
           <CardHeader>
             <div className="flex items-center justify-between">
               <CaretDown size={16} />

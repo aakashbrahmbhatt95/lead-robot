@@ -5,15 +5,7 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardFooter,
 } from "@/components/ui/card";
-import { Input } from "./ui/input";
-
-import { Switch } from "./ui/switch";
-import Link from "next/link";
-import { Label } from "./ui/label";
-import { Checkbox } from "./ui/checkbox";
-import { Textarea } from "./ui/textarea";
 import {
   Select,
   SelectContent,
@@ -21,7 +13,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "./ui/switch";
+import Link from "next/link";
+import { Label } from "./ui/label";
+import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
+import { Input } from "./ui/input";
 import {
   CaretDown,
   DotsThree,
@@ -36,27 +34,38 @@ import {
   SheetClose,
   SheetHeader,
 } from "./ui/sheet";
-import TaskCard from "./TaskCard";
-import { Badge } from "./ui/badge";
 
-const DoCard = () => {
+const AskCard = () => {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const handleCardClick = () => {
+    setIsSheetOpen(true);
+  };
+
+  const taskDetails = {
+    title: "1. Say",
+    description:
+      "This verification process helps protect your personal information...",
+  };
+
   return (
     <Sheet>
       <SheetTrigger>
-        <Card className="w-full">
+        <Card className="w-full" onClick={handleCardClick}>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <CaretDown size={16} />
-                <CardTitle className="text-sm">2. Do </CardTitle>
-              </div>
+              <CaretDown size={16} />
+              <CardTitle className="text-sm">1. Ask </CardTitle>
               <Switch defaultChecked className="" />
             </div>
           </CardHeader>
-          <CardContent className="flex flex-col items-start">
-            <p className="text-[#18181B] text-sm">“Book a meeting”</p>
+          <CardContent>
+            <p className="text-[#18181B] text-sm">
+              “...this verification process helps protect your personal
+              information...”
+            </p>
+            <p className="text-[#71717A] text-sm underline">Show more </p>
             <div className="flex items-center gap-4 justify-end mt-4">
-              <Badge>Tool</Badge>
               <DotsThree size={20} />
               <CopySimple size={20} />
               <TrashSimple size={20} />
@@ -78,7 +87,7 @@ const DoCard = () => {
         <Card className="w-[330px]">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>2. Do </CardTitle>
+              <CardTitle>1. Ask </CardTitle>
               <Switch defaultChecked />
             </div>
             <CardDescription>
@@ -123,4 +132,4 @@ const DoCard = () => {
   );
 };
 
-export default DoCard;
+export default AskCard;
