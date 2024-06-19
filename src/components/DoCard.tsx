@@ -30,6 +30,12 @@ import {
 } from "@phosphor-icons/react";
 import TaskSheet from "./TaskSheet";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   Sheet,
   SheetContent,
   SheetTrigger,
@@ -42,37 +48,46 @@ import { Badge } from "./ui/badge";
 const DoCard = () => {
   return (
     <Sheet>
-      <SheetTrigger>
-        <Card className="w-full">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <CaretDown size={16} />
-                <CardTitle className="text-sm">2. Do </CardTitle>
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full"
+        defaultValue="item-1"
+      >
+        <AccordionItem value="item-1">
+          <Card className="w-full">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <AccordionTrigger />
+                  <CardTitle className="text-sm">2. Do </CardTitle>
+                </div>
+                <Switch defaultChecked className="" />
               </div>
-              <Switch defaultChecked className="" />
-            </div>
-          </CardHeader>
-          <CardContent className="flex flex-col items-start">
-            <p className="text-[#18181B] text-sm">“Book a meeting”</p>
-            <div className="flex items-center gap-4 justify-end mt-4">
-              <Badge>Tool</Badge>
-              <DotsThree size={20} />
-              <CopySimple size={20} />
-              <TrashSimple size={20} />
-              <div className="flex gap-1 ">
-                <Checkbox id="terms" className="" defaultChecked />
-                <Label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Required
-                </Label>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </SheetTrigger>
+            </CardHeader>
+            <AccordionContent>
+              <CardContent className="flex flex-col items-start">
+                <p className="text-[#18181B] text-sm">“Book a meeting”</p>
+                <div className="flex items-center gap-4 justify-end mt-4">
+                  <Badge>Tool</Badge>
+                  <DotsThree size={20} />
+                  <CopySimple size={20} />
+                  <TrashSimple size={20} />
+                  <div className="flex gap-1 ">
+                    <Checkbox id="terms" className="" defaultChecked />
+                    <Label
+                      htmlFor="terms"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Required
+                    </Label>
+                  </div>
+                </div>
+              </CardContent>
+            </AccordionContent>
+          </Card>
+        </AccordionItem>
+      </Accordion>
       <SheetContent>
         <SheetClose />
         <Card className="w-[330px]">

@@ -26,6 +26,7 @@ import Link from "next/link";
 import SayCard from "./SayCard";
 import DoCard from "./DoCard";
 import AskCard from "./AskCard";
+import { Chat, Question, Wrench } from "@phosphor-icons/react";
 
 const ParentTaskCard: React.FC = () => {
   const components = useAppSelector((state) => state.components.components);
@@ -67,24 +68,27 @@ const ParentTaskCard: React.FC = () => {
                     <Plus />
                   </button>
                 </PopoverTrigger>
-                <PopoverContent className=" bg-white border rounded shadow-lg p-2 flex justify-between gap-4 items-center">
-                  <button
-                    onClick={() => handleAddComponent("do")}
-                    className="px-4 border rounded-md py-1"
-                  >
-                    Do
-                  </button>
+                <PopoverContent className=" bg-white border rounded shadow-lg p-2 flex justify-between  items-center">
                   <button
                     onClick={() => handleAddComponent("say")}
-                    className="px-4 border rounded-md py-1"
+                    className="px-4  rounded-md  py-1 text-sm flex items-center gap-1"
                   >
-                    Say
+                    <Chat size={20} />
+                    <span className="border-r pr-4">Say</span>
                   </button>
                   <button
                     onClick={() => handleAddComponent("ask")}
-                    className="px-4 border rounded-md py-1"
+                    className="px-4  rounded-md  py-1 text-sm flex items-center gap-1"
                   >
-                    Ask
+                    <Question size={20} />
+                    <span className="border-r pr-4">Ask</span>
+                  </button>
+                  <button
+                    onClick={() => handleAddComponent("do")}
+                    className="px-4  rounded-md py-1 text-sm flex items-center gap-1"
+                  >
+                    <Wrench size={20} />
+                    <span className="pr-4">Do</span>
                   </button>
                 </PopoverContent>
               </Popover>

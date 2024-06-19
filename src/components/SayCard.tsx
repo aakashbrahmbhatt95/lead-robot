@@ -6,6 +6,12 @@ import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   CaretDown,
   DotsThree,
   CopySimple,
@@ -36,38 +42,49 @@ const SayCard = () => {
 
   return (
     <Sheet>
-      <SheetTrigger>
-        <Card className="w-full" onClick={handleCardClick}>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CaretDown size={16} />
-              <CardTitle className="text-sm">1. Say </CardTitle>
-              <Switch defaultChecked className="" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-[#18181B] text-sm">
-              “...this verification process helps protect your personal
-              information...”
-            </p>
-            <p className="text-[#71717A] text-sm underline">Show more </p>
-            <div className="flex items-center gap-4 justify-end mt-4">
-              <DotsThree size={20} />
-              <CopySimple size={20} />
-              <TrashSimple size={20} />
-              <div className="flex gap-1 ">
-                <Checkbox id="terms" className="" defaultChecked />
-                <Label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Required
-                </Label>
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full"
+        defaultValue="item-1"
+      >
+        <AccordionItem value="item-1">
+          <Card className="w-full" onClick={handleCardClick}>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <AccordionTrigger></AccordionTrigger>
+                <CardTitle className="text-sm">1. Say </CardTitle>
+                <Switch defaultChecked className="" />
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      </SheetTrigger>
+            </CardHeader>
+            <AccordionContent>
+              <CardContent>
+                <SheetTrigger>
+                  <p className="text-[#18181B] text-sm">
+                    “...this verification process helps protect your personal
+                    information...”
+                  </p>
+                </SheetTrigger>
+                <p className="text-[#71717A] text-sm underline">Show more </p>
+                <div className="flex items-center gap-4 justify-end mt-4">
+                  <DotsThree size={20} />
+                  <CopySimple size={20} />
+                  <TrashSimple size={20} />
+                  <div className="flex gap-1 ">
+                    <Checkbox id="terms" className="" defaultChecked />
+                    <Label
+                      htmlFor="terms"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Required
+                    </Label>
+                  </div>
+                </div>
+              </CardContent>
+            </AccordionContent>
+          </Card>
+        </AccordionItem>
+      </Accordion>
       <SheetContent>
         <SheetClose />
         <TaskCard />
