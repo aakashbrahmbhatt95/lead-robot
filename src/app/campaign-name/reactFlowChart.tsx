@@ -79,7 +79,7 @@ const initialEdges: any = [
     type: "smoothstep",
     source: "2",
     target: "3",
-    label:"Path Condition",
+    label: "Path Condition",
     style: edgeStyles,
     markerEnd: {
       type: MarkerType.ArrowClosed,
@@ -93,7 +93,7 @@ const initialEdges: any = [
     type: "smoothstep",
     source: "1",
     target: "4",
-    label:"Path Condition",
+    label: "Path Condition",
     style: edgeStyles,
     markerEnd: {
       type: MarkerType.ArrowClosed,
@@ -110,7 +110,23 @@ const ReactFlowChart = () => {
 
   const onConnect = useCallback(
     (params: any) =>
-      setEdges((eds) => addEdge({ ...params, type: "custom" }, eds)),
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...params,
+            type: "smoothstep",
+            label: "Path Condition",
+            style: edgeStyles,
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 20,
+              height: 20,
+              color: "black",
+            },
+          },
+          eds
+        )
+      ),
     [setEdges]
   );
 
@@ -124,21 +140,16 @@ const ReactFlowChart = () => {
           y: 10,
         },
         data: {
-          label: "Add Dummy Data",
-          customComponent: (
-            <div>
+          label: (
+            <>
               <ParentTaskCard />
-            </div>
+            </>
           ),
         },
         style: {
-          backgroundColor: "black",
-          color: "white",
-          width: "288px",
-          height: "36px",
-          padding: "8px 16px",
-          borderRadius: "5px",
-          textAlign: "center",
+          width: "330px",
+          padding: "0px",
+          border: "none",
         },
         width: 288,
         height: 36,
@@ -150,13 +161,15 @@ const ReactFlowChart = () => {
   const onEdgeClick = (event: any, edge: any) => {
     event.stopPropagation();
 
-    const userConfirmed = window.confirm("Are you sure you want to delete this edge?");
-    
+    const userConfirmed = window.confirm(
+      "Are you sure you want to delete this edge?"
+    );
+
     if (userConfirmed) {
-        const temp = nodes?.filter((ele) => ele?.id !== edge.target);
-        setNodes(temp);
+      const temp = nodes?.filter((ele) => ele?.id !== edge.target);
+      setNodes(temp);
     }
-};
+  };
 
   return (
     <div
