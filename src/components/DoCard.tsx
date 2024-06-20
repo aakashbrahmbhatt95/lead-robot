@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-  CardFooter,
 } from "@/components/ui/card";
 import { Input } from "./ui/input";
-
 import { Switch } from "./ui/switch";
 import Link from "next/link";
 import { Label } from "./ui/label";
@@ -22,30 +20,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
-import {
-  CaretDown,
-  DotsThree,
-  CopySimple,
-  TrashSimple,
-} from "@phosphor-icons/react";
-import TaskSheet from "./TaskSheet";
+import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetClose,
-  SheetHeader,
-} from "./ui/sheet";
-import TaskCard from "./TaskCard";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 import { Badge } from "./ui/badge";
 
 const DoCard = () => {
+  const [inputValue, setInputValue] = useState("");
+  const [savedValue, setSavedValue] = useState(inputValue);
+
+  const handleInputChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleSave = () => {
+    setSavedValue(inputValue);
+  };
+
   return (
     <Sheet>
       <Accordion
@@ -56,24 +54,35 @@ const DoCard = () => {
       >
         <AccordionItem value="item-1">
           <Card className="w-full">
-            <CardHeader>
+            <CardHeader className="space-y-0 py-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <AccordionTrigger />
-                  <CardTitle className="text-sm">2. Do </CardTitle>
+                  <CardTitle className="text-sm">2. Do</CardTitle>
                 </div>
                 <Switch defaultChecked className="" />
               </div>
             </CardHeader>
-            <AccordionContent>
-              <CardContent className="flex flex-col items-start">
-                <p className="text-[#18181B] text-sm">“Book a meeting”</p>
+            <AccordionContent className="">
+              <CardContent className="flex flex-col items-start py-1">
+                <SheetTrigger>
+                  {savedValue ? (
+                    <p className="text-[#18181B] text-sm">{savedValue}</p>
+                  ) : (
+                    <Input
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      className="text-sm border-none focus-visible::outline-none w-full"
+                      placeholder="Book a meeting..."
+                    />
+                  )}
+                </SheetTrigger>
                 <div className="flex items-center gap-4 justify-end mt-4">
                   <Badge>Tool</Badge>
                   <DotsThree size={20} />
                   <CopySimple size={20} />
                   <TrashSimple size={20} />
-                  <div className="flex gap-1 ">
+                  <div className="flex gap-1">
                     <Checkbox id="terms" className="" defaultChecked />
                     <Label
                       htmlFor="terms"
@@ -93,7 +102,7 @@ const DoCard = () => {
         <Card className="w-[330px]">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>2. Do </CardTitle>
+              <CardTitle>2. Do</CardTitle>
               <Switch defaultChecked />
             </div>
             <CardDescription>
@@ -105,9 +114,13 @@ const DoCard = () => {
           </CardHeader>
           <CardContent>
             <Label>Prompt</Label>
-            <Textarea placeholder="When users ask to book an appointment, book it on the calendar." />
+            <Textarea
+              value={inputValue}
+              onChange={handleInputChange}
+              placeholder="When users ask to book an appointment, book it on the calendar."
+            />
             <Button className="w-full mt-4">Connect cal.com account</Button>
-            <div className="flex items-center space-x-2 mt-5 ">
+            <div className="flex items-center space-x-2 mt-5">
               <Checkbox id="terms" className="" defaultChecked />
               <label
                 htmlFor="terms"
@@ -116,7 +129,7 @@ const DoCard = () => {
                 Required
               </label>
             </div>
-            <CardTitle className="mt-5">Response </CardTitle>
+            <CardTitle className="mt-5">Response</CardTitle>
             <Select>
               <SelectTrigger className="w-full mt-3">
                 <SelectValue placeholder="Select" />
@@ -127,12 +140,14 @@ const DoCard = () => {
               </SelectContent>
             </Select>
             <div className="w-full flex justify-end mt-4">
-              <Button variant="outline" className=" ">
-                Save
-              </Button>
+              <SheetClose>
+                <Button variant="outline" onClick={handleSave}>
+                  Save
+                </Button>
+              </SheetClose>
             </div>
           </CardContent>
-        </Card>{" "}
+        </Card>
       </SheetContent>
     </Sheet>
   );

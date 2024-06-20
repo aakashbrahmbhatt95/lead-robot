@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import {
   Card,
   CardContent,
@@ -42,16 +42,17 @@ import {
 } from "./ui/sheet";
 
 const AskCard = () => {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [savedValue, setSavedValue] = useState(inputValue);
 
-  const handleCardClick = () => {
-    setIsSheetOpen(true);
+  const handleInputChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setInputValue(event.target.value);
   };
 
-  const taskDetails = {
-    title: "1. Say",
-    description:
-      "This verification process helps protect your personal information...",
+  const handleSave = () => {
+    setSavedValue(inputValue);
   };
 
   return (
@@ -63,22 +64,31 @@ const AskCard = () => {
         defaultValue="item-1"
       >
         <AccordionItem value="item-1">
-          <Card className="w-full" onClick={handleCardClick}>
-            <CardHeader>
+          <Card className="w-full">
+            <CardHeader className="space-y-0 py-0">
               <div className="flex items-center justify-between">
-                <AccordionTrigger></AccordionTrigger>
-                <CardTitle className="text-sm">1. Ask </CardTitle>
+                <div className="flex items-center gap-4">
+                  <AccordionTrigger></AccordionTrigger>
+                  <CardTitle className="text-sm">1. Ask </CardTitle>
+                </div>
                 <Switch defaultChecked className="" />
               </div>
             </CardHeader>
             <AccordionContent>
-              <CardContent>
-                <p className="text-[#18181B] text-sm">
-                  “...this verification process helps protect your personal
-                  information...”
-                </p>
-                <p className="text-[#71717A] text-sm underline">Show more </p>
-                <div className="flex items-center gap-4 justify-end mt-4">
+              <CardContent className="flex flex-col items-start py-1">
+                <SheetTrigger>
+                  {savedValue ? (
+                    <p className="text-[#18181B] text-sm">{savedValue}</p>
+                  ) : (
+                    <Input
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      className="text-sm border-none focus-visible::outline-none"
+                      placeholder="begin with saying..."
+                    />
+                  )}
+                </SheetTrigger>
+                <div className="flex items-center gap-4 justify-end mt-4 w-full">
                   <DotsThree size={20} />
                   <CopySimple size={20} />
                   <TrashSimple size={20} />
@@ -114,7 +124,11 @@ const AskCard = () => {
           </CardHeader>
           <CardContent>
             <Label>Prompt</Label>
-            <Textarea placeholder="When users ask to book an appointment, book it on the calendar." />
+            <Textarea
+              value={inputValue}
+              onChange={handleInputChange}
+              placeholder="When users ask to book an appointment, book it on the calendar."
+            />
             <Button className="w-full mt-4">Connect cal.com account</Button>
             <div className="flex items-center space-x-2 mt-5 ">
               <Checkbox id="terms" className="" defaultChecked />
@@ -136,12 +150,14 @@ const AskCard = () => {
               </SelectContent>
             </Select>
             <div className="w-full flex justify-end mt-4">
-              <Button variant="outline" className=" ">
-                Save
-              </Button>
+              <SheetClose>
+                <Button variant="outline" onClick={handleSave}>
+                  Save
+                </Button>
+              </SheetClose>
             </div>
           </CardContent>
-        </Card>{" "}
+        </Card>
       </SheetContent>
     </Sheet>
   );
