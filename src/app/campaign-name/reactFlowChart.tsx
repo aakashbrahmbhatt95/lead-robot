@@ -30,79 +30,9 @@ const edgeStyles: any = {
   strokeWidth: "1px",
 };
 
-const initialNodes: any = [
-  {
-    id: "1",
-    position: { x: 100, y: 100 },
-    data: {
-      label: "Path Condition 1",
-    },
-    style: nodeStyles,
-  },
-  {
-    id: "2",
-    position: { x: 200, y: 200 },
-    data: { label: "Path Condition" },
-    style: nodeStyles,
-  },
-  {
-    id: "3",
-    position: { x: 300, y: 300 },
-    data: { label: "Path Condition 3" },
-    style: nodeStyles,
-  },
-  {
-    id: "4",
-    position: { x: 400, y: 150 },
-    data: { label: "Path Condition 4" },
-    style: nodeStyles,
-  },
-];
+const initialNodes: any = [];
 
-const initialEdges: any = [
-  {
-    id: "e1-2",
-    type: "smoothstep",
-    source: "1",
-    target: "2",
-    label: "Path Condition",
-    style: edgeStyles,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      width: 20,
-      height: 20,
-      color: "black",
-    },
-  },
-  {
-    id: "e1-3",
-    type: "smoothstep",
-    source: "2",
-    target: "3",
-    label: "Path Condition",
-    style: edgeStyles,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      width: 20,
-      height: 20,
-      color: "black",
-    },
-  },
-  {
-    id: "e1-4",
-    type: "smoothstep",
-    source: "1",
-    target: "4",
-    label: "Path Condition",
-    style: edgeStyles,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      width: 20,
-      height: 20,
-      color: "black",
-    },
-  },
-];
+const initialEdges: any = [];
 
 const ReactFlowChart = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
