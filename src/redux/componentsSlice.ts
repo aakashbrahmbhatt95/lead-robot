@@ -15,8 +15,13 @@ const componentsSlice = createSlice({
     addComponent: (state, action: PayloadAction<string>) => {
       state.components.push(action.payload);
     },
+    deleteComponent: (state, action: PayloadAction<string>) => {
+      state.components = state.components.filter(
+        (component) => component !== action.payload
+      );
+    },
   },
 });
 
-export const { addComponent } = componentsSlice.actions;
+export const { addComponent, deleteComponent } = componentsSlice.actions;
 export default componentsSlice.reducer;

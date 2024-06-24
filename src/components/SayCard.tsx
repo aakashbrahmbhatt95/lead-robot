@@ -41,10 +41,13 @@ import {
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { deleteComponent } from "../redux/componentsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const SayCard = () => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
+  const dispatch = useDispatch();
 
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
@@ -54,6 +57,10 @@ const SayCard = () => {
 
   const handleSave = () => {
     setSavedValue(inputValue);
+  };
+
+  const handleDelete = (componentName: string) => {
+    dispatch(deleteComponent(componentName));
   };
 
   return (
@@ -92,7 +99,10 @@ const SayCard = () => {
                 <div className="flex items-center gap-4 justify-end mt-4 w-full">
                   <DotsThree size={20} />
                   <CopySimple size={20} />
-                  <TrashSimple size={20} />
+                  <button onClick={() => handleDelete("say")}>
+                    {" "}
+                    <TrashSimple size={20} />
+                  </button>
                   <div className="flex gap-1 ">
                     <Checkbox id="terms" className="" defaultChecked />
                     <Label

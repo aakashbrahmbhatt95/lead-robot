@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -18,8 +18,6 @@ import {
 } from "@phosphor-icons/react";
 import { Input } from "./ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
-import { useAppDispatch, useAppSelector } from "../redux/store";
-import { addComponent } from "@/redux/componentsSlice";
 import { Button } from "./ui/button";
 import { SheetTrigger, SheetContent, Sheet, SheetClose } from "./ui/sheet";
 import Link from "next/link";
@@ -29,11 +27,10 @@ import AskCard from "./AskCard";
 import { Chat, Question, Wrench } from "@phosphor-icons/react";
 
 const ParentTaskCard: React.FC = () => {
-  const components = useAppSelector((state) => state.components.components);
-  const dispatch = useAppDispatch();
+  const [components, setComponents] = useState<string[]>([]);
 
   const handleAddComponent = (type: string) => {
-    dispatch(addComponent(type));
+    setComponents((prevComponents) => [...prevComponents, type]);
   };
 
   return (
@@ -134,7 +131,7 @@ const ParentTaskCard: React.FC = () => {
                 </Button>
               </div>
             </CardContent>
-          </Card>{" "}
+          </Card>
         </SheetContent>
       </Sheet>
     </div>
