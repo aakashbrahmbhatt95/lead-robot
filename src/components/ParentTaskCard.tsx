@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -25,12 +25,29 @@ import SayCard from "./SayCard";
 import DoCard from "./DoCard";
 import AskCard from "./AskCard";
 import { Chat, Question, Wrench } from "@phosphor-icons/react";
+import { useAppSelector } from "@/redux/store";
 
 const ParentTaskCard: React.FC = () => {
   const [components, setComponents] = useState<string[]>([]);
+  // const components = useAppSelector((state) => state.components.components);
+  const [allClosed, setAllClosed] = useState<any>([]);
 
   const handleAddComponent = (type: string) => {
     setComponents((prevComponents) => [...prevComponents, type]);
+  };
+
+  useEffect(() => {
+    setAllClosed(components);
+  }, [components]);
+
+  const handleToggle = (e: any) => {
+    let temp;
+    if (allClosed.includes(e)) {
+      temp = allClosed.filter((item: any) => item !== e);
+    } else {
+      temp = [...allClosed, e];
+    }
+    setAllClosed(temp);
   };
 
   return (
@@ -91,11 +108,39 @@ const ParentTaskCard: React.FC = () => {
               </Popover>
             </div>
           </CardContent>
+          {components.length ? (
+            <div className="flex justify-center">
+              <button onClick={() => setAllClosed([])}>
+                Collapse all actions
+              </button>
+            </div>
+          ) : null}
           <div className="px-3 flex flex-col justify-center items-center w-full gap-5 py-10">
             {components.map((component, index) => {
-              if (component === "do") return <DoCard key={index} />;
-              if (component === "say") return <SayCard key={index} />;
-              if (component === "ask") return <AskCard key={index} />;
+              if (component === "do")
+                return (
+                  <DoCard
+                    key={index}
+                    allClosed={allClosed}
+                    handleToggle={handleToggle}
+                  />
+                );
+              if (component === "say")
+                return (
+                  <SayCard
+                    key={index}
+                    allClosed={allClosed}
+                    handleToggle={handleToggle}
+                  />
+                );
+              if (component === "ask")
+                return (
+                  <AskCard
+                    key={index}
+                    allClosed={allClosed}
+                    handleToggle={handleToggle}
+                  />
+                );
               return null;
             })}
           </div>

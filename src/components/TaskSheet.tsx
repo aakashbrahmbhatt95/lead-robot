@@ -1,7 +1,7 @@
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 import { Input } from "./ui/input";
 
-const TaskSheet = ({ taskDetails }) => {
+const TaskSheet = ({ taskDetails }: any) => {
   return (
     <div className="">
       <h2>Edit Task</h2>
