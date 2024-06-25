@@ -44,7 +44,7 @@ import { Textarea } from "./ui/textarea";
 import { deleteComponent } from "../redux/componentsSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const SayCard = () => {
+const SayCard = ({ allClosed, handleToggle }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
   const dispatch = useDispatch();
@@ -69,19 +69,20 @@ const SayCard = () => {
         type="single"
         collapsible
         className="w-full"
-        defaultValue="item-1"
+        value={allClosed.includes("say") ? "item-1" : undefined}
       >
         <AccordionItem value="item-1">
           <Card className="w-full">
             <CardHeader className="space-y-0 py-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <AccordionTrigger />
+                  <AccordionTrigger onClick={() => handleToggle("say")} />
                   <CardTitle className="text-sm">1. Say</CardTitle>
                 </div>
                 <Switch defaultChecked className="" />
               </div>
             </CardHeader>
+            {allClosed.includes("say") &&
             <AccordionContent>
               <CardContent className="flex flex-col items-start py-1">
                 <SheetTrigger>
@@ -114,7 +115,7 @@ const SayCard = () => {
                   </div>
                 </div>
               </CardContent>
-            </AccordionContent>
+            </AccordionContent>}
           </Card>
         </AccordionItem>
       </Accordion>

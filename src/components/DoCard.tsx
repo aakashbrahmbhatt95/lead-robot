@@ -30,7 +30,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 import { Badge } from "./ui/badge";
 
-const DoCard = () => {
+const DoCard = ({ allClosed, handleToggle }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
 
@@ -50,19 +50,20 @@ const DoCard = () => {
         type="single"
         collapsible
         className="w-full"
-        defaultValue="item-1"
+        value={allClosed.includes("do") ? "item-1" : undefined}
       >
         <AccordionItem value="item-1">
           <Card className="w-full">
             <CardHeader className="space-y-0 py-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <AccordionTrigger />
+                  <AccordionTrigger onClick={() => handleToggle("do")} />
                   <CardTitle className="text-sm">2. Do</CardTitle>
                 </div>
                 <Switch defaultChecked className="" />
               </div>
             </CardHeader>
+            {allClosed.includes("do") &&
             <AccordionContent className="">
               <CardContent className="flex flex-col items-start py-1">
                 <SheetTrigger>
@@ -93,7 +94,7 @@ const DoCard = () => {
                   </div>
                 </div>
               </CardContent>
-            </AccordionContent>
+            </AccordionContent>}
           </Card>
         </AccordionItem>
       </Accordion>

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -14,16 +14,6 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import Plus from "../../../public/Plus.svg";
 import ParentTaskCard from "@/components/ParentTaskCard";
-
-const nodeStyles: any = {
-  backgroundColor: "black",
-  color: "white",
-  width: "288px",
-  height: "36px",
-  padding: "8px 16px",
-  borderRadius: "5px",
-  textAlign: "center",
-};
 
 const edgeStyles: any = {
   stroke: "black",
@@ -60,20 +50,58 @@ const ReactFlowChart = () => {
     [setEdges]
   );
 
+  const handleDelete = (id: string) => {
+    setNodes((prevNodes) => {
+      return prevNodes.filter((node: any) => node.id !== id);
+    });
+  };
+  console.log("nodes", nodes);
+  const handleCopy = (id: string) => {
+    setNodes((prevNodes) => {
+      const nodeToCopy = prevNodes.find((node: any) => node.id === id);
+      if (!nodeToCopy) return prevNodes;
+      const uniqueId = Math.random().toString();
+      const temp: any = [
+        ...prevNodes,
+        {
+          ...nodeToCopy,
+          id: uniqueId,
+          data: {
+            label: (
+              <ParentTaskCard
+                id={uniqueId}
+                handleDelete={handleDelete}
+                handleCopy={handleCopy}
+              />
+            ),
+          },
+          position: {
+            x: nodeToCopy.position.x + 20,
+            y: nodeToCopy.position.y + 20,
+          },
+        },
+      ];
+      return temp;
+    });
+  };
+
   const handleAdd = () => {
+    const uniqueId = Math.random().toString();
     const temp: any = [
       ...nodes,
       {
-        id: (nodes?.length + 1).toString(),
+        id: uniqueId,
         position: {
           x: 200,
           y: 10,
         },
         data: {
           label: (
-            <>
-              <ParentTaskCard />
-            </>
+            <ParentTaskCard
+              id={uniqueId}
+              handleDelete={handleDelete}
+              handleCopy={handleCopy}
+            />
           ),
         },
         style: {

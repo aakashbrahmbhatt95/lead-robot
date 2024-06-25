@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -38,6 +38,30 @@ const ParentTaskCard: React.FC = () => {
       <button className="px-4 py-2 text-left hover:bg-gray-100">Date</button>
     </div>
   );
+import { useAppSelector } from "@/redux/store";
+
+const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void, handleCopy: (id: string) => void }> = ({ id, handleDelete, handleCopy }) => {
+  const [components, setComponents] = useState<string[]>([]);
+  // const components = useAppSelector((state) => state.components.components);
+  const [allClosed, setAllClosed] = useState<any>([]);
+
+  const handleAddComponent = (type: string) => {
+    setComponents((prevComponents) => [...prevComponents, type]);
+  };
+
+  useEffect(() => {
+    setAllClosed(components);
+  }, [components]);
+
+  const handleToggle = (e: any) => {
+    let temp;
+    if (allClosed.includes(e)) {
+      temp = allClosed.filter((item: any) => item !== e);
+    } else {
+      temp = [...allClosed, e];
+    }
+    setAllClosed(temp);
+  };
 
   return (
     <div>
@@ -49,8 +73,14 @@ const ParentTaskCard: React.FC = () => {
                 <CardTitle className="text-sm">Task Set</CardTitle>
                 <div className="flex items-center gap-3">
                   <DotsThree size={20} />
-                  <CopySimple size={20} />
-                  <TrashSimple size={20} />
+                  <CopySimple size={20} onClick={(e) => {
+                    e.preventDefault()
+                    handleCopy(id)
+                  }} />
+                  <TrashSimple size={20} onClick={(e) => {
+                    e.preventDefault()
+                    handleDelete(id)}
+                   } />
                   <CaretDown size={16} />
                 </div>
               </div>
@@ -103,7 +133,42 @@ const ParentTaskCard: React.FC = () => {
               </Popover>
             </div>
           </CardContent>
-          <div className="px-3 flex flex-col justify-center items-center w-full gap-5 py-10"></div>
+          {components.length ? (
+            <div className="flex justify-center">
+              <button onClick={() => setAllClosed([])}>
+                Collapse all actions
+              </button>
+            </div>
+          ) : null}
+          <div className="px-3 flex flex-col justify-center items-center w-full gap-5 py-10">
+            {components.map((component, index) => {
+              if (component === "do")
+                return (
+                  <DoCard
+                    key={index}
+                    allClosed={allClosed}
+                    handleToggle={handleToggle}
+                  />
+                );
+              if (component === "say")
+                return (
+                  <SayCard
+                    key={index}
+                    allClosed={allClosed}
+                    handleToggle={handleToggle}
+                  />
+                );
+              if (component === "ask")
+                return (
+                  <AskCard
+                    key={index}
+                    allClosed={allClosed}
+                    handleToggle={handleToggle}
+                  />
+                );
+              return null;
+            })}
+          </div>
         </Card>
 
         <SheetContent>

@@ -41,7 +41,7 @@ import {
   SheetHeader,
 } from "./ui/sheet";
 
-const AskCard = () => {
+const AskCard = ({ allClosed, handleToggle }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
 
@@ -61,19 +61,20 @@ const AskCard = () => {
         type="single"
         collapsible
         className="w-full"
-        defaultValue="item-1"
+        value={allClosed.includes("ask") ? "item-1" : undefined}
       >
         <AccordionItem value="item-1">
           <Card className="w-full">
             <CardHeader className="space-y-0 py-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <AccordionTrigger></AccordionTrigger>
+                  <AccordionTrigger onClick={() => handleToggle("ask")} />
                   <CardTitle className="text-sm">1. Ask </CardTitle>
                 </div>
                 <Switch defaultChecked className="" />
               </div>
             </CardHeader>
+            {allClosed.includes("ask") &&
             <AccordionContent>
               <CardContent className="flex flex-col items-start py-1">
                 <SheetTrigger>
@@ -103,7 +104,7 @@ const AskCard = () => {
                   </div>
                 </div>
               </CardContent>
-            </AccordionContent>
+            </AccordionContent>}
           </Card>
         </AccordionItem>
       </Accordion>
