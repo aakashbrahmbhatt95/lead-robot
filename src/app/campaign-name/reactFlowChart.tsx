@@ -55,17 +55,26 @@ const ReactFlowChart = () => {
       return prevNodes.filter((node: any) => node.id !== id);
     });
   };
-
+  console.log("nodes", nodes);
   const handleCopy = (id: string) => {
     setNodes((prevNodes) => {
       const nodeToCopy = prevNodes.find((node: any) => node.id === id);
       if (!nodeToCopy) return prevNodes;
-
+      const uniqueId = Math.random().toString();
       const temp: any = [
         ...prevNodes,
         {
           ...nodeToCopy,
-          id: (prevNodes.length + 1).toString(),
+          id: uniqueId,
+          data: {
+            label: (
+              <ParentTaskCard
+                id={uniqueId}
+                handleDelete={handleDelete}
+                handleCopy={handleCopy}
+              />
+            ),
+          },
           position: {
             x: nodeToCopy.position.x + 20,
             y: nodeToCopy.position.y + 20,
@@ -77,10 +86,11 @@ const ReactFlowChart = () => {
   };
 
   const handleAdd = () => {
+    const uniqueId = Math.random().toString();
     const temp: any = [
       ...nodes,
       {
-        id: (nodes?.length + 1).toString(),
+        id: uniqueId,
         position: {
           x: 200,
           y: 10,
@@ -88,7 +98,7 @@ const ReactFlowChart = () => {
         data: {
           label: (
             <ParentTaskCard
-              id={(nodes?.length + 1).toString()}
+              id={uniqueId}
               handleDelete={handleDelete}
               handleCopy={handleCopy}
             />
