@@ -27,7 +27,7 @@ import AskCard from "./AskCard";
 import { Chat, Question, Wrench } from "@phosphor-icons/react";
 import { useAppSelector } from "@/redux/store";
 
-const ParentTaskCard: React.FC = () => {
+const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void, handleCopy: (id: string) => void }> = ({ id, handleDelete, handleCopy }) => {
   const [components, setComponents] = useState<string[]>([]);
   // const components = useAppSelector((state) => state.components.components);
   const [allClosed, setAllClosed] = useState<any>([]);
@@ -60,8 +60,14 @@ const ParentTaskCard: React.FC = () => {
                 <CardTitle className="text-sm">Task Set</CardTitle>
                 <div className="flex items-center gap-3">
                   <DotsThree size={20} />
-                  <CopySimple size={20} />
-                  <TrashSimple size={20} />
+                  <CopySimple size={20} onClick={(e) => {
+                    e.preventDefault()
+                    handleCopy(id)
+                  }} />
+                  <TrashSimple size={20} onClick={(e) => {
+                    e.preventDefault()
+                    handleDelete(id)}
+                   } />
                   <CaretDown size={16} />
                 </div>
               </div>
