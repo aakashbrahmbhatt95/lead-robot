@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -21,17 +21,23 @@ import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 import { Button } from "./ui/button";
 import { SheetTrigger, SheetContent, Sheet, SheetClose } from "./ui/sheet";
 import Link from "next/link";
-import SayCard from "./SayCard";
-import DoCard from "./DoCard";
-import AskCard from "./AskCard";
 import { Chat, Question, Wrench } from "@phosphor-icons/react";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 const ParentTaskCard: React.FC = () => {
-  const [components, setComponents] = useState<string[]>([]);
-
-  const handleAddComponent = (type: string) => {
-    setComponents((prevComponents) => [...prevComponents, type]);
-  };
+  const renderDropdownItems = () => (
+    <div className="flex flex-col p-2">
+      <button className="px-4 py-2 text-left hover:bg-gray-100">Text</button>
+      <button className="px-4 py-2 text-left hover:bg-gray-100">Number</button>
+      <button className="px-4 py-2 text-left hover:bg-gray-100">Option</button>
+      <button className="px-4 py-2 text-left hover:bg-gray-100">Date</button>
+    </div>
+  );
 
   return (
     <div>
@@ -65,40 +71,39 @@ const ParentTaskCard: React.FC = () => {
                     <Plus />
                   </button>
                 </PopoverTrigger>
-                <PopoverContent className=" bg-white border rounded shadow-lg p-2 flex justify-between  items-center">
-                  <button
-                    onClick={() => handleAddComponent("say")}
-                    className="px-4  rounded-md  py-1 text-sm flex items-center gap-1"
-                  >
-                    <Chat size={20} />
-                    <span className="border-r pr-4">Say</span>
-                  </button>
-                  <button
-                    onClick={() => handleAddComponent("ask")}
-                    className="px-4  rounded-md  py-1 text-sm flex items-center gap-1"
-                  >
-                    <Question size={20} />
-                    <span className="border-r pr-4">Ask</span>
-                  </button>
-                  <button
-                    onClick={() => handleAddComponent("do")}
-                    className="px-4  rounded-md py-1 text-sm flex items-center gap-1"
-                  >
-                    <Wrench size={20} />
-                    <span className="pr-4">Do</span>
-                  </button>
+                <PopoverContent className="bg-white border rounded shadow-lg p-2 flex justify-between items-center">
+                  <Popover>
+                    <PopoverTrigger>
+                      <button className="px-4 rounded-md py-1 text-sm flex items-center gap-1">
+                        <Chat size={20} />
+                        <span className="border-r pr-4">Say</span>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent>{renderDropdownItems()}</PopoverContent>
+                  </Popover>
+                  <Popover>
+                    <PopoverTrigger>
+                      <button className="px-4 rounded-md py-1 text-sm flex items-center gap-1">
+                        <Question size={20} />
+                        <span className="border-r pr-4">Ask</span>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent>{renderDropdownItems()}</PopoverContent>
+                  </Popover>
+                  <Popover>
+                    <PopoverTrigger>
+                      <button className="px-4 rounded-md py-1 text-sm flex items-center gap-1">
+                        <Wrench size={20} />
+                        <span className="pr-4">Do</span>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent>{renderDropdownItems()}</PopoverContent>
+                  </Popover>
                 </PopoverContent>
               </Popover>
             </div>
           </CardContent>
-          <div className="px-3 flex flex-col justify-center items-center w-full gap-5 py-10">
-            {components.map((component, index) => {
-              if (component === "do") return <DoCard key={index} />;
-              if (component === "say") return <SayCard key={index} />;
-              if (component === "ask") return <AskCard key={index} />;
-              return null;
-            })}
-          </div>
+          <div className="px-3 flex flex-col justify-center items-center w-full gap-5 py-10"></div>
         </Card>
 
         <SheetContent>
@@ -119,7 +124,7 @@ const ParentTaskCard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="">
+              <div>
                 Explore more in{" "}
                 <Link href="" className="underline">
                   prompt engineering guide
