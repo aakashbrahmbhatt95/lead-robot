@@ -4,13 +4,23 @@ import PencilSimple from "../../../public/PencilSimple.svg";
 import Vector from "../../../public/Vector.svg";
 import { row } from "./helper";
 import ReactFlowChart from "./reactFlowChart";
+import {
+  Dialog,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import ContactPopup from "./contactPopup";
 
 const CampaignName = () => {
   return (
     <div className="p-[40px]">
       <div className="flex">
         <h2 className="text-3xl font-semibold text-black">Campaign Name</h2>
-        <Image src={PencilSimple} alt="Logo" className="ml-[8px]" />
+        <Dialog>
+      <DialogTrigger asChild>
+      <Image src={PencilSimple} alt="Logo" className="ml-[8px] cursor-pointer" />
+      </DialogTrigger>
+      <ContactPopup />
+    </Dialog>
         <Image src={DotsThree} alt="Logo" className="ml-[15px]" />
       </div>
       <p className="text-[20px] mt-[15px] font-semibold text-black underline">
