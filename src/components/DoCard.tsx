@@ -33,6 +33,7 @@ import { Badge } from "./ui/badge";
 const DoCard = ({ allClosed, handleToggle, type }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
+  const [isConditionEnabled, setIsConditionEnabled] = useState(false);
 
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
@@ -42,6 +43,11 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
 
   const handleSave = () => {
     setSavedValue(inputValue);
+  };
+
+  const toggleCondition = () => {
+    console.log("toggled");
+    setIsConditionEnabled((prev) => !prev);
   };
 
   return (
@@ -141,12 +147,15 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
                 Required
               </label>
             </div>
-            <div className="mb-5">
+            <div className="my-5">
               <Label>Number</Label>
               <Input placeholder="Search your phonebook" />
             </div>
             <div className="flex items-center gap-4">
-              <Switch />
+              <Switch
+                checked={isConditionEnabled}
+                onCheckedChange={setIsConditionEnabled}
+              />
               <label
                 htmlFor="terms"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -154,6 +163,22 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
                 Condition
               </label>
             </div>
+            {isConditionEnabled && (
+              <>
+                <div className="my-5">
+                  <Select defaultValue="include">
+                    <SelectTrigger className="w-full mt-3">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="include">Include If</SelectItem>
+                      <SelectItem value="exclude">Exclude If</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Textarea placeholder="don't end call if..." />
+              </>
+            )}
             <div className="w-full flex justify-end mt-4">
               <SheetClose>
                 <Button variant="outline" onClick={handleSave}>
