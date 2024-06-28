@@ -82,40 +82,41 @@ const SayCard = ({ allClosed, handleToggle }: any) => {
                 <Switch defaultChecked className="" />
               </div>
             </CardHeader>
-            {allClosed.includes("say") &&
-            <AccordionContent>
-              <CardContent className="flex flex-col items-start py-1">
-                <SheetTrigger>
-                  {savedValue ? (
-                    <p className="text-[#18181B] text-sm">{savedValue}</p>
-                  ) : (
-                    <Input
-                      value={inputValue}
-                      onChange={handleInputChange}
-                      className="text-sm border-none focus-visible::outline-none w-full"
-                      placeholder="This verification process ..."
-                    />
-                  )}
-                </SheetTrigger>
-                <div className="flex items-center gap-4 justify-end mt-4 w-full">
-                  <DotsThree size={20} />
-                  <CopySimple size={20} />
-                  <button onClick={() => handleDelete("say")}>
-                    {" "}
-                    <TrashSimple size={20} />
-                  </button>
-                  <div className="flex gap-1 ">
-                    <Checkbox id="terms" className="" defaultChecked />
-                    <Label
-                      htmlFor="terms"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Required
-                    </Label>
+            {allClosed.includes("say") && (
+              <AccordionContent>
+                <CardContent className="flex flex-col items-start py-1">
+                  <SheetTrigger>
+                    {savedValue ? (
+                      <p className="text-[#18181B] text-sm">{savedValue}</p>
+                    ) : (
+                      <Input
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        className="text-sm border-none focus-visible::outline-none w-full"
+                        placeholder="This verification process ..."
+                      />
+                    )}
+                  </SheetTrigger>
+                  <div className="flex items-center gap-4 justify-end mt-4 w-full">
+                    <DotsThree size={20} />
+                    <CopySimple size={20} />
+                    <button onClick={() => handleDelete("say")}>
+                      {" "}
+                      <TrashSimple size={20} />
+                    </button>
+                    <div className="flex gap-1 ">
+                      <Checkbox id="terms" className="" defaultChecked />
+                      <Label
+                        htmlFor="terms"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Required
+                      </Label>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </AccordionContent>}
+                </CardContent>
+              </AccordionContent>
+            )}
           </Card>
         </AccordionItem>
       </Accordion>
@@ -135,7 +136,7 @@ const SayCard = ({ allClosed, handleToggle }: any) => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Label>Question</Label>
+            <Label>Statement</Label>
             <Textarea
               value={inputValue}
               onChange={handleInputChange}
@@ -150,16 +151,7 @@ const SayCard = ({ allClosed, handleToggle }: any) => {
                 Required
               </label>
             </div>
-            <CardTitle className="mt-5">Response </CardTitle>
-            <Select>
-              <SelectTrigger className="w-full mt-3">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">Free text</SelectItem>
-                <SelectItem value="2">Number</SelectItem>
-              </SelectContent>
-            </Select>
+
             <div className="w-full flex justify-end mt-4">
               <SheetClose asChild>
                 <Button variant="outline" className=" " onClick={handleSave}>

@@ -30,7 +30,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 import { Badge } from "./ui/badge";
 
-const DoCard = ({ allClosed, handleToggle }: any) => {
+const DoCard = ({ allClosed, handleToggle, type }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
 
@@ -63,38 +63,39 @@ const DoCard = ({ allClosed, handleToggle }: any) => {
                 <Switch defaultChecked className="" />
               </div>
             </CardHeader>
-            {allClosed.includes("do") &&
-            <AccordionContent className="">
-              <CardContent className="flex flex-col items-start py-1">
-                <SheetTrigger>
-                  {savedValue ? (
-                    <p className="text-[#18181B] text-sm">{savedValue}</p>
-                  ) : (
-                    <Input
-                      value={inputValue}
-                      onChange={handleInputChange}
-                      className="text-sm border-none focus-visible::outline-none w-full"
-                      placeholder="Book a meeting..."
-                    />
-                  )}
-                </SheetTrigger>
-                <div className="flex items-center gap-4 justify-end mt-4">
-                  <Badge>Tool</Badge>
-                  <DotsThree size={20} />
-                  <CopySimple size={20} />
-                  <TrashSimple size={20} />
-                  <div className="flex gap-1">
-                    <Checkbox id="terms" className="" defaultChecked />
-                    <Label
-                      htmlFor="terms"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Required
-                    </Label>
+            {allClosed.includes("do") && (
+              <AccordionContent className="">
+                <CardContent className="flex flex-col items-start py-1">
+                  <SheetTrigger>
+                    {savedValue ? (
+                      <p className="text-[#18181B] text-sm">{savedValue}</p>
+                    ) : (
+                      <Input
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        className="text-sm border-none focus-visible::outline-none w-full"
+                        placeholder="Book a meeting..."
+                      />
+                    )}
+                  </SheetTrigger>
+                  <div className="flex items-center gap-4 justify-end mt-4">
+                    <Badge>Tool</Badge>
+                    <DotsThree size={20} />
+                    <CopySimple size={20} />
+                    <TrashSimple size={20} />
+                    <div className="flex gap-1">
+                      <Checkbox id="terms" className="" defaultChecked />
+                      <Label
+                        htmlFor="terms"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Required
+                      </Label>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </AccordionContent>}
+                </CardContent>
+              </AccordionContent>
+            )}
           </Card>
         </AccordionItem>
       </Accordion>
@@ -109,18 +110,28 @@ const DoCard = ({ allClosed, handleToggle }: any) => {
             <CardDescription>
               Read{" "}
               <Link href="" className="underline">
-                stateful multi-prompt agent best practices.
+                what is tool calling
               </Link>
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Label>Prompt</Label>
-            <Textarea
-              value={inputValue}
-              onChange={handleInputChange}
-              placeholder="When users ask to book an appointment, book it on the calendar."
-            />
-            <Button className="w-full mt-4">Connect cal.com account</Button>
+            <Select defaultValue={type}>
+              <SelectTrigger className="w-full mt-3">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="end call">End call</SelectItem>
+                <SelectItem value="transfer call">Transfer Call</SelectItem>
+                <SelectItem value="sms">SMS</SelectItem>
+                <SelectItem value="email">Email</SelectItem>
+                <SelectItem value="availability">Availability</SelectItem>
+                <SelectItem value="book">Book</SelectItem>
+                <SelectItem value="reschedule">Reschedule</SelectItem>
+                <SelectItem value="cancel">Cancel</SelectItem>
+                <SelectItem value="addcampagin">Add Campaign</SelectItem>
+                <SelectItem value="removecampaign">Remove Campaign</SelectItem>
+              </SelectContent>
+            </Select>
             <div className="flex items-center space-x-2 mt-5">
               <Checkbox id="terms" className="" defaultChecked />
               <label
@@ -130,16 +141,19 @@ const DoCard = ({ allClosed, handleToggle }: any) => {
                 Required
               </label>
             </div>
-            <CardTitle className="mt-5">Response</CardTitle>
-            <Select>
-              <SelectTrigger className="w-full mt-3">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">Free text</SelectItem>
-                <SelectItem value="2">Number</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="mb-5">
+              <Label>Number</Label>
+              <Input placeholder="Search your phonebook" />
+            </div>
+            <div className="flex items-center gap-4">
+              <Switch />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Condition
+              </label>
+            </div>
             <div className="w-full flex justify-end mt-4">
               <SheetClose>
                 <Button variant="outline" onClick={handleSave}>

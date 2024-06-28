@@ -28,25 +28,37 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import AskCard from "./AskCard";
+import DoCard from "./DoCard";
+import SayCard from "./SayCard";
+import { useAppSelector } from "../redux/store";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const ParentTaskCard: React.FC = () => {
-  const renderDropdownItems = () => (
-    <div className="flex flex-col p-2">
-      <button className="px-4 py-2 text-left hover:bg-gray-100">Text</button>
-      <button className="px-4 py-2 text-left hover:bg-gray-100">Number</button>
-      <button className="px-4 py-2 text-left hover:bg-gray-100">Option</button>
-      <button className="px-4 py-2 text-left hover:bg-gray-100">Date</button>
-    </div>
-  );
-import { useAppSelector } from "@/redux/store";
-
-const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void, handleCopy: (id: string) => void }> = ({ id, handleDelete, handleCopy }) => {
-  const [components, setComponents] = useState<string[]>([]);
-  // const components = useAppSelector((state) => state.components.components);
+const ParentTaskCard: React.FC<{
+  id: string;
+  handleDelete: (id: string) => void;
+  handleCopy: (id: string) => void;
+}> = ({ id, handleDelete, handleCopy }) => {
+  const [components, setComponents] = useState<
+    { type: string; subType: string }[]
+  >([]);
   const [allClosed, setAllClosed] = useState<any>([]);
 
-  const handleAddComponent = (type: string) => {
-    setComponents((prevComponents) => [...prevComponents, type]);
+  const handleAddComponent = (type: string, subType: string) => {
+    setComponents((prevComponents) => [...prevComponents, { type, subType }]);
   };
 
   useEffect(() => {
@@ -63,6 +75,164 @@ const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void,
     setAllClosed(temp);
   };
 
+  const renderDropdownItems = (child: string) => {
+    if (child === "ask") {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <button className="px-4 rounded-md py-1 text-sm flex items-center gap-1">
+              <Question size={20} />
+              <span>Ask</span>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onClick={() => handleAddComponent("ask", "text")}
+              >
+                <span>Text</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleAddComponent("ask", "number")}
+              >
+                <span>Number</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleAddComponent("ask", "option")}
+              >
+                <span>Option</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleAddComponent("ask", "date")}
+              >
+                <span>Date</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleAddComponent("ask", "time")}
+              >
+                <span>Time</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleAddComponent("ask", "yesno")}
+              >
+                <span>Yes/No</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    } else if (child === "do") {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <button className="px-4 rounded-md py-1 text-sm flex items-center gap-1">
+              <Wrench size={20} />
+              <span>Do</span>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <span>Call</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "end call")}
+                  >
+                    <span>End Call</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "transfer call")}
+                  >
+                    <span>Transfer Call</span>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <span>Send Message</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "sms")}
+                  >
+                    <span>SMS</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "email")}
+                  >
+                    <span>Email</span>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <span>Calendar</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "availability")}
+                  >
+                    <span>Availability</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "book")}
+                  >
+                    <span>Book</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "reschedule")}
+                  >
+                    <span>Reschedule</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "cancel")}
+                  >
+                    <span>Cancel</span>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <span>Campaign</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "addcampagin")}
+                  >
+                    <span>Add</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleAddComponent("do", "removecampaign")}
+                  >
+                    <span>Remove</span>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <span>Cancel</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent></DropdownMenuSubContent>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => handleAddComponent("do", "custom")}
+            >
+              Custom
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+  };
+
+  console.log("components", components);
+
   return (
     <div>
       <Sheet>
@@ -73,14 +243,20 @@ const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void,
                 <CardTitle className="text-sm">Task Set</CardTitle>
                 <div className="flex items-center gap-3">
                   <DotsThree size={20} />
-                  <CopySimple size={20} onClick={(e) => {
-                    e.preventDefault()
-                    handleCopy(id)
-                  }} />
-                  <TrashSimple size={20} onClick={(e) => {
-                    e.preventDefault()
-                    handleDelete(id)}
-                   } />
+                  <CopySimple
+                    size={20}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleCopy(id);
+                    }}
+                  />
+                  <TrashSimple
+                    size={20}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDelete(id);
+                    }}
+                  />
                   <CaretDown size={16} />
                 </div>
               </div>
@@ -102,33 +278,15 @@ const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void,
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white border rounded shadow-lg p-2 flex justify-between items-center">
-                  <Popover>
-                    <PopoverTrigger>
-                      <button className="px-4 rounded-md py-1 text-sm flex items-center gap-1">
-                        <Chat size={20} />
-                        <span className="border-r pr-4">Say</span>
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent>{renderDropdownItems()}</PopoverContent>
-                  </Popover>
-                  <Popover>
-                    <PopoverTrigger>
-                      <button className="px-4 rounded-md py-1 text-sm flex items-center gap-1">
-                        <Question size={20} />
-                        <span className="border-r pr-4">Ask</span>
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent>{renderDropdownItems()}</PopoverContent>
-                  </Popover>
-                  <Popover>
-                    <PopoverTrigger>
-                      <button className="px-4 rounded-md py-1 text-sm flex items-center gap-1">
-                        <Wrench size={20} />
-                        <span className="pr-4">Do</span>
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent>{renderDropdownItems()}</PopoverContent>
-                  </Popover>
+                  <button
+                    className="px-4 rounded-md py-1 text-sm flex items-center gap-1"
+                    onClick={() => handleAddComponent("say", "")}
+                  >
+                    <Chat size={20} />
+                    <span>Say</span>
+                  </button>
+                  {renderDropdownItems("ask")}
+                  {renderDropdownItems("do")}
                 </PopoverContent>
               </Popover>
             </div>
@@ -142,15 +300,16 @@ const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void,
           ) : null}
           <div className="px-3 flex flex-col justify-center items-center w-full gap-5 py-10">
             {components.map((component, index) => {
-              if (component === "do")
+              if (component.type === "do")
                 return (
                   <DoCard
                     key={index}
                     allClosed={allClosed}
                     handleToggle={handleToggle}
+                    type={component.subType}
                   />
                 );
-              if (component === "say")
+              if (component.type === "say")
                 return (
                   <SayCard
                     key={index}
@@ -158,12 +317,13 @@ const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void,
                     handleToggle={handleToggle}
                   />
                 );
-              if (component === "ask")
+              if (component.type === "ask")
                 return (
                   <AskCard
                     key={index}
                     allClosed={allClosed}
                     handleToggle={handleToggle}
+                    type={component.subType}
                   />
                 );
               return null;
@@ -175,32 +335,16 @@ const ParentTaskCard: React.FC<{ id: string, handleDelete: (id: string) => void,
           <SheetClose />
           <Card className="w-[330px]">
             <CardHeader>
-              <div className="flex flex-col items-start">
-                <Button variant={"outline"}>
-                  <CaretRight />
-                </Button>
-                <h4 className="font-semibold">Edit Task Set</h4>
-              </div>
-              <CardDescription>
+              <div className="flex items-center justify-between w-full">
+                <CardTitle className="text-sm">Edit Task Set</CardTitle>
                 <div className="flex items-center gap-3">
-                  <p className="font-medium">Assist</p>
-                  <PencilSimple />
+                  <DotsThree size={20} />
+                  <PencilSimple size={20} />
+                  <TrashSimple size={20} />
                 </div>
-              </CardDescription>
+              </div>
             </CardHeader>
-            <CardContent>
-              <div>
-                Explore more in{" "}
-                <Link href="" className="underline">
-                  prompt engineering guide
-                </Link>
-              </div>
-              <div className="w-full flex justify-end mt-4">
-                <Button variant="outline" className=" ">
-                  Save
-                </Button>
-              </div>
-            </CardContent>
+            <CardContent className="flex flex-col items-start mt-4"></CardContent>
           </Card>
         </SheetContent>
       </Sheet>
