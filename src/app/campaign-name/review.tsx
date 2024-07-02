@@ -1,7 +1,22 @@
 import Image from "next/image";
-import { reviewBoxArray } from "./helper";
+import { invoices, reviewBoxArray } from "./helper";
 import { Switch } from "@/components/ui/switch";
 import info from "@/../public/info_black.svg";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const Review = () => {
   return (
@@ -28,13 +43,60 @@ const Review = () => {
         Existing contacts data
       </p>
       <div className="flex items-center space-x-2 mt-4">
-      <Switch checked />
-      <p className="text-sm font-medium text-[#18181B]">Update  existing contacts</p>
-    </div>
-    <div className="flex items-center mt-4">
-      <Image src={info} alt="info" />
-      <p className="text-sm font-semibold text-[#18181B]">Help importing contacts</p>
-    </div>
+        <Switch checked />
+        <p className="text-sm font-medium text-[#18181B]">
+          Update existing contacts
+        </p>
+      </div>
+      <div className="flex items-center mt-4">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Image src={info} alt="info" className="cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              className="ml-[46%] w-[299px] h-[130px] p-[40px] left-40"
+            >
+              <p className="text-sm font-medium text-[#18181B]">
+                Update existing contacts
+              </p>
+              <p className="text-sm font-normal text-[#71717A] mt-2">
+                Updates existing contact with new data from your import.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <p className="text-sm font-semibold text-[#18181B]">
+          Help importing contacts
+        </p>
+      </div>
+      <Table className="mt-10">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Invoice</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Method</TableHead>
+          <TableHead className="text-right">Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {invoices?.map((invoice) => (
+          <TableRow key={invoice.invoice}>
+            <TableCell className="font-medium">{invoice.invoice}</TableCell>
+            <TableCell>{invoice.paymentStatus}</TableCell>
+            <TableCell>{invoice.paymentMethod}</TableCell>
+            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={3}>Total</TableCell>
+          <TableCell className="text-right">$2,500.00</TableCell>
+        </TableRow>
+      </TableFooter>
+    </Table>
     </div>
   );
 };

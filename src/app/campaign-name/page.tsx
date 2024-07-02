@@ -1,26 +1,43 @@
+"use client";
+
 import Image from "next/image";
 import DotsThree from "../../../public/DotsThree.svg";
 import PencilSimple from "../../../public/PencilSimple.svg";
 import Vector from "../../../public/Vector.svg";
 import { row } from "./helper";
 import ReactFlowChart from "./reactFlowChart";
-import {
-  Dialog,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import ContactPopup from "./contactPopup";
+import { useEffect, useState } from "react";
 
 const CampaignName = () => {
+  const [isOpenContactPopup, setIsOpenContactPopup] = useState<boolean>(false);
+  const [selectedMenuBar, setSelectedMenuBar] = useState(1);
+
+  useEffect(() => {
+    if (!isOpenContactPopup) {
+      setSelectedMenuBar(1);
+    }
+  }, [isOpenContactPopup]);
+
   return (
     <div className="p-[40px]">
       <div className="flex">
         <h2 className="text-3xl font-semibold text-black">Campaign Name</h2>
-        <Dialog>
-      <DialogTrigger asChild>
-      <Image src={PencilSimple} alt="Logo" className="ml-[8px] cursor-pointer" />
-      </DialogTrigger>
-      <ContactPopup />
-    </Dialog>
+        <Dialog open={isOpenContactPopup} onOpenChange={setIsOpenContactPopup}>
+          <DialogTrigger asChild onClick={() => setIsOpenContactPopup(true)}>
+            <Image
+              src={PencilSimple}
+              alt="Logo"
+              className="ml-[8px] cursor-pointer"
+            />
+          </DialogTrigger>
+          <ContactPopup
+            selectedMenuBar={selectedMenuBar}
+            setSelectedMenuBar={setSelectedMenuBar}
+            setIsOpenContactPopup={setIsOpenContactPopup}
+          />
+        </Dialog>
         <Image src={DotsThree} alt="Logo" className="ml-[15px]" />
       </div>
       <p className="text-[20px] mt-[15px] font-semibold text-black underline">
