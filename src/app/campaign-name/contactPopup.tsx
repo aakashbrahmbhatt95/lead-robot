@@ -17,7 +17,7 @@ const ContactPopup = ({
   setIsOpenContactPopup,
 }: any) => {
   return (
-    <DialogContent className="sm:max-w-[60%] max-h-[70%] overflow-scroll">
+    <DialogContent className="sm:max-w-[60%] max-h-[75%] overflow-scroll">
       <DialogHeader>
         <h2 className="text-3xl font-semibold text-black">
           {selectedMenuBar === 5
