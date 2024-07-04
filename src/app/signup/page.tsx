@@ -244,12 +244,20 @@ const Signup = () => {
                   />
 
                   <div className="flex items-center justify-between w-full mt-4">
+                    <div className="flex items-center gap-3">
                     <Link
                       href="/forgot-password"
                       className="text-[14px] underline"
                     >
                       Forgot Password
                     </Link>
+                    <Link
+                      href="/login"
+                      className="text-[14px] underline"
+                    >
+                      Login
+                    </Link>
+                    </div>
                     <Button type="submit" className="rounded-[6px] w-[93px]">
                       Continue
                     </Button>
