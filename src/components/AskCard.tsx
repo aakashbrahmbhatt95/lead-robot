@@ -31,6 +31,7 @@ import {
   DotsThree,
   CopySimple,
   TrashSimple,
+  Plus,
 } from "@phosphor-icons/react";
 import TaskSheet from "./TaskSheet";
 import {
@@ -52,6 +53,11 @@ import {
 const AskCard = ({ allClosed, handleToggle, type }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
+  const [selectedType, setSelectedType] = useState(type);
+  const [isValidationEnabled, setIsValidationEnabled] = useState(false);
+  const [options, setOptions] = useState<string[]>([]);
+
+  console.log("type", type);
 
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
@@ -61,6 +67,10 @@ const AskCard = ({ allClosed, handleToggle, type }: any) => {
 
   const handleSave = () => {
     setSavedValue(inputValue);
+  };
+
+  const handleAddOption = () => {
+    setOptions([...options, `Option ${options.length + 1}`]);
   };
 
   return (
@@ -159,15 +169,53 @@ const AskCard = ({ allClosed, handleToggle, type }: any) => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center space-x-2 mt-5 ">
-              <Checkbox id="terms" className="" defaultChecked />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Required
-              </label>
-            </div>
+            {type === "text" || type === "number" ? (
+              <div className="mt-5">
+                <div className="flex items-center gap-4">
+                  <Switch
+                    checked={isValidationEnabled}
+                    onCheckedChange={setIsValidationEnabled}
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Add Validation
+                  </label>
+                </div>
+                {isValidationEnabled && (
+                  <div className="mt-5 flex flex-col gap-4">
+                    <Label>Regex Format</Label>
+                    <Textarea placeholder="Enter regex format" />
+                    <Label className="mt-3">Error Response (optional)</Label>
+                    <Textarea placeholder="Enter error response" />
+                  </div>
+                )}
+              </div>
+            ) : null}
+            {type === "option" ? (
+              <div className="mt-5">
+                <button
+                  className="w-full flex justify-center my-5"
+                  onClick={handleAddOption}
+                >
+                  <Plus />
+                </button>
+                {options.map((option, index) => (
+                  <Input
+                    key={index}
+                    placeholder={option}
+                    className="mt-2"
+                    value={option}
+                    onChange={(e) => {
+                      const newOptions = [...options];
+                      newOptions[index] = e.target.value;
+                      setOptions(newOptions);
+                    }}
+                  />
+                ))}
+              </div>
+            ) : null}
             <div className="w-full flex justify-end mt-4">
               <SheetClose>
                 <Button variant="outline" onClick={handleSave}>

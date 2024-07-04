@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { useState, SetStateAction } from "react";
 import {
   Card,
   CardContent,
@@ -6,12 +6,12 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Input } from "./ui/input";
-import { Switch } from "./ui/switch";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
-import { Label } from "./ui/label";
-import { Checkbox } from "./ui/checkbox";
-import { Textarea } from "./ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -19,21 +19,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "./ui/button";
-import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
+import {
+  DotsThree,
+  CopySimple,
+  TrashSimple,
+  CalendarBlank,
+} from "@phosphor-icons/react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
-import { Badge } from "./ui/badge";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+import { Badge } from "@/components/ui/badge";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 
 const DoCard = ({ allClosed, handleToggle, type }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
   const [isConditionEnabled, setIsConditionEnabled] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
@@ -46,8 +63,103 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
   };
 
   const toggleCondition = () => {
-    console.log("toggled");
     setIsConditionEnabled((prev) => !prev);
+  };
+
+  const renderFields = () => {
+    switch (type) {
+      case "end call":
+        return (
+          <>
+            <Label>Name</Label>
+            <Input placeholder="Enter Name" />
+          </>
+        );
+      case "transfer call":
+        return (
+          <>
+            <Label>Number</Label>
+            <Input placeholder="Enter phone number" />
+            <Label>Name</Label>
+            <Input placeholder="Enter Name" />
+          </>
+        );
+      case "sms":
+        return (
+          <>
+            <Label>Name</Label>
+            <Textarea placeholder="Enter your name" />
+            <Label>Number</Label>
+            <Input placeholder="Enter phone number" />
+          </>
+        );
+      case "email":
+        return (
+          <>
+            <Label>Name</Label>
+            <Input placeholder="Enter name" />
+            <Label>Email</Label>
+            <Textarea placeholder="Enter your email address" />
+          </>
+        );
+      case "availability":
+        return (
+          <div className="flex flex-col gap-4">
+            <Label>Name</Label>
+            <Input placeholder="Calendar availability name" />
+            <Label>Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline">
+                  {selectedDate
+                    ? selectedDate.toDateString()
+                    : "Select Date range"}
+                  <CalendarBlank className="ml-2 h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  disabled={(date) =>
+                    date > new Date() || date < new Date("1900-01-01")
+                  }
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <Label>Time Zone</Label>
+            <Select>
+              <SelectTrigger className="w-full mt-3">
+                <SelectValue placeholder="Select Time Zone" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="GMT">GMT</SelectItem>
+                <SelectItem value="EST">EST</SelectItem>
+                <SelectItem value="PST">PST</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        );
+      case "book":
+      case "reschedule":
+        return (
+          <>
+            <Label>Appointment</Label>
+            <Input placeholder="Enter appointment details" />
+          </>
+        );
+      case "cancel":
+        return (
+          <>
+            <Label>Reason</Label>
+            <Textarea placeholder="Enter cancellation reason" />
+          </>
+        );
+      default:
+        return <></>;
+    }
   };
 
   return (
@@ -147,10 +259,7 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
                 Required
               </label>
             </div>
-            <div className="my-5">
-              <Label>Number</Label>
-              <Input placeholder="Search your phonebook" />
-            </div>
+            <div className="my-5">{renderFields()}</div>
             <div className="flex items-center gap-4">
               <Switch
                 checked={isConditionEnabled}
@@ -179,13 +288,12 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
                 <Textarea placeholder="don't end call if..." />
               </>
             )}
-            <div className="w-full flex justify-end mt-4">
-              <SheetClose>
-                <Button variant="outline" onClick={handleSave}>
-                  Save
-                </Button>
-              </SheetClose>
-            </div>
+            <Button
+              className="bg-black hover:bg-black w-full mt-6"
+              onClick={handleSave}
+            >
+              Save
+            </Button>
           </CardContent>
         </Card>
       </SheetContent>
