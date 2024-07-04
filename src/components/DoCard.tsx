@@ -1,4 +1,4 @@
-import { useState, SetStateAction } from "react";
+import { SetStateAction, useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,12 +6,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -19,38 +13,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import {
-  DotsThree,
-  CopySimple,
-  TrashSimple,
-  CalendarBlank,
-} from "@phosphor-icons/react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Switch } from "./ui/switch";
+import Link from "next/link";
+import { Label } from "./ui/label";
+import { Checkbox } from "./ui/checkbox";
+import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
+import { Input } from "./ui/input";
+import {
+  CaretDown,
+  DotsThree,
+  CopySimple,
+  TrashSimple,
+} from "@phosphor-icons/react";
+import TaskSheet from "./TaskSheet";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
-} from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
+  SheetHeader,
+} from "./ui/sheet";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const DoCard = ({ allClosed, handleToggle, type }: any) => {
+const AskCard = ({ allClosed, handleToggle, type }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
-  const [isConditionEnabled, setIsConditionEnabled] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedType, setSelectedType] = useState(type);
+  const [showValidation, setShowValidation] = useState(false);
+  const [options, setOptions] = useState<string[]>([]);
 
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
@@ -62,104 +66,14 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
     setSavedValue(inputValue);
   };
 
-  const toggleCondition = () => {
-    setIsConditionEnabled((prev) => !prev);
+  const handleTypeChange = (value: string) => {
+    setSelectedType(value);
+    setShowValidation(false);
+    setOptions([]);
   };
 
-  const renderFields = () => {
-    switch (type) {
-      case "end call":
-        return (
-          <>
-            <Label>Name</Label>
-            <Input placeholder="Enter Name" />
-          </>
-        );
-      case "transfer call":
-        return (
-          <>
-            <Label>Number</Label>
-            <Input placeholder="Enter phone number" />
-            <Label>Name</Label>
-            <Input placeholder="Enter Name" />
-          </>
-        );
-      case "sms":
-        return (
-          <>
-            <Label>Name</Label>
-            <Textarea placeholder="Enter your name" />
-            <Label>Number</Label>
-            <Input placeholder="Enter phone number" />
-          </>
-        );
-      case "email":
-        return (
-          <>
-            <Label>Name</Label>
-            <Input placeholder="Enter name" />
-            <Label>Email</Label>
-            <Textarea placeholder="Enter your email address" />
-          </>
-        );
-      case "availability":
-        return (
-          <div className="flex flex-col gap-4">
-            <Label>Name</Label>
-            <Input placeholder="Calendar availability name" />
-            <Label>Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">
-                  {selectedDate
-                    ? selectedDate.toDateString()
-                    : "Select Date range"}
-                  <CalendarBlank className="ml-2 h-4 w-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  disabled={(date) =>
-                    date > new Date() || date < new Date("1900-01-01")
-                  }
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            <Label>Time Zone</Label>
-            <Select>
-              <SelectTrigger className="w-full mt-3">
-                <SelectValue placeholder="Select Time Zone" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="GMT">GMT</SelectItem>
-                <SelectItem value="EST">EST</SelectItem>
-                <SelectItem value="PST">PST</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        );
-      case "book":
-      case "reschedule":
-        return (
-          <>
-            <Label>Appointment</Label>
-            <Input placeholder="Enter appointment details" />
-          </>
-        );
-      case "cancel":
-        return (
-          <>
-            <Label>Reason</Label>
-            <Textarea placeholder="Enter cancellation reason" />
-          </>
-        );
-      default:
-        return <></>;
-    }
+  const handleAddOption = () => {
+    setOptions([...options, `Option ${options.length + 1}`]);
   };
 
   return (
@@ -168,21 +82,21 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
         type="single"
         collapsible
         className="w-full"
-        value={allClosed.includes("do") ? "item-1" : undefined}
+        value={allClosed.includes("ask") ? "item-1" : undefined}
       >
         <AccordionItem value="item-1">
           <Card className="w-full">
             <CardHeader className="space-y-0 py-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <AccordionTrigger onClick={() => handleToggle("do")} />
-                  <CardTitle className="text-sm">2. Do</CardTitle>
+                  <AccordionTrigger onClick={() => handleToggle("ask")} />
+                  <CardTitle className="text-sm">1. Ask </CardTitle>
                 </div>
                 <Switch defaultChecked className="" />
               </div>
             </CardHeader>
-            {allClosed.includes("do") && (
-              <AccordionContent className="">
+            {allClosed.includes("ask") && (
+              <AccordionContent>
                 <CardContent className="flex flex-col items-start py-1">
                   <SheetTrigger>
                     {savedValue ? (
@@ -191,17 +105,16 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
                       <Input
                         value={inputValue}
                         onChange={handleInputChange}
-                        className="text-sm border-none focus-visible::outline-none w-full"
-                        placeholder="Book a meeting..."
+                        className="text-sm border-none focus-visible::outline-none"
+                        placeholder="begin with saying..."
                       />
                     )}
                   </SheetTrigger>
-                  <div className="flex items-center gap-4 justify-end mt-4">
-                    <Badge>Tool</Badge>
+                  <div className="flex items-center gap-4 justify-end mt-4 w-full">
                     <DotsThree size={20} />
                     <CopySimple size={20} />
                     <TrashSimple size={20} />
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 ">
                       <Checkbox id="terms" className="" defaultChecked />
                       <Label
                         htmlFor="terms"
@@ -222,78 +135,93 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
         <Card className="w-[330px]">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>2. Do</CardTitle>
+              <CardTitle> Ask </CardTitle>
               <Switch defaultChecked />
             </div>
             <CardDescription>
-              Read{" "}
+              Explore more in
               <Link href="" className="underline">
-                what is tool calling
+                prompt engineering guide
               </Link>
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Select defaultValue={type}>
-              <SelectTrigger className="w-full mt-3">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="end call">End call</SelectItem>
-                <SelectItem value="transfer call">Transfer Call</SelectItem>
-                <SelectItem value="sms">SMS</SelectItem>
-                <SelectItem value="email">Email</SelectItem>
-                <SelectItem value="availability">Availability</SelectItem>
-                <SelectItem value="book">Book</SelectItem>
-                <SelectItem value="reschedule">Reschedule</SelectItem>
-                <SelectItem value="cancel">Cancel</SelectItem>
-                <SelectItem value="addcampagin">Add Campaign</SelectItem>
-                <SelectItem value="removecampaign">Remove Campaign</SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="flex items-center space-x-2 mt-5">
-              <Checkbox id="terms" className="" defaultChecked />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Required
-              </label>
+            <div className="mb-5">
+              <Label>Name</Label>
+              <Input placeholder="Action Name" />
             </div>
-            <div className="my-5">{renderFields()}</div>
-            <div className="flex items-center gap-4">
-              <Switch
-                checked={isConditionEnabled}
-                onCheckedChange={setIsConditionEnabled}
-              />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Condition
-              </label>
+            <Label>Question (Ask For)</Label>
+            <Textarea
+              value={inputValue}
+              onChange={handleInputChange}
+              placeholder="When users ask to book an appointment, book it on the calendar."
+            />
+            <div className="mt-5">
+              <Label className="mt-5">Response Type</Label>
+              <Select defaultValue={type} onValueChange={handleTypeChange}>
+                <SelectTrigger className="w-full mt-3">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="text">Text</SelectItem>
+                  <SelectItem value="number">Number</SelectItem>
+                  <SelectItem value="option">Option</SelectItem>
+                  <SelectItem value="date">Date</SelectItem>
+                  <SelectItem value="time">Time</SelectItem>
+                  <SelectItem value="yesno">Yes/No</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            {isConditionEnabled && (
-              <>
-                <div className="my-5">
-                  <Select defaultValue="include">
-                    <SelectTrigger className="w-full mt-3">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="include">Include If</SelectItem>
-                      <SelectItem value="exclude">Exclude If</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <Textarea placeholder="don't end call if..." />
-              </>
-            )}
-            <Button
-              className="bg-black hover:bg-black w-full mt-6"
-              onClick={handleSave}
-            >
-              Save
-            </Button>
+            {selectedType === "text" || selectedType === "number" ? (
+              <div className="mt-5">
+                <Label className="flex items-center">
+                  <Checkbox
+                    checked={showValidation}
+                    onChange={(e) => setShowValidation(e.target.checked)}
+                  />
+                  <span className="ml-2">Add Validation</span>
+                </Label>
+                {showValidation && (
+                  <div className="mt-3">
+                    <Label>Regex Format</Label>
+                    <Textarea placeholder="Enter regex format" />
+                    <Label className="mt-3">Error Response (optional)</Label>
+                    <Textarea placeholder="Enter error response" />
+                  </div>
+                )}
+              </div>
+            ) : null}
+            {selectedType === "option" ? (
+              <div className="mt-5">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleAddOption}
+                >
+                  + Add Option
+                </Button>
+                {options.map((option, index) => (
+                  <Input
+                    key={index}
+                    placeholder={option}
+                    className="mt-2"
+                    value={option}
+                    onChange={(e) => {
+                      const newOptions = [...options];
+                      newOptions[index] = e.target.value;
+                      setOptions(newOptions);
+                    }}
+                  />
+                ))}
+              </div>
+            ) : null}
+            <div className="w-full flex justify-end mt-4">
+              <SheetClose>
+                <Button variant="outline" onClick={handleSave}>
+                  Save
+                </Button>
+              </SheetClose>
+            </div>
           </CardContent>
         </Card>
       </SheetContent>
@@ -301,4 +229,4 @@ const DoCard = ({ allClosed, handleToggle, type }: any) => {
   );
 };
 
-export default DoCard;
+export default AskCard;
