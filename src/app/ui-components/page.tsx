@@ -2128,7 +2128,6 @@ function TooltipDemo() {
 const Home = () => {
   return (
     <main className="">
-      <Layout>
         <div className="flex flex-col bg-white dark:bg-slate-900 p-4 gap-5 items-start">
           <h1 className="custom-h1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-5">
             Accordion
@@ -2323,7 +2322,6 @@ const Home = () => {
           </h1>
           <TooltipDemo />
         </div>
-      </Layout>
     </main>
   );
 };

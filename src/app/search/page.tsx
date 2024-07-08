@@ -24,12 +24,10 @@ const Home = () => {
 
   return (
     <main className="">
-      <Layout>
         <div className="flex flex-col bg-white dark:bg-slate-900 p-4">
           <Breadcrumbs path="/nav/page/" />
           <SearchFilter />
         </div>
-      </Layout>
     </main>
   );
 };

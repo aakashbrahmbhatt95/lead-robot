@@ -1,13 +1,7 @@
 "use client";
-import SearchFilter from "@/components/SearchFilter";
-import Layout from "@/components/Layout";
 import Breadcrumbs from "@/components/BreadCrumbs";
-import caretleft from ".././../../public/CaretLeft.svg";
 import { useState } from "react";
-import Image from "next/image";
-import pencilicon from ".././../../public/PencilSimple.svg";
-import dotsthree from ".././../../public/DotsThree.svg";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { WindowsLogo, Plus, PencilSimple } from "@phosphor-icons/react";
 
@@ -26,7 +20,6 @@ const Home = () => {
 
   return (
     <main className="">
-      <Layout>
         <div className="flex flex-col bg-[#f4f4f5] dark:bg-slate-900 p-4">
           <Breadcrumbs path="/nav/page/" />
           <div className="flex items-center justify-between mt-10">
@@ -72,7 +65,6 @@ const Home = () => {
             <div className="w-[500px] border border-[#D4D4D8] h-[200px] rounded-[8px]"></div>
           </div>
         </div>
-      </Layout>
     </main>
   );
 };

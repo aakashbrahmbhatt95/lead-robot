@@ -9,6 +9,7 @@ import ReactFlowChart from "./reactFlowChart";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import ContactPopup from "./contactPopup";
 import { useEffect, useState } from "react";
+import Layout from "@/components/Layout";
 
 const CampaignName = () => {
   const [isOpenContactPopup, setIsOpenContactPopup] = useState<boolean>(false);

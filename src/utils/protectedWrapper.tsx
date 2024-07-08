@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
 import ProtectedPage from "@/utils/protectedPage";
+import Layout from "@/components/Layout";
 
 interface ProtectedWrapperProps {
   children: ReactNode;
@@ -25,7 +26,9 @@ const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
 
   return (
     <ProtectedPage>
+      <Layout>
      {children}
+     </Layout>
     </ProtectedPage>
   );
 };
