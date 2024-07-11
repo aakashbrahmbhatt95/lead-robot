@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "./ui/switch";
 import {
   CaretDown,
@@ -13,45 +7,33 @@ import {
   TrashSimple,
   CopySimple,
   Plus,
-  CaretRight,
   PencilSimple,
 } from "@phosphor-icons/react";
 import { Input } from "./ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
-import { Button } from "./ui/button";
 import { SheetTrigger, SheetContent, Sheet, SheetClose } from "./ui/sheet";
-import Link from "next/link";
 import { Chat, Question, Wrench } from "@phosphor-icons/react";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
 import AskCard from "./AskCard";
 import DoCard from "./DoCard";
 import SayCard from "./SayCard";
-import { useAppSelector } from "../redux/store";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { deletetaskSetAction } from "@/redux/action/campaigns-action";
+import { useAppDispatch } from "@/redux/store";
 
 const ParentTaskCard: React.FC<{
-  id: string;
-  handleDelete: (id: string) => void;
-  handleCopy: (id: string) => void;
-}> = ({ id, handleDelete, handleCopy }) => {
+  ele: any;
+}> = ({ ele }) => {
+  const dispatch = useAppDispatch()
   const [components, setComponents] = useState<
     { type: string; subType: string }[]
   >([]);
@@ -73,6 +55,15 @@ const ParentTaskCard: React.FC<{
       temp = [...allClosed, e];
     }
     setAllClosed(temp);
+  };
+
+  const handleDelete = (id: string) => {
+    console.log("id", id);
+    dispatch(deletetaskSetAction(id))
+  };
+
+  const handleCopy = (id: string) => {
+    console.log("id", id);
   };
 
   const renderDropdownItems = (child: string) => {
@@ -231,8 +222,6 @@ const ParentTaskCard: React.FC<{
     }
   };
 
-  console.log("components", components);
-
   return (
     <div>
       <Sheet>
@@ -240,21 +229,21 @@ const ParentTaskCard: React.FC<{
           <SheetTrigger className="w-full">
             <CardHeader className="bg-[#a7f3d0] h-[52px] flex justify-center w-full">
               <div className="flex items-center justify-between w-full px-4">
-                <CardTitle className="text-sm">Task Set</CardTitle>
+                <CardTitle className="text-sm">{ele?.name}</CardTitle>
                 <div className="flex items-center gap-3">
                   <DotsThree size={20} />
                   <CopySimple
                     size={20}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleCopy(id);
+                      handleCopy(ele?.id);
                     }}
                   />
                   <TrashSimple
                     size={20}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDelete(id);
+                      handleDelete(ele?.id);
                     }}
                   />
                   <CaretDown size={16} />

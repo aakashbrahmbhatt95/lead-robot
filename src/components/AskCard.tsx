@@ -57,8 +57,6 @@ const AskCard = ({ allClosed, handleToggle, type }: any) => {
   const [isValidationEnabled, setIsValidationEnabled] = useState(false);
   const [options, setOptions] = useState<string[]>([]);
 
-  console.log("type", type);
-
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {

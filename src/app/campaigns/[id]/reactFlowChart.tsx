@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -12,8 +12,14 @@ import ReactFlow, {
   MarkerType,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import Plus from "../../../public/Plus.svg";
+import Plus from "../../../../public/Plus.svg";
 import ParentTaskCard from "@/components/ParentTaskCard";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import {
+  addtaskSetAction,
+  taskSetListAction,
+} from "@/redux/action/campaigns-action";
+import { useParams } from "next/navigation";
 
 const edgeStyles: any = {
   stroke: "black",
@@ -25,8 +31,38 @@ const initialNodes: any = [];
 const initialEdges: any = [];
 
 const ReactFlowChart = () => {
+  const params = useParams();
+  const dispatch = useAppDispatch();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const { taskSetList }: any = useAppSelector(
+    (state: any) => state.campaignReducer
+  );
+
+  useEffect(() => {
+    dispatch(taskSetListAction());
+  }, []);
+
+  useEffect(() => {
+      const temp = taskSetList?.map((ele: any, index: any) => ({
+        ...ele,
+        position: {
+          x: 200,
+          y: 10,
+        },
+        data: {
+          label: <ParentTaskCard ele={ele} />,
+        },
+        style: {
+          width: "330px",
+          padding: "0px",
+          border: "none",
+        },
+        width: 288,
+        height: 36,
+      }));
+      setNodes(temp);
+  }, [taskSetList]);
 
   const onConnect = useCallback(
     (params: any) =>
@@ -50,70 +86,14 @@ const ReactFlowChart = () => {
     [setEdges]
   );
 
-  const handleDelete = (id: string) => {
-    setNodes((prevNodes) => {
-      return prevNodes.filter((node: any) => node.id !== id);
-    });
-  };
-  console.log("nodes", nodes);
-  const handleCopy = (id: string) => {
-    setNodes((prevNodes) => {
-      const nodeToCopy = prevNodes.find((node: any) => node.id === id);
-      if (!nodeToCopy) return prevNodes;
-      const uniqueId = Math.random().toString();
-      const temp: any = [
-        ...prevNodes,
-        {
-          ...nodeToCopy,
-          id: uniqueId,
-          data: {
-            label: (
-              <ParentTaskCard
-                id={uniqueId}
-                handleDelete={handleDelete}
-                handleCopy={handleCopy}
-              />
-            ),
-          },
-          position: {
-            x: nodeToCopy.position.x + 20,
-            y: nodeToCopy.position.y + 20,
-          },
-        },
-      ];
-      return temp;
-    });
-  };
-
   const handleAdd = () => {
-    const uniqueId = Math.random().toString();
-    const temp: any = [
-      ...nodes,
-      {
-        id: uniqueId,
-        position: {
-          x: 200,
-          y: 10,
-        },
-        data: {
-          label: (
-            <ParentTaskCard
-              id={uniqueId}
-              handleDelete={handleDelete}
-              handleCopy={handleCopy}
-            />
-          ),
-        },
-        style: {
-          width: "330px",
-          padding: "0px",
-          border: "none",
-        },
-        width: 288,
-        height: 36,
-      },
-    ];
-    setNodes(temp);
+    dispatch(
+      addtaskSetAction({
+        campaign_id: params?.id,
+        name: `Task Set ${Math.random()}`,
+        speak_first: false,
+      })
+    );
   };
 
   const onEdgeClick = (event: any, edge: any) => {

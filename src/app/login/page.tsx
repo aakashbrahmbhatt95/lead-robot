@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
-import { useAppSelector } from "@/redux/store";
 import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, LOGIN_URL } from "@/utils/apiConstants";
 import { TOKEN_KEY, SESSION_KEY } from "@/utils/constants";
@@ -36,8 +35,6 @@ const Login = () => {
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-
-  const { login } = useAppSelector((state: any) => state.loginReducer);
 
   useEffect(() => {
     setIsMounted(true);
@@ -154,7 +151,6 @@ const Login = () => {
                   HttpUtil.makePOST(`${BASE_URL}${LOGIN_URL}`, payload)
                     .then((res) => {
                       if (res.success && res?.data?.meta?.is_authenticated) {
-                        console.log("res", res?.data?.meta?.is_authenticated);
                         toast({
                           description: "User Logged In Successfully",
                         });
@@ -174,13 +170,11 @@ const Login = () => {
                       }
                     })
                     .catch((err: any) => {
-                      console.log("err", err);
                       toast({
                         variant: "destructive",
                         description: JSON.stringify(err),
                       });
                     });
-                  // dispatch(loginAction(payload));
                 }}
               >
                 <Form className="flex flex-col gap-4 w-full">

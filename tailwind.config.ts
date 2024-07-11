@@ -72,6 +72,9 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      height: {
+        'calc-100vh-minus-20': 'calc(100vh - 200px)',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

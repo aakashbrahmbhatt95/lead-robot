@@ -48,7 +48,6 @@ const ChangePassword = () => {
 
       HttpUtil.makePOST(`${BASE_URL}${RESET_PASSWORD}`, temp)
         .then((res) => {
-          console.log("res", res);
           if (res.success) {
             toast({
               description: "Password Changed Successfully",
@@ -66,7 +65,6 @@ const ChangePassword = () => {
           }
         })
         .catch((err: any) => {
-          console.log("err", err);
           toast({
             variant: "destructive",
             description: JSON.stringify(err),
