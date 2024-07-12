@@ -177,7 +177,7 @@ const AskCard = ({ allClosed, handleToggle, type }: any) => {
                 <Label className="flex items-center">
                   <Checkbox
                     checked={showValidation}
-                    onChange={(e) => setShowValidation(e.target.checked)}
+                    onChange={() => setShowValidation(!showValidation)}
                   />
                   <span className="ml-2">Add Validation</span>
                 </Label>
