@@ -47,8 +47,8 @@ const ReactFlowChart = () => {
       const temp = taskSetList?.map((ele: any, index: any) => ({
         ...ele,
         position: {
-          x: 200,
-          y: 10,
+          x: 200 + 400 * index,
+          y: 10 + 200 * index,
         },
         data: {
           label: <ParentTaskCard ele={ele} />,
