@@ -27,17 +27,24 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deletetaskSetAction } from "@/redux/action/campaigns-action";
+import {
+  deletetaskSetAction,
+  editTaskSetAction,
+} from "@/redux/action/campaigns-action";
 import { useAppDispatch } from "@/redux/store";
+import { Button } from "./ui/button";
 
 const ParentTaskCard: React.FC<{
   ele: any;
 }> = ({ ele }) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const [components, setComponents] = useState<
     { type: string; subType: string }[]
   >([]);
   const [allClosed, setAllClosed] = useState<any>([]);
+  const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [name, setName] = useState(ele?.name);
 
   const handleAddComponent = (type: string, subType: string) => {
     setComponents((prevComponents) => [...prevComponents, { type, subType }]);
@@ -58,12 +65,20 @@ const ParentTaskCard: React.FC<{
   };
 
   const handleDelete = (id: string) => {
-    console.log("id", id);
-    dispatch(deletetaskSetAction(id))
+    dispatch(deletetaskSetAction(id));
   };
 
   const handleCopy = (id: string) => {
     console.log("id", id);
+  };
+
+  const handleEditTask = () => {
+    const body = {
+      campaign_id: ele?.campaign,
+      name: name,
+      speak_first: false,
+    };
+    dispatch(editTaskSetAction(body, ele?.id));
   };
 
   const renderDropdownItems = (child: string) => {
@@ -224,9 +239,13 @@ const ParentTaskCard: React.FC<{
 
   return (
     <div>
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <Card className="w-[330px]">
-          <SheetTrigger className="w-full">
+          <SheetTrigger
+            className="w-full"
+            onClick={() => setOpen(true)}
+            asChild
+          >
             <CardHeader className="bg-[#a7f3d0] h-[52px] flex justify-center w-full">
               <div className="flex items-center justify-between w-full px-4">
                 <CardTitle className="text-sm">{ele?.name}</CardTitle>
@@ -325,15 +344,36 @@ const ParentTaskCard: React.FC<{
           <Card className="w-[330px]">
             <CardHeader>
               <div className="flex items-center justify-between w-full">
-                <CardTitle className="text-sm">Edit Task Set</CardTitle>
+                <CardTitle className="text-sm">Edit {ele?.name}</CardTitle>
                 <div className="flex items-center gap-3">
                   <DotsThree size={20} />
-                  <PencilSimple size={20} />
-                  <TrashSimple size={20} />
+                  <PencilSimple size={20} onClick={() => setIsEdit(true)} />
+                  <TrashSimple
+                    size={20}
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDelete(ele?.id);
+                      setOpen(false);
+                    }}
+                  />
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="flex flex-col items-start mt-4"></CardContent>
+            <CardContent className="flex flex-col items-start mt-4">
+              {isEdit && (
+                <>
+                  <Input
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <Button className="mt-2" onClick={handleEditTask}>
+                    Save
+                  </Button>
+                </>
+              )}
+            </CardContent>
           </Card>
         </SheetContent>
       </Sheet>

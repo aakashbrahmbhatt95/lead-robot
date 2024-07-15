@@ -126,3 +126,20 @@ export const deletetaskSetAction =
       .catch((err: any) => {})
       .finally(() => {});
   };
+
+export const editTaskSetAction =
+  (body: any, id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makePUT(`${BASE_URL1}${GET_TASKSET_URL}${id}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedtaskSetList = taskSetList.map((ele: any) =>
+          ele.id === res?.data.id ? res.data : ele
+        );
+        dispatch(taskSetListReducer(updatedtaskSetList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
