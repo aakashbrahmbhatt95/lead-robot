@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
-  addEdge,
   MiniMap,
   Controls,
   Background,
@@ -16,7 +15,10 @@ import Plus from "../../../../public/Plus.svg";
 import ParentTaskCard from "@/components/ParentTaskCard";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import {
+  addPathConditionAction,
   addtaskSetAction,
+  deletePathConditionAction,
+  pathConditionListAction,
   taskSetListAction,
 } from "@/redux/action/campaigns-action";
 import { useParams } from "next/navigation";
@@ -35,56 +37,66 @@ const ReactFlowChart = () => {
   const dispatch = useAppDispatch();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const { taskSetList }: any = useAppSelector(
+  const { taskSetList, pathConditionList }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
 
   useEffect(() => {
     dispatch(taskSetListAction());
-  }, []);
+    dispatch(pathConditionListAction());
+  }, [dispatch]);
 
   useEffect(() => {
-      const temp = taskSetList?.map((ele: any, index: any) => ({
-        ...ele,
-        position: {
-          x: 200 + 400 * index,
-          y: 10 + 200 * index,
-        },
-        data: {
-          label: <ParentTaskCard ele={ele} />,
-        },
-        style: {
-          width: "330px",
-          padding: "0px",
-          border: "none",
-        },
-        width: 288,
-        height: 36,
-      }));
-      setNodes(temp);
+    const temp = taskSetList?.map((ele: any, index: any) => ({
+      ...ele,
+      id: `${ele.id}`,
+      position: {
+        x: 200 + 400 * index,
+        y: 10 + 200 * index,
+      },
+      data: {
+        label: <ParentTaskCard ele={ele} />,
+      },
+      style: {
+        width: "330px",
+        padding: "0px",
+        border: "none",
+      },
+      width: 288,
+      height: 36,
+    }));
+    setNodes(temp);
   }, [taskSetList]);
 
-  const onConnect = useCallback(
-    (params: any) =>
-      setEdges((eds) =>
-        addEdge(
-          {
-            ...params,
-            type: "smoothstep",
-            label: "Path Condition",
-            style: edgeStyles,
-            markerEnd: {
-              type: MarkerType.ArrowClosed,
-              width: 20,
-              height: 20,
-              color: "black",
-            },
-          },
-          eds
-        )
-      ),
-    [setEdges]
-  );
+  useEffect(() => {
+    const temp = pathConditionList?.map((ele: any, index: any) => ({
+      id: ele?.id?.toString(),
+      source: ele?.from_taskset?.toString(),
+      sourceHandle: null,
+      target: ele?.to_taskset?.toString(),
+      targetHandle: null,
+      type: "smoothstep",
+      label: ele?.condition,
+      style: edgeStyles,
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        width: 20,
+        height: 20,
+        color: "black",
+      },
+    }));
+    setEdges(temp);
+  }, [pathConditionList]);
+
+  const onConnect = (params: any) => {
+    dispatch(
+      addPathConditionAction({
+        from_taskset_id: params?.source,
+        to_taskset_id: params?.target,
+        condition: "Create using condition",
+      })
+    );
+  };
 
   const handleAdd = () => {
     dispatch(
@@ -98,15 +110,7 @@ const ReactFlowChart = () => {
 
   const onEdgeClick = (event: any, edge: any) => {
     event.stopPropagation();
-
-    const userConfirmed = window.confirm(
-      "Are you sure you want to delete this edge?"
-    );
-
-    if (userConfirmed) {
-      const temp = nodes?.filter((ele) => ele?.id !== edge.target);
-      setNodes(temp);
-    }
+    dispatch(deletePathConditionAction(edge.id));
   };
 
   return (

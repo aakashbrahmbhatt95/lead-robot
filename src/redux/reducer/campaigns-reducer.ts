@@ -5,12 +5,14 @@ type InitialState = {
   campaignDataById: any;
   taskSetList: any;
   taskSetDataById: any;
+  pathConditionList: any;
 };
 const initialState = {
   campaignsList: [],
   campaignDataById: {},
   taskSetList: [],
   taskSetDataById: {},
+  pathConditionList: [],
 } as InitialState;
 
 export const Campaigns = createSlice({
@@ -29,6 +31,9 @@ export const Campaigns = createSlice({
     taskSetDataByIdReducer: (state, action) => {
       state.taskSetDataById = action.payload;
     },
+    pathConditionListReducer: (state, action) => {
+      state.pathConditionList = action.payload;
+    },
   },
 });
 
@@ -37,6 +42,7 @@ export const {
   campaignDataByIdReducer,
   taskSetListReducer,
   taskSetDataByIdReducer,
+  pathConditionListReducer,
 } = Campaigns.actions;
 
 export default Campaigns.reducer;

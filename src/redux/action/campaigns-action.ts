@@ -3,12 +3,14 @@ import { HttpUtil } from "../../utils/http-util";
 import {
   BASE_URL1,
   GET_CAMPAIGN_URL,
+  GET_PATHCONDITION_URL,
   GET_TASKSET_URL,
 } from "../../utils/apiConstants";
 import { getToken } from "@/utils/constants";
 import {
   campaignDataByIdReducer,
   campaignsListReducer,
+  pathConditionListReducer,
   taskSetListReducer,
 } from "../reducer/campaigns-reducer";
 
@@ -139,6 +141,48 @@ export const editTaskSetAction =
           ele.id === res?.data.id ? res.data : ele
         );
         dispatch(taskSetListReducer(updatedtaskSetList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const pathConditionListAction = () => async (dispatch: AppDispatch) => {
+  HttpUtil.makeGET(`${BASE_URL1}${GET_PATHCONDITION_URL}`, "", {
+    Authorization: getToken(),
+  })
+    .then((res) => {
+      dispatch(pathConditionListReducer(res?.data?.items));
+    })
+    .catch((err: any) => {
+      dispatch(pathConditionListReducer([]));
+    })
+    .finally(() => {});
+};
+
+export const addPathConditionAction =
+  (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { pathConditionList } = getState()?.campaignReducer;
+    HttpUtil.makePOST(`${BASE_URL1}${GET_PATHCONDITION_URL}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        dispatch(pathConditionListReducer([...pathConditionList, res?.data]));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const deletePathConditionAction =
+  (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { pathConditionList } = getState()?.campaignReducer;
+    HttpUtil.makeDELETE(`${BASE_URL1}${GET_PATHCONDITION_URL}${id}`, "", {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedPathConditionList = pathConditionList.filter(
+          (ele: any) => ele.id.toString() !== id.toString()
+        );
+        dispatch(pathConditionListReducer(updatedPathConditionList));
       })
       .catch((err: any) => {})
       .finally(() => {});
