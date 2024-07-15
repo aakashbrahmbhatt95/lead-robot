@@ -4,7 +4,7 @@ import Image from "next/image";
 import PlusWhite from "../../../public/Plus-white.svg";
 import { Button } from "@/components/ui/button";
 import { campaignMenuBar } from "@/components/CampaignsList/helper";
-import { DataTableDemo } from "./campaignsTable";
+import CampaignsTable from "./campaignsTable";
 import { useRouter } from "next/navigation";
 
 const CampaignsList = () => {
@@ -36,7 +36,7 @@ const CampaignsList = () => {
           Create campaign
         </Button>
       </div>
-      <DataTableDemo />
+      <CampaignsTable selectedMenuBar={selectedMenuBar} />
     </>
   );
 };

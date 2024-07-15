@@ -60,7 +60,6 @@ const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const Comp = asChild ? Slot : "button";
     const computedClassName = cn(buttonVariants({ variant, size, className }));
-    console.log("computedClassName:", computedClassName);
 
     return (
       <Comp className={computedClassName} ref={ref} {...props}>

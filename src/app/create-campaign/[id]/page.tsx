@@ -25,7 +25,7 @@ const CreateCampaign = () => {
   const { campaignDataById }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
-console.log('campaignDataById',campaignDataById)
+
   useEffect(() => {
     if (isEdit) {
       dispatch(getcampaignsDatByIdAction(params?.id))

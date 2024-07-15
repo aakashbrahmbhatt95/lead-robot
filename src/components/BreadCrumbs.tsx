@@ -10,7 +10,6 @@ interface BreadcrumbsProps {
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ path, className }) => {
   const pathArray = path.split("/").filter((segment) => segment);
-  console.log(pathArray);
 
   return (
     <nav className={className} aria-label="breadcrumbs">

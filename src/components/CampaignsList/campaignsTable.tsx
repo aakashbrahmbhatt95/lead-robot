@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { deleteCampaignsAction } from "@/redux/action/campaigns-action";
@@ -116,16 +116,27 @@ export const columns: any = (handleAction: any) => [
   },
 ];
 
-export function DataTableDemo() {
+const CampaignsTable: React.FC<{
+  selectedMenuBar: any;
+}> = ({ selectedMenuBar }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [sorting, setSorting] = useState<any>([]);
   const [columnFilters, setColumnFilters] = useState<any>([]);
   const [columnVisibility, setColumnVisibility] = useState<any>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [filteredCampaignsList, setFilteredCampaignsList] = useState([]);
   const { campaignsList }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
+
+  useEffect(() => {
+    const temp =
+      selectedMenuBar === 1
+        ? campaignsList?.filter((ele: any) => ele.is_active === true)
+        : campaignsList?.filter((ele: any) => ele.is_active === false);
+    setFilteredCampaignsList(temp);
+  }, [selectedMenuBar,campaignsList]);
 
   const handleAction = (actionType: string, rowData: any) => {
     if (actionType === "edit") {
@@ -136,7 +147,7 @@ export function DataTableDemo() {
   };
 
   const table = useReactTable({
-    data: campaignsList,
+    data: filteredCampaignsList,
     columns: columns(handleAction),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -281,4 +292,6 @@ export function DataTableDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default CampaignsTable;
