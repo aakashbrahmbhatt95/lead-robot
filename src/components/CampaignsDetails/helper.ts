@@ -122,3 +122,23 @@ export const invoices = [
     paymentMethod: "Bank Transfer",
   },
 ]
+
+
+export const tabBarData = [
+  {
+    text: "Create task set",
+    value: 1,
+  },
+  {
+    text: "Assign contacts",
+    value: 2,
+  },
+  {
+    text: "Schedule",
+    value: 3,
+  },
+  {
+    text: "Setup call",
+    value: 4,
+  },
+];

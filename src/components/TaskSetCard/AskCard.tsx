@@ -27,33 +27,23 @@ import { Button } from "@/lib/ui/button";
 import { Textarea } from "@/lib/ui/textarea";
 import { Input } from "@/lib/ui/input";
 import {
-  CaretDown,
   DotsThree,
   CopySimple,
   TrashSimple,
+  Plus,
 } from "@phosphor-icons/react";
-import TaskSheet from "./TaskSheet";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
-  SheetHeader,
 } from "@/lib/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/lib/ui/dropdown-menu";
 
 const AskCard = ({ allClosed, handleToggle, type }: any) => {
   const [inputValue, setInputValue] = useState("");
   const [savedValue, setSavedValue] = useState(inputValue);
   const [selectedType, setSelectedType] = useState(type);
-  const [showValidation, setShowValidation] = useState(false);
+  const [isValidationEnabled, setIsValidationEnabled] = useState(false);
   const [options, setOptions] = useState<string[]>([]);
 
   const handleInputChange = (event: {
@@ -64,12 +54,6 @@ const AskCard = ({ allClosed, handleToggle, type }: any) => {
 
   const handleSave = () => {
     setSavedValue(inputValue);
-  };
-
-  const handleTypeChange = (value: string) => {
-    setSelectedType(value);
-    setShowValidation(false);
-    setOptions([]);
   };
 
   const handleAddOption = () => {
@@ -158,7 +142,7 @@ const AskCard = ({ allClosed, handleToggle, type }: any) => {
             />
             <div className="mt-5">
               <Label className="mt-5">Response Type</Label>
-              <Select defaultValue={type} onValueChange={handleTypeChange}>
+              <Select defaultValue={type}>
                 <SelectTrigger className="w-full mt-3">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
@@ -172,17 +156,22 @@ const AskCard = ({ allClosed, handleToggle, type }: any) => {
                 </SelectContent>
               </Select>
             </div>
-            {selectedType === "text" || selectedType === "number" ? (
+            {type === "text" || type === "number" ? (
               <div className="mt-5">
-                <Label className="flex items-center">
-                  <Checkbox
-                    checked={showValidation}
-                    onChange={() => setShowValidation(!showValidation)}
+                <div className="flex items-center gap-4">
+                  <Switch
+                    checked={isValidationEnabled}
+                    onCheckedChange={setIsValidationEnabled}
                   />
-                  <span className="ml-2">Add Validation</span>
-                </Label>
-                {showValidation && (
-                  <div className="mt-3">
+                  <label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Add Validation
+                  </label>
+                </div>
+                {isValidationEnabled && (
+                  <div className="mt-5 flex flex-col gap-4">
                     <Label>Regex Format</Label>
                     <Textarea placeholder="Enter regex format" />
                     <Label className="mt-3">Error Response (optional)</Label>
@@ -191,15 +180,14 @@ const AskCard = ({ allClosed, handleToggle, type }: any) => {
                 )}
               </div>
             ) : null}
-            {selectedType === "option" ? (
+            {type === "option" ? (
               <div className="mt-5">
-                <Button
-                  variant="outline"
-                  className="w-full"
+                <button
+                  className="w-full flex justify-center my-5"
                   onClick={handleAddOption}
                 >
-                  + Add Option
-                </Button>
+                  <Plus />
+                </button>
                 {options.map((option, index) => (
                   <Input
                     key={index}

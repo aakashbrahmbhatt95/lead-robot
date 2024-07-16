@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { invoices, reviewBoxArray } from "./helper";
+import { invoices, reviewBoxArray } from "@/components/CampaignsDetails/helper";
 import { Switch } from "@/lib/ui/switch";
 import info from "@/../public/info_black.svg";
 import {

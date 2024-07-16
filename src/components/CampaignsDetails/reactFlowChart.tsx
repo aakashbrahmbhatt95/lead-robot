@@ -11,8 +11,7 @@ import ReactFlow, {
   MarkerType,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import Plus from "../../../../public/Plus.svg";
-import ParentTaskCard from "@/components/ParentTaskCard";
+import Plus from "@/../public/Plus.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import {
   addPathConditionAction,
@@ -22,7 +21,8 @@ import {
 } from "@/redux/action/campaigns-action";
 import { useParams } from "next/navigation";
 import { Sheet } from "@/lib/ui/sheet";
-import PathConditionPopup from "./pathConditionPopup";
+import PathConditionPopup from "@/lib/modals/pathConditionPopup";
+import TaskSetCard from "../TaskSetCard";
 
 const edgeStyles: any = {
   stroke: "black",
@@ -58,7 +58,7 @@ const ReactFlowChart = () => {
         y: 10 + 200 * index,
       },
       data: {
-        label: <ParentTaskCard ele={ele} />,
+        label: <TaskSetCard ele={ele} />,
       },
       style: {
         width: "330px",

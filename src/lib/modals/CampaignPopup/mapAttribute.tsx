@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/lib/ui/select";
-import { mapTableData } from "./helper";
+import { mapTableData } from "@/components/CampaignsDetails/helper";
 
 const UploadCSV = () => {
 

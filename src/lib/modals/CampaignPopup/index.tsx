@@ -3,17 +3,17 @@
 import { DialogContent, DialogHeader } from "@/lib/ui/dialog";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/lib/ui/menubar";
 import UploadCSV from "./UploadCSV";
-import { menuBarArray } from "./helper";
+import { menuBarArray } from "@/components/CampaignsDetails/helper";
 import { Button } from "@/lib/ui/button";
 import MapAttribute from "./mapAttribute";
 import CustomTags from "./customTags";
 import Review from "./review";
 import UploadSuccessful from "./UploadSuccessful";
 
-const ContactPopup = ({
+const CampaignPopup = ({
   selectedMenuBar,
   setSelectedMenuBar,
-  setIsOpenContactPopup,
+  setIsOpenCampaignPopup,
 }: any) => {
   return (
     <DialogContent className="sm:max-w-[60%] max-h-[75%] overflow-scroll">
@@ -98,7 +98,7 @@ const ContactPopup = ({
                       ? 5
                       : 1
             );
-            if (selectedMenuBar === 5) setIsOpenContactPopup(false);
+            if (selectedMenuBar === 5) setIsOpenCampaignPopup(false);
           }}
         >
           {selectedMenuBar === 1
@@ -116,4 +116,4 @@ const ContactPopup = ({
   );
 };
 
-export default ContactPopup;
+export default CampaignPopup;

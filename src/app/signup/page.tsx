@@ -16,7 +16,6 @@ import {
   HoverCardTrigger,
 } from "@/lib/ui/hover-card";
 
-import AutoSubmitToken from "@/components/AutoSubmitToken";
 import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
 import { Info, CheckCircle } from "@phosphor-icons/react";
 import { HttpUtil } from "@/utils/http-util";
@@ -25,6 +24,7 @@ import { useToast } from "@/lib/ui/use-toast";
 import { getCookie } from "cookies-next";
 import { SESSION_KEY } from "@/utils/constants";
 import { useRouter } from "next/navigation";
+import AutoSubmitToken from "@/lib/atoms/AutoSubmitToken";
 
 interface FormikInputProps extends FieldAttributes<any> {
   label: string;
@@ -44,9 +44,9 @@ const FormikInput: React.FC<FormikInputProps> = ({ label, ...props }) => {
   const router = useRouter();
 
   useEffect(() => {
-      if(getCookie(SESSION_KEY)) {
-          router.push('/')
-      }
+    if (getCookie(SESSION_KEY)) {
+      router.push("/");
+    }
   }, []);
 
   return (
@@ -243,18 +243,15 @@ const Signup = () => {
 
                   <div className="flex items-center justify-between w-full mt-4">
                     <div className="flex items-center gap-3">
-                    <Link
-                      href="/forgot-password"
-                      className="text-[14px] underline"
-                    >
-                      Forgot Password
-                    </Link>
-                    <Link
-                      href="/login"
-                      className="text-[14px] underline"
-                    >
-                      Login
-                    </Link>
+                      <Link
+                        href="/forgot-password"
+                        className="text-[14px] underline"
+                      >
+                        Forgot Password
+                      </Link>
+                      <Link href="/login" className="text-[14px] underline">
+                        Login
+                      </Link>
                     </div>
                     <Button type="submit" className="rounded-[6px] w-[93px]">
                       Continue

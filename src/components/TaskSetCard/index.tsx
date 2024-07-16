@@ -13,9 +13,6 @@ import { Input } from "@/lib/ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "@/lib/ui/popover";
 import { SheetTrigger, SheetContent, Sheet, SheetClose } from "@/lib/ui/sheet";
 import { Chat, Question, Wrench } from "@phosphor-icons/react";
-import AskCard from "./AskCard";
-import DoCard from "./DoCard";
-import SayCard from "./SayCard";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,8 +30,11 @@ import {
 } from "@/redux/action/campaigns-action";
 import { useAppDispatch } from "@/redux/store";
 import { Button } from "@/lib/ui/button";
+import SayCard from "./SayCard";
+import AskCard from "./AskCard";
+import DoCard from "./DoCard";
 
-const ParentTaskCard: React.FC<{
+const TaskSetCard: React.FC<{
   ele: any;
 }> = ({ ele }) => {
   const dispatch = useAppDispatch();
@@ -381,4 +381,4 @@ const ParentTaskCard: React.FC<{
   );
 };
 
-export default ParentTaskCard;
+export default TaskSetCard;

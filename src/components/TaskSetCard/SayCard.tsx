@@ -17,32 +17,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/lib/ui/accordion";
-import {
-  CaretDown,
-  DotsThree,
-  CopySimple,
-  TrashSimple,
-} from "@phosphor-icons/react";
-import TaskSheet from "./TaskSheet";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetClose,
-  SheetHeader,
-} from "@/lib/ui/sheet";
-import TaskCard from "./TaskCard";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/lib/ui/select";
+import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/lib/ui/sheet";
 import { Button } from "@/lib/ui/button";
 import { Textarea } from "@/lib/ui/textarea";
-import { deleteComponent } from "../redux/componentsSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { deleteComponent } from "@/redux/componentsSlice";
 
 const SayCard = ({ allClosed, handleToggle }: any) => {
   const [inputValue, setInputValue] = useState("");
