@@ -6,13 +6,13 @@ import PencilSimple from "../../../../public/PencilSimple.svg";
 import Vector from "../../../../public/Vector.svg";
 import { row } from "./helper";
 import ReactFlowChart from "./reactFlowChart";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/lib/ui/dialog";
 import ContactPopup from "./contactPopup";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getcampaignsDatByIdAction } from "@/redux/action/campaigns-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button";
 
 const CreateCampaign = () => {
   const router = useRouter();

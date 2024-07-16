@@ -5,20 +5,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Switch } from "./ui/switch";
+} from "@/lib/ui/card";
+import { Switch } from "@/lib/ui/switch";
 import Link from "next/link";
-import { Label } from "./ui/label";
-import { Checkbox } from "./ui/checkbox";
-import { Textarea } from "./ui/textarea";
+import { Label } from "@/lib/ui/label";
+import { Checkbox } from "@/lib/ui/checkbox";
+import { Textarea } from "@/lib/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "./ui/button";
+} from "@/lib/ui/select";
+import { Button } from "@/lib/ui/button";
 
 const TaskCard = () => {
   return (

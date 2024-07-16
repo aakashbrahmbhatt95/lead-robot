@@ -1,19 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import watson from "../../../public/Watson.svg";
-import googleicon from "../../../public/Google.svg";
+import { Button } from "@/lib/ui/button";
 import arrowleft from "../../../public/ArrowLeft.svg";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/lib/ui/input";
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/lib/ui/label";
 import eye from "../../../public/eye.svg";
 import eyeclosed from "../../../public/EyeClosed.svg";
 import { deleteCookies, HttpUtil } from "@/utils/http-util";
-import { BASE_URL, LOGIN_URL, REQUEST_PASSWORD } from "@/utils/apiConstants";
-import { useToast } from "@/components/ui/use-toast";
+import { BASE_URL, REQUEST_PASSWORD } from "@/utils/apiConstants";
+import { useToast } from "@/lib/ui/use-toast";
 
 const ForgotPassword = () => {
   const [step, setStep] = useState("email");

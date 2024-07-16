@@ -5,18 +5,18 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import { Switch } from "./ui/switch";
+} from "@/lib/ui/card";
+import { Switch } from "@/lib/ui/switch";
 import Link from "next/link";
-import { Label } from "./ui/label";
-import { Checkbox } from "./ui/checkbox";
-import { Input } from "./ui/input";
+import { Label } from "@/lib/ui/label";
+import { Checkbox } from "@/lib/ui/checkbox";
+import { Input } from "@/lib/ui/input";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "@/lib/ui/accordion";
 import {
   CaretDown,
   DotsThree,
@@ -30,7 +30,7 @@ import {
   SheetTrigger,
   SheetClose,
   SheetHeader,
-} from "./ui/sheet";
+} from "@/lib/ui/sheet";
 import TaskCard from "./TaskCard";
 import {
   Select,
@@ -38,9 +38,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
+} from "@/lib/ui/select";
+import { Button } from "@/lib/ui/button";
+import { Textarea } from "@/lib/ui/textarea";
 import { deleteComponent } from "../redux/componentsSlice";
 import { useDispatch, useSelector } from "react-redux";
 

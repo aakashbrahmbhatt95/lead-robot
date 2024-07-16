@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
 import ProtectedPage from "@/utils/protectedPage";
-import Layout from "@/components/Layout";
+import Layout from "@/lib/molecules/Layout";
 
 interface ProtectedWrapperProps {
   children: ReactNode;

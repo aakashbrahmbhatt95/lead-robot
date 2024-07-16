@@ -3,27 +3,25 @@
 import { useState, useEffect } from "react";
 import { Formik, Form, useField, FieldAttributes } from "formik";
 import * as Yup from "yup";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button";
 import watson from "../../../public/Watson.svg";
-import checkcircle from "../../../public/CheckCircle.svg";
 import googleicon from "../../../public/Google.svg";
-import arrowleft from "../../../public/ArrowLeft.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/lib/ui/label";
+import { Input } from "@/lib/ui/input";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
+} from "@/lib/ui/hover-card";
 
 import AutoSubmitToken from "@/components/AutoSubmitToken";
 import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
 import { Info, CheckCircle } from "@phosphor-icons/react";
 import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, SIGN_UP_URL } from "@/utils/apiConstants";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/lib/ui/use-toast";
 import { getCookie } from "cookies-next";
 import { SESSION_KEY } from "@/utils/constants";
 import { useRouter } from "next/navigation";

@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { invoices, reviewBoxArray } from "./helper";
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "@/lib/ui/switch";
 import info from "@/../public/info_black.svg";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/lib/ui/tooltip";
 import {
   Table,
   TableBody,
@@ -16,7 +16,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/lib/ui/table";
 
 const Review = () => {
   return (

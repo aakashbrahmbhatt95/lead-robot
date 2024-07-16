@@ -1,13 +1,13 @@
 "use client";
 import { useState, MouseEvent } from "react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/ui/badge";
 import Image from "next/image";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/lib/ui/dropdown-menu";
 import { CaretDown } from "@phosphor-icons/react";
 interface MultiSelectProps {
   options: string[];

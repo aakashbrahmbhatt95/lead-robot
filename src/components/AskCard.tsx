@@ -5,27 +5,27 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
+} from "@/lib/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/lib/ui/select";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Switch } from "./ui/switch";
+} from "@/lib/ui/accordion";
+import { Switch } from "@/lib/ui/switch";
 import Link from "next/link";
-import { Label } from "./ui/label";
-import { Checkbox } from "./ui/checkbox";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
-import { Input } from "./ui/input";
+import { Label } from "@/lib/ui/label";
+import { Checkbox } from "@/lib/ui/checkbox";
+import { Button } from "@/lib/ui/button";
+import { Textarea } from "@/lib/ui/textarea";
+import { Input } from "@/lib/ui/input";
 import {
   CaretDown,
   DotsThree,
@@ -40,7 +40,7 @@ import {
   SheetTrigger,
   SheetClose,
   SheetHeader,
-} from "./ui/sheet";
+} from "@/lib/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,7 +48,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/lib/ui/dropdown-menu";
 
 const AskCard = ({ allClosed, handleToggle, type }: any) => {
   const [inputValue, setInputValue] = useState("");

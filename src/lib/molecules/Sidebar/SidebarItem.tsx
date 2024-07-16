@@ -1,6 +1,4 @@
-import Image from "next/image";
 import { createContext, useContext } from "react";
-import Group3 from "../../../public/Group3.png";
 
 interface SidebarContextType {
   expanded: boolean;

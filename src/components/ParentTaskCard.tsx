@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Switch } from "./ui/switch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/lib/ui/card";
+import { Switch } from "@/lib/ui/switch";
 import {
   CaretDown,
   DotsThree,
@@ -9,9 +9,9 @@ import {
   Plus,
   PencilSimple,
 } from "@phosphor-icons/react";
-import { Input } from "./ui/input";
-import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
-import { SheetTrigger, SheetContent, Sheet, SheetClose } from "./ui/sheet";
+import { Input } from "@/lib/ui/input";
+import { Popover, PopoverTrigger, PopoverContent } from "@/lib/ui/popover";
+import { SheetTrigger, SheetContent, Sheet, SheetClose } from "@/lib/ui/sheet";
 import { Chat, Question, Wrench } from "@phosphor-icons/react";
 import AskCard from "./AskCard";
 import DoCard from "./DoCard";
@@ -26,13 +26,13 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/lib/ui/dropdown-menu";
 import {
   deletetaskSetAction,
   editTaskSetAction,
 } from "@/redux/action/campaigns-action";
 import { useAppDispatch } from "@/redux/store";
-import { Button } from "./ui/button";
+import { Button } from "@/lib/ui/button";
 
 const ParentTaskCard: React.FC<{
   ele: any;

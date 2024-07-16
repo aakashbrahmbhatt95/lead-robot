@@ -8,10 +8,10 @@ import {
   CommandGroup,
   CommandItem,
   CommandSeparator,
-} from "@/components/ui/command";
+} from "@/lib/ui/command";
 import MultiSelect from "@/components/MultiSelect";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "./ui/button";
+import { Badge } from "@/lib/ui/badge";
+import { Button } from "@/lib/ui/button";
 import { X } from "@phosphor-icons/react";
 
 const SearchFilter: NextPage = () => {

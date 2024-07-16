@@ -1,6 +1,6 @@
-import Group3 from "../../../public/Group3.png";
-import Group4 from "../../../public/Group4.png";
-import Group5 from "../../../public/Group5.png";
+import Group3 from "@/../public/Group3.png";
+import Group4 from "@/../public/Group4.png";
+import Group5 from "@/../public/Group5.png";
 
 export const SideBarData = [
   {

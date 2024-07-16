@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -17,11 +17,12 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import {
   addPathConditionAction,
   addtaskSetAction,
-  deletePathConditionAction,
   pathConditionListAction,
   taskSetListAction,
 } from "@/redux/action/campaigns-action";
 import { useParams } from "next/navigation";
+import { Sheet } from "@/lib/ui/sheet";
+import PathConditionPopup from "./pathConditionPopup";
 
 const edgeStyles: any = {
   stroke: "black",
@@ -36,6 +37,8 @@ const ReactFlowChart = () => {
   const params = useParams();
   const dispatch = useAppDispatch();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [isOpenEditPathCondition, setIsOpenEditPathCondition] =
+    useState<any>(null);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { taskSetList, pathConditionList }: any = useAppSelector(
     (state: any) => state.campaignReducer
@@ -93,7 +96,7 @@ const ReactFlowChart = () => {
       addPathConditionAction({
         from_taskset_id: params?.source,
         to_taskset_id: params?.target,
-        condition: "Create using condition",
+        condition: "Path Condition",
       })
     );
   };
@@ -110,7 +113,7 @@ const ReactFlowChart = () => {
 
   const onEdgeClick = (event: any, edge: any) => {
     event.stopPropagation();
-    dispatch(deletePathConditionAction(edge.id));
+    setIsOpenEditPathCondition(edge);
   };
 
   return (
@@ -137,6 +140,15 @@ const ReactFlowChart = () => {
         <Controls />
         <Background />
       </ReactFlow>
+      <Sheet
+        open={isOpenEditPathCondition !== null}
+        onOpenChange={() => setIsOpenEditPathCondition(null)}
+      >
+        <PathConditionPopup
+          isOpenEditPathCondition={isOpenEditPathCondition}
+          setIsOpenEditPathCondition={setIsOpenEditPathCondition}
+        />
+      </Sheet>
     </div>
   );
 };

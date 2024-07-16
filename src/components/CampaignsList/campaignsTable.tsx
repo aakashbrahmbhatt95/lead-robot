@@ -10,15 +10,15 @@ import {
 } from "@tanstack/react-table";
 import List from "../../../public/List.svg";
 import DotsThree from "../../../public/DotsThree.svg";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/lib/ui/button";
+import { Checkbox } from "@/lib/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+} from "@/lib/ui/dropdown-menu";
+import { Input } from "@/lib/ui/input";
 import {
   Table,
   TableBody,
@@ -26,9 +26,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/lib/ui/table";
 import Image from "next/image";
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "@/lib/ui/switch";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";

@@ -1,8 +1,8 @@
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
+import { Menubar, MenubarMenu, MenubarTrigger } from "@/lib/ui/menubar";
 import { useState } from "react";
 import Image from "next/image";
 import PlusWhite from "../../../public/Plus-white.svg";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button";
 import { campaignMenuBar } from "@/components/CampaignsList/helper";
 import CampaignsTable from "./campaignsTable";
 import { useRouter } from "next/navigation";

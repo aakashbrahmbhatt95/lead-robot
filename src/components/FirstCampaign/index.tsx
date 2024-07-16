@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ChatCenteredDots from "../../../public/ChatCenteredDots.svg";
 import PlusWhite from "../../../public/Plus-white.svg";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button";
 import { useRouter } from "next/navigation";
 
 const FirstCampaign = () => {

@@ -1,20 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button";
 import watson from "../../../public/Watson.svg";
 import googleicon from "../../../public/Google.svg";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/lib/ui/input";
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/lib/ui/label";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Eye, EyeClosed, ArrowLeft } from "@phosphor-icons/react";
 import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, LOGIN_URL } from "@/utils/apiConstants";
 import { TOKEN_KEY, SESSION_KEY } from "@/utils/constants";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/lib/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { getCookie, setCookie } from "cookies-next";
 

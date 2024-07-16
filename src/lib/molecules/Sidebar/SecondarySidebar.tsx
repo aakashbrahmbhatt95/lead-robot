@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ArrowLeft from "../../../public/ArrowLeft.svg";
+import ArrowLeft from "@/../public/ArrowLeft.svg";
 import { logout } from "@/utils/http-util";
 
 interface SecondarySidebarProps {

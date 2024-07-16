@@ -11,9 +11,9 @@ import {
   NavigationMenuViewport,
   navigationMenuTriggerStyle,
 } from "./navigation-menu";
-import { Icons } from "../icons";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Icons } from "@/components/icons";
 
 export default {
   title: "ui/Navigation Menu",

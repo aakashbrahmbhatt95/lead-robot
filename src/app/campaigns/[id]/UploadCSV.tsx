@@ -1,12 +1,12 @@
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
+import { Menubar, MenubarMenu, MenubarTrigger } from "@/lib/ui/menubar";
 import React, { useState, useCallback, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import UploadSimple from "@/../public/UploadSimple.svg";
 import FileCsv from "@/../public/FileCsv.svg";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/lib/ui/button";
+import { Input } from "@/lib/ui/input";
+import { Label } from "@/lib/ui/label";
 
 const UploadCSV = () => {
   const [selectedImport, setSelectedImport] = useState(1);

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { ReduxProvider } from "@/redux/provider";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/lib/ui/toaster";
 import ProtectedWrapper from "@/utils/protectedWrapper";
+import { ThemeProvider } from "@/lib/ThemeProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

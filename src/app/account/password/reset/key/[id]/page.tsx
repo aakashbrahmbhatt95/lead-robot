@@ -3,16 +3,16 @@
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/lib/ui/input";
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/lib/ui/label";
 import eye from "@/../public/eye.svg";
 import eyeclosed from "@/../public/EyeClosed.svg";
 import { BASE_URL, RESET_PASSWORD } from "@/utils/apiConstants";
 import { HttpUtil } from "@/utils/http-util";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/lib/ui/use-toast";
 import { useParams, useRouter } from "next/navigation";
 
 const ChangePassword = () => {

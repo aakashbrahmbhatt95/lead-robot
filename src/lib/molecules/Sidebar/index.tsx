@@ -2,8 +2,8 @@ import { useState } from "react";
 import { SidebarContext, SidebarItem } from "./SidebarItem";
 import Image from "next/image";
 import SecondarySidebar from "./SecondarySidebar";
-import CaretDoubleLeft from "../../../public/CaretDoubleLeft.png";
-import CaretDoubleRight from "../../../public/CaretDoubleRight.png";
+import CaretDoubleLeft from "@/../public/CaretDoubleLeft.png";
+import CaretDoubleRight from "@/../public/CaretDoubleRight.png";
 import { SideBarData } from "./helper";
 import { useRouter } from "next/navigation";
 

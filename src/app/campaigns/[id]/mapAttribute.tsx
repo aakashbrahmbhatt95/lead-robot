@@ -1,11 +1,11 @@
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "@/lib/ui/checkbox";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/lib/ui/select";
 import { mapTableData } from "./helper";
 
 const UploadCSV = () => {

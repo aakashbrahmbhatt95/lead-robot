@@ -1,5 +1,5 @@
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
-import { Input } from "./ui/input";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/lib/ui/sheet";
+import { Input } from "@/lib/ui/input";
 
 const TaskSheet = ({ taskDetails }: any) => {
   return (

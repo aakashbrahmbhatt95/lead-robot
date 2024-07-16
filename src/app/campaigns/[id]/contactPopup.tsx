@@ -1,10 +1,10 @@
 "use client";
 
-import { DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
+import { DialogContent, DialogHeader } from "@/lib/ui/dialog";
+import { Menubar, MenubarMenu, MenubarTrigger } from "@/lib/ui/menubar";
 import UploadCSV from "./UploadCSV";
 import { menuBarArray } from "./helper";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button";
 import MapAttribute from "./mapAttribute";
 import CustomTags from "./customTags";
 import Review from "./review";

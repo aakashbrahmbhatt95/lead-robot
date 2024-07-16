@@ -171,6 +171,22 @@ export const addPathConditionAction =
       .catch((err: any) => {})
       .finally(() => {});
   };
+export const editPathConditionAction =
+  (body: any, id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { pathConditionList } = getState()?.campaignReducer;
+    HttpUtil.makePUT(`${BASE_URL1}${GET_PATHCONDITION_URL}${id}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedPathConditionList = pathConditionList.map((ele: any) =>
+          ele.id === res?.data.id ? res.data : ele
+        );
+        dispatch(pathConditionListReducer(updatedPathConditionList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
 
 export const deletePathConditionAction =
   (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
