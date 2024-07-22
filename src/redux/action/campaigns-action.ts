@@ -2,8 +2,11 @@ import { AppDispatch, RootState } from "../store";
 import { HttpUtil } from "../../utils/http-util";
 import {
   BASE_URL1,
+  GET_ASK_URL,
   GET_CAMPAIGN_URL,
+  GET_DO_URL,
   GET_PATHCONDITION_URL,
+  GET_SAY_URL,
   GET_TASKSET_URL,
 } from "../../utils/apiConstants";
 import { getToken } from "@/utils/constants";
@@ -199,6 +202,228 @@ export const deletePathConditionAction =
           (ele: any) => ele.id.toString() !== id.toString()
         );
         dispatch(pathConditionListReducer(updatedPathConditionList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const addAskAction =
+  (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makePOST(`${BASE_URL1}${GET_ASK_URL}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        if (res?.success) {
+          const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+            if (taskSet.id === body.taskset_id) {
+              return {
+                ...taskSet,
+                asks: [...taskSet.asks, res.data],
+              };
+            }
+            return taskSet;
+          });
+          dispatch(taskSetListReducer(updatedTaskSetList));
+        }
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const editAskAction =
+  (body: any, id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makePUT(`${BASE_URL1}${GET_ASK_URL}${id}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+          if (taskSet.id === body.taskset_id) {
+            return {
+              ...taskSet,
+              asks: taskSet?.asks?.map((ele: any) =>
+                ele.id === res?.data.id ? res.data : ele
+              ),
+            };
+          }
+          return taskSet;
+        });
+        dispatch(taskSetListReducer(updatedTaskSetList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const deleteAskAction =
+  (id: any, taskset_id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makeDELETE(`${BASE_URL1}${GET_ASK_URL}${id}`, "", {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+          if (taskSet.id === taskset_id) {
+            return {
+              ...taskSet,
+              asks: taskSet?.asks.filter(
+                (ele: any) => ele.id.toString() !== id.toString()
+              ),
+            };
+          }
+          return taskSet;
+        });
+        dispatch(taskSetListReducer(updatedTaskSetList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const addSayAction =
+  (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makePOST(`${BASE_URL1}${GET_SAY_URL}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        if (res?.success) {
+          const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+            if (taskSet.id === body.taskset_id) {
+              return {
+                ...taskSet,
+                says: [...taskSet.says, res.data],
+              };
+            }
+            return taskSet;
+          });
+          dispatch(taskSetListReducer(updatedTaskSetList));
+        }
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const editSayAction =
+  (body: any, id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makePUT(`${BASE_URL1}${GET_SAY_URL}${id}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+          if (taskSet.id === body.taskset_id) {
+            return {
+              ...taskSet,
+              says: taskSet?.says?.map((ele: any) =>
+                ele.id === res?.data.id ? res.data : ele
+              ),
+            };
+          }
+          return taskSet;
+        });
+        dispatch(taskSetListReducer(updatedTaskSetList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const deleteSaysAction =
+  (id: any, taskset_id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makeDELETE(`${BASE_URL1}${GET_SAY_URL}${id}`, "", {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+          if (taskSet.id === taskset_id) {
+            return {
+              ...taskSet,
+              says: taskSet?.says.filter(
+                (ele: any) => ele.id.toString() !== id.toString()
+              ),
+            };
+          }
+          return taskSet;
+        });
+        dispatch(taskSetListReducer(updatedTaskSetList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const addDoAction =
+  (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makePOST(`${BASE_URL1}${GET_DO_URL}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        if (res?.success) {
+          const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+            if (taskSet.id === body.taskset_id) {
+              return {
+                ...taskSet,
+                dos: [...taskSet.dos, res.data],
+              };
+            }
+            return taskSet;
+          });
+          dispatch(taskSetListReducer(updatedTaskSetList));
+        }
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const editDoAction =
+  (body: any, id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makePUT(`${BASE_URL1}${GET_DO_URL}${id}`, body, {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+          if (taskSet.id === body.taskset_id) {
+            return {
+              ...taskSet,
+              dos: taskSet?.dos?.map((ele: any) =>
+                ele.id === res?.data.id ? res.data : ele
+              ),
+            };
+          }
+          return taskSet;
+        });
+        dispatch(taskSetListReducer(updatedTaskSetList));
+      })
+      .catch((err: any) => {})
+      .finally(() => {});
+  };
+
+export const deleteDoAction =
+  (id: any, taskset_id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makeDELETE(`${BASE_URL1}${GET_DO_URL}${id}`, "", {
+      Authorization: getToken(),
+    })
+      .then((res: any) => {
+        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
+          if (taskSet.id === taskset_id) {
+            return {
+              ...taskSet,
+              dos: taskSet?.dos.filter(
+                (ele: any) => ele.id.toString() !== id.toString()
+              ),
+            };
+          }
+          return taskSet;
+        });
+        dispatch(taskSetListReducer(updatedTaskSetList));
       })
       .catch((err: any) => {})
       .finally(() => {});
