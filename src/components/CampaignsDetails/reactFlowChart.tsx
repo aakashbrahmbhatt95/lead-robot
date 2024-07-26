@@ -130,8 +130,8 @@ const ReactFlowChart = () => {
       campaign_id: params?.id,
       name: temp?.name,
       speak_first: false,
-      x_position: node.position?.x,
-      y_position: node.position?.y,
+      x_position: Math.ceil(node.position?.x),
+      y_position: Math.ceil(node.position?.y),
     };
     dispatch(editTaskSetAction(body, node.id));
   };
