@@ -41,7 +41,7 @@ const DoCard = ({
           </CardHeader>
           <AccordionContent>
             <CardContent className="flex flex-col items-start py-1">
-              <p className="text-[#18181B] text-sm">{doDetail?.data?.name}</p>
+              <p className="text-[#18181B] text-sm">{doDetail?.action}</p>
               <div className="flex items-center gap-4 justify-end mt-4 w-full">
                 <DotsThree
                   size={20}

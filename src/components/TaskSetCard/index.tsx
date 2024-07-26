@@ -184,32 +184,32 @@ const TaskSetCard: React.FC<{
           })}
         </div>
       </Card>
-      <Sheet
-        open={isEditTaskSetPopup !== null}
-        onOpenChange={() => setIsEditTaskSetPopup(null)}
-      >
+      <Sheet open={isEditTaskSetPopup !== null}>
         <EditTaskSetPopup
           isEditTaskSetPopup={isEditTaskSetPopup}
           setIsEditTaskSetPopup={setIsEditTaskSetPopup}
         />
       </Sheet>
-      <Sheet
-        open={isAskSetPopup !== null}
-        onOpenChange={() => setIsAskSetPopup(null)}
-      >
-        <AskCardPopup isAskSetPopup={isAskSetPopup} taskSetDetails={ele} />
+      <Sheet open={isAskSetPopup !== null}>
+        <AskCardPopup
+          isAskSetPopup={isAskSetPopup}
+          taskSetDetails={ele}
+          setIsAskSetPopup={setIsAskSetPopup}
+        />
       </Sheet>
-      <Sheet
-        open={isSaySetPopup !== null}
-        onOpenChange={() => setIsSaySetPopup(null)}
-      >
-        <SayCardPopup isSaySetPopup={isSaySetPopup} taskSetDetails={ele} />
+      <Sheet open={isSaySetPopup !== null}>
+        <SayCardPopup
+          isSaySetPopup={isSaySetPopup}
+          taskSetDetails={ele}
+          setIsSaySetPopup={setIsSaySetPopup}
+        />
       </Sheet>
-      <Sheet
-        open={isDoSetPopup !== null}
-        onOpenChange={() => setIsDoSetPopup(null)}
-      >
-        <DoCardPopup isDoSetPopup={isDoSetPopup} taskSetDetails={ele} />
+      <Sheet open={isDoSetPopup !== null}>
+        <DoCardPopup
+          isDoSetPopup={isDoSetPopup}
+          taskSetDetails={ele}
+          setIsDoSetPopup={setIsDoSetPopup}
+        />
       </Sheet>
     </div>
   );

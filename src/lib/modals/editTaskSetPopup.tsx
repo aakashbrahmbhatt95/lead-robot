@@ -9,6 +9,7 @@ import {
   deletetaskSetAction,
   editTaskSetAction,
 } from "@/redux/action/campaigns-action";
+import { X } from "lucide-react";
 
 const EditTaskSetPopup = ({
   isEditTaskSetPopup,
@@ -27,6 +28,8 @@ const EditTaskSetPopup = ({
       campaign_id: isEditTaskSetPopup?.campaign,
       name: name,
       speak_first: false,
+      x_position: isEditTaskSetPopup?.x_position,
+      y_position: isEditTaskSetPopup?.y_position,
     };
     setIsEditTaskSetPopup(null);
     dispatch(editTaskSetAction(body, isEditTaskSetPopup?.id));
@@ -34,8 +37,16 @@ const EditTaskSetPopup = ({
 
   return (
     <SheetContent>
-      <SheetClose />
-      <Card className="w-[330px]">
+      <div className="flex justify-end">
+        <X
+          className="cursor-pointer"
+          onClick={() => {
+            setIsEditTaskSetPopup(null);
+            setIsEdit(false);
+          }}
+        />
+      </div>
+      <Card className="w-[330px] mt-4">
         <CardHeader>
           <div className="flex items-center justify-between w-full">
             <CardTitle className="text-sm">
@@ -43,7 +54,11 @@ const EditTaskSetPopup = ({
             </CardTitle>
             <div className="flex items-center gap-3">
               <DotsThree size={20} />
-              <PencilSimple size={20} onClick={() => setIsEdit(true)} />
+              <PencilSimple
+                className="cursor-pointer"
+                size={20}
+                onClick={() => setIsEdit(true)}
+              />
               <TrashSimple
                 size={20}
                 className="cursor-pointer"
@@ -63,7 +78,11 @@ const EditTaskSetPopup = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              <Button className="mt-2" onClick={handleEditTask}>
+              <Button
+                className="mt-2"
+                onClick={handleEditTask}
+                disabled={name === ""}
+              >
                 Save
               </Button>
             </>

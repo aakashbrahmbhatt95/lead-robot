@@ -7,13 +7,6 @@ import {
   CardTitle,
 } from "@/lib/ui/card";
 import { Input } from "@/lib/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/lib/ui/select";
 import { SheetClose, SheetContent } from "@/lib/ui/sheet";
 import { Textarea } from "@/lib/ui/textarea";
 import {
@@ -23,6 +16,7 @@ import {
 import { useAppDispatch } from "@/redux/store";
 import { PencilSimple } from "@phosphor-icons/react";
 import { Label } from "@radix-ui/react-label";
+import { X } from "lucide-react";
 import { useState } from "react";
 
 const PathConditionPopup = ({
@@ -39,6 +33,7 @@ const PathConditionPopup = ({
           from_taskset_id: isOpenEditPathCondition?.source,
           to_taskset_id: isOpenEditPathCondition?.target,
           condition: isOpenEditPathCondition?.label,
+          description: isOpenEditPathCondition?.description,
         },
         isOpenEditPathCondition?.id
       )
@@ -47,6 +42,15 @@ const PathConditionPopup = ({
   };
   return (
     <SheetContent>
+      <div className="flex justify-end">
+        <X
+          className="cursor-pointer"
+          onClick={() => {
+            setIsOpenEditPathCondition(null);
+            setIsEdit(false);
+          }}
+        />
+      </div>
       <Card className="w-[330px] mt-4">
         <CardHeader>
           <CardTitle className="mb-2"> Edit path condition </CardTitle>
@@ -77,31 +81,19 @@ const PathConditionPopup = ({
           </div>
         </CardHeader>
         <CardContent>
-          <Select defaultValue="Select template" disabled={!isEdit}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select template" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Select template">Select template</SelectItem>
-            </SelectContent>
-          </Select>
           <div className="mt-3">
             <Label>Description (Optional)</Label>
             <Textarea
-              value=""
-              //   onChange=""
+              value={isOpenEditPathCondition?.description}
+              onChange={(e) => {
+                const temp = {
+                  ...isOpenEditPathCondition,
+                  description: e.target.value,
+                };
+                setIsOpenEditPathCondition(temp);
+              }}
               className="mt-1"
               placeholder="Transition to reschedule booking"
-              disabled={!isEdit}
-            />
-          </div>
-          <div className="mt-3">
-            <Label>Prompt</Label>
-            <Textarea
-              value=""
-              //   onChange=""
-              className="min-h-[150px] mt-1"
-              placeholder="Description your path condiiton..."
               disabled={!isEdit}
             />
           </div>
@@ -128,7 +120,7 @@ const PathConditionPopup = ({
                 type="button"
                 variant="outline"
                 onClick={handleSave}
-                disabled={!isEdit}
+                disabled={!isEdit || isOpenEditPathCondition?.label === ""}
               >
                 Save
               </Button>

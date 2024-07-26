@@ -90,18 +90,23 @@ export const getcampaignsDatByIdAction =
       .finally(() => {});
   };
 
-export const taskSetListAction = () => async (dispatch: AppDispatch) => {
-  HttpUtil.makeGET(`${BASE_URL1}${GET_TASKSET_URL}`, "", {
-    Authorization: getToken(),
-  })
-    .then((res) => {
-      dispatch(taskSetListReducer(res?.data?.items));
-    })
-    .catch((err: any) => {
-      dispatch(taskSetListReducer([]));
-    })
-    .finally(() => {});
-};
+export const taskSetListAction =
+  (campaign_id: any) => async (dispatch: AppDispatch) => {
+    HttpUtil.makeGET(
+      `${BASE_URL1}${GET_TASKSET_URL}?campaign_id=${campaign_id}`,
+      "",
+      {
+        Authorization: getToken(),
+      }
+    )
+      .then((res) => {
+        dispatch(taskSetListReducer(res?.data?.items));
+      })
+      .catch((err: any) => {
+        dispatch(taskSetListReducer([]));
+      })
+      .finally(() => {});
+  };
 
 export const addtaskSetAction =
   (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {

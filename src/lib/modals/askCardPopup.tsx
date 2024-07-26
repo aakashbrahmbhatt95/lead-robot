@@ -23,71 +23,83 @@ import { useEffect, useState } from "react";
 import { Plus } from "@phosphor-icons/react";
 import { useAppDispatch } from "@/redux/store";
 import { addAskAction, editAskAction } from "@/redux/action/campaigns-action";
+import { useFormik } from "formik";
+import { askCardValidationScheme } from "@/components/validation";
+import { X } from "lucide-react";
 
 const AskCardPopup = ({
   isAskSetPopup,
   taskSetDetails,
+  setIsAskSetPopup,
 }: any) => {
   const dispatch = useAppDispatch();
-  const [isValidationEnabled, setIsValidationEnabled] = useState(true);
+  const [isValidationEnabled, setIsValidationEnabled] = useState(false);
   const [options, setOptions] = useState<any>([]);
-  const [formData, setFormData] = useState<any>({});
+
   useEffect(() => {
-    setFormData({
-      name: isAskSetPopup?.name,
-      question: isAskSetPopup?.question,
-      responseType: isAskSetPopup?.response_type,
-      regexFormat: isAskSetPopup?.validations?.regex_format,
-      errorResponse: isAskSetPopup?.error_response,
-      options: [],
-      is_active: isAskSetPopup?.is_active,
-    });
+    if (isAskSetPopup) {
+      formik.setValues({
+        question: isAskSetPopup?.question || "",
+        responseType: isAskSetPopup?.response_type || "",
+        regexFormat: isAskSetPopup?.validations?.regex_format || "",
+        errorResponse: isAskSetPopup?.error_response || "",
+        options: [],
+        is_active: isAskSetPopup?.is_active || true,
+      });
+    }
   }, [isAskSetPopup]);
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const formik: any = useFormik({
+    initialValues: {
+      question: isAskSetPopup?.question || "",
+      responseType: isAskSetPopup?.response_type || "",
+      regexFormat: isAskSetPopup?.validations?.regex_format || "",
+      errorResponse: isAskSetPopup?.error_response || "",
+      options: [],
+      is_active: isAskSetPopup?.is_active || true,
+    },
+    validationSchema: askCardValidationScheme,
+    onSubmit: (values) => {
+      const body = {
+        taskset_id: taskSetDetails?.id,
+        order: isAskSetPopup?.order,
+        is_required: true,
+        is_active: values.is_active,
+        include_condition: "string",
+        exclude_condition: "string",
+        question: values.question,
+        response_type: values.responseType,
+        error_response: values.errorResponse,
+        validations: {
+          regex_format: values.regexFormat,
+        },
+      };
+      if (isAskSetPopup?.isEdit) {
+        dispatch(editAskAction(body, isAskSetPopup?.id));
+      } else {
+        dispatch(addAskAction(body));
+      }
+      setIsAskSetPopup(null);
+    },
+  });
 
   const handleAddOption = () => {
     setOptions([...options, `Option ${options.length + 1}`]);
   };
 
-  const handleSave = () => {
-    const body = {
-      taskset_id: taskSetDetails?.id,
-      order: isAskSetPopup?.order,
-      is_required: true,
-      is_active: formData.is_active,
-      include_condition: "string",
-      exclude_condition: "string",
-      question: formData.question,
-      response_type: formData.responseType,
-      error_response: formData.errorResponse,
-      validations: {
-        regex_format: formData.regexFormat,
-      },
-    };
-    if (isAskSetPopup?.isEdit) {
-      dispatch(editAskAction(body, isAskSetPopup?.id));
-    } else {
-      dispatch(addAskAction(body));
-    }
-  };
-
   return (
     <SheetContent>
+      <div className="flex justify-end">
+        <X className="cursor-pointer" onClick={() => setIsAskSetPopup(null)} />
+      </div>
       <Card className="w-[330px] mt-4">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle> Ask </CardTitle>
             <Switch
-              checked={formData.is_active}
+              checked={formik.values.is_active}
               onCheckedChange={(checked) =>
-                setFormData({ ...formData, is_active: checked })
+                formik.setFieldValue("is_active", checked)
               }
             />
           </div>
@@ -99,113 +111,109 @@ const AskCardPopup = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="mb-5">
-            <Label>Name</Label>
-            <Input
-              name="name"
-              placeholder="Action Name"
-              value={formData.name}
-              onChange={handleInputChange}
+          <form onSubmit={formik.handleSubmit}>
+            <Label>Question (Ask For)</Label>
+            <Textarea
+              name="question"
+              placeholder="Ask question here..."
+              value={formik.values.question}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-          </div>
-          <Label>Question (Ask For)</Label>
-          <Textarea
-            name="question"
-            placeholder="Ask question here..."
-            value={formData.question}
-            onChange={handleInputChange}
-          />
-          <div className="mt-5">
-            <Label className="mt-5">Response Type</Label>
-            <Select
-              name="responseType"
-              defaultValue={formData.responseType}
-              onValueChange={(value) =>
-                setFormData({ ...formData, responseType: value })
-              }
-            >
-              <SelectTrigger className="w-full mt-3">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="text">Text</SelectItem>
-                <SelectItem value="number">Number</SelectItem>
-                <SelectItem value="option">Option</SelectItem>
-                <SelectItem value="date">Date</SelectItem>
-                <SelectItem value="time">Time</SelectItem>
-                <SelectItem value="yesno">Yes/No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          {formData.responseType === "text" ||
-          formData.responseType === "number" ? (
+            {formik.touched.question && formik.errors.question ? (
+              <div className="text-red-600">{formik.errors.question}</div>
+            ) : null}
             <div className="mt-5">
-              <div className="flex items-center gap-4">
-                <Switch
-                  checked={isValidationEnabled}
-                  onCheckedChange={setIsValidationEnabled}
-                />
-                <label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Add Validation
-                </label>
-              </div>
-              {isValidationEnabled && (
-                <div className="mt-5 flex flex-col gap-4">
-                  <Label>Regex Format</Label>
-                  <Textarea
-                    name="regexFormat"
-                    placeholder="Enter regex format"
-                    value={formData.regexFormat}
-                    onChange={handleInputChange}
-                  />
-                  <Label className="mt-3">Error Response (optional)</Label>
-                  <Textarea
-                    name="errorResponse"
-                    placeholder="Enter error response"
-                    value={formData.errorResponse}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              )}
-            </div>
-          ) : null}
-          {formData.responseType === "option" ? (
-            <div className="mt-5">
-              <button
-                className="w-full flex justify-center my-5"
-                onClick={handleAddOption}
+              <Label className="mt-5">Response Type</Label>
+              <Select
+                name="responseType"
+                defaultValue={formik.values.responseType}
+                onValueChange={(value) =>
+                  formik.setFieldValue("responseType", value)
+                }
               >
-                <Plus />
-              </button>
-              {options.map((option: any, index: any) => (
-                <Input
-                  key={index}
-                  placeholder={option}
-                  className="mt-2"
-                  value={option}
-                  onChange={(e) => {
-                    const newOptions = [...options];
-                    newOptions[index] = e.target.value;
-                    setOptions(newOptions);
-                    setFormData({
-                      ...formData,
-                      options: newOptions,
-                    });
-                  }}
-                />
-              ))}
+                <SelectTrigger className="w-full mt-3">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="text">Text</SelectItem>
+                  <SelectItem value="number">Number</SelectItem>
+                  <SelectItem value="option">Option</SelectItem>
+                  <SelectItem value="date">Date</SelectItem>
+                  <SelectItem value="time">Time</SelectItem>
+                  <SelectItem value="yesno">Yes/No</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          ) : null}
-          <div className="w-full flex justify-end mt-4">
-            <SheetClose>
-              <Button type="button" variant="outline" onClick={handleSave}>
-                Save
-              </Button>
-            </SheetClose>
-          </div>
+            {formik.values.responseType === "text" ||
+            formik.values.responseType === "number" ? (
+              <div className="mt-5">
+                <div className="flex items-center gap-4">
+                  <Switch
+                    checked={isValidationEnabled}
+                    onCheckedChange={setIsValidationEnabled}
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Add Validation
+                  </label>
+                </div>
+                {isValidationEnabled && (
+                  <div className="mt-5 flex flex-col gap-4">
+                    <Label>Regex Format</Label>
+                    <Textarea
+                      name="regexFormat"
+                      placeholder="Enter regex format"
+                      value={formik.values.regexFormat}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    <Label className="mt-3">Error Response (optional)</Label>
+                    <Textarea
+                      name="errorResponse"
+                      placeholder="Enter error response"
+                      value={formik.values.errorResponse}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : null}
+            {formik.values.responseType === "option" ? (
+              <div className="mt-5">
+                <button
+                  className="w-full flex justify-center my-5"
+                  onClick={handleAddOption}
+                >
+                  <Plus />
+                </button>
+                {options.map((option: any, index: any) => (
+                  <Input
+                    key={index}
+                    placeholder={option}
+                    className="mt-2"
+                    value={option}
+                    onChange={(e) => {
+                      const newOptions = [...options];
+                      newOptions[index] = e.target.value;
+                      setOptions(newOptions);
+                      formik.setFieldValue("options", newOptions);
+                    }}
+                  />
+                ))}
+              </div>
+            ) : null}
+            <div className="w-full flex justify-end mt-4">
+              <SheetClose>
+                <Button type="submit" variant="outline">
+                  Save
+                </Button>
+              </SheetClose>
+            </div>
+          </form>
         </CardContent>
       </Card>
     </SheetContent>

@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import {
   addPathConditionAction,
   addtaskSetAction,
+  editTaskSetAction,
   pathConditionListAction,
   taskSetListAction,
 } from "@/redux/action/campaigns-action";
@@ -45,7 +46,7 @@ const ReactFlowChart = () => {
   );
 
   useEffect(() => {
-    dispatch(taskSetListAction());
+    dispatch(taskSetListAction(params?.id));
     dispatch(pathConditionListAction());
   }, [dispatch]);
 
@@ -54,8 +55,8 @@ const ReactFlowChart = () => {
       ...ele,
       id: `${ele.id}`,
       position: {
-        x: 200 + 400 * index,
-        y: 10 + 200 * index,
+        x: ele?.x_position,
+        y: ele?.y_position,
       },
       data: {
         label: <TaskSetCard ele={ele} />,
@@ -107,13 +108,32 @@ const ReactFlowChart = () => {
         campaign_id: params?.id,
         name: `Task Set ${Math.random()}`,
         speak_first: false,
+        x_position: 200,
+        y_position: 10,
       })
     );
   };
 
   const onEdgeClick = (event: any, edge: any) => {
     event.stopPropagation();
-    setIsOpenEditPathCondition(edge);
+    const temp = pathConditionList?.filter(
+      (ele: any) => ele?.id.toString() === edge.id
+    )[0];
+    setIsOpenEditPathCondition({ ...edge, description: temp?.description });
+  };
+
+  const handleNodeDragStop = (event: any, node: any) => {
+    const temp = taskSetList?.filter(
+      (ele: any) => ele?.id.toString() === node.id
+    )[0];
+    const body = {
+      campaign_id: params?.id,
+      name: temp?.name,
+      speak_first: false,
+      x_position: node.position?.x,
+      y_position: node.position?.y,
+    };
+    dispatch(editTaskSetAction(body, node.id));
   };
 
   return (
@@ -132,6 +152,7 @@ const ReactFlowChart = () => {
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
+        onNodeDragStop={handleNodeDragStop}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onEdgeClick={onEdgeClick}
@@ -142,7 +163,6 @@ const ReactFlowChart = () => {
       </ReactFlow>
       <Sheet
         open={isOpenEditPathCondition !== null}
-        onOpenChange={() => setIsOpenEditPathCondition(null)}
       >
         <PathConditionPopup
           isOpenEditPathCondition={isOpenEditPathCondition}
