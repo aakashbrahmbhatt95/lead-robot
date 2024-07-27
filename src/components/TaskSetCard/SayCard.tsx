@@ -9,7 +9,10 @@ import {
   AccordionTrigger,
 } from "@/lib/ui/accordion";
 import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
-import { deleteSaysAction } from "@/redux/action/campaigns-action";
+import {
+  deleteSaysAction,
+  editSayAction,
+} from "@/redux/action/campaigns-action";
 import { useAppDispatch } from "@/redux/store";
 
 const SayCard = ({
@@ -36,7 +39,21 @@ const SayCard = ({
                 <AccordionTrigger onClick={toggleAccordion} />
                 <CardTitle className="text-sm">{sayDetail?.id}. Say</CardTitle>
               </div>
-              <Switch defaultChecked={sayDetail?.is_active} />
+              <Switch
+                checked={sayDetail?.is_active}
+                onCheckedChange={(checked: any) => {
+                  dispatch(
+                    editSayAction(
+                      {
+                        ...sayDetail,
+                        taskset_id: taskSetDetails?.id,
+                        is_active: checked,
+                      },
+                      sayDetail?.id
+                    )
+                  );
+                }}
+              />
             </div>
           </CardHeader>
           <AccordionContent>
@@ -45,12 +62,14 @@ const SayCard = ({
               <div className="flex items-center gap-4 justify-end mt-4 w-full">
                 <DotsThree
                   size={20}
+                  className="cursor-pointer"
                   onClick={() =>
                     setIsSaySetPopup({ ...sayDetail, isEdit: true })
                   }
                 />
-                <CopySimple size={20} />
+                <CopySimple size={20} className="cursor-pointer" />
                 <TrashSimple
+                  className="cursor-pointer"
                   size={20}
                   onClick={() =>
                     dispatch(
@@ -59,7 +78,21 @@ const SayCard = ({
                   }
                 />
                 <div className="flex gap-1 ">
-                  <Checkbox defaultChecked={sayDetail?.is_required} />
+                  <Checkbox
+                    checked={sayDetail?.is_required}
+                    onCheckedChange={(checked: any) => {
+                      dispatch(
+                        editSayAction(
+                          {
+                            ...sayDetail,
+                            taskset_id: taskSetDetails?.id,
+                            is_required: checked,
+                          },
+                          sayDetail?.id
+                        )
+                      );
+                    }}
+                  />
                   <Label
                     htmlFor="terms"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

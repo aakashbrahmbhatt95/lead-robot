@@ -1,6 +1,6 @@
 import { DotsThree, PencilSimple, TrashSimple } from "@phosphor-icons/react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { SheetClose, SheetContent } from "../ui/sheet";
+import { SheetContent } from "../ui/sheet";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -10,26 +10,31 @@ import {
   editTaskSetAction,
 } from "@/redux/action/campaigns-action";
 import { X } from "lucide-react";
+import { Checkbox } from "../ui/checkbox";
 
 const EditTaskSetPopup = ({
   isEditTaskSetPopup,
   setIsEditTaskSetPopup,
 }: any) => {
   const dispatch = useAppDispatch();
-  const [name, setName] = useState(isEditTaskSetPopup?.name);
   const [isEdit, setIsEdit] = useState(false);
+  const [formValues, setFormValues] = useState<any>(null);
 
   useEffect(() => {
-    setName(isEditTaskSetPopup?.name);
+    setFormValues({
+      name: isEditTaskSetPopup?.name,
+      is_parent: isEditTaskSetPopup?.is_parent,
+    });
   }, [isEditTaskSetPopup]);
 
   const handleEditTask = () => {
     const body = {
       campaign_id: isEditTaskSetPopup?.campaign,
-      name: name,
+      name: formValues?.name,
       speak_first: false,
       x_position: isEditTaskSetPopup?.x_position,
       y_position: isEditTaskSetPopup?.y_position,
+      is_parent: formValues?.is_parent,
     };
     setIsEditTaskSetPopup(null);
     dispatch(editTaskSetAction(body, isEditTaskSetPopup?.id));
@@ -75,13 +80,29 @@ const EditTaskSetPopup = ({
             <>
               <Input
                 placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formValues?.name}
+                onChange={(e) =>
+                  setFormValues({ ...formValues, name: e.target.value })
+                }
               />
+              <div className="flex items-center space-x-2 mt-5">
+                <Checkbox
+                  checked={formValues.is_parent}
+                  onCheckedChange={(checked: any) => {
+                    setFormValues({ ...formValues, is_parent: checked });
+                  }}
+                />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  is Parent
+                </label>
+              </div>
               <Button
-                className="mt-2"
+                className="mt-4"
                 onClick={handleEditTask}
-                disabled={name === ""}
+                disabled={formValues?.name === ""}
               >
                 Save
               </Button>

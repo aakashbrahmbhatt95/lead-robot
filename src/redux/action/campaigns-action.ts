@@ -1,5 +1,6 @@
 import { AppDispatch, RootState } from "../store";
 import { HttpUtil } from "../../utils/http-util";
+import { toast } from "react-toastify";
 import {
   BASE_URL1,
   GET_ASK_URL,
@@ -38,8 +39,11 @@ export const addCampaignsAction =
     })
       .then((res: any) => {
         dispatch(campaignsListReducer([...campaignsList, res?.data]));
+        toast.success("Campaign Added Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -55,8 +59,11 @@ export const editCampaignsAction =
           campaign.id === res?.data.id ? res.data : campaign
         );
         dispatch(campaignsListReducer(updatedCampaignsList));
+        toast.success("Campaign Updated Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -71,8 +78,11 @@ export const deleteCampaignsAction =
           (campaign: any) => campaign.id !== id
         );
         dispatch(campaignsListReducer(updatedCampaignsList));
+        toast.success("Campaign Deleted Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -116,8 +126,11 @@ export const addtaskSetAction =
     })
       .then((res: any) => {
         dispatch(taskSetListReducer([...taskSetList, res?.data]));
+        toast.success("Task Added Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -132,8 +145,11 @@ export const deletetaskSetAction =
           (ele: any) => ele.id !== id
         );
         dispatch(taskSetListReducer(updatedtaskSetList));
+        toast.success("Task Deleted Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -149,8 +165,11 @@ export const editTaskSetAction =
           ele.id === res?.data.id ? res.data : ele
         );
         dispatch(taskSetListReducer(updatedtaskSetList));
+        toast.success("Task Updated Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -175,8 +194,11 @@ export const addPathConditionAction =
     })
       .then((res: any) => {
         dispatch(pathConditionListReducer([...pathConditionList, res?.data]));
+        toast.success("Path Added Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 export const editPathConditionAction =
@@ -191,8 +213,11 @@ export const editPathConditionAction =
           ele.id === res?.data.id ? res.data : ele
         );
         dispatch(pathConditionListReducer(updatedPathConditionList));
+        toast.success("Path Updated Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -207,8 +232,11 @@ export const deletePathConditionAction =
           (ele: any) => ele.id.toString() !== id.toString()
         );
         dispatch(pathConditionListReducer(updatedPathConditionList));
+        toast.success("Path Deleted Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -230,9 +258,10 @@ export const addAskAction =
             return taskSet;
           });
           dispatch(taskSetListReducer(updatedTaskSetList));
+          toast.success("Ask Added Succesfully!");
         }
       })
-      .catch((err: any) => {})
+      .catch((err: any) => toast.error("Oops! Something went wrong"))
       .finally(() => {});
   };
 
@@ -256,8 +285,11 @@ export const editAskAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
+        toast.success("Ask Updated Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -281,8 +313,11 @@ export const deleteAskAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
+        toast.success("Ask Deleted Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -304,9 +339,12 @@ export const addSayAction =
             return taskSet;
           });
           dispatch(taskSetListReducer(updatedTaskSetList));
+          toast.success("Say Added Succesfully!");
         }
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -330,8 +368,11 @@ export const editSayAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
+        toast.success("Say Updated Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -355,8 +396,11 @@ export const deleteSaysAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
+        toast.success("Say Deleted Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -378,9 +422,12 @@ export const addDoAction =
             return taskSet;
           });
           dispatch(taskSetListReducer(updatedTaskSetList));
+          toast.success("Do Added Succesfully!");
         }
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -404,8 +451,11 @@ export const editDoAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
+        toast.success("Do Updated Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };
 
@@ -429,7 +479,10 @@ export const deleteDoAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
+        toast.success("Do Deleted Succesfully!");
       })
-      .catch((err: any) => {})
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
       .finally(() => {});
   };

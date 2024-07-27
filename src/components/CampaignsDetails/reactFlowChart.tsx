@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -44,6 +44,7 @@ const ReactFlowChart = () => {
   const { taskSetList, pathConditionList }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
+  const initialPositionsRef: any = useRef({});
 
   useEffect(() => {
     dispatch(taskSetListAction(params?.id));
@@ -70,6 +71,11 @@ const ReactFlowChart = () => {
       height: 36,
     }));
     setNodes(temp);
+    const initialPositions: any = {};
+    temp.forEach((node: any) => {
+      initialPositions[node.id] = { x: node.position.x, y: node.position.y };
+    });
+    initialPositionsRef.current = initialPositions;
   }, [taskSetList]);
 
   useEffect(() => {
@@ -110,6 +116,7 @@ const ReactFlowChart = () => {
         speak_first: false,
         x_position: 200,
         y_position: 10,
+        is_parent: false,
       })
     );
   };
@@ -123,6 +130,13 @@ const ReactFlowChart = () => {
   };
 
   const handleNodeDragStop = (event: any, node: any) => {
+    const initialPosition = initialPositionsRef.current[node.id];
+    if (
+      node.position.x === initialPosition.x &&
+      node.position.y === initialPosition.y
+    ) {
+      return;
+    }
     const temp = taskSetList?.filter(
       (ele: any) => ele?.id.toString() === node.id
     )[0];
@@ -132,6 +146,7 @@ const ReactFlowChart = () => {
       speak_first: false,
       x_position: Math.ceil(node.position?.x),
       y_position: Math.ceil(node.position?.y),
+      is_parent: temp?.is_parent,
     };
     dispatch(editTaskSetAction(body, node.id));
   };
@@ -161,13 +176,13 @@ const ReactFlowChart = () => {
         <Controls />
         <Background />
       </ReactFlow>
-      <Sheet
-        open={isOpenEditPathCondition !== null}
-      >
-        <PathConditionPopup
-          isOpenEditPathCondition={isOpenEditPathCondition}
-          setIsOpenEditPathCondition={setIsOpenEditPathCondition}
-        />
+      <Sheet open={isOpenEditPathCondition !== null}>
+        {isOpenEditPathCondition !== null && (
+          <PathConditionPopup
+            isOpenEditPathCondition={isOpenEditPathCondition}
+            setIsOpenEditPathCondition={setIsOpenEditPathCondition}
+          />
+        )}
       </Sheet>
     </div>
   );

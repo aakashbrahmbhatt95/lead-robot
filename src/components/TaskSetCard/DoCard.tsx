@@ -10,7 +10,7 @@ import { Label } from "@/lib/ui/label";
 import { Checkbox } from "@/lib/ui/checkbox";
 import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
 import { useAppDispatch } from "@/redux/store";
-import { deleteDoAction } from "@/redux/action/campaigns-action";
+import { deleteDoAction, editDoAction } from "@/redux/action/campaigns-action";
 
 const DoCard = ({
   doDetail,
@@ -36,7 +36,21 @@ const DoCard = ({
                 <AccordionTrigger onClick={toggleAccordion} />
                 <CardTitle className="text-sm">{doDetail?.id}. Do</CardTitle>
               </div>
-              <Switch defaultChecked={doDetail?.is_active} />
+              <Switch
+                checked={doDetail?.is_active}
+                onCheckedChange={(checked: any) => {
+                  dispatch(
+                    editDoAction(
+                      {
+                        ...doDetail,
+                        taskset_id: taskSetDetails?.id,
+                        is_active: checked,
+                      },
+                      doDetail?.id
+                    )
+                  );
+                }}
+              />
             </div>
           </CardHeader>
           <AccordionContent>
@@ -45,17 +59,33 @@ const DoCard = ({
               <div className="flex items-center gap-4 justify-end mt-4 w-full">
                 <DotsThree
                   size={20}
+                  className="cursor-pointer"
                   onClick={() => setIsDoSetPopup({ ...doDetail, isEdit: true })}
                 />
-                <CopySimple size={20} />
+                <CopySimple size={20} className="cursor-pointer" />
                 <TrashSimple
+                  className="cursor-pointer"
                   size={20}
                   onClick={() =>
                     dispatch(deleteDoAction(doDetail?.id, taskSetDetails?.id))
                   }
                 />
                 <div className="flex gap-1 ">
-                  <Checkbox defaultChecked={doDetail?.is_required} />
+                  <Checkbox
+                    checked={doDetail?.is_required}
+                    onCheckedChange={(checked: any) => {
+                      dispatch(
+                        editDoAction(
+                          {
+                            ...doDetail,
+                            taskset_id: taskSetDetails?.id,
+                            is_required: checked,
+                          },
+                          doDetail?.id
+                        )
+                      );
+                    }}
+                  />
                   <Label
                     htmlFor="terms"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

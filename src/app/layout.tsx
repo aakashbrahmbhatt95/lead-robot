@@ -5,6 +5,8 @@ import { ReduxProvider } from "@/redux/provider";
 import { Toaster } from "@/lib/ui/toaster";
 import ProtectedWrapper from "@/utils/protectedWrapper";
 import { ThemeProvider } from "@/lib/ThemeProvider";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -31,6 +33,7 @@ export default function RootLayout({
             {children}
             </ProtectedWrapper>
             <Toaster />
+            <ToastContainer />
           </ReduxProvider>
         </ThemeProvider>
       </body>

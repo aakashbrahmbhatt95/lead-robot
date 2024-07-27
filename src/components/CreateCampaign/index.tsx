@@ -20,7 +20,7 @@ const CreateCampaign = () => {
   const [formValues, setFormValues] = useState({
     name: "",
     description: "",
-    is_active: false,
+    is_active: true,
   });
   const { campaignDataById }: any = useAppSelector(
     (state: any) => state.campaignReducer
@@ -33,14 +33,14 @@ const CreateCampaign = () => {
   }, [isEdit]);
 
   useEffect(() => {
-    if (campaignDataById) {
+    if (isEdit && campaignDataById) {
       setFormValues({
         name: campaignDataById?.name,
         description: campaignDataById?.description,
         is_active: campaignDataById?.is_active,
       });
     }
-  }, [campaignDataById]);
+  }, [isEdit,campaignDataById]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;

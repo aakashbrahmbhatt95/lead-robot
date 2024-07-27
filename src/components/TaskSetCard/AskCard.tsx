@@ -9,7 +9,10 @@ import { Switch } from "@/lib/ui/switch";
 import { Label } from "@/lib/ui/label";
 import { Checkbox } from "@/lib/ui/checkbox";
 import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
-import { deleteAskAction } from "@/redux/action/campaigns-action";
+import {
+  deleteAskAction,
+  editAskAction,
+} from "@/redux/action/campaigns-action";
 import { useAppDispatch } from "@/redux/store";
 
 const AskCard = ({
@@ -35,7 +38,21 @@ const AskCard = ({
                 <AccordionTrigger onClick={toggleAccordion} />
                 <CardTitle className="text-sm">{askDetail?.id}. Ask </CardTitle>
               </div>
-              <Switch defaultChecked={askDetail?.is_active} />
+              <Switch
+                checked={askDetail?.is_active}
+                onCheckedChange={(checked: any) => {
+                  dispatch(
+                    editAskAction(
+                      {
+                        ...askDetail,
+                        taskset_id: taskSetDetails?.id,
+                        is_active: checked,
+                      },
+                      askDetail?.id
+                    )
+                  );
+                }}
+              />
             </div>
           </CardHeader>
           <AccordionContent>
@@ -43,20 +60,36 @@ const AskCard = ({
               <p className="text-[#18181B] text-sm">{askDetail?.question}</p>
               <div className="flex items-center gap-4 justify-end mt-4 w-full">
                 <DotsThree
+                  className="cursor-pointer"
                   size={20}
                   onClick={() =>
                     setIsAskSetPopup({ ...askDetail, isEdit: true })
                   }
                 />
-                <CopySimple size={20} />
+                <CopySimple size={20} className="cursor-pointer" />
                 <TrashSimple
+                  className="cursor-pointer"
                   size={20}
                   onClick={() =>
                     dispatch(deleteAskAction(askDetail?.id, taskSetDetails?.id))
                   }
                 />
                 <div className="flex gap-1 items-center">
-                  <Checkbox defaultChecked={askDetail?.is_required} />
+                  <Checkbox
+                    checked={askDetail?.is_required}
+                    onCheckedChange={(checked: any) => {
+                      dispatch(
+                        editAskAction(
+                          {
+                            ...askDetail,
+                            taskset_id: taskSetDetails?.id,
+                            is_required: checked,
+                          },
+                          askDetail?.id
+                        )
+                      );
+                    }}
+                  />
                   <Label
                     htmlFor="terms"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

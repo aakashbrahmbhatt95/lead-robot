@@ -26,6 +26,7 @@ import { addAskAction, editAskAction } from "@/redux/action/campaigns-action";
 import { useFormik } from "formik";
 import { askCardValidationScheme } from "@/components/validation";
 import { X } from "lucide-react";
+import { Checkbox } from "../ui/checkbox";
 
 const AskCardPopup = ({
   isAskSetPopup,
@@ -37,41 +38,43 @@ const AskCardPopup = ({
   const [options, setOptions] = useState<any>([]);
 
   useEffect(() => {
-    if (isAskSetPopup) {
+    if (isAskSetPopup?.isEdit === true) {
       formik.setValues({
         question: isAskSetPopup?.question || "",
-        responseType: isAskSetPopup?.response_type || "",
-        regexFormat: isAskSetPopup?.validations?.regex_format || "",
-        errorResponse: isAskSetPopup?.error_response || "",
+        response_type: isAskSetPopup?.response_type || "",
+        regex_format: isAskSetPopup?.validations?.regex_format || "",
+        error_response: isAskSetPopup?.error_response || "",
         options: [],
-        is_active: isAskSetPopup?.is_active || true,
+        is_active: isAskSetPopup.is_active,
+        is_required: isAskSetPopup.is_required,
       });
     }
-  }, [isAskSetPopup]);
+  }, [isAskSetPopup?.isEdit]);
 
   const formik: any = useFormik({
     initialValues: {
       question: isAskSetPopup?.question || "",
-      responseType: isAskSetPopup?.response_type || "",
-      regexFormat: isAskSetPopup?.validations?.regex_format || "",
-      errorResponse: isAskSetPopup?.error_response || "",
+      response_type: isAskSetPopup?.response_type || "",
+      regex_format: isAskSetPopup?.validations?.regex_format || "",
+      error_response: isAskSetPopup?.error_response || "",
       options: [],
       is_active: isAskSetPopup?.is_active || true,
+      is_required: isAskSetPopup?.is_required || true,
     },
     validationSchema: askCardValidationScheme,
     onSubmit: (values) => {
       const body = {
         taskset_id: taskSetDetails?.id,
         order: isAskSetPopup?.order,
-        is_required: true,
+        is_required: values?.is_required,
         is_active: values.is_active,
         include_condition: "string",
         exclude_condition: "string",
         question: values.question,
-        response_type: values.responseType,
-        error_response: values.errorResponse,
+        response_type: values?.response_type,
+        error_response: values?.error_response,
         validations: {
-          regex_format: values.regexFormat,
+          regex_format: values?.regex_format,
         },
       };
       if (isAskSetPopup?.isEdit) {
@@ -126,10 +129,10 @@ const AskCardPopup = ({
             <div className="mt-5">
               <Label className="mt-5">Response Type</Label>
               <Select
-                name="responseType"
-                defaultValue={formik.values.responseType}
+                name="response_type"
+                defaultValue={formik.values.response_type}
                 onValueChange={(value) =>
-                  formik.setFieldValue("responseType", value)
+                  formik.setFieldValue("response_type", value)
                 }
               >
                 <SelectTrigger className="w-full mt-3">
@@ -145,8 +148,8 @@ const AskCardPopup = ({
                 </SelectContent>
               </Select>
             </div>
-            {formik.values.responseType === "text" ||
-            formik.values.responseType === "number" ? (
+            {formik.values.response_type === "text" ||
+            formik.values.response_type === "number" ? (
               <div className="mt-5">
                 <div className="flex items-center gap-4">
                   <Switch
@@ -164,17 +167,17 @@ const AskCardPopup = ({
                   <div className="mt-5 flex flex-col gap-4">
                     <Label>Regex Format</Label>
                     <Textarea
-                      name="regexFormat"
+                      name="regex_format"
                       placeholder="Enter regex format"
-                      value={formik.values.regexFormat}
+                      value={formik.values.regex_format}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     />
                     <Label className="mt-3">Error Response (optional)</Label>
                     <Textarea
-                      name="errorResponse"
+                      name="error_response"
                       placeholder="Enter error response"
-                      value={formik.values.errorResponse}
+                      value={formik.values.error_response}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     />
@@ -182,7 +185,7 @@ const AskCardPopup = ({
                 )}
               </div>
             ) : null}
-            {formik.values.responseType === "option" ? (
+            {formik.values.response_type === "option" ? (
               <div className="mt-5">
                 <button
                   className="w-full flex justify-center my-5"
@@ -206,6 +209,20 @@ const AskCardPopup = ({
                 ))}
               </div>
             ) : null}
+            <div className="flex items-center space-x-2 mt-5">
+              <Checkbox
+                checked={formik.values.is_required}
+                onCheckedChange={(checked: any) =>
+                  formik.setFieldValue("is_required", checked)
+                }
+              />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Required
+              </label>
+            </div>
             <div className="w-full flex justify-end mt-4">
               <SheetClose>
                 <Button type="submit" variant="outline">

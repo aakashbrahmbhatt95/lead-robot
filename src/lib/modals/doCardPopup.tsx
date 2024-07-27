@@ -35,26 +35,27 @@ const DoCardPopup = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isDoSetPopup) {
+    if (isDoSetPopup?.isEdit) {
       formik.setValues({
         name: isDoSetPopup?.data?.name || "",
         number: isDoSetPopup?.data?.number || "",
         description: isDoSetPopup?.data?.description || "",
         action: isDoSetPopup?.action || "",
-        is_active: isDoSetPopup?.is_active ?? true,
-        is_required: isDoSetPopup?.is_required ?? true,
+        is_active: isDoSetPopup?.is_active,
+        is_required: isDoSetPopup?.is_required,
       });
     }
-  }, [isDoSetPopup]);
+  }, [isDoSetPopup?.isEdit]);
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     initialValues: {
-      name: "",
-      number: "",
-      description: "",
-      action: "",
-      is_active: true,
-      is_required: true,
+      name: isDoSetPopup?.name || "",
+      number: isDoSetPopup?.number || "",
+      description: isDoSetPopup?.validations?.description || "",
+      action: isDoSetPopup?.action || "",
+      options: [],
+      is_active: isDoSetPopup?.is_active || true,
+      is_required: isDoSetPopup?.is_required || true,
     },
     enableReinitialize: true,
     validationSchema: doCardValidationSchema,
@@ -111,30 +112,34 @@ const DoCardPopup = ({
         <CardContent>
           <form onSubmit={formik.handleSubmit}>
             <div className="mt-2">
-              <Select
-                name="action"
-                defaultValue={formik.values.action}
-                onValueChange={(value) => formik.setFieldValue("action", value)}
-              >
-                <SelectTrigger className="w-full mt-3">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="end call">End call</SelectItem>
-                  <SelectItem value="transfer call">Transfer call</SelectItem>
-                  <SelectItem value="sms">SMS</SelectItem>
-                  <SelectItem value="email">Email</SelectItem>
-                  <SelectItem value="availability">Availability</SelectItem>
-                  <SelectItem value="book">Book</SelectItem>
-                  <SelectItem value="reschedule">Reschedule</SelectItem>
-                  <SelectItem value="cancel">Cancel</SelectItem>
-                  <SelectItem value="addcampagin">Add Campaign</SelectItem>
-                  <SelectItem value="removecampaign">
-                    Remove Campaign
-                  </SelectItem>
-                  <SelectItem value="custom">Custom</SelectItem>
-                </SelectContent>
-              </Select>
+              {formik.values.action && (
+                <Select
+                  name="action"
+                  value={formik.values.action}
+                  onValueChange={(value) =>
+                    formik.setFieldValue("action", value)
+                  }
+                >
+                  <SelectTrigger className="w-full mt-3">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="end call">End call</SelectItem>
+                    <SelectItem value="transfer call">Transfer call</SelectItem>
+                    <SelectItem value="sms">SMS</SelectItem>
+                    <SelectItem value="email">Email</SelectItem>
+                    <SelectItem value="availability">Availability</SelectItem>
+                    <SelectItem value="book">Book</SelectItem>
+                    <SelectItem value="reschedule">Reschedule</SelectItem>
+                    <SelectItem value="cancel">Cancel</SelectItem>
+                    <SelectItem value="addcampagin">Add Campaign</SelectItem>
+                    <SelectItem value="removecampaign">
+                      Remove Campaign
+                    </SelectItem>
+                    <SelectItem value="custom">Custom</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
             </div>
             <div className="mt-3">
               <Label>Name</Label>

@@ -27,14 +27,14 @@ const SayCardPopup = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isSaySetPopup) {
+    if (isSaySetPopup?.isEdit === true) {
       formik.setValues({
         statement: isSaySetPopup.statement || "",
-        is_active: isSaySetPopup.is_active ?? true,
-        is_required: isSaySetPopup.is_required ?? true,
+        is_active: isSaySetPopup.is_active,
+        is_required: isSaySetPopup.is_required,
       });
     }
-  }, [isSaySetPopup]);
+  }, [isSaySetPopup?.isEdit]);
 
   const formik: any = useFormik({
     initialValues: {
