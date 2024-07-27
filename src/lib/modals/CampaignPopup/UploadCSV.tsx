@@ -74,14 +74,14 @@ const UploadCSV = () => {
           </div>
           <div className="flex justify-center items-center mt-[20px] gap-2">
             <Button
-              variant={"outline"}
+              variant="outline"
               className="h-[36px] text-sm font-normal cursor-pointer"
               onClick={handleChooseFileClick}
             >
               Choose File
             </Button>
             <Button
-              variant={"outline"}
+              variant="outline"
               className="h-[36px] text-sm font-normal cursor-pointer"
               onClick={() => setImportGoogleSheet(true)}
               disabled={importGoogleSheet}

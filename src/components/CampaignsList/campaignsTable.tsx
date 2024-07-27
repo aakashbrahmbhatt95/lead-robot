@@ -175,7 +175,7 @@ const CampaignsTable: React.FC<{
             table?.getColumn("name")?.setFilterValue(event.target.value)
           }
         />
-        <Button variant={"outline"} className="cursor-pointer h-full rounded">
+        <Button variant="outline" className="cursor-pointer h-full rounded">
           <Image src={List} alt="List" />
         </Button>
         <Button className="h-[24px] py-0 px-3 rounded">All</Button>

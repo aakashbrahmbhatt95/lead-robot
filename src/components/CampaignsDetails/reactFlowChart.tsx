@@ -60,7 +60,7 @@ const ReactFlowChart = () => {
         y: ele?.y_position,
       },
       data: {
-        label: <TaskSetCard ele={ele} />,
+        label: <TaskSetCard ele={ele} key={index} />,
       },
       style: {
         width: "330px",

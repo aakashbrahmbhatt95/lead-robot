@@ -63,7 +63,7 @@ const ForgotPassword = () => {
               <div className="flex items-center">
                 {" "}
                 <Button
-                  variant={"outline"}
+                  variant="outline"
                   className="w-12 border-none"
                   onClick={() => setStep("email")}
                 >
@@ -146,7 +146,7 @@ const ForgotPassword = () => {
           {step === "password" && (
             <>
               <Button
-                variant={"outline"}
+                variant="outline"
                 className="w-12 border-none"
                 onClick={() => setStep("name")}
               >

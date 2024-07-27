@@ -22,9 +22,9 @@ const Review = () => {
   return (
     <div>
       <div className="mt-3 flex gap-3">
-        {reviewBoxArray?.map((ele: any) => {
+        {reviewBoxArray?.map((ele: any, index: any) => {
           return (
-            <div className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg">
+            <div className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg" key={index}>
               <Image src={ele?.img} alt={ele?.img} />
               <p className="text-lg font-semibold	text-[#18181B] mt-3">
                 {ele?.count}

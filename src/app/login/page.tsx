@@ -71,7 +71,7 @@ const Login = () => {
                     Continue with Google or your personal Email
                   </p>
                   <Button
-                    variant={"outline"}
+                    variant="outline"
                     className="rounded-[20px] flex items-center gap-4 w-full"
                   >
                     <Image
@@ -127,7 +127,7 @@ const Login = () => {
           ) : (
             <>
               <Button
-                variant={"outline"}
+                variant="outline"
                 className="w-12 border-none"
                 onClick={() => setStep("email")}
               >

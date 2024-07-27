@@ -218,7 +218,7 @@ const Signup = () => {
                     email.
                   </p>
                   <Button
-                    variant={"outline"}
+                    variant="outline"
                     className="rounded-[20px] flex items-center gap-4 w-full"
                   >
                     <Image
@@ -276,7 +276,7 @@ const Signup = () => {
               {({ errors, touched }: any) => (
                 <Form className="flex flex-col gap-4 w-full">
                   <Button
-                    variant={"outline"}
+                    variant="outline"
                     className="w-12 border-none"
                     onClick={() => setStep("email")}
                   >

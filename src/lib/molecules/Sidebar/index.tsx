@@ -42,9 +42,10 @@ const Sidebar = () => {
         </div>
         <SidebarContext.Provider value={{ expanded }}>
           <ul className="flex-1 px-4">
-            {SideBarData?.map((ele) => {
+            {SideBarData?.map((ele, index: any) => {
               return (
                 <SidebarItem
+                key={index}
                   text={ele?.text}
                   icon={
                     <Image

@@ -13,9 +13,9 @@ const UploadCSV = () => {
   return (
     <div>
       <div className="my-4">
-        {mapTableData?.map((ele: any) => {
+        {mapTableData?.map((ele: any, index: any) => {
           return (
-            <div className="flex w-full items-center mt-2">
+            <div className="flex w-full items-center mt-2" key={index}>
               <div className="w-[5%] ml-2">{ele?.id}</div>
               <div className="w-[30%] flex gap-3 items-center">
                 <Checkbox className="w-[15px] h-[15px] rounded-none" checked />{" "}

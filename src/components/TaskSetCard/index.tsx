@@ -106,7 +106,7 @@ const TaskSetCard: React.FC<{
       type="single"
       collapsible
       className="w-[330px]"
-      value={isAccordionOpen ? "item-1" : null}
+      value={isAccordionOpen ? "item-1" : ""}
     >
       <AccordionItem value="item-1">
         <Card className="w-[330px]">

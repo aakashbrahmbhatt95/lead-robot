@@ -28,7 +28,7 @@ const AskCard = ({
       type="single"
       collapsible
       className="w-full"
-      value={isOpen ? "item-1" : null}
+      value={isOpen ? "item-1" : ""}
     >
       <AccordionItem value="item-1">
         <Card className="w-full">

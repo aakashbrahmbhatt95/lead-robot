@@ -57,9 +57,12 @@ const CampaignsDetails = () => {
       </p>
       <div className="mt-[15px] flex justify-between items-center">
         <div className="flex gap-[10px]">
-          {row?.map((ele: any) => {
+          {row?.map((ele: any, index: any) => {
             return (
-              <div className="flex items-center rounded-md border-[1px] border-[#18181B] px-4 py-2 gap-[5px]">
+              <div
+                className="flex items-center rounded-md border-[1px] border-[#18181B] px-4 py-2 gap-[5px]"
+                key={index}
+              >
                 <Image src={PencilSimple} alt="Logo" />
                 <p className="text-sm font-medium text-[#18181B]">
                   {ele?.text}
@@ -87,9 +90,9 @@ const CampaignsDetails = () => {
         </div>
       </div>
       <div className="flex mt-[20px]">
-        {tabBarData?.map((ele: any) => {
+        {tabBarData?.map((ele: any, index: any) => {
           return (
-            <div className="flex-1">
+            <div className="flex-1" key={index}>
               <div className="flex items-center gap-4 border-t-2 border-black pt-4 mr-2.5">
                 <p className="flex justify-center items-center text-xs font-medium rounded-full bg-black w-5 h-5 text-white">
                   {ele?.value}

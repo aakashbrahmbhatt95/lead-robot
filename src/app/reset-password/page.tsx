@@ -89,7 +89,7 @@ const ResetPassword = () => {
     <main className="flex justify-center items-center bg-[#f4f4f5] min-h-screen">
       <div className="flex items-center justify-center bg-white w-[578px] rounded-[24px] p-8">
         <div className="flex flex-col items-start gap-4 w-full max-w-md">
-          <Button variant={"outline"} className="w-12 border-none">
+          <Button variant="outline" className="w-12 border-none">
             <Image src={arrowleft} alt="" className="w-full" />
           </Button>
           <p className="text-[#71717A] text-[14px] text-center">Thank You</p>
