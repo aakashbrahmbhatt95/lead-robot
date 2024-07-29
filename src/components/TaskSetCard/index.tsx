@@ -13,6 +13,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/lib/ui/popover";
 import { Sheet } from "@/lib/ui/sheet";
 import { Chat } from "@phosphor-icons/react";
 import {
+  copytaskSetAction,
   deletetaskSetAction,
   editTaskSetAction,
 } from "@/redux/action/campaigns-action";
@@ -44,7 +45,6 @@ const TaskSetCard: React.FC<{
     [key: string]: boolean;
   }>({});
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
-
   // useEffect(() => {
   //   const initialOpenAccordions: any = {};
   //   ele?.asks?.forEach((_: any, index: any) => {
@@ -116,15 +116,27 @@ const TaskSetCard: React.FC<{
                 <p className="text-sm cursor-pointer">{ele?.name}</p>
               </CardTitle>
               <div className="flex items-center ml-3 gap-3">
-                <DotsThree size={20} className="cursor-pointer" />
-                <CopySimple size={20} className="cursor-pointer" />
-                <TrashSimple
-                  className="cursor-pointer"
+                <DotsThree
+                  onClick={() => setIsEditTaskSetPopup(ele)}
                   size={20}
+                  className="cursor-pointer"
+                />
+                <CopySimple
+                  size={20}
+                  className="cursor-pointer"
                   onClick={() => {
-                    dispatch(deletetaskSetAction(ele?.id));
+                    dispatch(copytaskSetAction(ele?.id));
                   }}
                 />
+                {ele?.is_parent ? null : (
+                  <TrashSimple
+                    className="cursor-pointer"
+                    size={20}
+                    onClick={() => {
+                      dispatch(deletetaskSetAction(ele?.id));
+                    }}
+                  />
+                )}
                 <AccordionTrigger onClick={toggleTaskAccordion} />
               </div>
             </div>

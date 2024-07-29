@@ -126,13 +126,27 @@ export const addtaskSetAction =
     })
       .then((res: any) => {
         dispatch(taskSetListReducer([...taskSetList, res?.data]));
-        toast.success("Task Added Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
       .finally(() => {});
   };
+
+export const copytaskSetAction =
+(tasksetId: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const { taskSetList } = getState()?.campaignReducer;
+  HttpUtil.makePOST(`${BASE_URL1}${GET_TASKSET_URL}copy/${tasksetId}`, {}, {
+    Authorization: getToken(),
+  })
+    .then((res: any) => {
+      dispatch(taskSetListReducer([...taskSetList, res?.data]));
+    })
+    .catch((err: any) => {
+      toast.error("Oops! Something went wrong");
+    })
+    .finally(() => {});
+};
 
 export const deletetaskSetAction =
   (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -145,7 +159,7 @@ export const deletetaskSetAction =
           (ele: any) => ele.id !== id
         );
         dispatch(taskSetListReducer(updatedtaskSetList));
-        toast.success("Task Deleted Succesfully!");
+        toast.success("Task Set Deleted Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -165,7 +179,6 @@ export const editTaskSetAction =
           ele.id === res?.data.id ? res.data : ele
         );
         dispatch(taskSetListReducer(updatedtaskSetList));
-        toast.success("Task Updated Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -194,7 +207,6 @@ export const addPathConditionAction =
     })
       .then((res: any) => {
         dispatch(pathConditionListReducer([...pathConditionList, res?.data]));
-        toast.success("Path Added Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -213,7 +225,7 @@ export const editPathConditionAction =
           ele.id === res?.data.id ? res.data : ele
         );
         dispatch(pathConditionListReducer(updatedPathConditionList));
-        toast.success("Path Updated Succesfully!");
+        toast.success("Path condition Updated Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -232,7 +244,7 @@ export const deletePathConditionAction =
           (ele: any) => ele.id.toString() !== id.toString()
         );
         dispatch(pathConditionListReducer(updatedPathConditionList));
-        toast.success("Path Deleted Succesfully!");
+        toast.success("Path condition Deleted Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -258,7 +270,6 @@ export const addAskAction =
             return taskSet;
           });
           dispatch(taskSetListReducer(updatedTaskSetList));
-          toast.success("Ask Added Succesfully!");
         }
       })
       .catch((err: any) => toast.error("Oops! Something went wrong"))
@@ -285,7 +296,7 @@ export const editAskAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
-        toast.success("Ask Updated Succesfully!");
+        toast.success("Ask Card Updated Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -313,7 +324,7 @@ export const deleteAskAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
-        toast.success("Ask Deleted Succesfully!");
+        toast.success("Ask Card Deleted Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -339,7 +350,6 @@ export const addSayAction =
             return taskSet;
           });
           dispatch(taskSetListReducer(updatedTaskSetList));
-          toast.success("Say Added Succesfully!");
         }
       })
       .catch((err: any) => {
@@ -368,7 +378,7 @@ export const editSayAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
-        toast.success("Say Updated Succesfully!");
+        toast.success("Say Card Updated Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -396,7 +406,7 @@ export const deleteSaysAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
-        toast.success("Say Deleted Succesfully!");
+        toast.success("Say Card Deleted Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -422,7 +432,6 @@ export const addDoAction =
             return taskSet;
           });
           dispatch(taskSetListReducer(updatedTaskSetList));
-          toast.success("Do Added Succesfully!");
         }
       })
       .catch((err: any) => {
@@ -451,7 +460,7 @@ export const editDoAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
-        toast.success("Do Updated Succesfully!");
+        toast.success("Do Card Updated Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -479,7 +488,7 @@ export const deleteDoAction =
           return taskSet;
         });
         dispatch(taskSetListReducer(updatedTaskSetList));
-        toast.success("Do Deleted Succesfully!");
+        toast.success("Do Card Deleted Succesfully!");
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");

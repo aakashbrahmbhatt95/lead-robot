@@ -66,7 +66,7 @@ const AskCard = ({
                     setIsAskSetPopup({ ...askDetail, isEdit: true })
                   }
                 />
-                <CopySimple size={20} className="cursor-pointer" />
+                {/* <CopySimple size={20} className="cursor-pointer" /> */}
                 <TrashSimple
                   className="cursor-pointer"
                   size={20}
