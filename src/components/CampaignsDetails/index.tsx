@@ -70,6 +70,7 @@ const CampaignsDetails = () => {
               </div>
             );
           })}
+        <Button type="button" onClick={()=>router.push("/draganddrop")}>Drag and Drop example</Button>
           <Dialog
             open={isOpenCampaignPopup}
             onOpenChange={setIsOpenCampaignPopup}

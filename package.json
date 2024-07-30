@@ -12,6 +12,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
     "@hookform/resolvers": "^3.4.2",
     "@phosphor-icons/react": "^2.1.5",
     "@radix-ui/react-accordion": "^1.2.0",
