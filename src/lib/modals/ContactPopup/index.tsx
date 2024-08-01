@@ -10,7 +10,7 @@ import CustomTags from "./customTags";
 import Review from "./review";
 import UploadSuccessful from "./UploadSuccessful";
 
-const CampaignPopup = ({
+const ContactPopup = ({
   selectedMenuBar,
   setSelectedMenuBar,
   setIsOpenCampaignPopup,
@@ -116,4 +116,4 @@ const CampaignPopup = ({
   );
 };
 
-export default CampaignPopup;
+export default ContactPopup;

@@ -168,10 +168,6 @@ const TaskSetCard: React.FC<{
                   />
                 </div>
               )}
-              <Input
-                placeholder="AI Responds to user"
-                className="w-full mt-4"
-              />
               <div className="w-full flex justify-center mt-4 relative">
                 <Popover>
                   <PopoverTrigger>

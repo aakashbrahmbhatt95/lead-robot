@@ -4,23 +4,18 @@ import Image from "next/image";
 import DotsThree from "@/../public/DotsThree.svg";
 import PencilSimple from "@/../public/PencilSimple.svg";
 import Vector from "@/../public/Vector.svg";
-import { Dialog, DialogTrigger } from "@/lib/ui/dialog";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getcampaignsDatByIdAction } from "@/redux/action/campaigns-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Button } from "@/lib/ui/button";
 import ReactFlowChart from "./reactFlowChart";
 import { row, tabBarData } from "./helper";
-import CampaignPopup from "@/lib/modals/CampaignPopup";
 
 const CampaignsDetails = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const params = useParams();
-  const [isOpenCampaignPopup, setIsOpenCampaignPopup] =
-    useState<boolean>(false);
-  const [selectedMenuBar, setSelectedMenuBar] = useState(1);
   const isEdit = !params.id.includes("create");
   const { campaignDataById }: any = useAppSelector(
     (state: any) => state.campaignReducer
@@ -32,11 +27,6 @@ const CampaignsDetails = () => {
     }
   }, [isEdit]);
 
-  useEffect(() => {
-    if (!isOpenCampaignPopup) {
-      setSelectedMenuBar(1);
-    }
-  }, [isOpenCampaignPopup]);
 
   return (
     <div className="p-[40px]">
@@ -71,19 +61,6 @@ const CampaignsDetails = () => {
             );
           })}
         <Button type="button" onClick={()=>router.push("/draganddrop")}>Drag and Drop example</Button>
-          <Dialog
-            open={isOpenCampaignPopup}
-            onOpenChange={setIsOpenCampaignPopup}
-          >
-            <DialogTrigger asChild onClick={() => setIsOpenCampaignPopup(true)}>
-              <Button>Campaign Popup</Button>
-            </DialogTrigger>
-            <CampaignPopup
-              selectedMenuBar={selectedMenuBar}
-              setSelectedMenuBar={setSelectedMenuBar}
-              setIsOpenCampaignPopup={setIsOpenCampaignPopup}
-            />
-          </Dialog>
         </div>
         <div className="flex items-center rounded-md bg-[#F4F4F5] px-4 py-2 gap-[8px]">
           <p className="text-sm font-medium text-[#71717A]">Next</p>

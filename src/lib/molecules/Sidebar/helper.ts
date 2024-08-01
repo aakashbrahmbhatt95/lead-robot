@@ -26,6 +26,13 @@ export const SideBarData = [
   },
   {
     icon: Group4,
+    text: "Contacts",
+    url: "contacts",
+    showSecondarySidebar: false,
+    secondarySideBarData: [],
+  },
+  {
+    icon: Group4,
     text: "Campaigns",
     url: "/campaigns",
     showSecondarySidebar: false,

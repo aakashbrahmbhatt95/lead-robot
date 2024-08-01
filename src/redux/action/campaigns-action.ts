@@ -134,19 +134,42 @@ export const addtaskSetAction =
   };
 
 export const copytaskSetAction =
-(tasksetId: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const { taskSetList } = getState()?.campaignReducer;
-  HttpUtil.makePOST(`${BASE_URL1}${GET_TASKSET_URL}copy/${tasksetId}`, {}, {
-    Authorization: getToken(),
-  })
-    .then((res: any) => {
-      dispatch(taskSetListReducer([...taskSetList, res?.data]));
-    })
-    .catch((err: any) => {
-      toast.error("Oops! Something went wrong");
-    })
-    .finally(() => {});
-};
+  (tasksetId: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { taskSetList } = getState()?.campaignReducer;
+    HttpUtil.makePOST(
+      `${BASE_URL1}${GET_TASKSET_URL}copy/${tasksetId}`,
+      {},
+      {
+        Authorization: getToken(),
+      }
+    )
+      .then((res: any) => {
+        dispatch(
+          taskSetListReducer([
+            ...taskSetList,
+            {
+              ...res?.data,
+              x_position: res?.data?.x_position + 50,
+              y_position: res?.data?.y_position + 50,
+            },
+          ])
+        );
+        const body = {
+          campaign_id: res?.data?.campaign,
+          name: res?.data?.name,
+          speak_first: res?.data?.speak_first,
+          x_position: Math.ceil(res?.data?.x_position + 50),
+          y_position: Math.ceil(res?.data?.y_position + 50),
+          is_parent: res?.data?.is_parent,
+        };
+        dispatch(editTaskSetAction(body, res?.data?.id));
+      })
+      .catch((err: any) => {
+        toast.error("Oops! Something went wrong");
+      })
+      .finally(() => {});
+  };
 
 export const deletetaskSetAction =
   (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
