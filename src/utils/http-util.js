@@ -13,7 +13,7 @@ export const logout = () => {
   window.location.replace("/login");
 };
 
-const isUnAuthorized = (e) => e?.response?.data?.meta?.is_authenticated === null || e?.response?.data?.meta?.is_authenticated === false
+const isUnAuthorized = (e) => e?.response?.status === 401
 
 const makePOST = async (url, data, headers, parsedError = true) => {
   try {

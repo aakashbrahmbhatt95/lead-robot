@@ -43,7 +43,7 @@ const Contacts = () => {
         </Menubar>
         <Dialog open={isContactPopup} onOpenChange={setIsContactPopup}>
           <DialogTrigger asChild onClick={() => setIsContactPopup(true)}>
-            <Button>Contact Popup</Button>
+            <Button variant="primary" style={{border: '1px solid black'}}>+ Create Contact</Button>
           </DialogTrigger>
           <ContactPopup
             selectedMenuBar={selectedMenuBar}

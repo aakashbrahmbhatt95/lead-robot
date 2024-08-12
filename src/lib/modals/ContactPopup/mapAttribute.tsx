@@ -1,15 +1,8 @@
 import { Checkbox } from "@/lib/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/lib/ui/select";
 import { mapTableData } from "@/components/CampaignsDetails/helper";
+import MapComboBox from "./MapComboBox";
 
 const UploadCSV = () => {
-
   return (
     <div>
       <div className="my-4">
@@ -19,19 +12,10 @@ const UploadCSV = () => {
               <div className="w-[5%] ml-2">{ele?.id}</div>
               <div className="w-[30%] flex gap-3 items-center">
                 <Checkbox className="w-[15px] h-[15px] rounded-none" checked />{" "}
-                <p className="text-[#18181B] text-sm font-bold	">{ele?.title}</p>
+                <p className="text-[#18181B] text-sm font-bold">{ele?.title}</p>
               </div>
               <div className="w-[25%] flex items-end">
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder={ele?.title} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
-                  </SelectContent>
-                </Select>
+                <MapComboBox />
               </div>
               <div className="w-[45%] ml-8">
                 <p className="text-sm font-normal text-[#18181B]">

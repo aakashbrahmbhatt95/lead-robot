@@ -6,6 +6,7 @@ type InitialState = {
   taskSetList: any;
   taskSetDataById: any;
   pathConditionList: any;
+  fileErrorDetails: any;
 };
 const initialState = {
   campaignsList: [],
@@ -13,6 +14,7 @@ const initialState = {
   taskSetList: [],
   taskSetDataById: {},
   pathConditionList: [],
+  fileErrorDetails: null,
 } as InitialState;
 
 export const Campaigns = createSlice({
@@ -34,6 +36,9 @@ export const Campaigns = createSlice({
     pathConditionListReducer: (state, action) => {
       state.pathConditionList = action.payload;
     },
+    errorDetailsReducer: (state, action) => {
+      state.fileErrorDetails = action.payload;
+    },
   },
 });
 
@@ -43,6 +48,7 @@ export const {
   taskSetListReducer,
   taskSetDataByIdReducer,
   pathConditionListReducer,
+  errorDetailsReducer,
 } = Campaigns.actions;
 
 export default Campaigns.reducer;

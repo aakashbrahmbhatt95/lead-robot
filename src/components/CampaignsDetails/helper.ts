@@ -95,11 +95,6 @@ export const reviewBoxArray = [
     count: "20",
     text: "Attributes",
   },
-  {
-    img: warningCircle,
-    count: "4",
-    text: "Errors",
-  },
 ];
 
 export const invoices = [

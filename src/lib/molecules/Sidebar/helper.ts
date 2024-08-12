@@ -27,7 +27,7 @@ export const SideBarData = [
   {
     icon: Group4,
     text: "Contacts",
-    url: "contacts",
+    url: "/contacts",
     showSecondarySidebar: false,
     secondarySideBarData: [],
   },

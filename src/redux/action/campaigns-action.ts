@@ -17,6 +17,7 @@ import {
   pathConditionListReducer,
   taskSetListReducer,
 } from "../reducer/campaigns-reducer";
+import Error from "next/error";
 
 export const campaignsListAction = () => async (dispatch: AppDispatch) => {
   HttpUtil.makeGET(`${BASE_URL1}${GET_CAMPAIGN_URL}`, "", {
@@ -125,7 +126,11 @@ export const addtaskSetAction =
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(taskSetListReducer([...taskSetList, res?.data]));
+        if(res?.error){
+          throw Error
+        }else{
+          dispatch(taskSetListReducer([...taskSetList, res?.data]));
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");

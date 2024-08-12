@@ -9,10 +9,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import List from "../../../public/List.svg";
+import { Sheet } from "@/lib/ui/sheet";
 import DotsThree from "../../../public/DotsThree.svg";
 import { Button } from "@/lib/ui/button";
 import { Checkbox } from "@/lib/ui/checkbox";
-import { ChevronRight } from "lucide-react"
+import { ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +35,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { deleteCampaignsAction } from "@/redux/action/campaigns-action";
 import { contactRowData } from "./helper";
+import EditContactPopup from "../../lib/modals/ContactPopup/editContactPopup";
 
 export const columns: any = (handleAction: any) => [
   {
@@ -59,7 +61,7 @@ export const columns: any = (handleAction: any) => [
     enableHiding: false,
   },
   {
-    accessorKey: "contactName",
+    accessorKey: "firstName",
     header: ({ column }: any) => {
       return (
         <Button
@@ -73,7 +75,7 @@ export const columns: any = (handleAction: any) => [
     },
     cell: ({ row }: any) => (
       <div>
-        <p>{row.original.contactName}</p>
+        <p>{row.original.firstName} {row.original.lastName}</p>
         <p className="mt-2">{row.original.contactNumber}</p>
       </div>
     ),
@@ -81,7 +83,12 @@ export const columns: any = (handleAction: any) => [
   {
     accessorKey: "campaigns",
     header: "Campaigns",
-    cell: ({ row }: any) => <div className="flex items-center">{row.getValue("campaigns")}<ChevronRight /></div>,
+    cell: ({ row }: any) => (
+      <div className="flex items-center">
+        {row.getValue("campaigns")}
+        <ChevronRight />
+      </div>
+    ),
   },
   {
     accessorKey: "lastCalled",
@@ -154,6 +161,7 @@ const ContactTable: React.FC<{
   const [columnVisibility, setColumnVisibility] = useState<any>({});
   const [rowSelection, setRowSelection] = useState({});
   const [filteredContactsList, setFilteredContactsList] = useState<any>([]);
+  const [isEditContactPopup, setIsEditContactPopup] = useState<any>(null);
 
   useEffect(() => {
     const temp =
@@ -165,7 +173,7 @@ const ContactTable: React.FC<{
 
   const handleAction = (actionType: string, rowData: any) => {
     if (actionType === "edit") {
-      router.push(`/campaigns/${rowData?.id}`);
+      setIsEditContactPopup(rowData);
     } else if (actionType === "delete") {
       dispatch(deleteCampaignsAction(rowData?.id));
     }
@@ -315,6 +323,14 @@ const ContactTable: React.FC<{
           </Button>
         </div>
       </div>
+      <Sheet open={isEditContactPopup !== null}>
+        {isEditContactPopup !== null && (
+          <EditContactPopup
+            isEditContactPopup={isEditContactPopup}
+            setIsEditContactPopup={setIsEditContactPopup}
+          />
+        )}
+      </Sheet>
     </div>
   );
 };

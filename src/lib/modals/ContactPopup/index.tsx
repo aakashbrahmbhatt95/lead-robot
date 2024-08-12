@@ -9,11 +9,12 @@ import MapAttribute from "./mapAttribute";
 import CustomTags from "./customTags";
 import Review from "./review";
 import UploadSuccessful from "./UploadSuccessful";
+import { toast } from "react-toastify";
 
 const ContactPopup = ({
   selectedMenuBar,
   setSelectedMenuBar,
-  setIsOpenCampaignPopup,
+  setIsContactPopup,
 }: any) => {
   return (
     <DialogContent className="sm:max-w-[60%] max-h-[75%] overflow-scroll">
@@ -61,7 +62,7 @@ const ContactPopup = ({
       {selectedMenuBar === 2 && <MapAttribute />}
       {selectedMenuBar === 3 && <CustomTags />}
       {selectedMenuBar === 4 && <Review />}
-      {selectedMenuBar === 5 && <UploadSuccessful />}
+      {/* {selectedMenuBar === 5 && <UploadSuccessful />} */}
       <div
         className="mt-3 flex justify-end gap-4 pr-2"
         style={{ width: selectedMenuBar === 1 ? "65%" : "100%" }}
@@ -87,6 +88,10 @@ const ContactPopup = ({
         <Button
           className="h-[36px] w-[56px]"
           onClick={() => {
+            if (selectedMenuBar === 4) {
+              setIsContactPopup(false);
+              toast.success("Upload Succesfully!");
+            }
             setSelectedMenuBar(
               selectedMenuBar === 1
                 ? 2
@@ -98,7 +103,6 @@ const ContactPopup = ({
                       ? 5
                       : 1
             );
-            if (selectedMenuBar === 5) setIsOpenCampaignPopup(false);
           }}
         >
           {selectedMenuBar === 1

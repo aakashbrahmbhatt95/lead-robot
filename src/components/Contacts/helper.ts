@@ -1,6 +1,7 @@
 export const contactRowData = [
     {
-      contactName: "Name Surname 1",
+      firstName: "Anne",
+      lastName: "Surname 1",
       contactNumber: "+082-429084294",
       campaigns:"2 Campaign",
       lastCalled:"2024-06-12",
@@ -9,7 +10,8 @@ export const contactRowData = [
       tags:"Tags: 2",
       is_active:true
     }, {
-        contactName: "Name Surname 2",
+        firstName: "Bejoy",
+        lastName: "Surname 2",
         contactNumber: "+082-429084294",
         campaigns:"2 Campaign",
         lastCalled:"2024-06-12",
@@ -18,7 +20,8 @@ export const contactRowData = [
         tags:"Tags: 2",
         is_active:true
       }, {
-        contactName: "Name Surname 3",
+        firstName: "Shara",
+        lastName: "Surname 3",
         contactNumber: "+082-429084294",
         campaigns:"2 Campaign",
         lastCalled:"2024-06-12",
@@ -27,7 +30,8 @@ export const contactRowData = [
         tags:"Tags: 2",
         is_active:true
       }, {
-        contactName: "Name Surname 4",
+        firstName: "Vishwa",
+        lastName: "Surname 4",
         contactNumber: "+082-429084294",
         campaigns:"2 Campaign",
         lastCalled:"2024-06-12",
@@ -36,7 +40,8 @@ export const contactRowData = [
         tags:"Tags: 2",
         is_active:true
       }, {
-        contactName: "Name Surname 5",
+        firstName: "Rasheed",
+        lastName: "Surname 5",
         contactNumber: "+082-429084294",
         campaigns:"2 Campaign",
         lastCalled:"2024-06-12",

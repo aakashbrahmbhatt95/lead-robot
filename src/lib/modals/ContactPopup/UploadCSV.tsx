@@ -7,8 +7,12 @@ import Image from "next/image";
 import { Button } from "@/lib/ui/button";
 import { Input } from "@/lib/ui/input";
 import { Label } from "@/lib/ui/label";
+import { useAppDispatch } from "@/redux/store";
+import { errorDetailsReducer } from "@/redux/reducer/campaigns-reducer";
+import * as XLSX from "xlsx";
 
 const UploadCSV = () => {
+  const dispatch = useAppDispatch();
   const [selectedImport, setSelectedImport] = useState(1);
   const [files, setFiles] = useState<any>(null);
   const [importGoogleSheet, setImportGoogleSheet] = useState(false);
@@ -16,13 +20,61 @@ const UploadCSV = () => {
 
   const fileInputRef: any = useRef(null);
 
-  const onDrop = useCallback((acceptedFiles: any) => {
-    setFiles(acceptedFiles);
+  const handleFileRead = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = e.target?.result;
+      const workbook = XLSX.read(data, { type: "binary" });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+      let errorCount = 0;
+      const errorDetails: { row: number; column: number; value: string }[] = [];
+      rows.forEach((row: any, rowIndex: number) => {
+        row.forEach((cell: any, colIndex: number) => {
+          if (cell === undefined || cell === null || cell === "") {
+            errorCount++;
+            errorDetails.push({
+              row: rowIndex + 1,
+              column: colIndex + 1,
+              value: cell,
+            });
+          }
+        });
+      });
+
+      if (errorCount > 0) {
+        setError(
+          `The Excel sheet is incorrect. ${errorCount} fields are missing values.`
+        );
+        dispatch(errorDetailsReducer(errorDetails));
+        setFiles(null);
+      } else {
+        setError(null);
+        setFiles([file]);
+      }
+    };
+    reader.readAsBinaryString(file);
+  };
+
+  const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
+    if (rejectedFiles.length > 0) {
+      setError("Only Excel and CSV files are accepted.");
+    } else {
+      handleFileRead(acceptedFiles[0]);
+    }
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     noClick: true,
+    accept: {
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
+      "application/vnd.ms-excel": [".xls"],
+      "text/csv": [".csv"],
+    },
   });
 
   const handleChooseFileClick = () => {
@@ -67,7 +119,7 @@ const UploadCSV = () => {
                 </>
               ) : (
                 <p className="text-sm font-normal text-[#22C55E] mt-3">
-                  Imported 1830 contacts
+                  Imported {files[0]?.name}
                 </p>
               )}
             </div>
@@ -80,14 +132,14 @@ const UploadCSV = () => {
             >
               Choose File
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               className="h-[36px] text-sm font-normal cursor-pointer"
               onClick={() => setImportGoogleSheet(true)}
               disabled={importGoogleSheet}
             >
               Import Google Sheet
-            </Button>
+            </Button> */}
           </div>
         </div>
         <p className="text-[#71717A] mt-3 text-sm font-normal">
@@ -108,7 +160,7 @@ const UploadCSV = () => {
               Import CSV
             </MenubarTrigger>
           </MenubarMenu>
-          <MenubarMenu>
+          {/* <MenubarMenu>
             <MenubarTrigger
               className="cursor-pointer text-[#3F3F46] w-full"
               style={{
@@ -129,7 +181,7 @@ const UploadCSV = () => {
             >
               Add Individual
             </MenubarTrigger>
-          </MenubarMenu>
+          </MenubarMenu> */}
         </Menubar>
       </div>
     </div>
