@@ -9,11 +9,15 @@ import Link from "next/link";
 import { Label } from "@/lib/ui/label";
 import eye from "../../../public/eye.svg";
 import eyeclosed from "../../../public/EyeClosed.svg";
-import { deleteCookies, HttpUtil } from "@/utils/http-util";
+import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, REQUEST_PASSWORD } from "@/utils/apiConstants";
 import { useToast } from "@/lib/ui/use-toast";
+import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
+import { SESSION_KEY } from "@/utils/constants";
 
 const ForgotPassword = () => {
+  const router = useRouter();
   const [step, setStep] = useState("email");
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +25,9 @@ const ForgotPassword = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    deleteCookies()
+      if(getCookie(SESSION_KEY)) {
+          router.push('/')
+      }
   }, []);
 
   const handleForgotPassword = async () => {
@@ -65,11 +71,14 @@ const ForgotPassword = () => {
                 <Button
                   variant="outline"
                   className="w-12 border-none"
-                  onClick={() => setStep("email")}
+                  onClick={() => router.push("/login")}
                 >
                   <Image src={arrowleft} alt="" className="w-full" />
                 </Button>
-                <p className="text-[#71717A] text-[14px] text-center">
+                <p
+                  className="text-[#71717A] text-[14px] text-center cursor-pointer"
+                  onClick={() => router.push("/login")}
+                >
                   Back to Login
                 </p>
               </div>
@@ -109,7 +118,7 @@ const ForgotPassword = () => {
                     href="login-with-email-link"
                     className="text-[#171717] underline"
                   >
-                    Login with email link instead
+                    {/* Login with email link instead */}
                   </Link>
                   <Button
                     type="submit"
@@ -136,7 +145,11 @@ const ForgotPassword = () => {
               <h4 className="text-[#18181B] font-semibold">{email}</h4>
               <p className="text-[#171717] text-[14px] mt-4">
                 Didn’t receive the email?{" "}
-                <Link href="#" className="underline mt-5" onClick={() => handleForgotPassword()}>
+                <Link
+                  href="#"
+                  className="underline mt-5"
+                  onClick={() => handleForgotPassword()}
+                >
                   Resend password link
                 </Link>
               </p>
@@ -250,7 +263,11 @@ const ForgotPassword = () => {
               <h4 className="text-[#18181B] font-semibold">name@email.com</h4>
               <p className="text-[#171717] text-[14px]">
                 Didn’t receive the email?{" "}
-                <Link href="#" className="underline mt-5" onClick={() => handleForgotPassword()}>
+                <Link
+                  href="#"
+                  className="underline mt-5"
+                  onClick={() => handleForgotPassword()}
+                >
                   Resend password link
                 </Link>
               </p>

@@ -179,7 +179,7 @@ const CampaignsTable: React.FC<{
           <Image src={List} alt="List" />
         </Button>
         <Button className="h-[24px] py-0 px-3 rounded">All</Button>
-        <Button className="h-[24px] py-0 px-3 rounded bg-[#E4E4E7] text-[#18181B]">
+        <Button className="h-[24px] py-0 px-3 rounded bg-[#E4E4E7] hover:bg-[#E4E4E7] text-[#18181B]" onClick={()=>table?.getColumn("name")?.setFilterValue("")}>
           Clear all
         </Button>
         <Button className="h-[24px] py-0 px-3 rounded">Campaign</Button>

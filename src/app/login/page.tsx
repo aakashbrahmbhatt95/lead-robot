@@ -99,7 +99,7 @@ const Login = () => {
                     <ErrorMessage
                       name="email"
                       component="div"
-                      className="text-red-500 text-xs absolute"
+                      className="text-red-500 mt-1 text-xs absolute"
                     />
                   </div>
                   <div className="flex items-center justify-between w-full mt-4">
