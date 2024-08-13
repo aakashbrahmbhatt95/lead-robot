@@ -51,7 +51,7 @@ const CustomTags = () => {
           />
           <CommandList>
           <div className="p-2 mt-2">
-          <Input placeholder="Tag name" value={newTag} onChangeCapture={(e)=>setNewTag(e.target.value)} />
+          <Input placeholder="Tag name" value={newTag} onChange={(e)=>setNewTag(e.target.value)} />
           </div>
             <p
               className="text-sm font-normal text-[#18181B] p-[10px] cursor-pointer"
@@ -99,7 +99,7 @@ const CustomTags = () => {
                         setValue((prevValue: any) => {
                           if (prevValue.includes(currentValue)) {
                             return prevValue.filter(
-                              (item) => item !== currentValue
+                              (item: any) => item !== currentValue
                             );
                           } else {
                             return [...prevValue, currentValue];

@@ -110,7 +110,7 @@ const Review = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {fileErrorDetails?.map((ele, index) => (
+            {fileErrorDetails?.map((ele: any, index: any) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">{ele?.row}</TableCell>
                 <TableCell>{ele?.column}</TableCell>
