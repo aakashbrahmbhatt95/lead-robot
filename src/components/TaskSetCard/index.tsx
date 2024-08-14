@@ -195,41 +195,43 @@ const TaskSetCard: React.FC<{
               </button>
             </div>
             <div className="px-3 flex flex-col justify-center items-center w-full gap-5 pt-10">
-              {ele?.asks?.map((askDetail: any, index: any) => {
-                return (
-                  <AskCard
-                    key={index}
-                    askDetail={askDetail}
-                    setIsAskSetPopup={setIsAskSetPopup}
-                    taskSetDetails={ele}
-                    isOpen={openAccordions[`ask-${index}`]}
-                    toggleAccordion={() => toggleAccordion(`ask-${index}`)}
-                  />
-                );
-              })}
-              {ele?.says?.map((sayDetail: any, index: any) => {
-                return (
-                  <SayCard
-                    key={index}
-                    sayDetail={sayDetail}
-                    setIsSaySetPopup={setIsSaySetPopup}
-                    taskSetDetails={ele}
-                    isOpen={openAccordions[`say-${index}`]}
-                    toggleAccordion={() => toggleAccordion(`say-${index}`)}
-                  />
-                );
-              })}
-              {ele?.dos?.map((doDetail: any, index: any) => {
-                return (
-                  <DoCard
-                    key={index}
-                    doDetail={doDetail}
-                    setIsDoSetPopup={setIsDoSetPopup}
-                    taskSetDetails={ele}
-                    isOpen={openAccordions[`do-${index}`]}
-                    toggleAccordion={() => toggleAccordion(`do-${index}`)}
-                  />
-                );
+              {ele?.tasks?.map((taskDetail: any, index: any) => {
+                if (taskDetail?.type === "ask") {
+                  return (
+                    <AskCard
+                      key={index}
+                      askDetail={taskDetail}
+                      setIsAskSetPopup={setIsAskSetPopup}
+                      taskSetDetails={ele}
+                      isOpen={openAccordions[`ask-${index}`]}
+                      toggleAccordion={() => toggleAccordion(`ask-${index}`)}
+                    />
+                  );
+                } else if (taskDetail?.type === "do") {
+                  return (
+                    <DoCard
+                      key={index}
+                      doDetail={taskDetail}
+                      setIsDoSetPopup={setIsDoSetPopup}
+                      taskSetDetails={ele}
+                      isOpen={openAccordions[`do-${index}`]}
+                      toggleAccordion={() => toggleAccordion(`do-${index}`)}
+                    />
+                  );
+                } else if (taskDetail?.type === "say") {
+                  return (
+                    <SayCard
+                      key={index}
+                      sayDetail={taskDetail}
+                      setIsSaySetPopup={setIsSaySetPopup}
+                      taskSetDetails={ele}
+                      isOpen={openAccordions[`say-${index}`]}
+                      toggleAccordion={() => toggleAccordion(`say-${index}`)}
+                    />
+                  );
+                } else {
+                  return null;
+                }
               })}
             </div>
             <div className="w-full flex justify-center mt-4 relative">

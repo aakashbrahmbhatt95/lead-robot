@@ -292,7 +292,7 @@ export const addAskAction =
             if (taskSet.id === body.taskset_id) {
               return {
                 ...taskSet,
-                asks: [...taskSet.asks, res.data],
+                tasks: [...taskSet.tasks, res.data],
               };
             }
             return taskSet;
@@ -316,7 +316,7 @@ export const editAskAction =
           if (taskSet.id === body.taskset_id) {
             return {
               ...taskSet,
-              asks: taskSet?.asks?.map((ele: any) =>
+              tasks: taskSet?.tasks?.map((ele: any) =>
                 ele.id === res?.data.id ? res.data : ele
               ),
             };
@@ -344,7 +344,7 @@ export const deleteAskAction =
           if (taskSet.id === taskset_id) {
             return {
               ...taskSet,
-              asks: taskSet?.asks.filter(
+              tasks: taskSet?.tasks.filter(
                 (ele: any) => ele.id.toString() !== id.toString()
               ),
             };
@@ -372,7 +372,7 @@ export const addSayAction =
             if (taskSet.id === body.taskset_id) {
               return {
                 ...taskSet,
-                says: [...taskSet.says, res.data],
+                tasks: [...taskSet.tasks, res.data],
               };
             }
             return taskSet;
@@ -398,7 +398,7 @@ export const editSayAction =
           if (taskSet.id === body.taskset_id) {
             return {
               ...taskSet,
-              says: taskSet?.says?.map((ele: any) =>
+              tasks: taskSet?.tasks?.map((ele: any) =>
                 ele.id === res?.data.id ? res.data : ele
               ),
             };
@@ -426,7 +426,7 @@ export const deleteSaysAction =
           if (taskSet.id === taskset_id) {
             return {
               ...taskSet,
-              says: taskSet?.says.filter(
+              tasks: taskSet?.tasks.filter(
                 (ele: any) => ele.id.toString() !== id.toString()
               ),
             };
@@ -454,7 +454,7 @@ export const addDoAction =
             if (taskSet.id === body.taskset_id) {
               return {
                 ...taskSet,
-                dos: [...taskSet.dos, res.data],
+                tasks: [...taskSet.tasks, res.data],
               };
             }
             return taskSet;
@@ -480,7 +480,7 @@ export const editDoAction =
           if (taskSet.id === body.taskset_id) {
             return {
               ...taskSet,
-              dos: taskSet?.dos?.map((ele: any) =>
+              tasks: taskSet?.tasks?.map((ele: any) =>
                 ele.id === res?.data.id ? res.data : ele
               ),
             };
@@ -508,7 +508,7 @@ export const deleteDoAction =
           if (taskSet.id === taskset_id) {
             return {
               ...taskSet,
-              dos: taskSet?.dos.filter(
+              tasks: taskSet?.tasks.filter(
                 (ele: any) => ele.id.toString() !== id.toString()
               ),
             };

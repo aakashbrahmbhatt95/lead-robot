@@ -47,7 +47,7 @@ const SayCardPopup = ({
     onSubmit: (values) => {
       const body = {
         taskset_id: taskSetDetails?.id,
-        order: isSaySetPopup?.order,
+        order: 0,
         is_required: values.is_required,
         is_active: values.is_active,
         include_condition: "string",
