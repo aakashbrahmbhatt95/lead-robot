@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/lib/ui/card";
 import { Switch } from "@/lib/ui/switch";
 import {
+  CaretDown,
   DotsThree,
   TrashSimple,
   CopySimple,
   Plus,
-  Chat,
 } from "@phosphor-icons/react";
+import { Input } from "@/lib/ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "@/lib/ui/popover";
 import { Sheet } from "@/lib/ui/sheet";
+import { Chat } from "@phosphor-icons/react";
 import {
   copytaskSetAction,
   deletetaskSetAction,
   editTaskSetAction,
 } from "@/redux/action/campaigns-action";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useAppDispatch } from "@/redux/store";
 import SayCard from "./SayCard";
 import AskCard from "./AskCard";
 import EditTaskSetPopup from "@/lib/modals/editTaskSetPopup";
@@ -31,7 +32,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/lib/ui/accordion";
-import { taskSetListReducer } from "@/redux/reducer/campaigns-reducer";
 
 const TaskSetCard: React.FC<{
   ele: any;
@@ -45,9 +45,19 @@ const TaskSetCard: React.FC<{
     [key: string]: boolean;
   }>({});
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
-  const { taskSetList }: any = useAppSelector(
-    (state: any) => state.campaignReducer
-  );
+  // useEffect(() => {
+  //   const initialOpenAccordions: any = {};
+  //   ele?.asks?.forEach((_: any, index: any) => {
+  //     initialOpenAccordions[`ask-${index}`] = true;
+  //   });
+  //   ele?.says?.forEach((_: any, index: any) => {
+  //     initialOpenAccordions[`say-${index}`] = true;
+  //   });
+  //   ele?.dos?.forEach((_: any, index: any) => {
+  //     initialOpenAccordions[`do-${index}`] = true;
+  //   });
+  //   setOpenAccordions(initialOpenAccordions);
+  // }, [ele]);
 
   const handleAddComponent = (type: string, subType: string) => {
     const rawValue = Date.now() / 1000;
@@ -80,20 +90,15 @@ const TaskSetCard: React.FC<{
     setOpenAccordions((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const handleOnDragEnd = (result: any) => {
-    if (!result.destination) return;
-    const updatedTasks = Array.from(ele.tasks);
-    const [reorderedItem] = updatedTasks.splice(result.source.index, 1);
-    updatedTasks.splice(result.destination.index, 0, reorderedItem);
-
-    const updatedTaskSetList = taskSetList.map((taskSet: any) => {
-      if (taskSet.id === ele?.id) {
-        return { ...taskSet, tasks: updatedTasks };
-      }
-      return taskSet;
-    });
-
-    dispatch(taskSetListReducer(updatedTaskSetList));
+  const collapseAllAccordions = () => {
+    const newOpenAccordions = Object.keys(openAccordions).reduce(
+      (acc, key) => {
+        acc[key] = false;
+        return acc;
+      },
+      {} as { [key: string]: boolean }
+    );
+    setOpenAccordions(newOpenAccordions);
   };
 
   return (
@@ -183,70 +188,52 @@ const TaskSetCard: React.FC<{
                   </PopoverContent>
                 </Popover>
               </div>
-              <DragDropContext onDragEnd={handleOnDragEnd}>
-                <Droppable droppableId="droppable">
-                  {(provided) => (
-                    <ul
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      className="px-3 flex flex-col justify-center items-center w-full gap-5 pt-10"
-                    >
-                      {ele?.tasks?.map((taskDetail: any, index: any) => (
-                        <Draggable
-                          key={taskDetail.id}
-                          draggableId={`${taskDetail.id}`}
-                          index={index}
-                        >
-                          {(provided, snapshot) => (
-                            <li
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className={`bg-white shadow-md rounded-lg p-4 mb-2 ${
-                                snapshot.isDragging ? "bg-blue-100" : ""
-                              }`}
-                            >
-                              {taskDetail?.type === "ask" ? (
-                                <AskCard
-                                  askDetail={taskDetail}
-                                  setIsAskSetPopup={setIsAskSetPopup}
-                                  taskSetDetails={ele}
-                                  isOpen={openAccordions[`ask-${index}`]}
-                                  toggleAccordion={() =>
-                                    toggleAccordion(`ask-${index}`)
-                                  }
-                                />
-                              ) : taskDetail?.type === "do" ? (
-                                <DoCard
-                                  doDetail={taskDetail}
-                                  setIsDoSetPopup={setIsDoSetPopup}
-                                  taskSetDetails={ele}
-                                  isOpen={openAccordions[`do-${index}`]}
-                                  toggleAccordion={() =>
-                                    toggleAccordion(`do-${index}`)
-                                  }
-                                />
-                              ) : taskDetail?.type === "say" ? (
-                                <SayCard
-                                  sayDetail={taskDetail}
-                                  setIsSaySetPopup={setIsSaySetPopup}
-                                  taskSetDetails={ele}
-                                  isOpen={openAccordions[`say-${index}`]}
-                                  toggleAccordion={() =>
-                                    toggleAccordion(`say-${index}`)
-                                  }
-                                />
-                              ) : null}
-                            </li>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </ul>
-                  )}
-                </Droppable>
-              </DragDropContext>
             </CardContent>
+            <div className="flex justify-center">
+              <button onClick={collapseAllAccordions}>
+                Collapse all actions
+              </button>
+            </div>
+            <div className="px-3 flex flex-col justify-center items-center w-full gap-5 pt-10">
+              {ele?.tasks?.map((taskDetail: any, index: any) => {
+                if (taskDetail?.type === "ask") {
+                  return (
+                    <AskCard
+                      key={index}
+                      askDetail={taskDetail}
+                      setIsAskSetPopup={setIsAskSetPopup}
+                      taskSetDetails={ele}
+                      isOpen={openAccordions[`ask-${index}`]}
+                      toggleAccordion={() => toggleAccordion(`ask-${index}`)}
+                    />
+                  );
+                } else if (taskDetail?.type === "do") {
+                  return (
+                    <DoCard
+                      key={index}
+                      doDetail={taskDetail}
+                      setIsDoSetPopup={setIsDoSetPopup}
+                      taskSetDetails={ele}
+                      isOpen={openAccordions[`do-${index}`]}
+                      toggleAccordion={() => toggleAccordion(`do-${index}`)}
+                    />
+                  );
+                } else if (taskDetail?.type === "say") {
+                  return (
+                    <SayCard
+                      key={index}
+                      sayDetail={taskDetail}
+                      setIsSaySetPopup={setIsSaySetPopup}
+                      taskSetDetails={ele}
+                      isOpen={openAccordions[`say-${index}`]}
+                      toggleAccordion={() => toggleAccordion(`say-${index}`)}
+                    />
+                  );
+                } else {
+                  return null;
+                }
+              })}
+            </div>
             <div className="w-full flex justify-center mt-4 relative">
               <Popover>
                 <PopoverTrigger>
