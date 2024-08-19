@@ -33,13 +33,12 @@ export const campaignsListAction = () => async (dispatch: AppDispatch) => {
 };
 
 export const addCampaignsAction =
-  (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignsList } = getState()?.campaignReducer;
+  (body: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makePOST(`${BASE_URL1}${GET_CAMPAIGN_URL}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(campaignsListReducer([...campaignsList, res?.data]));
+        dispatch(campaignsListAction());
         toast.success("Campaign Added Succesfully!");
       })
       .catch((err: any) => {
@@ -49,17 +48,12 @@ export const addCampaignsAction =
   };
 
 export const editCampaignsAction =
-  (body: any, id: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignsList } = getState()?.campaignReducer;
+  (body: any, id: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makePUT(`${BASE_URL1}${GET_CAMPAIGN_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedCampaignsList = campaignsList.map((campaign: any) =>
-          campaign.id === res?.data.id ? res.data : campaign
-        );
-        dispatch(campaignsListReducer(updatedCampaignsList));
+        dispatch(campaignsListAction());
         toast.success("Campaign Updated Succesfully!");
       })
       .catch((err: any) => {
@@ -69,16 +63,12 @@ export const editCampaignsAction =
   };
 
 export const deleteCampaignsAction =
-  (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignsList } = getState()?.campaignReducer;
+  (id: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makeDELETE(`${BASE_URL1}${GET_CAMPAIGN_URL}${id}`, "", {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedCampaignsList = campaignsList.filter(
-          (campaign: any) => campaign.id !== id
-        );
-        dispatch(campaignsListReducer(updatedCampaignsList));
+        dispatch(campaignsListAction());
         toast.success("Campaign Deleted Succesfully!");
       })
       .catch((err: any) => {
@@ -121,15 +111,15 @@ export const taskSetListAction =
 
 export const addtaskSetAction =
   (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePOST(`${BASE_URL1}${GET_TASKSET_URL}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        if(res?.error){
-          throw Error
-        }else{
-          dispatch(taskSetListReducer([...taskSetList, res?.data]));
+        if (res?.error) {
+          throw Error;
+        } else {
+          dispatch(taskSetListAction(campaignDataById?.id));
         }
       })
       .catch((err: any) => {
@@ -178,15 +168,12 @@ export const copytaskSetAction =
 
 export const deletetaskSetAction =
   (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makeDELETE(`${BASE_URL1}${GET_TASKSET_URL}${id}`, "", {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedtaskSetList = taskSetList.filter(
-          (ele: any) => ele.id !== id
-        );
-        dispatch(taskSetListReducer(updatedtaskSetList));
+        dispatch(taskSetListAction(campaignDataById?.id));
         toast.success("Task Set Deleted Succesfully!");
       })
       .catch((err: any) => {
@@ -198,15 +185,12 @@ export const deletetaskSetAction =
 export const editTaskSetAction =
   (body: any, id: any) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePUT(`${BASE_URL1}${GET_TASKSET_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedtaskSetList = taskSetList.map((ele: any) =>
-          ele.id === res?.data.id ? res.data : ele
-        );
-        dispatch(taskSetListReducer(updatedtaskSetList));
+        dispatch(taskSetListAction(campaignDataById?.id));
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -228,13 +212,12 @@ export const pathConditionListAction = () => async (dispatch: AppDispatch) => {
 };
 
 export const addPathConditionAction =
-  (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { pathConditionList } = getState()?.campaignReducer;
+  (body: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makePOST(`${BASE_URL1}${GET_PATHCONDITION_URL}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(pathConditionListReducer([...pathConditionList, res?.data]));
+        dispatch(pathConditionListAction());
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -242,17 +225,12 @@ export const addPathConditionAction =
       .finally(() => {});
   };
 export const editPathConditionAction =
-  (body: any, id: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { pathConditionList } = getState()?.campaignReducer;
+  (body: any, id: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makePUT(`${BASE_URL1}${GET_PATHCONDITION_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedPathConditionList = pathConditionList.map((ele: any) =>
-          ele.id === res?.data.id ? res.data : ele
-        );
-        dispatch(pathConditionListReducer(updatedPathConditionList));
+        dispatch(pathConditionListAction());
         toast.success("Path condition Updated Succesfully!");
       })
       .catch((err: any) => {
@@ -262,16 +240,12 @@ export const editPathConditionAction =
   };
 
 export const deletePathConditionAction =
-  (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { pathConditionList } = getState()?.campaignReducer;
+  (id: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makeDELETE(`${BASE_URL1}${GET_PATHCONDITION_URL}${id}`, "", {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedPathConditionList = pathConditionList.filter(
-          (ele: any) => ele.id.toString() !== id.toString()
-        );
-        dispatch(pathConditionListReducer(updatedPathConditionList));
+        dispatch(pathConditionListAction());
         toast.success("Path condition Deleted Succesfully!");
       })
       .catch((err: any) => {
@@ -282,22 +256,13 @@ export const deletePathConditionAction =
 
 export const addAskAction =
   (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePOST(`${BASE_URL1}${GET_ASK_URL}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
         if (res?.success) {
-          const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-            if (taskSet.id === body.taskset_id) {
-              return {
-                ...taskSet,
-                tasks: [...taskSet.tasks, res.data],
-              };
-            }
-            return taskSet;
-          });
-          dispatch(taskSetListReducer(updatedTaskSetList));
+          dispatch(taskSetListAction(campaignDataById?.id));
         }
       })
       .catch((err: any) => toast.error("Oops! Something went wrong"))
@@ -307,23 +272,12 @@ export const addAskAction =
 export const editAskAction =
   (body: any, id: any) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePUT(`${BASE_URL1}${GET_ASK_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-          if (taskSet.id === body.taskset_id) {
-            return {
-              ...taskSet,
-              tasks: taskSet?.tasks?.map((ele: any) =>
-                ele.id === res?.data.id ? res.data : ele
-              ),
-            };
-          }
-          return taskSet;
-        });
-        dispatch(taskSetListReducer(updatedTaskSetList));
+        dispatch(taskSetListAction(campaignDataById?.id));
         toast.success("Ask Card Updated Succesfully!");
       })
       .catch((err: any) => {
@@ -333,25 +287,13 @@ export const editAskAction =
   };
 
 export const deleteAskAction =
-  (id: any, taskset_id: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+  (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makeDELETE(`${BASE_URL1}${GET_ASK_URL}${id}`, "", {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-          if (taskSet.id === taskset_id) {
-            return {
-              ...taskSet,
-              tasks: taskSet?.tasks.filter(
-                (ele: any) => ele.id.toString() !== id.toString()
-              ),
-            };
-          }
-          return taskSet;
-        });
-        dispatch(taskSetListReducer(updatedTaskSetList));
+        dispatch(taskSetListAction(campaignDataById?.id));
         toast.success("Ask Card Deleted Succesfully!");
       })
       .catch((err: any) => {
@@ -362,22 +304,13 @@ export const deleteAskAction =
 
 export const addSayAction =
   (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePOST(`${BASE_URL1}${GET_SAY_URL}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
         if (res?.success) {
-          const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-            if (taskSet.id === body.taskset_id) {
-              return {
-                ...taskSet,
-                tasks: [...taskSet.tasks, res.data],
-              };
-            }
-            return taskSet;
-          });
-          dispatch(taskSetListReducer(updatedTaskSetList));
+          dispatch(taskSetListAction(campaignDataById?.id));
         }
       })
       .catch((err: any) => {
@@ -389,23 +322,12 @@ export const addSayAction =
 export const editSayAction =
   (body: any, id: any) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePUT(`${BASE_URL1}${GET_SAY_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-          if (taskSet.id === body.taskset_id) {
-            return {
-              ...taskSet,
-              tasks: taskSet?.tasks?.map((ele: any) =>
-                ele.id === res?.data.id ? res.data : ele
-              ),
-            };
-          }
-          return taskSet;
-        });
-        dispatch(taskSetListReducer(updatedTaskSetList));
+        dispatch(taskSetListAction(campaignDataById?.id));
         toast.success("Say Card Updated Succesfully!");
       })
       .catch((err: any) => {
@@ -415,25 +337,13 @@ export const editSayAction =
   };
 
 export const deleteSaysAction =
-  (id: any, taskset_id: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+  (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makeDELETE(`${BASE_URL1}${GET_SAY_URL}${id}`, "", {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-          if (taskSet.id === taskset_id) {
-            return {
-              ...taskSet,
-              tasks: taskSet?.tasks.filter(
-                (ele: any) => ele.id.toString() !== id.toString()
-              ),
-            };
-          }
-          return taskSet;
-        });
-        dispatch(taskSetListReducer(updatedTaskSetList));
+        dispatch(taskSetListAction(campaignDataById?.id));
         toast.success("Say Card Deleted Succesfully!");
       })
       .catch((err: any) => {
@@ -444,22 +354,13 @@ export const deleteSaysAction =
 
 export const addDoAction =
   (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePOST(`${BASE_URL1}${GET_DO_URL}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
         if (res?.success) {
-          const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-            if (taskSet.id === body.taskset_id) {
-              return {
-                ...taskSet,
-                tasks: [...taskSet.tasks, res.data],
-              };
-            }
-            return taskSet;
-          });
-          dispatch(taskSetListReducer(updatedTaskSetList));
+          dispatch(taskSetListAction(campaignDataById?.id));
         }
       })
       .catch((err: any) => {
@@ -471,23 +372,12 @@ export const addDoAction =
 export const editDoAction =
   (body: any, id: any) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePUT(`${BASE_URL1}${GET_DO_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-          if (taskSet.id === body.taskset_id) {
-            return {
-              ...taskSet,
-              tasks: taskSet?.tasks?.map((ele: any) =>
-                ele.id === res?.data.id ? res.data : ele
-              ),
-            };
-          }
-          return taskSet;
-        });
-        dispatch(taskSetListReducer(updatedTaskSetList));
+        dispatch(taskSetListAction(campaignDataById?.id));
         toast.success("Do Card Updated Succesfully!");
       })
       .catch((err: any) => {
@@ -497,25 +387,13 @@ export const editDoAction =
   };
 
 export const deleteDoAction =
-  (id: any, taskset_id: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
+  (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makeDELETE(`${BASE_URL1}${GET_DO_URL}${id}`, "", {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedTaskSetList = taskSetList?.map((taskSet: any) => {
-          if (taskSet.id === taskset_id) {
-            return {
-              ...taskSet,
-              tasks: taskSet?.tasks.filter(
-                (ele: any) => ele.id.toString() !== id.toString()
-              ),
-            };
-          }
-          return taskSet;
-        });
-        dispatch(taskSetListReducer(updatedTaskSetList));
+        dispatch(taskSetListAction(campaignDataById?.id));
         toast.success("Do Card Deleted Succesfully!");
       })
       .catch((err: any) => {

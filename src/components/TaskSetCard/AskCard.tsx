@@ -71,7 +71,7 @@ const AskCard = ({
                   className="cursor-pointer"
                   size={20}
                   onClick={() =>
-                    dispatch(deleteAskAction(askDetail?.id, taskSetDetails?.id))
+                    dispatch(deleteAskAction(askDetail?.id))
                   }
                 />
                 <div className="flex gap-1 items-center">

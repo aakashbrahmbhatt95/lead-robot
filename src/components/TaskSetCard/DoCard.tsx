@@ -67,7 +67,7 @@ const DoCard = ({
                   className="cursor-pointer"
                   size={20}
                   onClick={() =>
-                    dispatch(deleteDoAction(doDetail?.id, taskSetDetails?.id))
+                    dispatch(deleteDoAction(doDetail?.id))
                   }
                 />
                 <div className="flex gap-1 ">

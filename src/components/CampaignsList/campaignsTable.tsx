@@ -32,9 +32,16 @@ import { Switch } from "@/lib/ui/switch";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import { deleteCampaignsAction } from "@/redux/action/campaigns-action";
+import {
+  deleteCampaignsAction,
+  editCampaignsAction,
+} from "@/redux/action/campaigns-action";
 
-export const columns: any = (handleAction: any) => [
+export const columns: any = (
+  handleAction: any,
+  dispatch: any,
+  campaignsList: any
+) => [
   {
     id: "select",
     header: ({ table }: any) => (
@@ -82,7 +89,24 @@ export const columns: any = (handleAction: any) => [
     header: "Active",
     cell: ({ row }: any) => (
       <div>
-        <Switch checked={row.getValue("is_active")} />
+        <Switch
+          checked={row.getValue("is_active")}
+          onCheckedChange={(checked: any) => {
+            const updateCampaignsList: any = campaignsList.filter(
+              (ele: any) => ele?.id === row.original.id
+            )?.[0];
+            dispatch(
+              editCampaignsAction(
+                {
+                  name: updateCampaignsList?.name,
+                  description: updateCampaignsList?.description,
+                  is_active: checked,
+                },
+                row.original.id
+              )
+            );
+          }}
+        />
       </div>
     ),
   },
@@ -136,7 +160,7 @@ const CampaignsTable: React.FC<{
         ? campaignsList?.filter((ele: any) => ele.is_active === true)
         : campaignsList?.filter((ele: any) => ele.is_active === false);
     setFilteredCampaignsList(temp);
-  }, [selectedMenuBar,campaignsList]);
+  }, [selectedMenuBar, campaignsList]);
 
   const handleAction = (actionType: string, rowData: any) => {
     if (actionType === "edit") {
@@ -148,7 +172,7 @@ const CampaignsTable: React.FC<{
 
   const table = useReactTable({
     data: filteredCampaignsList,
-    columns: columns(handleAction),
+    columns: columns(handleAction, dispatch, campaignsList),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -179,7 +203,10 @@ const CampaignsTable: React.FC<{
           <Image src={List} alt="List" />
         </Button>
         <Button className="h-[24px] py-0 px-3 rounded">All</Button>
-        <Button className="h-[24px] py-0 px-3 rounded bg-[#E4E4E7] hover:bg-[#E4E4E7] text-[#18181B]" onClick={()=>table?.getColumn("name")?.setFilterValue("")}>
+        <Button
+          className="h-[24px] py-0 px-3 rounded bg-[#E4E4E7] hover:bg-[#E4E4E7] text-[#18181B]"
+          onClick={() => table?.getColumn("name")?.setFilterValue("")}
+        >
           Clear all
         </Button>
         <Button className="h-[24px] py-0 px-3 rounded">Campaign</Button>

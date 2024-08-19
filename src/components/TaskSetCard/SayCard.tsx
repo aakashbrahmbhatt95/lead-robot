@@ -73,7 +73,7 @@ const SayCard = ({
                   size={20}
                   onClick={() =>
                     dispatch(
-                      deleteSaysAction(sayDetail?.id, taskSetDetails?.id)
+                      deleteSaysAction(sayDetail?.id)
                     )
                   }
                 />
