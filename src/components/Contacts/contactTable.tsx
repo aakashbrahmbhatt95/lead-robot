@@ -8,12 +8,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import List from "../../../public/List.svg";
-import { Sheet } from "@/lib/ui/sheet";
 import DotsThree from "../../../public/DotsThree.svg";
 import { Button } from "@/lib/ui/button";
 import { Checkbox } from "@/lib/ui/checkbox";
-import { ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,10 +29,12 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { useRouter } from "next/navigation";
-import { deleteCampaignsAction } from "@/redux/action/campaigns-action";
-import { contactRowData } from "./helper";
-import EditContactPopup from "../../lib/modals/ContactPopup/editContactPopup";
+import {
+  contactsListAction,
+  deleteContactsAction,
+} from "../../redux/action/contacts-action";
+import { tagsListAction } from "../../redux/action/tags-action";
+import { attributesListAction } from "../../redux/action/attributes-action";
 
 export const columns: any = (handleAction: any) => [
   {
@@ -61,7 +60,7 @@ export const columns: any = (handleAction: any) => [
     enableHiding: false,
   },
   {
-    accessorKey: "firstName",
+    accessorKey: "first_name",
     header: ({ column }: any) => {
       return (
         <Button
@@ -69,58 +68,67 @@ export const columns: any = (handleAction: any) => [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Contact
-          {/* <CaretSortIcon className="ml-2 h-4 w-4" /> */}
         </Button>
       );
     },
     cell: ({ row }: any) => (
       <div>
-        <p>{row.original.firstName} {row.original.lastName}</p>
-        <p className="mt-2">{row.original.contactNumber}</p>
+        <p>
+          {row?.original?.attributes?.first_name}{" "}
+          {row?.original?.attributes?.last_name}
+        </p>
+        <p className="mt-2">{row?.original?.phone}</p>
       </div>
     ),
   },
-  {
-    accessorKey: "campaigns",
-    header: "Campaigns",
-    cell: ({ row }: any) => (
-      <div className="flex items-center">
-        {row.getValue("campaigns")}
-        <ChevronRight />
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "campaigns",
+  //   header: "Campaigns",
+  //   cell: ({ row }: any) => (
+  //     <div className="flex items-center">
+  //       {row.getValue("campaigns")}
+  //       <ChevronRight />
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "lastCalled",
     header: "Last Called",
-    cell: ({ row }: any) => <div>{row.getValue("lastCalled")}</div>,
+    cell: ({ row }: any) => <div>{row.original?.attributes?.last_called}</div>,
   },
   {
     accessorKey: "callcount",
     header: "Call Count",
-    cell: ({ row }: any) => <div>{row.getValue("callcount")}</div>,
+    cell: ({ row }: any) => <div>{row.original?.attributes?.call_count}</div>,
   },
-  {
-    accessorKey: "attributes",
-    header: "Attributes",
-    cell: ({ row }: any) => (
-      <div>
-        <span className="bg-black text-white px-3 py-1 rounded">
-          {row.getValue("attributes")}
-        </span>
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "attributes",
+  //   header: "Attributes",
+  //   cell: ({ row }: any) => (
+  //     <div>
+  //       <span className="bg-black text-white px-3 py-1 rounded">
+  //         {row.getValue("attributes")}
+  //       </span>
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "tags",
     header: "Tags",
-    cell: ({ row }: any) => (
-      <div>
-        <span className="bg-[#10B981] text-white px-3 py-1 rounded">
-          {row.getValue("tags")}
-        </span>
-      </div>
-    ),
+    cell: ({ row }: any) =>
+      row.original?.tags?.length ? (
+        <div className="flex flex-wrap gap-2 items-center">
+          {row.original?.tags?.map((ele: any) => {
+            return (
+              <span className="bg-[#10B981] text-white px-3 py-1 rounded">
+                {ele}
+              </span>
+            );
+          })}
+        </div>
+      ) : (
+        ""
+      ),
   },
   {
     id: "actions",
@@ -152,35 +160,33 @@ export const columns: any = (handleAction: any) => [
 ];
 
 const ContactTable: React.FC<{
-  selectedMenuBar: any;
-}> = ({ selectedMenuBar }) => {
-  const router = useRouter();
+  setIsEditContactPopup: any;
+}> = ({ setIsEditContactPopup }) => {
   const dispatch = useAppDispatch();
   const [sorting, setSorting] = useState<any>([]);
   const [columnFilters, setColumnFilters] = useState<any>([]);
   const [columnVisibility, setColumnVisibility] = useState<any>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [filteredContactsList, setFilteredContactsList] = useState<any>([]);
-  const [isEditContactPopup, setIsEditContactPopup] = useState<any>(null);
+  const { contactsList }: any = useAppSelector(
+    (state: any) => state.contactReducer
+  );
 
   useEffect(() => {
-    const temp =
-      selectedMenuBar === 1
-        ? contactRowData?.filter((ele: any) => ele.is_active === true)
-        : contactRowData?.filter((ele: any) => ele.is_active === false);
-    setFilteredContactsList(temp);
-  }, [selectedMenuBar, contactRowData]);
+    dispatch(contactsListAction());
+    dispatch(attributesListAction());
+    dispatch(tagsListAction());
+  }, []);
 
   const handleAction = (actionType: string, rowData: any) => {
     if (actionType === "edit") {
       setIsEditContactPopup(rowData);
     } else if (actionType === "delete") {
-      dispatch(deleteCampaignsAction(rowData?.id));
+      dispatch(deleteContactsAction(rowData?.id));
     }
   };
 
   const table = useReactTable({
-    data: filteredContactsList,
+    data: contactsList,
     columns: columns(handleAction),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -208,43 +214,13 @@ const ContactTable: React.FC<{
             table?.getColumn("name")?.setFilterValue(event.target.value)
           }
         />
-        <Button variant="outline" className="cursor-pointer h-full rounded">
-          <Image src={List} alt="List" />
-        </Button>
-        <Button className="h-[24px] py-0 px-3 rounded">All</Button>
-        <Button className="h-[24px] py-0 px-3 rounded bg-[#E4E4E7] text-[#18181B]">
+        <Button
+          type="button"
+          className="h-[24px] py-0 px-3 rounded bg-[#E4E4E7] text-[#18181B]"
+          onClick={() => table?.getColumn("name")?.setFilterValue("")}
+        >
           Clear all
         </Button>
-        <Button className="h-[24px] py-0 px-3 rounded">Campaign</Button>
-        <Button className="h-[24px] py-0 px-3 rounded">Attributes</Button>
-        <Button className="h-[24px] py-0 px-3 rounded">Tag</Button>
-        <Button className="h-[24px] py-0 px-3 rounded">Disposition</Button>
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu> */}
       </div>
       <div>
         <Table>
@@ -323,14 +299,6 @@ const ContactTable: React.FC<{
           </Button>
         </div>
       </div>
-      <Sheet open={isEditContactPopup !== null}>
-        {isEditContactPopup !== null && (
-          <EditContactPopup
-            isEditContactPopup={isEditContactPopup}
-            setIsEditContactPopup={setIsEditContactPopup}
-          />
-        )}
-      </Sheet>
     </div>
   );
 };

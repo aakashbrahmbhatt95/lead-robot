@@ -61,10 +61,15 @@ export const columns: any = (handleAction: any) => [
   {
     accessorKey: "choices",
     header: "Choices",
-    cell: ({ row }: any) =>
-      row?.original?.choices?.map((ele: any) => {
-        return <p>{ele}</p>;
-      }),
+    cell: ({ row }: any) => (
+      <div className="flex flex-wrap gap-2 items-center">
+        {row.original?.choices?.map((ele: any) => {
+          return (
+            <p className="bg-black text-white px-3 py-1 rounded">{ele}</p>
+          );
+        })}
+      </div>
+    ),
   },
   {
     id: "actions",

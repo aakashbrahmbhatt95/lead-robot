@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../..//lib/ui/select";
+} from "../../lib/ui/select";
 import { SheetClose, SheetContent } from "../../lib/ui/sheet";
 import { Label } from "../../lib/ui/label";
 import { Button } from "../../lib/ui/button";
@@ -49,7 +49,7 @@ const AttributePopup = ({ isAttributePopup, setIsAttributePopup }: any) => {
         type: values?.type,
         choices:
           values?.type === "select" && values?.choices?.length
-            ? [values?.choices]
+            ? values?.choices
             : [],
         label: values?.label,
         key: values?.label?.trim().replace(/\s+/g, "_").toLowerCase(),
@@ -62,6 +62,17 @@ const AttributePopup = ({ isAttributePopup, setIsAttributePopup }: any) => {
       setIsAttributePopup(null);
     },
   });
+
+  const handleAddChoice = () => {
+    formik.setFieldValue("choices", [...formik.values.choices, ""]);
+  };
+
+  const handleRemoveChoice = (index: number) => {
+    const newChoices = formik.values.choices.filter(
+      (_: string, i: number) => i !== index
+    );
+    formik.setFieldValue("choices", newChoices);
+  };
 
   return (
     <SheetContent>
@@ -111,15 +122,34 @@ const AttributePopup = ({ isAttributePopup, setIsAttributePopup }: any) => {
         </div>
         {formik.values.type === "select" && (
           <div className="mt-4">
-            <Label>Choices</Label>
-            <Input
-              name="choices"
-              className="mt-1"
-              placeholder="Choices"
-              value={formik.values.choices}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            <Label className="block">Choices</Label>
+            {formik.values.choices.map((choice: string, index: number) => (
+              <div key={index} className="flex items-center gap-2 mt-2">
+                <Input
+                  name={`choices[${index}]`}
+                  className="mt-1"
+                  placeholder={`Choice ${index + 1}`}
+                  value={choice}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => handleRemoveChoice(index)}
+                >
+                  -
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              className="mt-2"
+              onClick={handleAddChoice}
+            >
+              + Add Choice
+            </Button>
           </div>
         )}
         <div className="w-full flex justify-end mt-4">
