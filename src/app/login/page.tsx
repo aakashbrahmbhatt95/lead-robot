@@ -54,7 +54,8 @@ const Login = () => {
           {step === "email" ? (
             <>
               <Formik
-                initialValues={{ email: "" }}
+                enableReinitialize={true}
+                initialValues={{ email: email }}
                 validationSchema={emailValidationSchema}
                 onSubmit={(values: any) => {
                   setEmail(values?.email);
@@ -164,7 +165,7 @@ const Login = () => {
                             variant: "destructive",
                             description:
                               ele.message ||
-                              "Something went worng, Please try again!",
+                              "Something went wrong, Please try again!",
                           })
                         );
                       }
