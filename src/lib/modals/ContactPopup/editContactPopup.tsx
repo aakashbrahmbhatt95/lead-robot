@@ -23,12 +23,15 @@ import {
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../../redux/store";
 import { countriesWithRegionCode } from "../../../components/Contacts/helper";
+import DateTimePicker from "../../molecules/DateTimePicker";
+import React from "react";
 
 const EditContactPopup = ({
   isEditContactPopup,
   setIsEditContactPopup,
 }: any) => {
   const dispatch = useAppDispatch();
+  const [date, setDate] = useState<any>("");
   const isEdit = isEditContactPopup !== "add";
   const [tags, setTags] = useState<any>([]);
   const [contactTagList, setContactTagList] = useState<any>([]);
@@ -48,7 +51,7 @@ const EditContactPopup = ({
       formik.setValues({
         phone: isEditContactPopup?.phone || "",
         country_code: isEditContactPopup?.attributes?.country_code || "",
-        attributes: attributesList.reduce((acc, attribute) => {
+        attributes: attributesList.reduce((acc: any, attribute: any) => {
           acc[attribute.key] =
             isEditContactPopup?.attributes?.[attribute.key] || "";
           return acc;
@@ -68,7 +71,7 @@ const EditContactPopup = ({
     initialValues: {
       phone: isEditContactPopup?.phone || "",
       country_code: isEditContactPopup?.attributes?.country_code || "",
-      attributes: attributesList.reduce((acc, attribute) => {
+      attributes: attributesList.reduce((acc: any, attribute: any) => {
         acc[attribute.key] =
           isEditContactPopup?.attributes?.[attribute.key] || "";
         return acc;
@@ -85,17 +88,16 @@ const EditContactPopup = ({
         },
         tags: tags,
       };
-      console.log('body', body)
       if (isEdit) {
         dispatch(editContactsAction(body, isEditContactPopup?.id));
       } else {
         dispatch(addContactsAction(body));
       }
-      // setIsEditContactPopup(null);
+      setIsEditContactPopup(null);
     },
   });
 
-  const renderAttributeInput = (attribute) => {
+  const renderAttributeInput = (attribute: any) => {
     return (
       <div key={attribute.id} className="mb-2">
         <Label htmlFor={`attributes.${attribute.key}`}>{attribute.label}</Label>
@@ -140,7 +142,6 @@ const EditContactPopup = ({
             case "select":
               return (
                 <Select
-                  id={`attributes.${attribute.key}`}
                   name={`attributes.${attribute.key}`}
                   value={formik.values.attributes[attribute.key]}
                   onValueChange={(value) =>
@@ -161,7 +162,6 @@ const EditContactPopup = ({
               );
             case "date":
             case "time":
-            case "datetime":
               return (
                 <Input
                   id={`attributes.${attribute.key}`}
@@ -173,6 +173,10 @@ const EditContactPopup = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
+              );
+            case "datetime":
+              return (
+                <DateTimePicker value={date} onChangeDatePicker={setDate} />
               );
             default:
               return null;

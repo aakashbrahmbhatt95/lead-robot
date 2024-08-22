@@ -7,12 +7,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { Calendar } from "../../ui/calendar";
+import { DatePickerCalendar } from "../../ui/datePickerCalendar";
 
-const TimePicker = ({ time, onTimeChange }) => {
-  const handleChange = (event) => {
+const TimePicker = ({ time, onTimeChange }: any) => {
+  const handleChange = (event: any) => {
     onTimeChange(event.target.value);
   };
 
@@ -26,21 +25,21 @@ const TimePicker = ({ time, onTimeChange }) => {
   );
 };
 
-const DateTimePicker = ({ value, onChange }: any) => {
-  const [date, setDate] = useState(value ? format(value, "yyyy-MM-dd") : "");
-  const [time, setTime] = useState(value ? format(value, "HH:mm") : "");
+const DateTimePicker = ({ value, onChangeDatePicker }: any) => {
+  const [date, setDate] = useState<any>(value || "");
+  const [time, setTime] = useState<any>("");
 
-  const handleDateChange = (newDate) => {
+  const handleDateChange = (newDate: any) => {
     setDate(newDate);
     if (newDate && time) {
-      onChange(new Date(`${newDate}T${time}`));
+      onChangeDatePicker(`${newDate} ${time}`);
     }
   };
 
-  const handleTimeChange = (newTime) => {
+  const handleTimeChange = (newTime: any) => {
     setTime(newTime);
     if (date && newTime) {
-      onChange(new Date(`${date}T${newTime}`));
+      onChangeDatePicker(`${date} ${newTime}`);
     }
   };
 
@@ -48,7 +47,7 @@ const DateTimePicker = ({ value, onChange }: any) => {
     <Popover>
       <PopoverTrigger asChild>
         <button className="w-full flex justify-between items-center border border-gray-300 rounded-md p-2 bg-white text-gray-900">
-          {value ? format(value, "PPPpp") : "Select Date and Time"}
+          {value ? value : "Select Date and Time"}
           <CalendarIcon className="ml-2 text-gray-600" />
         </button>
       </PopoverTrigger>
@@ -57,7 +56,7 @@ const DateTimePicker = ({ value, onChange }: any) => {
         sideOffset={5}
       >
         <div className="flex flex-col p-2">
-          <Calendar value={date} onChange={handleDateChange} />
+          <DatePickerCalendar value={date} onChange={handleDateChange} />
           <TimePicker time={time} onTimeChange={handleTimeChange} />
         </div>
       </PopoverContent>
