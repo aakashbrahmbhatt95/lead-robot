@@ -26,6 +26,20 @@ export const SideBarData = [
   },
   {
     icon: Group4,
+    text: "Attributes",
+    url: "/attributes",
+    showSecondarySidebar: false,
+    secondarySideBarData: [],
+  },
+  {
+    icon: Group4,
+    text: "Tags",
+    url: "/tags",
+    showSecondarySidebar: false,
+    secondarySideBarData: [],
+  },
+  {
+    icon: Group4,
     text: "Contacts",
     url: "/contacts",
     showSecondarySidebar: false,

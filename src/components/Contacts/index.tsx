@@ -1,18 +1,15 @@
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/lib/ui/menubar";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import PlusWhite from "../../../public/Plus-white.svg";
 import { Dialog, DialogTrigger } from "@/lib/ui/dialog";
 import { Button } from "@/lib/ui/button";
-import { campaignMenuBar } from "@/components/CampaignsList/helper";
-import { useRouter } from "next/navigation";
 import ContactTable from "./contactTable";
 import ContactPopup from "@/lib/modals/ContactPopup";
+import { Sheet } from "../../lib/ui/sheet";
+import EditContactPopup from "../../lib/modals/ContactPopup/editContactPopup";
 
 const Contacts = () => {
-  const router = useRouter();
   const [selectedMenuBar, setSelectedMenuBar] = useState(1);
   const [isContactPopup, setIsContactPopup] = useState<boolean>(false);
+  const [isEditContactPopup, setIsEditContactPopup] = useState<any>(null);
 
   useEffect(() => {
     if (!isContactPopup) {
@@ -22,28 +19,12 @@ const Contacts = () => {
 
   return (
     <>
-      <div className="flex justify-between mt-4">
-        <Menubar className="w-fit bg-[#F4F4F5]">
-          {campaignMenuBar?.map((ele: any, index: any) => {
-            return (
-              <MenubarMenu key={index}>
-                <MenubarTrigger
-                  className="cursor-pointer text-[#3F3F46]"
-                  style={{
-                    backgroundColor:
-                      selectedMenuBar === ele?.value ? "white" : "#F4F4F5",
-                  }}
-                  onClick={() => setSelectedMenuBar(ele?.value)}
-                >
-                  {ele?.text}
-                </MenubarTrigger>
-              </MenubarMenu>
-            );
-          })}
-        </Menubar>
+      <div className="flex justify-end gap-2 mt-4">
         <Dialog open={isContactPopup} onOpenChange={setIsContactPopup}>
           <DialogTrigger asChild onClick={() => setIsContactPopup(true)}>
-            <Button variant="primary" style={{border: '1px solid black'}}>+ Create Contact</Button>
+            <Button variant="primary" style={{ border: "1px solid black" }}>
+              Open Popup
+            </Button>
           </DialogTrigger>
           <ContactPopup
             selectedMenuBar={selectedMenuBar}
@@ -51,8 +32,27 @@ const Contacts = () => {
             setIsContactPopup={setIsContactPopup}
           />
         </Dialog>
+        <Button
+          variant="primary"
+          type="button"
+          style={{ border: "1px solid black" }}
+          onClick={() => setIsEditContactPopup("add")}
+        >
+          + Create Contact
+        </Button>
       </div>
-      <ContactTable selectedMenuBar={selectedMenuBar} />
+      <ContactTable
+        isEditContactPopup={isEditContactPopup}
+        setIsEditContactPopup={setIsEditContactPopup}
+      />
+      <Sheet open={isEditContactPopup !== null}>
+        {isEditContactPopup !== null && (
+          <EditContactPopup
+            isEditContactPopup={isEditContactPopup}
+            setIsEditContactPopup={setIsEditContactPopup}
+          />
+        )}
+      </Sheet>
     </>
   );
 };

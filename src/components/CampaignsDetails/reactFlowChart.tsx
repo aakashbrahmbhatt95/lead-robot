@@ -41,6 +41,7 @@ const ReactFlowChart = () => {
   const [isOpenEditPathCondition, setIsOpenEditPathCondition] =
     useState<any>(null);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const isCardDraggingRef = useRef(false);
   const { taskSetList, pathConditionList }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
@@ -60,7 +61,7 @@ const ReactFlowChart = () => {
         y: ele?.y_position,
       },
       data: {
-        label: <TaskSetCard ele={ele} key={index} />,
+        label: <TaskSetCard ele={ele} key={index} isCardDraggingRef={isCardDraggingRef} />,
       },
       style: {
         width: "330px",
@@ -130,6 +131,7 @@ const ReactFlowChart = () => {
   };
 
   const handleNodeDragStop = (event: any, node: any) => {
+    if(!isCardDraggingRef.current){
     const initialPosition = initialPositionsRef.current[node.id];
     if (
       node.position.x === initialPosition.x &&
@@ -149,6 +151,7 @@ const ReactFlowChart = () => {
       is_parent: temp?.is_parent,
     };
     dispatch(editTaskSetAction(body, node.id));
+  }
   };
 
   return (
@@ -171,6 +174,7 @@ const ReactFlowChart = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onEdgeClick={onEdgeClick}
+        nodesDraggable={!isCardDraggingRef.current}
       >
         <MiniMap />
         <Controls />

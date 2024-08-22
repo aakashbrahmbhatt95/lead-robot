@@ -19,7 +19,7 @@ export const contactValidationSchema = Yup.object().shape({
   lastName: Yup.string()
     .required("Last name is required")
     .min(2, "Last name must be at least 2 characters"),
-    contactNumber: Yup.string()
+  contactNumber: Yup.string()
     .required("Phone number is required")
     .matches(/^[0-9]+$/, "Phone number must be numeric")
     .min(10, "Phone number must be at least 10 digits"),
@@ -27,8 +27,10 @@ export const contactValidationSchema = Yup.object().shape({
 });
 
 export const attributeValidationSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Name is required"),
-  type: Yup.string()
-    .required("Type is required")
+  label: Yup.string().required("Label is required"),
+  type: Yup.string().required("Type is required"),
+});
+
+export const tagValidationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
 });
