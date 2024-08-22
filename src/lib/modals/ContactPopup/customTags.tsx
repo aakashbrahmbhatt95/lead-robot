@@ -87,7 +87,7 @@ const CustomTags = () => {
                   <p className="p-2 text-sm border-t-[1px] border-[lightgray] font-normal text-[#18181B]">
                     Results
                   </p>
-                  {tagsList.map((ele) => (
+                  {tagsList.map((ele: any) => (
                     <CommandItem
                       className="flex gap-3 m-2 mt-3"
                       key={ele.name}

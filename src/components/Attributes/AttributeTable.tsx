@@ -62,7 +62,7 @@ export const columns: any = (handleAction: any) => [
     accessorKey: "choices",
     header: "Choices",
     cell: ({ row }: any) =>
-      row?.original?.choices?.map((ele) => {
+      row?.original?.choices?.map((ele: any) => {
         return <p>{ele}</p>;
       }),
   },
