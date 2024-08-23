@@ -2,7 +2,7 @@ import { Checkbox } from "@/lib/ui/checkbox";
 import { mapTableData } from "@/components/CampaignsDetails/helper";
 import MapComboBox from "./MapComboBox";
 
-const UploadCSV = () => {
+const MapAttribute = () => {
   return (
     <div>
       <div className="my-4">
@@ -35,4 +35,4 @@ const UploadCSV = () => {
   );
 };
 
-export default UploadCSV;
+export default MapAttribute;

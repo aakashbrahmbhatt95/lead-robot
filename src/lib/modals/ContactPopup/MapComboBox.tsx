@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { ChevronDown, CheckIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/lib/ui/button";
@@ -14,35 +14,16 @@ import {
   CommandList,
 } from "@/lib/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/lib/ui/popover";
-import NewAttributePopup from "./MapAttributePopup";
-
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
+import { useAppSelector } from "../../../redux/store";
+import AttributePopup from "../../../components/Attributes/AttributePopup";
 
 const MapComboBox = () => {
-  const [open, setOpen] = React.useState(false);
-  const [isNewAttribute, setIsNewAttribute] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [isAttributePopup, setIsAttributePopup] = useState<any>(null);
+  const [value, setValue] = useState("");
+  const { attributesList }: any = useAppSelector(
+    (state: any) => state.attributeReducer
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -54,8 +35,8 @@ const MapComboBox = () => {
           className="w-[200px] justify-between"
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Name"}
+            ? attributesList.find((ele: any) => ele.label === value)?.label
+            : "Select"}
           <ChevronDown />
         </Button>
       </PopoverTrigger>
@@ -65,27 +46,29 @@ const MapComboBox = () => {
           <CommandList>
             <p
               className="text-sm font-normal text-[#18181B] p-[10px] border-b-[1px] border-[lightgray] cursor-pointer"
-              onClick={() => setIsNewAttribute(true)}
+              onClick={() => setIsAttributePopup("add")}
             >
               Create new attribute
             </p>
             <CommandGroup>
-              <p className="m-2 text-sm font-normal text-[#18181B]">Suggestions</p>
-              {frameworks.map((framework) => (
+              <p className="m-2 text-sm font-normal text-[#18181B]">
+                Suggestions
+              </p>
+              {attributesList.map((ele: any) => (
                 <CommandItem
                   className="bg-black text-white m-2 mt-3"
-                  key={framework.value}
-                  value={framework.value}
+                  key={ele?.key}
+                  value={ele?.label}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
                 >
-                  {framework.label}
+                  {ele?.label}
                   <CheckIcon
                     className={cn(
                       "ml-auto h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === ele?.label ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>
@@ -95,11 +78,11 @@ const MapComboBox = () => {
           </CommandList>
         </Command>
       </PopoverContent>
-      <Sheet open={isNewAttribute}>
-        {isNewAttribute && (
-          <NewAttributePopup
-            isNewAttribute={isNewAttribute}
-            setIsNewAttribute={setIsNewAttribute}
+      <Sheet open={isAttributePopup !== null}>
+        {isAttributePopup !== null && (
+          <AttributePopup
+            isAttributePopup={isAttributePopup}
+            setIsAttributePopup={setIsAttributePopup}
           />
         )}
       </Sheet>
