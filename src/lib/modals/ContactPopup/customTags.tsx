@@ -17,10 +17,9 @@ import {
 } from "../../../redux/action/tags-action";
 import { toast } from "react-toastify";
 
-const CustomTags = () => {
+const CustomTags = ({ tags, setTags }: any) => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState([]);
   const [newTag, setNewTag] = React.useState("");
   const { tagsList }: any = useAppSelector((state: any) => state.tagReducer);
 
@@ -59,9 +58,9 @@ const CustomTags = () => {
             >
               Create new tag
             </p>
-            {value?.length ? (
+            {tags?.length ? (
               <p className="flex gap-2 flex-wrap p-[10px] border-t-[1px] border-[lightgray]">
-                {value?.map((ele: any, index: any) => {
+                {tags?.map((ele: any, index: any) => {
                   return (
                     <p
                       key={index}
@@ -71,7 +70,7 @@ const CustomTags = () => {
                       <X
                         className="cursor-pointer"
                         onClick={() => {
-                          setValue(value.filter((item) => item !== ele));
+                          setTags(tags.filter((item: any) => item !== ele));
                         }}
                       />
                     </p>
@@ -93,7 +92,7 @@ const CustomTags = () => {
                       key={ele.name}
                       value={ele.name}
                       onSelect={() => {
-                        setValue((prevValue: any) => {
+                        setTags((prevValue: any) => {
                           if (
                             prevValue.some(
                               (item: any) => item.name === ele.name
@@ -109,7 +108,7 @@ const CustomTags = () => {
                       }}
                     >
                       <Checkbox
-                        checked={value.some((ele1) => ele1 === ele?.name)}
+                        checked={tags.some((ele1: any) => ele1 === ele?.name)}
                       />
                       <p className="bg-black flex gap-1 text-white py-1 px-2 rounded">
                         {ele?.name}

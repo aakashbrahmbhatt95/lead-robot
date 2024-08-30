@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { invoices, reviewBoxArray } from "@/components/CampaignsDetails/helper";
+import { reviewBoxArray } from "@/components/CampaignsDetails/helper";
 import { Switch } from "@/lib/ui/switch";
 import info from "@/../public/info_black.svg";
 import warningCircle from "@/../public/WarningCircle.svg";
@@ -13,19 +13,15 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/lib/ui/table";
-import { useAppSelector } from "@/redux/store";
 import { useState } from "react";
+import { Input } from "../../ui/input";
 
-const Review = () => {
+const Review = ({ reviewErrorDetails, importJobs, setImportJobs }: any) => {
   const [isShowError, setIsShowError] = useState(false);
-  const { fileErrorDetails }: any = useAppSelector(
-    (state: any) => state.campaignReducer
-  );
 
   return (
     <div>
@@ -50,7 +46,7 @@ const Review = () => {
           <div className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg">
             <Image src={warningCircle} alt="warningCircle" />
             <p className="text-lg font-semibold	text-[#18181B] mt-3">
-              {fileErrorDetails?.length || 0}
+              {reviewErrorDetails?.length || 0}
             </p>
             <p className="text-sm font-normal text-[#71717A] mt-2">Errors</p>
           </div>
@@ -63,12 +59,29 @@ const Review = () => {
         Existing contacts data
       </p>
       <div className="flex items-center space-x-2 mt-4">
-        <Switch checked />
+        <p className="text-sm font-medium text-[#18181B]">Import Job Name</p>
+        <Input
+          value={importJobs?.name}
+          onChange={(event: any) =>
+            setImportJobs({
+              ...importJobs,
+              name: event.target.value,
+            })
+          }
+        />
+      </div>
+      <div className="flex items-center space-x-2 mt-4">
+        <Switch
+          checked={importJobs?.update_existing}
+          onCheckedChange={(checked: any) =>
+            setImportJobs({ ...importJobs, update_existing: checked })
+          }
+        />
         <p className="text-sm font-medium text-[#18181B]">
           Update existing contacts
         </p>
       </div>
-      {fileErrorDetails?.length && (
+      {reviewErrorDetails?.length && (
         <div className="flex items-center space-x-2 mt-4">
           <Switch
             checked={isShowError}
@@ -110,7 +123,7 @@ const Review = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {fileErrorDetails?.map((ele: any, index: any) => (
+            {reviewErrorDetails?.map((ele: any, index: any) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">{ele?.row}</TableCell>
                 <TableCell>{ele?.column}</TableCell>

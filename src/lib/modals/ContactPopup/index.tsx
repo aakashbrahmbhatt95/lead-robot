@@ -8,14 +8,56 @@ import { Button } from "@/lib/ui/button";
 import MapAttribute from "./mapAttribute";
 import CustomTags from "./customTags";
 import Review from "./review";
-import UploadSuccessful from "./UploadSuccessful";
-import { toast } from "react-toastify";
+import { useState } from "react";
+import { useAppDispatch } from "../../../redux/store";
+import { addImportJobAction } from "../../../redux/action/contacts-action";
 
 const ContactPopup = ({
   selectedMenuBar,
   setSelectedMenuBar,
   setIsContactPopup,
 }: any) => {
+  const dispatch = useAppDispatch();
+  const [selectedAttributes, setSelectedAttributes] = useState<any[]>([]);
+  const [reviewErrorDetails, setReviewErrorDetails] = useState<any>(null);
+  const [fileData, setFileData] = useState<any[]>([]);
+  const [tags, setTags] = useState<any[]>([]);
+  const [importJobs, setImportJobs] = useState<any>({
+    name: "",
+    update_existing: false,
+  });
+
+  const uploadCSVHandler = () => {
+    const importJobIDBody = fileData?.map((ele: any) => {
+      return {
+        phone: `+91-${ele?.phone_number}`,
+        attributes: {
+          customer_id: ele?.customer_id,
+          title: ele?.title,
+          name: ele?.name,
+          surname: ele?.surname,
+          email: ele?.email,
+          date_of_birth: ele?.date_of_birth,
+          last_contact: ele?.last_contact,
+          city: ele?.city,
+          postal_code: ele?.postal_code,
+          lead_source: ele?.lead_source,
+          consent: ele?.consent,
+        },
+        tags: tags?.map((ele: any) => ele?.name),
+      };
+    });
+    dispatch(
+      addImportJobAction(
+        {
+          ...importJobs,
+          tags: tags?.map((ele: any) => ele?.id),
+        },
+        importJobIDBody,
+        setIsContactPopup
+      )
+    );
+  };
   return (
     <DialogContent className="sm:max-w-[60%] max-h-[75%] overflow-scroll">
       <DialogHeader>
@@ -58,10 +100,26 @@ const ContactPopup = ({
           </Menubar>
         </>
       )}
-      {selectedMenuBar === 1 && <UploadCSV />}
-      {selectedMenuBar === 2 && <MapAttribute />}
-      {selectedMenuBar === 3 && <CustomTags />}
-      {selectedMenuBar === 4 && <Review />}
+      {selectedMenuBar === 1 && (
+        <UploadCSV
+          setFileData={setFileData}
+          setReviewErrorDetails={setReviewErrorDetails}
+        />
+      )}
+      {selectedMenuBar === 2 && (
+        <MapAttribute
+          selectedAttributes={selectedAttributes}
+          setSelectedAttributes={setSelectedAttributes}
+        />
+      )}
+      {selectedMenuBar === 3 && <CustomTags tags={tags} setTags={setTags} />}
+      {selectedMenuBar === 4 && (
+        <Review
+          reviewErrorDetails={reviewErrorDetails}
+          setImportJobs={setImportJobs}
+          importJobs={importJobs}
+        />
+      )}
       {/* {selectedMenuBar === 5 && <UploadSuccessful />} */}
       <div
         className="mt-3 flex justify-end gap-4 pr-2"
@@ -89,8 +147,7 @@ const ContactPopup = ({
           className="h-[36px] w-[56px]"
           onClick={() => {
             if (selectedMenuBar === 4) {
-              setIsContactPopup(false);
-              toast.success("Upload Succesfully!");
+              uploadCSVHandler();
             }
             setSelectedMenuBar(
               selectedMenuBar === 1
@@ -104,6 +161,10 @@ const ContactPopup = ({
                       : 1
             );
           }}
+          disabled={
+            (selectedMenuBar === 4 && reviewErrorDetails?.length) ||
+            (selectedMenuBar === 4 && !fileData?.length)
+          }
         >
           {selectedMenuBar === 1
             ? "Next"

@@ -46,34 +46,6 @@ export const menuBarArray = [
   },
 ];
 
-export const mapTableData = [
-  {
-    id: "1",
-    title: "Name",
-    description: "id_name, id_name, id_name, id_name",
-  },
-  {
-    id: "2",
-    title: "Number",
-    description: "#number, #number, #number, #number",
-  },
-  {
-    id: "3",
-    title: "Gender",
-    description: "Male, Female, Unidentified, Non-Binary",
-  },
-  {
-    id: "4",
-    title: "Place",
-    description: "USA,South Africa",
-  },
-  {
-    id: "5",
-    title: "Age",
-    description: "21, 30, 40, 50",
-  },
-];
-
 export const reviewBoxArray = [
   {
     img: user,

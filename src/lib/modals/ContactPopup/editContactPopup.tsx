@@ -176,7 +176,12 @@ const EditContactPopup = ({
               );
             case "datetime":
               return (
-                <DateTimePicker value={date} onChangeDatePicker={setDate} />
+                <DateTimePicker
+                  value={formik.values.attributes[attribute.key]}
+                  onChangeDatePicker={(value: any) => {
+                    formik.setFieldValue(`attributes.${attribute.key}`, value);
+                  }}
+                />
               );
             default:
               return null;

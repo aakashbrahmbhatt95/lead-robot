@@ -7,12 +7,9 @@ import Image from "next/image";
 import { Button } from "@/lib/ui/button";
 import { Input } from "@/lib/ui/input";
 import { Label } from "@/lib/ui/label";
-import { useAppDispatch } from "@/redux/store";
-import { errorDetailsReducer } from "@/redux/reducer/campaigns-reducer";
 import * as XLSX from "xlsx";
 
-const UploadCSV = () => {
-  const dispatch = useAppDispatch();
+const UploadCSV = ({ setFileData, setReviewErrorDetails }: any) => {
   const [selectedImport, setSelectedImport] = useState(1);
   const [files, setFiles] = useState<any>(null);
   const [importGoogleSheet, setImportGoogleSheet] = useState(false);
@@ -28,6 +25,22 @@ const UploadCSV = () => {
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+      // Step 1: Remove the first row
+      const headers: any = rows.shift();
+
+      // Step 2: Transform the array into an array of objects
+      const formattedHeaders = headers.map((header: any) =>
+        header.trim().replace(/\s+/g, "_").toLowerCase()
+      );
+
+      const result = rows.map((row: any) => {
+        return row.reduce((obj: any, value: any, index: any) => {
+          obj[formattedHeaders[index]] = value;
+          return obj;
+        }, {});
+      });
+
+      setFileData(result);
       let errorCount = 0;
       const errorDetails: { row: number; column: number; value: string }[] = [];
       rows.forEach((row: any, rowIndex: number) => {
@@ -47,10 +60,11 @@ const UploadCSV = () => {
         setError(
           `The Excel sheet is incorrect. ${errorCount} fields are missing values.`
         );
-        dispatch(errorDetailsReducer(errorDetails));
+        setReviewErrorDetails(errorDetails);
         setFiles(null);
       } else {
         setError(null);
+        setReviewErrorDetails(null);
         setFiles([file]);
       }
     };

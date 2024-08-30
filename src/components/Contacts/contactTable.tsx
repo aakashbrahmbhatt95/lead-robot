@@ -74,6 +74,7 @@ export const columns: any = (handleAction: any) => [
     cell: ({ row }: any) => (
       <div>
         <p>
+          {row?.original?.attributes?.title}{" "}
           {row?.original?.attributes?.first_name}{" "}
           {row?.original?.attributes?.last_name}
         </p>
@@ -81,37 +82,46 @@ export const columns: any = (handleAction: any) => [
       </div>
     ),
   },
-  // {
-  //   accessorKey: "campaigns",
-  //   header: "Campaigns",
-  //   cell: ({ row }: any) => (
-  //     <div className="flex items-center">
-  //       {row.getValue("campaigns")}
-  //       <ChevronRight />
-  //     </div>
-  //   ),
-  // },
   {
-    accessorKey: "lastCalled",
-    header: "Last Called",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.last_called}</div>,
+    accessorKey: "customer_id",
+    header: "Customer ID",
+    cell: ({ row }: any) => <div>{row.original?.attributes?.customer_id}</div>,
   },
   {
-    accessorKey: "callcount",
-    header: "Call Count",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.call_count}</div>,
+    accessorKey: "email",
+    header: "Email",
+    cell: ({ row }: any) => <div>{row.original?.attributes?.email}</div>,
   },
-  // {
-  //   accessorKey: "attributes",
-  //   header: "Attributes",
-  //   cell: ({ row }: any) => (
-  //     <div>
-  //       <span className="bg-black text-white px-3 py-1 rounded">
-  //         {row.getValue("attributes")}
-  //       </span>
-  //     </div>
-  //   ),
-  // },
+  {
+    accessorKey: "date_of_birth",
+    header: "Date of Birth",
+    cell: ({ row }: any) => <div>{row.original?.attributes?.date_of_birth}</div>,
+  },
+  {
+    accessorKey: "last_contact",
+    header: "Last Contact",
+    cell: ({ row }: any) => <div>{row.original?.attributes?.last_contact}</div>,
+  },
+  {
+    accessorKey: "city",
+    header: "City",
+    cell: ({ row }: any) => <div>{row.original?.attributes?.city}</div>,
+  },
+  {
+    accessorKey: "postal_code",
+    header: "Postal Code",
+    cell: ({ row }: any) => <div>{row.original?.attributes?.postal_code}</div>,
+  },
+  {
+    accessorKey: "lead_source",
+    header: "Lead Source",
+    cell: ({ row }: any) => <div>{row.original?.attributes?.lead_source}</div>,
+  },
+  {
+    accessorKey: "consent",
+    header: "Consent",
+    cell: ({ row }: any) => <div>{row.original?.attributes?.consent ? "True" : "False"}</div>,
+  },
   {
     accessorKey: "tags",
     header: "Tags",
