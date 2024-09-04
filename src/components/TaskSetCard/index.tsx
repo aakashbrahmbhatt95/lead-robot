@@ -49,7 +49,7 @@ const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
   const { taskSetList }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
-
+    console.log('ele', ele)
   const handleAddComponent = (type: string, subType: string) => {
     const rawValue = Date.now() / 1000;
     const roundedValue = Math.round(rawValue);

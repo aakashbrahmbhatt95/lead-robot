@@ -12,11 +12,12 @@ import { Input } from "@/lib/ui/input";
 const UploadCSV = ({
   files,
   setFiles,
-  setFileData,
-  importJobIdPayload,
-  setImportJobIdPayload,
   error,
   setError,
+  setFileData,
+  setErrorDetails,
+  importJobIdPayload,
+  setImportJobIdPayload,
 }: any) => {
   const [selectedImport, setSelectedImport] = useState(1);
   const fileInputRef: any = useRef(null);
@@ -45,7 +46,30 @@ const UploadCSV = ({
       });
 
       setFileData(result);
-      setFiles([file]);
+      let errorCount = 0;
+      const errorDetails: { row: number; column: number; value: string }[] = [];
+      rows.forEach((row: any, rowIndex: number) => {
+        row.forEach((cell: any, colIndex: number) => {
+          if (cell === undefined || cell === null || cell === "") {
+            errorCount++;
+            errorDetails.push({
+              row: rowIndex + 1,
+              column: colIndex + 1,
+              value: cell ? "" : "Cell value is empty",
+            });
+          }
+        });
+      });
+
+      if (errorCount > 0) {
+        setError(`The Excel sheet is incorrect.`);
+        setErrorDetails(errorDetails);
+        setFiles(null);
+      } else {
+        setError(null);
+        setErrorDetails(null);
+        setFiles([file]);
+      }
     };
     reader.readAsBinaryString(file);
   };

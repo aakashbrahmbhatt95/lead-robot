@@ -7,13 +7,13 @@ import { Sheet } from "../../lib/ui/sheet";
 import EditContactPopup from "../../lib/modals/ContactPopup/editContactPopup";
 
 const Contacts = () => {
-  const [selectedMenuBar, setSelectedMenuBar] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(1);
   const [isContactPopup, setIsContactPopup] = useState<boolean>(false);
   const [isEditContactPopup, setIsEditContactPopup] = useState<any>(null);
 
   useEffect(() => {
     if (!isContactPopup) {
-      setSelectedMenuBar(1);
+      setSelectedTab(1);
     }
   }, [isContactPopup]);
 
@@ -27,8 +27,8 @@ const Contacts = () => {
             </Button>
           </DialogTrigger>
           <ContactPopup
-            selectedMenuBar={selectedMenuBar}
-            setSelectedMenuBar={setSelectedMenuBar}
+            selectedTab={selectedTab}
+            setSelectedTab={setSelectedTab}
             setIsContactPopup={setIsContactPopup}
           />
         </Dialog>

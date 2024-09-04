@@ -113,7 +113,7 @@ const ReactFlowChart = () => {
     dispatch(
       addtaskSetAction({
         campaign_id: params?.id,
-        name: `Task Set ${Math.random()}`,
+        name: 'Task Set',
         speak_first: false,
         x_position: 200,
         y_position: 10,

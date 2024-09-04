@@ -46,7 +46,7 @@ export const menuBarArray = [
   },
 ];
 
-export const reviewBoxArray = [
+export const reviewBoxArray = (v: any) => [
   {
     img: user,
     count: "1884",
@@ -54,7 +54,7 @@ export const reviewBoxArray = [
   },
   {
     img: userSwitch,
-    count: "20",
+    count: String(v.existing_count) || "N/A",
     text: "Existing people",
   },
   {

@@ -1,7 +1,7 @@
 import { Checkbox } from "@/lib/ui/checkbox";
 import MapComboBox from "./MapComboBox";
 import { useAppSelector } from "../../../redux/store";
-import { useState } from "react";
+import { DESELECT_TEXT, REMAP_COLUMN_TEXT } from "./contactsPopupHelper";
 
 const MapAttribute = ({ selectedAttributes, setSelectedAttributes }: any) => {
   const { attributesList }: any = useAppSelector(
@@ -48,9 +48,8 @@ const MapAttribute = ({ selectedAttributes, setSelectedAttributes }: any) => {
         })}
       </div>
       <p className="text-[#71717A] mt-8 text-sm font-normal">
-        1. Deselect the columns you would like to not import. <br />
-        2. You can remap a column name by selecting an attribute from the
-        drop-down or creating a new attribute.
+        {DESELECT_TEXT} <br />
+        {REMAP_COLUMN_TEXT}
       </p>
     </div>
   );

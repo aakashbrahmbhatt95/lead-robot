@@ -9,25 +9,36 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/lib/ui/tooltip";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/lib/ui/table";
 import { useState } from "react";
-import { Input } from "../../ui/input";
+import {
+  EXISTING_CONTACTS_TEXT,
+  HELP_IMPORT_TEXT,
+  UPDATE_EXISTING_TEXT,
+  UPDATE_NEW_DATA_TEXT,
+} from "./contactsPopupHelper";
+import ErrorsTable from "./ErrorsTable";
 
-const Review = ({ reviewErrorDetails, importJobs, setImportJobs }: any) => {
+// if(res?.data?.invalid_rows?.length > 0) {
+//   setError(res?.data?.invalid_rows);
+// }
+
+const Review = ({
+  dryRunRes,
+  importJobIdPayload,
+  setImportJobIdPayload,
+  setError
+}: any) => {
+  console.log('dryRunResdryRunRes', dryRunRes)
   const [isShowError, setIsShowError] = useState(false);
-
+  const error = dryRunRes?.invalid_rows;
+  if(error) {
+    setError(Boolean(error))
+  }
   return (
     <div>
       <div className="mt-3 flex gap-3">
         <>
-          {reviewBoxArray?.map((ele: any, index: any) => {
+          {reviewBoxArray(dryRunRes)?.map((ele: any, index: any) => {
             return (
               <div
                 className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg"
@@ -46,7 +57,7 @@ const Review = ({ reviewErrorDetails, importJobs, setImportJobs }: any) => {
           <div className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg">
             <Image src={warningCircle} alt="warningCircle" />
             <p className="text-lg font-semibold	text-[#18181B] mt-3">
-              {reviewErrorDetails?.length || 0}
+              {error?.length || 0}
             </p>
             <p className="text-sm font-normal text-[#71717A] mt-2">Errors</p>
           </div>
@@ -56,32 +67,23 @@ const Review = ({ reviewErrorDetails, importJobs, setImportJobs }: any) => {
         Total contacts: 1904
       </p>
       <p className="text-lg font-semibold	text-[#18181B] mt-3">
-        Existing contacts data
+        {EXISTING_CONTACTS_TEXT}
       </p>
       <div className="flex items-center space-x-2 mt-4">
-        <p className="text-sm font-medium text-[#18181B]">Import Job Name</p>
-        <Input
-          value={importJobs?.name}
-          onChange={(event: any) =>
-            setImportJobs({
-              ...importJobs,
-              name: event.target.value,
+        <Switch
+          checked={importJobIdPayload?.update_existing}
+          onCheckedChange={(checked: any) =>
+            setImportJobIdPayload({
+              ...importJobIdPayload,
+              update_existing: checked,
             })
           }
         />
-      </div>
-      <div className="flex items-center space-x-2 mt-4">
-        <Switch
-          checked={importJobs?.update_existing}
-          onCheckedChange={(checked: any) =>
-            setImportJobs({ ...importJobs, update_existing: checked })
-          }
-        />
         <p className="text-sm font-medium text-[#18181B]">
-          Update existing contacts
+          {UPDATE_EXISTING_TEXT}
         </p>
       </div>
-      {reviewErrorDetails?.length && (
+      {error?.length ? (
         <div className="flex items-center space-x-2 mt-4">
           <Switch
             checked={isShowError}
@@ -89,7 +91,7 @@ const Review = ({ reviewErrorDetails, importJobs, setImportJobs }: any) => {
           />
           <p className="text-sm font-medium text-[#18181B]">Show Errors</p>
         </div>
-      )}
+      ): null}
       <div className="flex items-center mt-4">
         <TooltipProvider>
           <Tooltip>
@@ -101,64 +103,19 @@ const Review = ({ reviewErrorDetails, importJobs, setImportJobs }: any) => {
               className="ml-[46%] w-[299px] h-[130px] p-[40px] left-40"
             >
               <p className="text-sm font-medium text-[#18181B]">
-                Update existing contacts
+                {UPDATE_EXISTING_TEXT}
               </p>
               <p className="text-sm font-normal text-[#71717A] mt-2">
-                Updates existing contact with new data from your import.
+                {UPDATE_NEW_DATA_TEXT}
               </p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
         <p className="text-sm font-semibold text-[#18181B]">
-          Help importing contacts
+          {HELP_IMPORT_TEXT}
         </p>
       </div>
-      {isShowError && (
-        <Table className="mt-10">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Row</TableHead>
-              <TableHead>Column</TableHead>
-              <TableHead>Value</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {reviewErrorDetails?.map((ele: any, index: any) => (
-              <TableRow key={index}>
-                <TableCell className="font-medium">{ele?.row}</TableCell>
-                <TableCell>{ele?.column}</TableCell>
-                <TableCell>{ele?.value}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
-      {/* <Table className="mt-10">
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {invoices?.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table> */}
+      {isShowError && error && <ErrorsTable data={error} />}
     </div>
   );
 };

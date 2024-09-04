@@ -18,8 +18,7 @@ export const contactsListAction = () => async (dispatch: AppDispatch) => {
     })
     .catch((err: any) => {
       dispatch(contactsListReducer([]));
-    })
-    .finally(() => {});
+    });
 };
 
 export const addContactsAction =
@@ -33,8 +32,7 @@ export const addContactsAction =
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
+      });
   };
 
 export const editContactsAction =
@@ -48,8 +46,7 @@ export const editContactsAction =
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
+      });
   };
 
 export const deleteContactsAction =
@@ -63,47 +60,27 @@ export const deleteContactsAction =
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
+      });
   };
 
-export const addImportJobAction =
-  (body: any, importJobIDBody: any, setIsContactPopup: any) =>
-  async (dispatch: AppDispatch) => {
-    HttpUtil.makePOST(`${BASE_URL1}${GET_CONTACT_IMPORT_JOB_URL}`, body, {
-      Authorization: getToken(),
-    })
-      .then((res: any) => {
-        if (res?.success) {
-          dispatch(
-            importJobContactsByIdAction(
-              importJobIDBody,
-              res?.data?.id,
-              setIsContactPopup
-            )
-          );
-        }
-      })
-      .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
-  };
+
 
 export const importJobContactsByIdAction =
   (body: any, importJobId: any, setIsContactPopup: any) =>
   async (dispatch: AppDispatch) => {
     HttpUtil.makePOST(
-      `${BASE_URL1}${GET_CONTACT_IMPORT_JOB_URL}${importJobId}/import`,
+      `${BASE_URL1}${GET_CONTACT_IMPORT_JOB_URL}${importJobId}/dry-run`,
       body,
       {
         Authorization: getToken(),
       }
     )
       .then((res: any) => {
-        dispatch(contactsListAction());
-        setIsContactPopup(false);
-        toast.success("Upload Succesfully!");
+        if (res?.success) {
+          dispatch(contactsListAction());
+          setIsContactPopup(false);
+          toast.success("Upload Succesfully!");
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
