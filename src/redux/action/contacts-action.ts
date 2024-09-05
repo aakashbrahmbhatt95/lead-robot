@@ -63,13 +63,11 @@ export const deleteContactsAction =
       });
   };
 
-
-
-export const importJobContactsByIdAction =
+export const uploadContacts =
   (body: any, importJobId: any, setIsContactPopup: any) =>
   async (dispatch: AppDispatch) => {
     HttpUtil.makePOST(
-      `${BASE_URL1}${GET_CONTACT_IMPORT_JOB_URL}${importJobId}/dry-run`,
+      `${BASE_URL1}${GET_CONTACT_IMPORT_JOB_URL}${importJobId}/import`,
       body,
       {
         Authorization: getToken(),

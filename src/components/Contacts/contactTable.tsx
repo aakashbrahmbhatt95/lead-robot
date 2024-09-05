@@ -36,7 +36,14 @@ import {
 import { tagsListAction } from "../../redux/action/tags-action";
 import { attributesListAction } from "../../redux/action/attributes-action";
 
-export const columns: any = (handleAction: any) => [
+const dynamicColumns = (attributesList: any) => attributesList.map((attribute: any) => ({
+  accessorKey: attribute.key,
+  header: attribute.label,
+  cell: ({ row }: any) => <div>{row.original?.attributes?.[attribute.key]}</div>,
+}));
+
+
+export const columns: any = (handleAction: any, attributesList: any) => [
   {
     id: "select",
     header: ({ table }: any) => (
@@ -60,68 +67,11 @@ export const columns: any = (handleAction: any) => [
     enableHiding: false,
   },
   {
-    accessorKey: "first_name",
-    header: ({ column }: any) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Contact
-        </Button>
-      );
-    },
-    cell: ({ row }: any) => (
-      <div>
-        <p>
-          {row?.original?.attributes?.title}{" "}
-          {row?.original?.attributes?.first_name}{" "}
-          {row?.original?.attributes?.last_name}
-        </p>
-        <p className="mt-2">{row?.original?.phone}</p>
-      </div>
-    ),
+    accessorKey: "phone_number",
+    header: "Phone Number",
+    cell: ({ row }: any) => <div>{row.original?.phone}</div>,
   },
-  {
-    accessorKey: "customer_id",
-    header: "Customer ID",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.customer_id}</div>,
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.email}</div>,
-  },
-  {
-    accessorKey: "date_of_birth",
-    header: "Date of Birth",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.date_of_birth}</div>,
-  },
-  {
-    accessorKey: "last_contact",
-    header: "Last Contact",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.last_contact}</div>,
-  },
-  {
-    accessorKey: "city",
-    header: "City",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.city}</div>,
-  },
-  {
-    accessorKey: "postal_code",
-    header: "Postal Code",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.postal_code}</div>,
-  },
-  {
-    accessorKey: "lead_source",
-    header: "Lead Source",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.lead_source}</div>,
-  },
-  {
-    accessorKey: "consent",
-    header: "Consent",
-    cell: ({ row }: any) => <div>{row.original?.attributes?.consent ? "True" : "False"}</div>,
-  },
+  ...dynamicColumns(attributesList),
   {
     accessorKey: "tags",
     header: "Tags",
@@ -180,6 +130,9 @@ const ContactTable: React.FC<{
   const { contactsList }: any = useAppSelector(
     (state: any) => state.contactReducer
   );
+  const { attributesList }: any = useAppSelector(
+    (state: any) => state.attributeReducer
+  );
 
   useEffect(() => {
     dispatch(contactsListAction());
@@ -197,7 +150,7 @@ const ContactTable: React.FC<{
 
   const table = useReactTable({
     data: contactsList,
-    columns: columns(handleAction),
+    columns: columns(handleAction, attributesList),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/lib/ui/tooltip";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   EXISTING_CONTACTS_TEXT,
   HELP_IMPORT_TEXT,
@@ -18,22 +18,22 @@ import {
 } from "./contactsPopupHelper";
 import ErrorsTable from "./ErrorsTable";
 
-// if(res?.data?.invalid_rows?.length > 0) {
-//   setError(res?.data?.invalid_rows);
-// }
-
 const Review = ({
   dryRunRes,
   importJobIdPayload,
   setImportJobIdPayload,
-  setError
+  setError,
+  error,
 }: any) => {
-  console.log('dryRunResdryRunRes', dryRunRes)
   const [isShowError, setIsShowError] = useState(false);
-  const error = dryRunRes?.invalid_rows;
-  if(error) {
-    setError(Boolean(error))
-  }
+
+  useEffect(() => {
+    const error = dryRunRes?.invalid_rows;
+    if (error) {
+      setError(Boolean(error));
+    }
+  }, []);
+
   return (
     <div>
       <div className="mt-3 flex gap-3">
@@ -91,7 +91,7 @@ const Review = ({
           />
           <p className="text-sm font-medium text-[#18181B]">Show Errors</p>
         </div>
-      ): null}
+      ) : null}
       <div className="flex items-center mt-4">
         <TooltipProvider>
           <Tooltip>

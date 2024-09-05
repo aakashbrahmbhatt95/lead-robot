@@ -12,16 +12,10 @@ export const uploadDryRun = async (body: any, importJobId: any) => {
     }
   );
   try {
-    if (res?.data?.invalid_rows?.length) {
-      console.log("res?.data?.invalid_rows", res?.data?.invalid_rows);
-      return res;
-    } else {
-      console.log("success res");
-      //   dispatch(
-      //     importJobContactsByIdAction(body, importJobId, setIsContactPopup)
-      //   );
-    }
-    
+    return {
+      data: res,
+      jobId: importJobId,
+    };
   } catch (err: any) {
     toast.error("Oops! Something went wrong");
     return err;

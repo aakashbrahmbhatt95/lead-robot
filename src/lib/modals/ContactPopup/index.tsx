@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../redux/store";
 import { getMenuBarTitle } from "./contactsPopupHelper";
 import { getImportJobId } from "@/api/contactsApi";
+import { uploadContacts } from "@/redux/action/contacts-action";
 
 interface ContactPopupProps {
   selectedTab: number;
@@ -31,10 +32,13 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   const [error, setError] = useState<any>(null);
   const [dryRunRes, setDryRunRes] = useState<any>(null);
   const [tags, setTags] = useState<any[]>([]);
+  const [columns, setColumns] = useState<Array<string>>([]);
   const [importJobIdPayload, setImportJobIdPayload] = useState({
     name: "",
     update_existing: false,
   });
+  const [hasMappingError, setHasMappingError] = useState(false);
+  const [importJobRes, setImportJobRes] = useState<any>(null);
 
   useEffect(() => {
     if (files?.[0]?.name) {
@@ -45,40 +49,52 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
     }
   }, [files]);
 
-  const uploadCSVHandler = async () => {
-    const fileUploadData = fileData.map((ele: any) => ({
-      phone: ele?.phone_number,
-      attributes: {
-        customer_id: ele?.customer_id,
-        title: ele?.title,
-        name: ele?.name,
-        surname: ele?.surname,
-        email: ele?.email,
-        date_of_birth: ele?.date_of_birth,
-        last_contact: ele?.last_contact,
-        city: ele?.city,
-        postal_code: ele?.postal_code,
-        lead_source: ele?.lead_source,
-        consent: ele?.consent,
-      },
-      tags: tags.map((tag: any) => tag.name),
-    }));
-    const res = await getImportJobId(
-      {
-        ...importJobIdPayload,
-        tags: tags.map((tag: any) => tag.id),
-      },
-      fileUploadData
-    );
-    if (res?.success) {
-      setSelectedTab(4);
-      setDryRunRes(res.data);
+  const uploadCSVHandler = async (str: string) => {
+    const fileUploadData = fileData.map((ele: any) => {
+      const attr: any = {};
+      Object.keys(selectedAttributes).forEach((sa) => {
+        attr[sa] = ele[selectedAttributes[sa]];
+      });
+
+      return {
+        phone: ele?.phone_number,
+        attributes: attr,
+        tags: tags.map((tag: any) => tag.name),
+      };
+    });
+
+    if (str === "tags") {
+      const res = await getImportJobId(
+        {
+          ...importJobIdPayload,
+          tags: tags.map((tag: any) => tag.id),
+        },
+        fileUploadData
+      );
+      setImportJobRes(res);
+      if (
+        res?.data?.success ||
+        (res?.data?.invalid_row_count === 0 &&
+          res?.data?.failed_reason === "" &&
+          res?.data?.invalid_rows.length === 0)
+      ) {
+        setSelectedTab(4);
+        setDryRunRes(res.data);
+      }
+    }
+    if (str === "review") {
+      dispatch(
+        uploadContacts(fileUploadData, importJobRes?.jobId, setIsContactPopup)
+      );
     }
   };
 
   const handleNext = () => {
+    console.log("next", selectedTab);
     if (selectedTab === 3) {
-      uploadCSVHandler();
+      uploadCSVHandler("tags");
+    } else if (selectedTab === 4) {
+      uploadCSVHandler("review");
     } else {
       setSelectedTab(selectedTab + 1);
     }
@@ -89,6 +105,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   const tabsDisabled =
     (selectedTab === 1 &&
       (fileData.length === 0 || !importJobIdPayload.name)) ||
+    (selectedTab === 2 && hasMappingError) ||
     (selectedTab === 4 && error);
 
   return (
@@ -132,17 +149,21 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           setFileData={setFileData}
           setImportJobIdPayload={setImportJobIdPayload}
           importJobIdPayload={importJobIdPayload}
+          setColumns={setColumns}
         />
       )}
       {selectedTab === 2 && (
         <MapAttribute
           selectedAttributes={selectedAttributes}
           setSelectedAttributes={setSelectedAttributes}
+          setHasMappingError={setHasMappingError}
+          hasMappingError={hasMappingError}
+          columns={columns.filter((ele: string) => ele !== "phone_number")}
         />
       )}
       {selectedTab === 3 && <CustomTags tags={tags} setTags={setTags} />}
       {selectedTab === 4 && dryRunRes && (
-        <Review dryRunRes={dryRunRes} setError={setError} />
+        <Review dryRunRes={dryRunRes} setError={setError} error={error} />
       )}
       <div
         className="mt-3 flex justify-end gap-4 pr-2"

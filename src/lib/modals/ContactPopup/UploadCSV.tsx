@@ -17,6 +17,7 @@ const UploadCSV = ({
   setImportJobIdPayload,
   error,
   setError,
+  setColumns
 }: any) => {
   const [selectedImport, setSelectedImport] = useState(1);
   const fileInputRef: any = useRef(null);
@@ -36,7 +37,7 @@ const UploadCSV = ({
       const formattedHeaders = headers.map((header: any) =>
         header.trim().replace(/\s+/g, "_").toLowerCase()
       );
-
+      setColumns(formattedHeaders)
       const result = rows.map((row: any) => {
         return row.reduce((obj: any, value: any, index: any) => {
           obj[formattedHeaders[index]] = value;
