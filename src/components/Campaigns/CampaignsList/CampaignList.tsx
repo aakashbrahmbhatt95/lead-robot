@@ -1,11 +1,11 @@
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/lib/ui/menubar";
 import { useState } from "react";
 import Image from "next/image";
-import PlusWhite from "../../../public/Plus-white.svg";
-import { Button } from "@/lib/ui/button";
-import { campaignMenuBar } from "@/components/CampaignsList/helper";
-import CampaignsTable from "./campaignsTable";
 import { useRouter } from "next/navigation";
+import { Button } from "@/lib/ui/button";
+import PlusWhite from "../../../../public/Plus-white.svg";
+import { campaignMenuBar } from "./helper";
+import CampaignTable from "./CampaignTable";
 
 const CampaignsList = () => {
   const router = useRouter();
@@ -39,7 +39,7 @@ const CampaignsList = () => {
           Create campaign
         </Button>
       </div>
-      <CampaignsTable selectedMenuBar={selectedMenuBar} />
+      <CampaignTable selectedMenuBar={selectedMenuBar} />
     </>
   );
 };

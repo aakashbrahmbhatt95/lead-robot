@@ -8,8 +8,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import List from "../../../public/List.svg";
-import DotsThree from "../../../public/DotsThree.svg";
 import { Button } from "@/lib/ui/button";
 import { Checkbox } from "@/lib/ui/checkbox";
 import {
@@ -36,6 +34,8 @@ import {
   deleteCampaignsAction,
   editCampaignsAction,
 } from "@/redux/action/campaigns-action";
+import List from "../../../../public/List.svg";
+import DotsThree from "../../../../public/DotsThree.svg";
 
 export const columns: any = (
   handleAction: any,
@@ -140,7 +140,7 @@ export const columns: any = (
   },
 ];
 
-const CampaignsTable: React.FC<{
+const CampaignTable: React.FC<{
   selectedMenuBar: any;
 }> = ({ selectedMenuBar }) => {
   const router = useRouter();
@@ -321,4 +321,4 @@ const CampaignsTable: React.FC<{
   );
 };
 
-export default CampaignsTable;
+export default CampaignTable;

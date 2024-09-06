@@ -1,4 +1,4 @@
-import CreateCampaign from "@/components/CreateCampaign";
+import CreateCampaign from "@/components/Campaigns/CreateCampaign/CreateCampaign";
 
 const CreateCampaignPage = () => {
   return <CreateCampaign />;

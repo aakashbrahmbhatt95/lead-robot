@@ -1,4 +1,4 @@
-import CampaignsDetails from "@/components/CampaignsDetails";
+import CampaignsDetails from "@/components/CampaignsDetails/index";
 
 const CampaignsDetailsPage = () => {
   return <CampaignsDetails />;

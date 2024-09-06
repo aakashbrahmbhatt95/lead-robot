@@ -1,9 +1,9 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import CampaignsList from "@/components/CampaignsList";
-import FirstCampaign from "@/components/FirstCampaign";
 import { useEffect } from "react";
 import { campaignsListAction } from "@/redux/action/campaigns-action";
+import CampaignsList from "@/components/Campaigns/CampaignsList/CampaignList";
+import FirstCampaign from "@/components/Campaigns/FirstCampaign/FirstCampaign";
 
 const Campaigns = () => {
   const dispatch = useAppDispatch();
