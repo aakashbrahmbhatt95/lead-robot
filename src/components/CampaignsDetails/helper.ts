@@ -88,8 +88,7 @@ export const invoices = [
     totalAmount: "$350.00",
     paymentMethod: "Bank Transfer",
   },
-]
-
+];
 
 export const tabBarData = [
   {

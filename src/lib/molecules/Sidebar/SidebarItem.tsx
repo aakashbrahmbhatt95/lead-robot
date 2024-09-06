@@ -31,10 +31,7 @@ export const SidebarItem = ({
       flex items-center relative py-3  my-1
           font-medium rounded-md cursor-pointer
           transition-colors group
-          ${
-            active && expanded
-              && "bg-white"
-          }
+          ${active && expanded && "bg-white"}
           ${
             expanded
               ? "flex-row px-2 hover:bg-white text-gray-600"
@@ -43,23 +40,25 @@ export const SidebarItem = ({
       `}
       onClick={() => handleSidebarItemClick(text)}
     >
-      <div className={` ${
-            active && !expanded
-              &&
-              "px-4 py-2 rounded-3xl h-9 items-center flex justify-center bg-white w-full"
-          }
+      <div
+        className={` ${
+          active &&
+          !expanded &&
+          "px-4 py-2 rounded-3xl h-9 items-center flex justify-center bg-white w-full"
+        }
           ${
-            !expanded
-            && "hover:bg-white text-gray-600 px-4 py-2 rounded-3xl h-9 items-center flex justify-center w-full"
+            !expanded &&
+            "hover:bg-white text-gray-600 px-4 py-2 rounded-3xl h-9 items-center flex justify-center w-full"
           }
-          `}>
+          `}
+      >
         {icon}
-        </div>
+      </div>
       <span
         className={`overflow-hidden transition-all ${
           expanded ? "ml-3" : "ml-0 mt-2"
         }`}
-        >
+      >
         {text}
       </span>
       {alert && (

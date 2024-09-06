@@ -45,7 +45,7 @@ const Sidebar = () => {
             {SideBarData?.map((ele, index: any) => {
               return (
                 <SidebarItem
-                key={index}
+                  key={index}
                   text={ele?.text}
                   icon={
                     <Image

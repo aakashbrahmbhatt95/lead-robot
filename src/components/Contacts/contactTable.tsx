@@ -36,12 +36,14 @@ import {
 import { tagsListAction } from "../../redux/action/tags-action";
 import { attributesListAction } from "../../redux/action/attributes-action";
 
-const dynamicColumns = (attributesList: any) => attributesList.map((attribute: any) => ({
-  accessorKey: attribute.key,
-  header: attribute.label,
-  cell: ({ row }: any) => <div>{row.original?.attributes?.[attribute.key]}</div>,
-}));
-
+const dynamicColumns = (attributesList: any) =>
+  attributesList.map((attribute: any) => ({
+    accessorKey: attribute.key,
+    header: attribute.label,
+    cell: ({ row }: any) => (
+      <div>{row.original?.attributes?.[attribute.key]}</div>
+    ),
+  }));
 
 export const columns: any = (handleAction: any, attributesList: any) => [
   {

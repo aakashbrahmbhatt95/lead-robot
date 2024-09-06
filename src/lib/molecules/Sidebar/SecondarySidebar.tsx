@@ -25,19 +25,21 @@ export const SecondarySidebar = ({
           <Image src={ArrowLeft} alt="" width={20} height={20} />
           <p>Close Menu</p>
         </div>
-        {activeSidebarItem?.secondarySideBarData?.map((ele: any, index: any) => (
-          <div
-          key={index}
-            className={`flex items-center relative py-3  my-1 font-medium rounded-md cursor-pointer transition-colors group flex-row px-2 hover:bg-[#f4f4f5] text-gray-600`}
-            onClick={() => {
-              if (ele?.text === "Logout") {
-                logout();
-              }
-            }}
-          >
-            {ele?.text}
-          </div>
-        ))}
+        {activeSidebarItem?.secondarySideBarData?.map(
+          (ele: any, index: any) => (
+            <div
+              key={index}
+              className={`flex items-center relative py-3  my-1 font-medium rounded-md cursor-pointer transition-colors group flex-row px-2 hover:bg-[#f4f4f5] text-gray-600`}
+              onClick={() => {
+                if (ele?.text === "Logout") {
+                  logout();
+                }
+              }}
+            >
+              {ele?.text}
+            </div>
+          )
+        )}
       </ul>
     </nav>
   );

@@ -8,7 +8,7 @@ import CampaignsTable from "./campaignsTable";
 import { useRouter } from "next/navigation";
 
 const CampaignsList = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [selectedMenuBar, setSelectedMenuBar] = useState(1);
   return (
     <>
@@ -31,7 +31,10 @@ const CampaignsList = () => {
             );
           })}
         </Menubar>
-        <Button type="button" onClick={()=>router.push("/create-campaign/create")}>
+        <Button
+          type="button"
+          onClick={() => router.push("/create-campaign/create")}
+        >
           <Image src={PlusWhite} className="mr-2" alt="Logo" />
           Create campaign
         </Button>

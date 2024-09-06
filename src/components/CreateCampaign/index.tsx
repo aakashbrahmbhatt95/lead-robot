@@ -40,7 +40,7 @@ const CreateCampaign = () => {
         is_active: campaignDataById?.is_active,
       });
     }
-  }, [isEdit,campaignDataById]);
+  }, [isEdit, campaignDataById]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;

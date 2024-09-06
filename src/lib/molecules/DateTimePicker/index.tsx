@@ -30,7 +30,7 @@ const DateTimePicker = ({ value, onChangeDatePicker }: any) => {
   const [time, setTime] = useState<any>("");
 
   const handleDateChange = (newDate: any) => {
-    const dateStr = new Date(newDate).toISOString().split('T')[0];
+    const dateStr = new Date(newDate).toISOString().split("T")[0];
     setDate(dateStr);
     if (dateStr && time) {
       onChangeDatePicker(`${dateStr} ${time}`);
