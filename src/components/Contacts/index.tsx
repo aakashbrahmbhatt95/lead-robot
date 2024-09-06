@@ -41,9 +41,7 @@ const Contacts = () => {
           + Create Contact
         </Button>
       </div>
-      <ContactTable
-        setIsEditContactPopup={setIsEditContactPopup}
-      />
+      <ContactTable setIsEditContactPopup={setIsEditContactPopup} />
       <Sheet open={isEditContactPopup !== null}>
         {isEditContactPopup !== null && (
           <EditContactPopup

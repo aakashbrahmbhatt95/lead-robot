@@ -9,21 +9,12 @@ const MapAttribute = ({
   setHasMappingError,
   hasMappingError,
   columns,
+  selectedCheckboxes,
+  setSelectedCheckboxes,
+  validMapping,
+  setValidMapping,
 }: any) => {
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState<any>(
-    columns.reduce((acc: any, column: string) => {
-      acc[column] = true;
-      return acc;
-    }, {})
-  );
   const [errors, setErrors] = useState<any>({});
-  const [validMapping, setValidMapping] = useState<any>(
-    columns.reduce((acc: any, column: string) => {
-      acc[column] = false;
-      return acc;
-    }, {})
-  );
-
   const { attributesList }: any = useAppSelector(
     (state: any) => state.attributeReducer
   );
@@ -75,15 +66,14 @@ const MapAttribute = ({
     }
   };
 
-  
   useEffect(() => {
     const isAllCheckedColumnsMapped = Object.keys(selectedCheckboxes).every(
       (column) =>
         selectedCheckboxes[column] === false ||
         (selectedCheckboxes[column] && validMapping[column])
     );
-    setHasMappingError(!isAllCheckedColumnsMapped)
-  }, [JSON.stringify(selectedCheckboxes), JSON.stringify(validMapping)])
+    setHasMappingError(!isAllCheckedColumnsMapped);
+  }, [JSON.stringify(selectedCheckboxes), JSON.stringify(validMapping)]);
 
   return (
     <div>
@@ -138,11 +128,6 @@ const MapAttribute = ({
           Please map all checked columns to attributes.
         </div>
       )}
-
-      <div className="mt-4">
-        <h3 className="text-lg font-semibold">Mapped Columns</h3>
-        <pre>{JSON.stringify(selectedAttributes, null, 2)}</pre>
-      </div>
     </div>
   );
 };

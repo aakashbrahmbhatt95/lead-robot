@@ -10,7 +10,7 @@ import CustomTags from "./customTags";
 import Review from "./review";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../redux/store";
-import { getMenuBarTitle } from "./contactsPopupHelper";
+import { getMenuBarTitle, reduceColumns } from "./contactsPopupHelper";
 import { getImportJobId } from "@/api/contactsApi";
 import { uploadContacts } from "@/redux/action/contacts-action";
 
@@ -33,6 +33,16 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   const [dryRunRes, setDryRunRes] = useState<any>(null);
   const [tags, setTags] = useState<any[]>([]);
   const [columns, setColumns] = useState<Array<string>>([]);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState<any>(null);
+  const [validMapping, setValidMapping] = useState<any>(null);
+
+  useEffect(() => {
+    if (columns.length) {
+      setSelectedCheckboxes(reduceColumns(columns, 1));
+      setValidMapping(reduceColumns(columns, 0));
+    }
+  }, [columns.length]);
+
   const [importJobIdPayload, setImportJobIdPayload] = useState({
     name: "",
     update_existing: false,
@@ -152,12 +162,16 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           setColumns={setColumns}
         />
       )}
-      {selectedTab === 2 && (
+      {selectedTab === 2 && validMapping && selectedCheckboxes && (
         <MapAttribute
           selectedAttributes={selectedAttributes}
           setSelectedAttributes={setSelectedAttributes}
           setHasMappingError={setHasMappingError}
           hasMappingError={hasMappingError}
+          selectedCheckboxes={selectedCheckboxes}
+          setSelectedCheckboxes={setSelectedCheckboxes}
+          validMapping={validMapping}
+          setValidMapping={setValidMapping}
           columns={columns.filter((ele: string) => ele !== "phone_number")}
         />
       )}
