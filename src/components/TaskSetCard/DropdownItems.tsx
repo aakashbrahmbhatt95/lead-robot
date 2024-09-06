@@ -11,7 +11,7 @@ import {
 } from "@/lib/ui/dropdown-menu";
 import { Question, Wrench } from "@phosphor-icons/react";
 
-export const renderDropdownItems = (child: string, handleAddComponent: any) => {
+export const DropdownItems = (child: string, handleAddComponent: any) => {
   if (child === "ask") {
     return (
       <DropdownMenu>

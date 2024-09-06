@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import SayCard from "./SayCard";
 import AskCard from "./AskCard";
 import EditTaskSetPopup from "@/lib/modals/editTaskSetPopup";
-import { renderDropdownItems } from "./helper";
+import { DropdownItems } from "./DropdownItems";
 import AskCardPopup from "@/lib/modals/askCardPopup";
 import SayCardPopup from "@/lib/modals/sayCardPopup";
 import DoCard from "./DoCard";
@@ -49,10 +49,11 @@ const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
   const { taskSetList }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
-    console.log('ele', ele)
+
   const handleAddComponent = (type: string, subType: string) => {
     const rawValue = Date.now() / 1000;
     const roundedValue = Math.round(rawValue);
+
     if (type === "ask") {
       setIsAskSetPopup({
         response_type: subType,
@@ -184,8 +185,8 @@ const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
                       <Chat size={20} />
                       <span>Say</span>
                     </button>
-                    {renderDropdownItems("ask", handleAddComponent)}
-                    {renderDropdownItems("do", handleAddComponent)}
+                    {DropdownItems("ask", handleAddComponent)}
+                    {DropdownItems("do", handleAddComponent)}
                   </PopoverContent>
                 </Popover>
               </div>
@@ -269,8 +270,8 @@ const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
                     <Chat size={20} />
                     <span>Say</span>
                   </button>
-                  {renderDropdownItems("ask", handleAddComponent)}
-                  {renderDropdownItems("do", handleAddComponent)}
+                  {DropdownItems("ask", handleAddComponent)}
+                  {DropdownItems("do", handleAddComponent)}
                 </PopoverContent>
               </Popover>
             </div>
