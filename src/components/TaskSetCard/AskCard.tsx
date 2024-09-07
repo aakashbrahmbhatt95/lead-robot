@@ -8,7 +8,7 @@ import {
 import { Switch } from "@/lib/ui/switch";
 import { Label } from "@/lib/ui/label";
 import { Checkbox } from "@/lib/ui/checkbox";
-import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
+import { DotsThree, TrashSimple } from "@phosphor-icons/react";
 import {
   deleteAskAction,
   editAskAction,
@@ -70,9 +70,7 @@ const AskCard = ({
                 <TrashSimple
                   className="cursor-pointer"
                   size={20}
-                  onClick={() =>
-                    dispatch(deleteAskAction(askDetail?.id))
-                  }
+                  onClick={() => dispatch(deleteAskAction(askDetail?.id))}
                 />
                 <div className="flex gap-1 items-center">
                   <Checkbox

@@ -2,15 +2,7 @@ import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Card, CardContent, CardHeader, CardTitle } from "@/lib/ui/card";
 import { Switch } from "@/lib/ui/switch";
-import {
-  DotsThree,
-  TrashSimple,
-  CopySimple,
-  Plus,
-  Chat,
-} from "@phosphor-icons/react";
-import { Popover, PopoverTrigger, PopoverContent } from "@/lib/ui/popover";
-import { Sheet } from "@/lib/ui/sheet";
+import { DotsThree, TrashSimple, CopySimple } from "@phosphor-icons/react";
 import {
   copytaskSetAction,
   deletetaskSetAction,
@@ -19,12 +11,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import SayCard from "./SayCard";
 import AskCard from "./AskCard";
-import EditTaskSetPopup from "@/lib/modals/editTaskSetPopup";
-import { DropdownItems } from "./DropdownItems";
-import AskCardPopup from "@/lib/modals/askCardPopup";
-import SayCardPopup from "@/lib/modals/sayCardPopup";
 import DoCard from "./DoCard";
-import DoCardPopup from "@/lib/modals/doCardPopup";
 import {
   Accordion,
   AccordionContent,
@@ -32,6 +19,8 @@ import {
   AccordionTrigger,
 } from "@/lib/ui/accordion";
 import { taskSetListReducer } from "@/redux/reducer/campaigns-reducer";
+import TaskSetSideBars from "./TaskSetSideBars";
+import TaskSetPopover from "./TaskSetPopover";
 
 const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
   ele,
@@ -170,26 +159,7 @@ const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
                   />
                 </div>
               )}
-              <div className="w-full flex justify-center mt-4 relative">
-                <Popover>
-                  <PopoverTrigger>
-                    <button>
-                      <Plus />
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent className="bg-white border rounded shadow-lg p-2 flex justify-between items-center">
-                    <button
-                      className="px-4 rounded-md py-1 text-sm flex items-center gap-1"
-                      onClick={() => handleAddComponent("say", "")}
-                    >
-                      <Chat size={20} />
-                      <span>Say</span>
-                    </button>
-                    {DropdownItems("ask", handleAddComponent)}
-                    {DropdownItems("do", handleAddComponent)}
-                  </PopoverContent>
-                </Popover>
-              </div>
+              <TaskSetPopover handleAddComponent={handleAddComponent} />
               <DragDropContext
                 onDragEnd={handleOnDragEnd}
                 onDragStart={handleOnDragStart}
@@ -255,63 +225,20 @@ const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
                 </Droppable>
               </DragDropContext>
             </CardContent>
-            <div className="w-full flex justify-center mt-4 relative">
-              <Popover>
-                <PopoverTrigger>
-                  <button>
-                    <Plus />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="bg-white border rounded shadow-lg p-2 flex justify-between items-center">
-                  <button
-                    className="px-4 rounded-md py-1 text-sm flex items-center gap-1"
-                    onClick={() => handleAddComponent("say", "")}
-                  >
-                    <Chat size={20} />
-                    <span>Say</span>
-                  </button>
-                  {DropdownItems("ask", handleAddComponent)}
-                  {DropdownItems("do", handleAddComponent)}
-                </PopoverContent>
-              </Popover>
-            </div>
+            <TaskSetPopover handleAddComponent={handleAddComponent} />
           </AccordionContent>
         </Card>
-        <Sheet open={isEditTaskSetPopup !== null}>
-          {isEditTaskSetPopup !== null && (
-            <EditTaskSetPopup
-              isEditTaskSetPopup={isEditTaskSetPopup}
-              setIsEditTaskSetPopup={setIsEditTaskSetPopup}
-            />
-          )}
-        </Sheet>
-        <Sheet open={isAskSetPopup !== null}>
-          {isAskSetPopup !== null && (
-            <AskCardPopup
-              isAskSetPopup={isAskSetPopup}
-              taskSetDetails={ele}
-              setIsAskSetPopup={setIsAskSetPopup}
-            />
-          )}
-        </Sheet>
-        <Sheet open={isSaySetPopup !== null}>
-          {isSaySetPopup !== null && (
-            <SayCardPopup
-              isSaySetPopup={isSaySetPopup}
-              taskSetDetails={ele}
-              setIsSaySetPopup={setIsSaySetPopup}
-            />
-          )}
-        </Sheet>
-        <Sheet open={isDoSetPopup !== null}>
-          {isDoSetPopup !== null && (
-            <DoCardPopup
-              isDoSetPopup={isDoSetPopup}
-              taskSetDetails={ele}
-              setIsDoSetPopup={setIsDoSetPopup}
-            />
-          )}
-        </Sheet>
+        <TaskSetSideBars
+          isEditTaskSetPopup={isEditTaskSetPopup}
+          setIsEditTaskSetPopup={setIsEditTaskSetPopup}
+          isAskSetPopup={isAskSetPopup}
+          setIsAskSetPopup={setIsAskSetPopup}
+          isSaySetPopup={isSaySetPopup}
+          setIsSaySetPopup={setIsSaySetPopup}
+          isDoSetPopup={isDoSetPopup}
+          setIsDoSetPopup={setIsDoSetPopup}
+          ele={ele}
+        />
       </AccordionItem>
     </Accordion>
   );
