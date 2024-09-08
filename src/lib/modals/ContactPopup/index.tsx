@@ -48,7 +48,6 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
     update_existing: false,
   });
   const [hasMappingError, setHasMappingError] = useState(false);
-  const [importJobRes, setImportJobRes] = useState<any>(null);
 
   useEffect(() => {
     if (files?.[0]?.name) {
@@ -81,26 +80,17 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
         },
         fileUploadData
       );
-      setImportJobRes(res);
-      if (
-        res?.data?.success ||
-        (res?.data?.invalid_row_count === 0 &&
-          res?.data?.failed_reason === "" &&
-          res?.data?.invalid_rows.length === 0)
-      ) {
-        setSelectedTab(4);
-        setDryRunRes(res.data);
-      }
+      setSelectedTab(4);
+      setDryRunRes(res.data);
     }
     if (str === "review") {
       dispatch(
-        uploadContacts(fileUploadData, importJobRes?.jobId, setIsContactPopup)
+        uploadContacts(fileUploadData, dryRunRes?.jobId, setIsContactPopup)
       );
     }
   };
 
   const handleNext = () => {
-    console.log("next", selectedTab);
     if (selectedTab === 3) {
       uploadCSVHandler("tags");
     } else if (selectedTab === 4) {
@@ -177,7 +167,13 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
       )}
       {selectedTab === 3 && <CustomTags tags={tags} setTags={setTags} />}
       {selectedTab === 4 && dryRunRes && (
-        <Review dryRunRes={dryRunRes} setError={setError} error={error} />
+        <Review
+          dryRunRes={dryRunRes?.data}
+          setError={setError}
+          error={error}
+          setImportJobIdPayload={setImportJobIdPayload}
+          importJobIdPayload={importJobIdPayload}
+        />
       )}
       <div
         className="mt-3 flex justify-end gap-4 pr-2"

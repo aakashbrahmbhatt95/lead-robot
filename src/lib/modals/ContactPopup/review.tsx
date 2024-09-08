@@ -28,9 +28,9 @@ const Review = ({
   const [isShowError, setIsShowError] = useState(false);
 
   useEffect(() => {
-    const error = dryRunRes?.invalid_rows;
+    const error = dryRunRes?.invalid_row_count;
     if (error) {
-      setError(Boolean(error));
+      setError(Boolean(dryRunRes.invalid_rows || dryRunRes.deta));
     }
   }, []);
 
