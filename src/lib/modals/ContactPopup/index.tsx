@@ -61,7 +61,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   const uploadCSVHandler = async (str: string) => {
     const fileUploadData = fileData.map((ele: any) => {
       const attr: any = {};
-      Object.keys(selectedAttributes).forEach((sa) => {
+      Object.keys(selectedAttributes).forEach((sa: any) => {
         attr[sa] = ele[selectedAttributes[sa]];
       });
 
