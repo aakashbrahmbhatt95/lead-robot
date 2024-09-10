@@ -35,6 +35,8 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   const [columns, setColumns] = useState<Array<string>>([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<any>(null);
   const [validMapping, setValidMapping] = useState<any>(null);
+  const [importJobId, setImportJobId] = useState();
+  const [errorsTableData, setErrorsTableData] = useState(null);
 
   useEffect(() => {
     if (columns.length) {
@@ -58,7 +60,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
     }
   }, [files]);
 
-  const uploadCSVHandler = async (str: string) => {
+  const uploadCSVHandler = async () => {
     const fileUploadData = fileData.map((ele: any) => {
       const attr: any = {};
       Object.keys(selectedAttributes).forEach((sa: any) => {
@@ -72,7 +74,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
       };
     });
 
-    if (str === "tags") {
+    if (!dryRunRes) {
       const res = await getImportJobId(
         {
           ...importJobIdPayload,
@@ -80,21 +82,35 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
         },
         fileUploadData
       );
-      setSelectedTab(4);
-      setDryRunRes(res.data);
+      if (res.data.success) {
+        setDryRunRes(res.data);
+        setImportJobId(res.jobId);
+        const error = res.data?.invalid_row_count;
+        if (error) {
+          setError(Boolean(res.data.invalid_rows || res.data.deta));
+          setErrorsTableData(res.data.invalid_rows);
+        }
+      }
+      if (res.data.errors) {
+        setError(res.data.errors[0]);
+        setErrorsTableData(null);
+        setDryRunRes(null);
+      }
+      if (res.data.error) {
+        setError(null);
+        setDryRunRes(null);
+        setErrorsTableData(res.data.data.detail);
+      }
     }
-    if (str === "review") {
-      dispatch(
-        uploadContacts(fileUploadData, dryRunRes?.jobId, setIsContactPopup)
-      );
+
+    if (dryRunRes && importJobId) {
+      dispatch(uploadContacts(fileUploadData, importJobId, setIsContactPopup));
     }
   };
 
   const handleNext = () => {
-    if (selectedTab === 3) {
-      uploadCSVHandler("tags");
-    } else if (selectedTab === 4) {
-      uploadCSVHandler("review");
+    if (selectedTab === 4) {
+      uploadCSVHandler();
     } else {
       setSelectedTab(selectedTab + 1);
     }
@@ -106,7 +122,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
     (selectedTab === 1 &&
       (fileData.length === 0 || !importJobIdPayload.name)) ||
     (selectedTab === 2 && hasMappingError) ||
-    (selectedTab === 4 && error);
+    (selectedTab === 4 && (error || errorsTableData));
 
   return (
     <DialogContent className="sm:max-w-[60%] max-h-[75%] overflow-scroll">
@@ -166,13 +182,15 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
         />
       )}
       {selectedTab === 3 && <CustomTags tags={tags} setTags={setTags} />}
-      {selectedTab === 4 && dryRunRes && (
+      {selectedTab === 4 && (
         <Review
           dryRunRes={dryRunRes?.data}
-          setError={setError}
+          setDryRunRes={setDryRunRes}
           error={error}
+          setError={setError}
           setImportJobIdPayload={setImportJobIdPayload}
           importJobIdPayload={importJobIdPayload}
+          errorsTableData={errorsTableData}
         />
       )}
       <div
@@ -192,7 +210,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           onClick={handleNext}
           disabled={tabsDisabled}
         >
-          {selectedTab === 4 ? "Save" : "Next"}
+          {selectedTab === 4 ? (dryRunRes ? "Save" : "Upload") : "Next"}
         </Button>
       </div>
     </DialogContent>

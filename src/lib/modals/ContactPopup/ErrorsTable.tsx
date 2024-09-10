@@ -11,7 +11,6 @@ const ErrorsTable = ({ data }: any) => {
   if (data.length === 0) return null;
 
   const columns = Object.keys(data[0]);
-
   return (
     <div className="mt-10 max-h-[260px] overflow-y-auto">
       <Table>

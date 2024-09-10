@@ -9,66 +9,92 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/lib/ui/tooltip";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   EXISTING_CONTACTS_TEXT,
   HELP_IMPORT_TEXT,
+  IMPORT_JOB_TEXT,
   UPDATE_EXISTING_TEXT,
   UPDATE_NEW_DATA_TEXT,
 } from "./contactsPopupHelper";
 import ErrorsTable from "./ErrorsTable";
+import { Input } from "@/lib/ui/input";
+import componentsSlice from "@/redux/componentsSlice";
 
 const Review = ({
   dryRunRes,
+  setDryRunRes,
   importJobIdPayload,
   setImportJobIdPayload,
-  setError,
   error,
+  setError,
+  errorsTableData,
 }: any) => {
   const [isShowError, setIsShowError] = useState(false);
-
-  useEffect(() => {
-    const error = dryRunRes?.invalid_row_count;
-    if (error) {
-      setError(Boolean(dryRunRes.invalid_rows || dryRunRes.deta));
-    }
-  }, []);
-
   return (
     <div>
-      <div className="mt-3 flex gap-3">
+      {dryRunRes ? (
         <>
-          {reviewBoxArray(dryRunRes)?.map((ele: any, index: any) => {
-            return (
-              <div
-                className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg"
-                key={index}
-              >
-                <Image src={ele?.img} alt={ele?.img} />
+          <div className="mt-3 flex gap-3">
+            <>
+              {reviewBoxArray(dryRunRes)?.map((ele: any, index: any) => {
+                return (
+                  <div
+                    className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg"
+                    key={index}
+                  >
+                    <Image src={ele?.img} alt={ele?.img} />
+                    <p className="text-lg font-semibold	text-[#18181B] mt-3">
+                      {ele?.count}
+                    </p>
+                    <p className="text-sm font-normal text-[#71717A] mt-2">
+                      {ele?.text}
+                    </p>
+                  </div>
+                );
+              })}
+              <div className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg">
+                <Image src={warningCircle} alt="warningCircle" />
                 <p className="text-lg font-semibold	text-[#18181B] mt-3">
-                  {ele?.count}
+                  {error?.length || 0}
                 </p>
                 <p className="text-sm font-normal text-[#71717A] mt-2">
-                  {ele?.text}
+                  Errors
                 </p>
               </div>
-            );
-          })}
-          <div className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg">
-            <Image src={warningCircle} alt="warningCircle" />
-            <p className="text-lg font-semibold	text-[#18181B] mt-3">
-              {error?.length || 0}
-            </p>
-            <p className="text-sm font-normal text-[#71717A] mt-2">Errors</p>
+            </>
           </div>
+          <p className="text-sm font-normal text-[#71717A] mt-4">
+            Total contacts: 1904
+          </p>
+          <p className="text-lg font-semibold	text-[#18181B] mt-3">
+            {EXISTING_CONTACTS_TEXT}
+          </p>
         </>
-      </div>
-      <p className="text-sm font-normal text-[#71717A] mt-4">
-        Total contacts: 1904
-      </p>
-      <p className="text-lg font-semibold	text-[#18181B] mt-3">
-        {EXISTING_CONTACTS_TEXT}
-      </p>
+      ) : (
+        <div className="space-x-2 mt-4">
+          <p className="ml-2 mb-2 text-sm font-medium text-[#18181B]">
+            {IMPORT_JOB_TEXT}
+          </p>
+          <Input
+            value={importJobIdPayload?.name}
+            onChange={(event: any) => {
+              setImportJobIdPayload({
+                ...importJobIdPayload,
+                name: event.target.value,
+              });
+              setDryRunRes(null);
+              setError(null);
+            }}
+          />
+          {error?.[0] ? (
+            <div className="text-red-500 text-sm mt-4">
+              {JSON.stringify(error)}
+            </div>
+          ) : null}
+        </div>
+      )}
+
       <div className="flex items-center space-x-2 mt-4">
         <Switch
           checked={importJobIdPayload?.update_existing}
@@ -83,7 +109,7 @@ const Review = ({
           {UPDATE_EXISTING_TEXT}
         </p>
       </div>
-      {error?.length ? (
+      {errorsTableData && !dryRunRes ? (
         <div className="flex items-center space-x-2 mt-4">
           <Switch
             checked={isShowError}
@@ -115,7 +141,7 @@ const Review = ({
           {HELP_IMPORT_TEXT}
         </p>
       </div>
-      {isShowError && error && <ErrorsTable data={error} />}
+      {isShowError && errorsTableData && <ErrorsTable data={errorsTableData} />}
     </div>
   );
 };

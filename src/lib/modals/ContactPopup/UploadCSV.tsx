@@ -13,8 +13,6 @@ const UploadCSV = ({
   files,
   setFiles,
   setFileData,
-  importJobIdPayload,
-  setImportJobIdPayload,
   error,
   setError,
   setColumns,
@@ -136,20 +134,6 @@ const UploadCSV = ({
             </MenubarTrigger>
           </MenubarMenu>
         </Menubar>
-        <div className="space-x-2 mt-4">
-          <p className="ml-2 mb-2 text-sm font-medium text-[#18181B]">
-            {IMPORT_JOB_TEXT}
-          </p>
-          <Input
-            value={importJobIdPayload?.name}
-            onChange={(event: any) =>
-              setImportJobIdPayload({
-                ...importJobIdPayload,
-                name: event.target.value,
-              })
-            }
-          />
-        </div>
       </div>
     </div>
   );

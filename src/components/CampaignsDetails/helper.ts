@@ -54,7 +54,7 @@ export const reviewBoxArray = (v: any) => [
   },
   {
     img: userSwitch,
-    count: v.existing_count || "N/A",
+    count: v?.existing_count || "N/A",
     text: "Existing people",
   },
   {
