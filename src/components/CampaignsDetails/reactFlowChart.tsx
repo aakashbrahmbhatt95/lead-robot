@@ -42,6 +42,7 @@ const ReactFlowChart = () => {
     useState<any>(null);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const isCardDraggingRef = useRef(false);
+  const [isCardDraggingState, setIsCardDraggingState] = useState(false);
   const { taskSetList, pathConditionList }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
@@ -61,7 +62,14 @@ const ReactFlowChart = () => {
         y: ele?.y_position,
       },
       data: {
-        label: <TaskSetCard ele={ele} key={index} isCardDraggingRef={isCardDraggingRef} />,
+        label: (
+          <TaskSetCard
+            ele={ele}
+            key={index}
+            isCardDraggingRef={isCardDraggingRef}
+            setIsCardDraggingState={setIsCardDraggingState}
+          />
+        ),
       },
       style: {
         width: "330px",
@@ -113,7 +121,7 @@ const ReactFlowChart = () => {
     dispatch(
       addtaskSetAction({
         campaign_id: params?.id,
-        name: 'Task Set',
+        name: "Task Set",
         speak_first: false,
         x_position: 200,
         y_position: 10,
@@ -131,27 +139,27 @@ const ReactFlowChart = () => {
   };
 
   const handleNodeDragStop = (event: any, node: any) => {
-    if(!isCardDraggingRef.current){
-    const initialPosition = initialPositionsRef.current[node.id];
-    if (
-      node.position.x === initialPosition.x &&
-      node.position.y === initialPosition.y
-    ) {
-      return;
+    if (!isCardDraggingRef.current || !isCardDraggingRef) {
+      const initialPosition = initialPositionsRef.current[node.id];
+      if (
+        node.position.x === initialPosition.x &&
+        node.position.y === initialPosition.y
+      ) {
+        return;
+      }
+      const temp = taskSetList?.filter(
+        (ele: any) => ele?.id.toString() === node.id
+      )[0];
+      const body = {
+        campaign_id: params?.id,
+        name: temp?.name,
+        speak_first: false,
+        x_position: Math.ceil(node.position?.x),
+        y_position: Math.ceil(node.position?.y),
+        is_parent: temp?.is_parent,
+      };
+      dispatch(editTaskSetAction(body, node.id));
     }
-    const temp = taskSetList?.filter(
-      (ele: any) => ele?.id.toString() === node.id
-    )[0];
-    const body = {
-      campaign_id: params?.id,
-      name: temp?.name,
-      speak_first: false,
-      x_position: Math.ceil(node.position?.x),
-      y_position: Math.ceil(node.position?.y),
-      is_parent: temp?.is_parent,
-    };
-    dispatch(editTaskSetAction(body, node.id));
-  }
   };
 
   return (
@@ -174,7 +182,8 @@ const ReactFlowChart = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onEdgeClick={onEdgeClick}
-        nodesDraggable={!isCardDraggingRef.current}
+        nodesDraggable={!isCardDraggingRef.current || !isCardDraggingState}
+        panOnDrag={!isCardDraggingRef.current || !isCardDraggingState}
       >
         <MiniMap />
         <Controls />

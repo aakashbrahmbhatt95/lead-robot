@@ -1,14 +1,21 @@
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import SayCard from "./SayCard";
+import React, { useState } from "react";
+import { DndContext, MouseSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import AskCard from "./AskCard";
 import DoCard from "./DoCard";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { useState } from "react";
-import { taskSetListReducer } from "@/redux/reducer/campaigns-reducer";
+import SayCard from "./SayCard";
+import { useAppDispatch } from "@/redux/store";
+import SortableItem from "./SubCardSortableItem";
+import {
+  editAskAction,
+  editDoAction,
+  editSayAction,
+} from "@/redux/action/campaigns-action";
 
 const SubCardContainer = ({
   ele,
   isCardDraggingRef,
+  setIsCardDraggingState,
   setIsAskSetPopup,
   setIsSaySetPopup,
   setIsDoSetPopup,
@@ -17,95 +24,134 @@ const SubCardContainer = ({
     [key: string]: boolean;
   }>({});
   const dispatch = useAppDispatch();
+  const [items, setItems] = useState(ele.tasks.map((task: any) => task.id));
 
-  const { taskSetList }: any = useAppSelector(
-    (state: any) => state.campaignReducer
-  );
+  const sortedTasks = [...ele?.tasks].sort((a, b) => a.order - b.order);
 
   const toggleAccordion = (id: string) => {
     setOpenAccordions((prev) => ({ ...prev, [id]: !prev[id] }));
   };
-
+  
   const handleOnDragStart = () => {
     isCardDraggingRef.current = true;
+    setIsCardDraggingState(true);
   };
 
-  const handleOnDragEnd = (result: any) => {
-    if (!result.destination) return;
-    const updatedTasks = Array.from(ele.tasks);
-    const [reorderedItem] = updatedTasks.splice(result.source.index, 1);
-    updatedTasks.splice(result.destination.index, 0, reorderedItem);
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      const oldIndex = items.indexOf(active.id);
+      const newIndex = items.indexOf(over.id);
 
-    const updatedTaskSetList = taskSetList.map((taskSet: any) => {
-      if (taskSet.id === ele?.id) {
-        return { ...taskSet, tasks: updatedTasks };
+      if (oldIndex !== newIndex) {
+        setItems((items: any) => arrayMove(items, oldIndex, newIndex));
       }
-      return taskSet;
-    });
-
-    dispatch(taskSetListReducer(updatedTaskSetList));
-    isCardDraggingRef.current = false;
+      // Update the tasks order in the state
+      const updatedTasks = Array.from(ele.tasks);
+      const [reorderedItem]: any = updatedTasks.splice(oldIndex, 1);
+      if (reorderedItem?.type === "say") {
+        dispatch(
+          editSayAction(
+            {
+              taskset_id: ele?.id,
+              order: newIndex,
+              is_required: reorderedItem.is_required,
+              is_active: reorderedItem.is_active,
+              include_condition: reorderedItem?.include_condition,
+              exclude_condition: reorderedItem?.exclude_condition,
+              statement: reorderedItem.statement,
+            },
+            reorderedItem?.id
+          )
+        );
+      } else if (reorderedItem?.type === "ask") {
+        dispatch(
+          editAskAction(
+            {
+              taskset_id: reorderedItem?.id,
+              order: newIndex,
+              is_required: reorderedItem?.is_required,
+              is_active: reorderedItem.is_active,
+              include_condition: "string",
+              exclude_condition: "string",
+              question: reorderedItem.question,
+              response_type: reorderedItem?.response_type,
+              error_response: reorderedItem?.error_response,
+              validations: {
+                regex_format: reorderedItem?.regex_format,
+              },
+            },
+            reorderedItem?.id
+          )
+        );
+      } else if (reorderedItem?.type === "do") {
+        dispatch(
+          editDoAction(
+            {
+              taskset_id: ele?.id,
+              order: newIndex,
+              is_required: reorderedItem.is_required,
+              is_active: reorderedItem.is_active,
+              include_condition: "string",
+              exclude_condition: "string",
+              action: reorderedItem.action,
+              data: {
+                name: reorderedItem.name,
+                number: reorderedItem.number,
+                description: reorderedItem.description,
+              },
+              instruction: "string",
+              say_during: "string",
+              say_after: "string",
+            },
+            reorderedItem?.id
+          )
+        );
+      }
+      isCardDraggingRef.current = false;
+      setIsCardDraggingState(false);
+    }
   };
 
+  const sensors = useSensors(useSensor(MouseSensor));
   return (
-    <DragDropContext
-      onDragEnd={handleOnDragEnd}
+    <DndContext
       onDragStart={handleOnDragStart}
+      onDragEnd={handleDragEnd}
+      // sensors={sensors}
     >
-      <Droppable droppableId="droppable">
-        {(provided: any) => (
-          <ul
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className="px-3 flex flex-col justify-center items-center w-full gap-5 pt-10"
-          >
-            {ele?.tasks?.map((taskDetail: any, index: any) => (
-              <Draggable
-                key={taskDetail.id}
-                draggableId={`${taskDetail.id}`}
-                index={index}
-              >
-                {(provided: any) => (
-                  <li
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className="w-full"
-                  >
-                    {taskDetail?.type === "ask" ? (
-                      <AskCard
-                        askDetail={taskDetail}
-                        setIsAskSetPopup={setIsAskSetPopup}
-                        taskSetDetails={ele}
-                        isOpen={openAccordions[`ask-${index}`]}
-                        toggleAccordion={() => toggleAccordion(`ask-${index}`)}
-                      />
-                    ) : taskDetail?.type === "do" ? (
-                      <DoCard
-                        doDetail={taskDetail}
-                        setIsDoSetPopup={setIsDoSetPopup}
-                        taskSetDetails={ele}
-                        isOpen={openAccordions[`do-${index}`]}
-                        toggleAccordion={() => toggleAccordion(`do-${index}`)}
-                      />
-                    ) : taskDetail?.type === "say" ? (
-                      <SayCard
-                        sayDetail={taskDetail}
-                        setIsSaySetPopup={setIsSaySetPopup}
-                        taskSetDetails={ele}
-                        isOpen={openAccordions[`say-${index}`]}
-                        toggleAccordion={() => toggleAccordion(`say-${index}`)}
-                      />
-                    ) : null}
-                  </li>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </ul>
-        )}
-      </Droppable>
-    </DragDropContext>
+      <SortableContext items={items}>
+        {sortedTasks?.map((taskDetail: any, index: any) => (
+          <SortableItem key={taskDetail.id} id={taskDetail.id}>
+            {taskDetail?.type === "ask" ? (
+              <AskCard
+                askDetail={taskDetail}
+                setIsAskSetPopup={setIsAskSetPopup}
+                taskSetDetails={ele}
+                isOpen={openAccordions[`ask-${index}`]}
+                toggleAccordion={() => toggleAccordion(`ask-${index}`)}
+              />
+            ) : taskDetail?.type === "do" ? (
+              <DoCard
+                doDetail={taskDetail}
+                setIsDoSetPopup={setIsDoSetPopup}
+                taskSetDetails={ele}
+                isOpen={openAccordions[`do-${index}`]}
+                toggleAccordion={() => toggleAccordion(`do-${index}`)}
+              />
+            ) : taskDetail?.type === "say" ? (
+              <SayCard
+                sayDetail={taskDetail}
+                setIsSaySetPopup={setIsSaySetPopup}
+                taskSetDetails={ele}
+                isOpen={openAccordions[`say-${index}`]}
+                toggleAccordion={() => toggleAccordion(`say-${index}`)}
+              />
+            ) : null}
+          </SortableItem>
+        ))}
+      </SortableContext>
+    </DndContext>
   );
 };
 

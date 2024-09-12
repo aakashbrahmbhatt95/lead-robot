@@ -59,9 +59,6 @@ const CampaignsDetails = () => {
               </div>
             );
           })}
-          <Button type="button" onClick={() => router.push("/draganddrop")}>
-            Drag and Drop example
-          </Button>
         </div>
         <div className="flex items-center rounded-md bg-[#F4F4F5] px-4 py-2 gap-[8px]">
           <p className="text-sm font-medium text-[#71717A]">Next</p>

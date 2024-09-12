@@ -37,7 +37,7 @@ const SayCard = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <AccordionTrigger onClick={toggleAccordion} />
-                <CardTitle className="text-sm">{sayDetail?.id}. Say</CardTitle>
+                <CardTitle className="text-sm">{sayDetail?.order}. Say</CardTitle>
               </div>
               <Switch
                 checked={sayDetail?.is_active}

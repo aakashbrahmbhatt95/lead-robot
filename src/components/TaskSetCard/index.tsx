@@ -10,10 +10,11 @@ import TaskSetSideBars from "./SubCards/TaskSetSideBars";
 import SubCardContainer from "./SubCards/SubCardContainer";
 import SubCardHeader from "./SubCards/SubCardHeader";
 
-const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
-  ele,
-  isCardDraggingRef,
-}) => {
+const TaskSetCard: React.FC<{
+  ele: any;
+  isCardDraggingRef: any;
+  setIsCardDraggingState: any;
+}> = ({ ele, isCardDraggingRef, setIsCardDraggingState }) => {
   const dispatch = useAppDispatch();
   const [isEditTaskSetPopup, setIsEditTaskSetPopup] = useState(null);
   const [isAskSetPopup, setIsAskSetPopup] = useState<any>(null);
@@ -94,6 +95,7 @@ const TaskSetCard: React.FC<{ ele: any; isCardDraggingRef: any }> = ({
               <SubCardContainer
                 ele={ele}
                 isCardDraggingRef={isCardDraggingRef}
+                setIsCardDraggingState={setIsCardDraggingState}
                 setIsAskSetPopup={setIsAskSetPopup}
                 setIsSaySetPopup={setIsSaySetPopup}
                 setIsDoSetPopup={setIsDoSetPopup}
