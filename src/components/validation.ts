@@ -15,9 +15,7 @@ export const sayCardValidationSchema = Yup.object({
 export const contactValidationSchema = Yup.object().shape({
   phone: Yup.string()
     .required("Phone number is required")
-    .matches(/^[0-9]+$/, "Phone number must be numeric")
-    .min(10, "Phone number must be at least 10 digits")
-    .max(10, "Phone number must be at least 10 digits"),
+    .matches(/^[0-9]+$/, "Phone number must be numeric"),
   email: Yup.string().email("Invalid email address"),
   country_code: Yup.string().required("Country code is required"),
 });

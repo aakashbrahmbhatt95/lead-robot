@@ -25,6 +25,7 @@ import { useAppSelector } from "../../../redux/store";
 import { countriesWithRegionCode } from "../../../components/Contacts/helper";
 import DateTimePicker from "../../molecules/DateTimePicker";
 import React from "react";
+import { removeCountryCode } from "./helper";
 
 const EditContactPopup = ({
   isEditContactPopup,
@@ -49,8 +50,8 @@ const EditContactPopup = ({
   useEffect(() => {
     if (isEdit && tagsList) {
       formik.setValues({
-        phone: isEditContactPopup?.phone || "",
-        country_code: isEditContactPopup?.attributes?.country_code || "",
+        phone: removeCountryCode(isEditContactPopup?.phone)?.phoneWithoutCode || "",
+        country_code: removeCountryCode(isEditContactPopup?.phone)?.country || "",
         attributes: attributesList.reduce((acc: any, attribute: any) => {
           acc[attribute.key] =
             isEditContactPopup?.attributes?.[attribute.key] || "";
@@ -69,8 +70,8 @@ const EditContactPopup = ({
 
   const formik: any = useFormik({
     initialValues: {
-      phone: isEditContactPopup?.phone || "",
-      country_code: isEditContactPopup?.attributes?.country_code || "",
+      phone: removeCountryCode(isEditContactPopup?.phone)?.phoneWithoutCode || "",
+      country_code: removeCountryCode(isEditContactPopup?.phone)?.country || "",
       attributes: attributesList.reduce((acc: any, attribute: any) => {
         acc[attribute.key] =
           isEditContactPopup?.attributes?.[attribute.key] || "";
