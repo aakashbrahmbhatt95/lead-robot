@@ -5,7 +5,7 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "@/lib/ui/menubar";
 import UploadCSV from "./UploadCSV";
 import { menuBarArray } from "@/components/CampaignsDetails/helper";
 import { Button } from "@/lib/ui/button";
-import MapAttribute from "./mapAttribute";
+import MapAttributes from "./MapAttributes";
 import CustomTags from "./customTags";
 import Review from "./review";
 import { useEffect, useState } from "react";
@@ -37,6 +37,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   const [validMapping, setValidMapping] = useState<any>(null);
   const [importJobId, setImportJobId] = useState();
   const [errorsTableData, setErrorsTableData] = useState(null);
+  const [selectAllAttributes, setSelectAllAttributes] = useState<boolean>(true);
 
   useEffect(() => {
     if (columns.length) {
@@ -169,7 +170,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
         />
       )}
       {selectedTab === 2 && validMapping && selectedCheckboxes && (
-        <MapAttribute
+        <MapAttributes
           selectedAttributes={selectedAttributes}
           setSelectedAttributes={setSelectedAttributes}
           setHasMappingError={setHasMappingError}
@@ -179,6 +180,8 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           validMapping={validMapping}
           setValidMapping={setValidMapping}
           columns={columns.filter((ele: string) => ele !== "phone_number")}
+          selectAllAttributes={selectAllAttributes}
+          setSelectAllAttributes={setSelectAllAttributes}
         />
       )}
       {selectedTab === 3 && <CustomTags tags={tags} setTags={setTags} />}
