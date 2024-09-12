@@ -71,7 +71,6 @@ const Review = ({
           </p>
         </>
       ) : (
-          <p className="ml-2 mb-2 text-sm font-medium text-[#18181B]">
         <>
           <div className="space-x-2 mt-4">
             <p className="ml-2 mb-2 text-sm font-medium text-[#18181B]">
