@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DndContext, MouseSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { DndContext } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import AskCard from "./AskCard";
 import DoCard from "./DoCard";
@@ -113,12 +113,10 @@ const SubCardContainer = ({
     }
   };
 
-  const sensors = useSensors(useSensor(MouseSensor));
   return (
     <DndContext
       onDragStart={handleOnDragStart}
       onDragEnd={handleDragEnd}
-      // sensors={sensors}
     >
       <SortableContext items={items}>
         {sortedTasks?.map((taskDetail: any, index: any) => (

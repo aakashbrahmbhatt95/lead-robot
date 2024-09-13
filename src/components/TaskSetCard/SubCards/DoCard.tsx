@@ -11,6 +11,7 @@ import { Checkbox } from "@/lib/ui/checkbox";
 import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
 import { useAppDispatch } from "@/redux/store";
 import { deleteDoAction, editDoAction } from "@/redux/action/campaigns-action";
+import { useSortable } from "@dnd-kit/sortable";
 
 const DoCard = ({
   doDetail,
@@ -20,6 +21,7 @@ const DoCard = ({
   toggleAccordion,
 }: any) => {
   const dispatch = useAppDispatch();
+  const { attributes, listeners } = useSortable({ id: doDetail.id });
 
   return (
     <Accordion
@@ -32,25 +34,36 @@ const DoCard = ({
         <Card className="w-full">
           <CardHeader className="space-y-0 py-0">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div
+                className="flex items-center gap-4"
+                style={{ flexBasis: "75%" }}
+              >
                 <AccordionTrigger onClick={toggleAccordion} />
-                <CardTitle className="text-sm">{doDetail?.order}. Do</CardTitle>
+                <CardTitle
+                  className="text-sm cursor-move w-full text-start"
+                  {...attributes}
+                  {...listeners}
+                >
+                  {doDetail?.order}. Do
+                </CardTitle>
               </div>
-              <Switch
-                checked={doDetail?.is_active}
-                onCheckedChange={(checked: any) => {
-                  dispatch(
-                    editDoAction(
-                      {
-                        ...doDetail,
-                        taskset_id: taskSetDetails?.id,
-                        is_active: checked,
-                      },
-                      doDetail?.id
-                    )
-                  );
-                }}
-              />
+              <div style={{ flexBasis: "25%" }}>
+                <Switch
+                  checked={doDetail?.is_active}
+                  onCheckedChange={(checked: any) => {
+                    dispatch(
+                      editDoAction(
+                        {
+                          ...doDetail,
+                          taskset_id: taskSetDetails?.id,
+                          is_active: checked,
+                        },
+                        doDetail?.id
+                      )
+                    );
+                  }}
+                />
+              </div>
             </div>
           </CardHeader>
           <AccordionContent>
@@ -66,9 +79,7 @@ const DoCard = ({
                 <TrashSimple
                   className="cursor-pointer"
                   size={20}
-                  onClick={() =>
-                    dispatch(deleteDoAction(doDetail?.id))
-                  }
+                  onClick={() => dispatch(deleteDoAction(doDetail?.id))}
                 />
                 <div className="flex gap-1 ">
                   <Checkbox

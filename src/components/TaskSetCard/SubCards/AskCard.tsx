@@ -14,6 +14,7 @@ import {
   editAskAction,
 } from "@/redux/action/campaigns-action";
 import { useAppDispatch } from "@/redux/store";
+import { useSortable } from "@dnd-kit/sortable";
 
 const AskCard = ({
   askDetail,
@@ -23,6 +24,7 @@ const AskCard = ({
   toggleAccordion,
 }: any) => {
   const dispatch = useAppDispatch();
+  const { attributes, listeners } = useSortable({ id: askDetail.id });
   return (
     <Accordion
       type="single"
@@ -34,25 +36,36 @@ const AskCard = ({
         <Card className="w-full">
           <CardHeader className="space-y-0 py-0">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div
+                className="flex items-center gap-4"
+                style={{ flexBasis: "75%" }}
+              >
                 <AccordionTrigger onClick={toggleAccordion} />
-                <CardTitle className="text-sm">{askDetail?.order}. Ask </CardTitle>
+                <CardTitle
+                  className="text-sm cursor-move w-full text-start"
+                  {...attributes}
+                  {...listeners}
+                >
+                  {askDetail?.order}. Ask
+                </CardTitle>
               </div>
-              <Switch
-                checked={askDetail?.is_active}
-                onCheckedChange={(checked: any) => {
-                  dispatch(
-                    editAskAction(
-                      {
-                        ...askDetail,
-                        taskset_id: taskSetDetails?.id,
-                        is_active: checked,
-                      },
-                      askDetail?.id
-                    )
-                  );
-                }}
-              />
+              <div style={{ flexBasis: "25%" }}>
+                <Switch
+                  checked={askDetail?.is_active}
+                  onCheckedChange={(checked: any) => {
+                    dispatch(
+                      editAskAction(
+                        {
+                          ...askDetail,
+                          taskset_id: taskSetDetails?.id,
+                          is_active: checked,
+                        },
+                        askDetail?.id
+                      )
+                    );
+                  }}
+                />
+              </div>
             </div>
           </CardHeader>
           <AccordionContent>

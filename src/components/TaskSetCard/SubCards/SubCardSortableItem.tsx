@@ -3,7 +3,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 const SortableItem = (props: any) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
+  const { setNodeRef, transform, transition } =
     useSortable({ id: props.id });
 
   const style = {
@@ -15,7 +15,7 @@ const SortableItem = (props: any) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style}>
       {props.children}
     </div>
   );
