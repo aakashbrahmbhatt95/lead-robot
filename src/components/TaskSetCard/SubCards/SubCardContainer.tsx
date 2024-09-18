@@ -68,7 +68,7 @@ const SubCardContainer = ({
         dispatch(
           editAskAction(
             {
-              taskset_id: reorderedItem?.id,
+              taskset_id: ele?.id,
               order: newIndex,
               is_required: reorderedItem?.is_required,
               is_active: reorderedItem.is_active,

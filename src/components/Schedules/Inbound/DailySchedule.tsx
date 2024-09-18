@@ -46,7 +46,7 @@ const DailySchedule = ({
           </>
         ) : (
           <p className="block pl-2 text-sm font-medium w-[100px] text-gray-700">
-            {`${formValues.schedule[day].startTime} - ${formValues.schedule[day].endTime}`}
+            {`${formValues?.schedule[day]?.startTime} - ${formValues?.schedule[day]?.endTime}`}
           </p>
         ))}
     </div>

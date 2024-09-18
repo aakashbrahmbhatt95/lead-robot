@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Checkbox } from "@/lib/ui/checkbox";
 import { DESELECT_TEXT, REMAP_COLUMN_TEXT } from "./contactsPopupHelper";
 import { useAppSelector } from "@/redux/store";
+import MapComboBox from "./MapComboBox";
 
 const MapAttributes = ({
   selectedAttributes,
@@ -152,24 +153,12 @@ const MapAttributes = ({
               <p className="text-[#18181B] text-sm font-bold">{column}</p>
             </div>
             <div className="w-[40%]">
-              <select
+              <MapComboBox
                 value={selectedAttributes[column] || ""}
-                onChange={(e) => handleAttributeChange(column, e.target.value)}
+                onChange={(newValue: any) => handleAttributeChange(column, newValue)}
                 disabled={!selectedCheckboxes[column]}
-                className={`border ${
-                  errors[column] ? "border-red-500" : "border-gray-300"
-                } rounded p-2 w-full`}
-              >
-                <option value="">Select an attribute</option>
-                {attributesList.map((attr: any) => (
-                  <option key={attr.id} value={attr.key}>
-                    {attr.label}
-                  </option>
-                ))}
-              </select>
-              {errors[column] && (
-                <p className="text-red-500 text-sm">{errors[column]}</p>
-              )}
+                error={errors[column]}
+              />
             </div>
           </div>
         ))}

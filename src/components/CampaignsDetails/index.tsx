@@ -4,17 +4,18 @@ import Image from "next/image";
 import DotsThree from "@/../public/DotsThree.svg";
 import PencilSimple from "@/../public/PencilSimple.svg";
 import Vector from "@/../public/Vector.svg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getcampaignsDatByIdAction } from "@/redux/action/campaigns-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { Button } from "@/lib/ui/button";
 import ReactFlowChart from "./reactFlowChart";
 import { row, tabBarData } from "./helper";
+import Inbound from "../Schedules/Inbound";
 
 const CampaignsDetails = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [taskId, setTaskId] = useState(1);
   const params = useParams();
   const isEdit = !params.id.includes("create");
   const { campaignDataById }: any = useAppSelector(
@@ -66,22 +67,27 @@ const CampaignsDetails = () => {
         </div>
       </div>
       <div className="flex mt-[20px]">
-        {tabBarData?.map((ele: any, index: any) => {
-          return (
-            <div className="flex-1" key={index}>
-              <div className="flex items-center gap-4 border-t-2 border-black pt-4 mr-2.5">
-                <p className="flex justify-center items-center text-xs font-medium rounded-full bg-black w-5 h-5 text-white">
-                  {ele?.value}
-                </p>
-                <p className="text-sm font-medium text-[#18181B]">
-                  {ele?.text}
-                </p>
-              </div>
+        {tabBarData?.map((ele, index) => (
+          <div
+            className="flex-1 cursor-pointer"
+            key={index}
+            onClick={() => setTaskId(ele?.value)}
+          >
+            <div
+              className={`flex items-center gap-4 pt-4 mr-2.5 ${
+                taskId === ele?.value ? "border-t-2 border-black" : ""
+              }`}
+            >
+              <p className="flex justify-center items-center text-xs font-medium rounded-full bg-black w-5 h-5 text-white">
+                {ele?.value}
+              </p>
+              <p className="text-sm font-medium">{ele?.text}</p>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
-      <ReactFlowChart />
+      {taskId === 1 && <ReactFlowChart />}
+      {taskId === 3 && <Inbound />}
     </div>
   );
 };
