@@ -1,4 +1,4 @@
-import { weekData } from "./helper";
+import { weekdaysMap } from "./helper";
 import { Input } from "@/lib/ui/input";
 import { Button } from "@/lib/ui/button";
 import { Form } from "formik";
@@ -45,7 +45,7 @@ const ScheduleAvailability = ({
       </p>
 
       <div className="border-[1px] mt-4 border-[#E4E4E7] rounded">
-        {weekData.map((day) => (
+        {weekdaysMap.map((day) => (
           <DailySchedule
             key={day}
             day={day}

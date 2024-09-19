@@ -10,7 +10,7 @@ import { getcampaignsDatByIdAction } from "@/redux/action/campaigns-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import ReactFlowChart from "./reactFlowChart";
 import { row, tabBarData } from "./helper";
-import Inbound from "../Schedules/Inbound";
+import Schedules from "../Schedules";
 
 const CampaignsDetails = () => {
   const router = useRouter();
@@ -87,7 +87,7 @@ const CampaignsDetails = () => {
         ))}
       </div>
       {taskId === 1 && <ReactFlowChart />}
-      {taskId === 3 && <Inbound />}
+      {taskId === 3 && <Schedules />}
     </div>
   );
 };

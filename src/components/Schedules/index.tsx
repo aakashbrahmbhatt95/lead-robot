@@ -8,7 +8,7 @@ const Schedules = () => {
 
   return (
     <div>
-      <Menubar className="w-fit bg-[#F4F4F5] mt-4">
+      <Menubar className="w-fit bg-[#F4F4F5] mt-10">
         {scheduleMenuBar?.map((ele: any, index: any) => (
           <MenubarMenu key={index}>
             <MenubarTrigger

@@ -4,75 +4,82 @@ import { Switch } from "@/lib/ui/switch";
 import ScheduleOptions from "./ScheduleOption";
 import ScheduleAvailability from "./SchedulesAvailability";
 import TimeZoneAndHolidays from "./TimeZoneAndHoliday";
-import { calculateDuration, dayMap } from "./helper";
-import { useAppDispatch } from "@/redux/store";
 import {
-  addScheduleAction,
-  scheduleListAction,
-} from "@/redux/action/schedules-action";
+  calculateDuration,
+  dayMap,
+  addScheduleHandler,
+  getScheduleHandler,
+  editScheduleHandler,
+} from "./helper";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 
 const Inbound = () => {
   const dispatch = useAppDispatch();
-  const [isAlwaysOn, setIsAlwaysOn] = useState("isalwayson");
-  const [excludePublicHolidays, setExcludePublicHolidays] = useState("");
-  const [timeZone, setTimeZone] = useState("");
-  const [isEdit, setIsEdit] = useState(false);
-  const [formValues, setFormValues] = useState(null);
+  const [scheduleSettings, setScheduleSettings] = useState({
+    isAlwaysOn: "isalwayson",
+    excludePublicHolidays: "",
+    timeZone: "",
+    isEdit: false,
+    scheduleId: null,
+    formValues: null,
+  });
 
-  const initialValues = {
-    schedule: {
-      monday: { active: true, startTime: "", endTime: "" },
-      tuesday: { active: true, startTime: "", endTime: "" },
-      wednesday: { active: true, startTime: "", endTime: "" },
-      thursday: { active: true, startTime: "", endTime: "" },
-      friday: { active: false, startTime: "", endTime: "" },
-      saturday: { active: false, startTime: "", endTime: "" },
-      sunday: { active: false, startTime: "", endTime: "" },
-    },
-    startDate: "",
-    endDate: "",
-  };
+  const { campaignDataById } = useAppSelector(
+    (state: any) => state.campaignReducer
+  );
 
   useEffect(() => {
-    dispatch(scheduleListAction());
-  }, []);
+    if (campaignDataById?.inbound_schedule === null) {
+      setScheduleSettings((prev: any) => ({
+        ...prev,
+        isEdit: false,
+        formValues: {
+          schedule: {
+            monday: { active: true, startTime: "", endTime: "" },
+            tuesday: { active: true, startTime: "", endTime: "" },
+            wednesday: { active: true, startTime: "", endTime: "" },
+            thursday: { active: true, startTime: "", endTime: "" },
+            friday: { active: false, startTime: "", endTime: "" },
+            saturday: { active: false, startTime: "", endTime: "" },
+            sunday: { active: false, startTime: "", endTime: "" },
+          },
+          startDate: "",
+          endDate: "",
+        },
+      }));
+    } else {
+      //Todo Hardcoded Id
+      // getScheduleHandler(campaignDataById?.inbound_schedule, setScheduleSettings);
+      getScheduleHandler(4, setScheduleSettings);
+    }
+  }, [campaignDataById]);
 
   const handleSubmit = (values: any) => {
-    console.log("values", values);
-    const output = [];
-
-    for (const [day, data] of Object.entries(values.schedule)) {
-      const dayData = data as any;
-      const dayType = day as any;
-      if (dayData?.active && dayData?.startTime && dayData?.endTime) {
-        output.push({
-          interval: 1,
-          start_date: values.startDate,
-          end_date: values.endDate,
-          times: [dayData?.startTime],
-          exclude: false,
-          duration: calculateDuration(dayData?.startTime, dayData?.endTime),
-          byweekday: [dayMap[dayType]],
-          bymonthday: [],
-          byyeardata: [],
-        });
-      }
+    const output = Object.entries(values.schedule)
+      .filter(
+        ([, data]: any) => data?.active && data?.startTime && data?.endTime
+      )
+      .map(([day, data]: any) => ({
+        interval: 1,
+        start_date: values.startDate,
+        end_date: values.endDate,
+        times: [data?.startTime],
+        exclude: false,
+        duration: calculateDuration(data?.startTime, data?.endTime),
+        byweekday: [dayMap[day]],
+        bymonthday: [],
+        byyeardata: [],
+      }));
+    if (scheduleSettings?.scheduleId === null) {
+      addScheduleHandler(
+        campaignDataById,
+        dispatch,
+        output,
+        setScheduleSettings
+      );
+    } else {
+      editScheduleHandler(setScheduleSettings, scheduleSettings, output);
     }
-    dispatch(
-      addScheduleAction({
-        daily: output,
-        weekly: [],
-        monthly: [],
-        yearly: [],
-        exdates: [],
-        name: "testing",
-        description: "testing description",
-        rdates: [],
-        is_active: true,
-      })
-    );
-    // setFormValues(body)
-    setIsEdit(true);
   };
 
   return (
@@ -86,31 +93,45 @@ const Inbound = () => {
         </div>
 
         <ScheduleOptions
-          isAlwaysOn={isAlwaysOn}
-          setIsAlwaysOn={setIsAlwaysOn}
+          isAlwaysOn={scheduleSettings.isAlwaysOn}
+          setIsAlwaysOn={(value) =>
+            setScheduleSettings((prev) => ({ ...prev, isAlwaysOn: value }))
+          }
         />
 
-        {isAlwaysOn === "scheduled" && (
-          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-            {({ values, setFieldValue }: any) => (
+        {scheduleSettings.isAlwaysOn === "scheduled" && (
+          <Formik
+            initialValues={scheduleSettings?.formValues}
+            onSubmit={handleSubmit}
+          >
+            {({ values, setFieldValue }) => (
               <ScheduleAvailability
                 values={values}
                 setFieldValue={setFieldValue}
-                isEdit={isEdit}
-                setIsEdit={setIsEdit}
-                formValues={formValues}
+                isEdit={scheduleSettings.isEdit}
+                setIsEdit={(value: any) =>
+                  setScheduleSettings((prev) => ({ ...prev, isEdit: value }))
+                }
+                formValues={scheduleSettings.formValues}
               />
             )}
           </Formik>
         )}
       </div>
 
-      {isAlwaysOn === "scheduled" && (
+      {scheduleSettings.isAlwaysOn === "scheduled" && (
         <TimeZoneAndHolidays
-          timeZone={timeZone}
-          setTimeZone={setTimeZone}
-          excludePublicHolidays={excludePublicHolidays}
-          setExcludePublicHolidays={setExcludePublicHolidays}
+          timeZone={scheduleSettings.timeZone}
+          setTimeZone={(value) =>
+            setScheduleSettings((prev) => ({ ...prev, timeZone: value }))
+          }
+          excludePublicHolidays={scheduleSettings.excludePublicHolidays}
+          setExcludePublicHolidays={(value) =>
+            setScheduleSettings((prev) => ({
+              ...prev,
+              excludePublicHolidays: value,
+            }))
+          }
         />
       )}
     </div>

@@ -5,13 +5,11 @@ import attributeReducer from "./reducer/attributes-reducer";
 import tagReducer from "./reducer/tags-reducer";
 import componentsReducer from "./componentsSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import schedulesReducer from "./reducer/schedules-reducer";
 export const store = configureStore({
   reducer: {
     campaignReducer,
     contactReducer,
     attributeReducer,
-    schedulesReducer,
     tagReducer,
     components: componentsReducer,
   },
