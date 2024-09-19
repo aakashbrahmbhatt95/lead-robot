@@ -24,7 +24,7 @@ export const campaignsListAction = () => async (dispatch: AppDispatch) => {
     Authorization: getToken(),
   })
     .then((res) => {
-      dispatch(campaignsListReducer(res?.data?.items));
+      dispatch(campaignsListReducer(res?.data));
     })
     .catch((err: any) => {
       dispatch(campaignsListReducer([]));

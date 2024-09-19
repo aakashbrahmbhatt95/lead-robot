@@ -2,6 +2,7 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "@/lib/ui/menubar";
 import { scheduleMenuBar } from "./Inbound/helper";
 import { useState } from "react";
 import Inbound from "./Inbound";
+import Dynamic from "./dynamic";
 
 const Schedules = () => {
   const [selectedMenuBar, setSelectedMenuBar] = useState<any>("inbound");
@@ -25,6 +26,7 @@ const Schedules = () => {
         ))}
       </Menubar>
       {selectedMenuBar === "inbound" && <Inbound />}
+      {selectedMenuBar === "dynamic" && <Dynamic />}
     </div>
   );
 };
