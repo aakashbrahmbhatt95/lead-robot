@@ -69,7 +69,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
       });
 
       return {
-        phone: ele?.phone_number,
+        phone: ele?.phone_number.toString(),
         attributes: attr,
         tags: tags.map((tag: any) => tag.name),
       };

@@ -3,6 +3,7 @@ import { scheduleMenuBar } from "./Inbound/helper";
 import { useState } from "react";
 import Inbound from "./Inbound";
 import Dynamic from "./dynamic";
+import Outbound from "./outbound";
 
 const Schedules = () => {
   const [selectedMenuBar, setSelectedMenuBar] = useState<any>("inbound");
@@ -26,6 +27,7 @@ const Schedules = () => {
         ))}
       </Menubar>
       {selectedMenuBar === "inbound" && <Inbound />}
+      {selectedMenuBar === "outbound" && <Outbound />}
       {selectedMenuBar === "dynamic" && <Dynamic />}
     </div>
   );
