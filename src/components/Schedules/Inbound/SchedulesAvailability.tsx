@@ -1,7 +1,7 @@
 import { weekdaysMap } from "./helper";
 import { Input } from "@/lib/ui/input";
 import { Button } from "@/lib/ui/button";
-import { Form } from "formik";
+import { ErrorMessage, Form } from "formik";
 import DailySchedule from "./DailySchedule";
 
 const ScheduleAvailability = ({
@@ -25,6 +25,7 @@ const ScheduleAvailability = ({
             value={values?.startDate}
             onChange={(e) => setFieldValue("startDate", e.target.value)}
           />
+          <ErrorMessage name="startDate" component="div" className="text-red-500 text-sm" />
         </div>
         <div className="basis-1/2">
           <label className="block mt-3 text-sm font-medium text-gray-700">
@@ -36,7 +37,10 @@ const ScheduleAvailability = ({
             name="endDate"
             value={values?.endDate}
             onChange={(e) => setFieldValue("endDate", e.target.value)}
+            min={values?.startDate || undefined}
+            disabled={!values?.startDate} 
           />
+         <ErrorMessage name="endDate" component="div" className="text-red-500 mt-1 text-sm" />
         </div>
       </div>
 

@@ -12,6 +12,7 @@ import {
   editScheduleHandler,
 } from "./helper";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { inboundValidationSchema } from "@/components/validation";
 
 const Inbound = () => {
   const dispatch = useAppDispatch();
@@ -49,8 +50,8 @@ const Inbound = () => {
       }));
     } else {
       //Todo Hardcoded Id
-      // getScheduleHandler(campaignDataById?.inbound_schedule, setScheduleSettings);
-      getScheduleHandler(4, setScheduleSettings);
+      getScheduleHandler(campaignDataById?.inbound_schedule, setScheduleSettings);
+      // getScheduleHandler(4, setScheduleSettings);
     }
   }, [campaignDataById]);
 
@@ -102,6 +103,7 @@ const Inbound = () => {
         {scheduleSettings.isAlwaysOn === "scheduled" && (
           <Formik
             initialValues={scheduleSettings?.formValues}
+            validationSchema={inboundValidationSchema}
             onSubmit={handleSubmit}
           >
             {({ values, setFieldValue }) => (

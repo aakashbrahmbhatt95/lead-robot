@@ -126,7 +126,6 @@ function convertInput(input: any) {
       endTime: "",
     };
   });
-  console.log("input", input);
   input.map((entry: any) => {
     entry.byweekday.forEach((weekday: any) => {
       const dayName = weekdaysMap[weekday];
