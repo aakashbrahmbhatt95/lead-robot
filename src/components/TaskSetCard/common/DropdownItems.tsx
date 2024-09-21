@@ -118,11 +118,6 @@ export const DropdownItems = (child: string, handleAddComponent: any) => {
                 >
                   <span>Reschedule</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => handleAddComponent("do", "cancel")}
-                >
-                  <span>Cancel</span>
-                </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuSub>
@@ -146,7 +141,13 @@ export const DropdownItems = (child: string, handleAddComponent: any) => {
               <DropdownMenuSubTrigger>
                 <span>Cancel</span>
               </DropdownMenuSubTrigger>
-              <DropdownMenuSubContent></DropdownMenuSubContent>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem
+                  onClick={() => handleAddComponent("do", "cancel")}
+                >
+                  <span>Cancel</span>
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
             </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

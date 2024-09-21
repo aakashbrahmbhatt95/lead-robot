@@ -11,20 +11,23 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Button } from "@/lib/ui/button";
 import { useParams, useRouter } from "next/navigation";
+import { Formik, Form, Field } from "formik";
+import { CampaignValidationSchema } from "@/components/validation";
 
 const CreateCampaign = () => {
   const router = useRouter();
   const params = useParams();
   const dispatch = useAppDispatch();
   const isEdit = !params.id.includes("create");
-  const [formValues, setFormValues] = useState({
+  const { campaignDataById }: any = useAppSelector(
+    (state: any) => state.campaignReducer
+  );
+
+  const [initialValues, setInitialValues] = useState({
     name: "",
     description: "",
     is_active: true,
   });
-  const { campaignDataById }: any = useAppSelector(
-    (state: any) => state.campaignReducer
-  );
 
   useEffect(() => {
     if (isEdit) {
@@ -34,7 +37,7 @@ const CreateCampaign = () => {
 
   useEffect(() => {
     if (isEdit && campaignDataById) {
-      setFormValues({
+      setInitialValues({
         name: campaignDataById?.name,
         description: campaignDataById?.description,
         is_active: campaignDataById?.is_active,
@@ -42,26 +45,11 @@ const CreateCampaign = () => {
     }
   }, [isEdit, campaignDataById]);
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-  };
-
-  const handleSwitchChange = (checked: any) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      is_active: checked,
-    }));
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = (values: any) => {
     if (isEdit) {
-      dispatch(editCampaignsAction(formValues, params?.id));
+      dispatch(editCampaignsAction(values, params?.id));
     } else {
-      dispatch(addCampaignsAction(formValues));
+      dispatch(addCampaignsAction(values));
     }
     router.push("/campaigns");
   };
@@ -71,49 +59,66 @@ const CreateCampaign = () => {
       <h2 className="text-3xl font-semibold text-black">
         {isEdit ? "Edit" : "Create"} Campaign
       </h2>
-      <div className="flex justify-between">
-        <div className="flex-1 basis-1/3 p-2">
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Name
-          </label>
-          <Input
-            type="text"
-            name="name"
-            value={formValues.name}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex-1 basis-1/3 p-2">
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Description
-          </label>
-          <Input
-            type="text"
-            name="description"
-            value={formValues.description}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex-1 basis-1/3 p-2">
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            IsActive
-          </label>
-          <Switch
-            checked={formValues.is_active}
-            onCheckedChange={handleSwitchChange}
-          />
-        </div>
-      </div>
-      <Button type="button" onClick={handleSubmit} className="mt-4 p-2 rounded">
-        Submit
-      </Button>
-      <Button
-        type="button"
-        onClick={() => router.push("/campaigns")}
-        className="mt-4 ml-3 p-2 rounded"
+
+      <Formik
+        initialValues={initialValues}
+        enableReinitialize={true}
+        validationSchema={CampaignValidationSchema}
+        onSubmit={handleSubmit}
       >
-        Back
-      </Button>
+        {({ values, setFieldValue, errors, touched }) => (
+          <Form>
+            <div className="flex justify-between">
+              <div className="flex-1 basis-1/3 p-2">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  Name
+                </label>
+                <Field as={Input} type="text" name="name" className="w-full" />
+                {errors.name && touched.name && (
+                  <div className="text-red-500 text-sm">{errors.name}</div>
+                )}
+              </div>
+              <div className="flex-1 basis-1/3 p-2">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <Field
+                  as={Input}
+                  type="text"
+                  name="description"
+                  className="w-full"
+                />
+                {errors.description && touched.description && (
+                  <div className="text-red-500 text-sm">
+                    {errors.description}
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 basis-1/3 p-2">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  IsActive
+                </label>
+                <Switch
+                  checked={values.is_active}
+                  onCheckedChange={(checked) =>
+                    setFieldValue("is_active", checked)
+                  }
+                />
+              </div>
+            </div>
+            <Button type="submit" className="mt-4 p-2 rounded">
+              Submit
+            </Button>
+            <Button
+              type="button"
+              onClick={() => router.push("/campaigns")}
+              className="mt-4 ml-3 p-2 rounded"
+            >
+              Back
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

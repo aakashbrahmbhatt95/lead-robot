@@ -41,7 +41,7 @@ const EditTaskSetPopup = ({
   };
 
   return (
-    <SheetContent>
+    <SheetContent className="overflow-scroll">
       <div className="flex justify-end">
         <X
           className="cursor-pointer"
@@ -58,7 +58,6 @@ const EditTaskSetPopup = ({
               Edit {isEditTaskSetPopup?.name}
             </CardTitle>
             <div className="flex items-center gap-3">
-              <DotsThree size={20} />
               <PencilSimple
                 className="cursor-pointer"
                 size={20}

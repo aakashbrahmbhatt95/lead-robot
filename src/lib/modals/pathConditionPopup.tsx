@@ -39,9 +39,10 @@ const PathConditionPopup = ({
       )
     );
     setIsEdit(false);
+    setIsOpenEditPathCondition(null);
   };
   return (
-    <SheetContent>
+    <SheetContent className="overflow-scroll">
       <div className="flex justify-end">
         <X
           className="cursor-pointer"

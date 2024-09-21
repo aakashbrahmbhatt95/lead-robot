@@ -95,7 +95,7 @@ const AskCardPopup = ({
   };
 
   return (
-    <SheetContent>
+    <SheetContent className="overflow-scroll">
       <div className="flex justify-end">
         <X className="cursor-pointer" onClick={() => setIsAskSetPopup(null)} />
       </div>

@@ -67,3 +67,8 @@ export const inboundValidationSchema = Yup.object().shape({
     .min(Yup.ref("startDate"), "End date must be later than start date"),
   schedule: Yup.object().shape(scheduleValidation), // Apply dynamic schedule validation
 });
+
+export const CampaignValidationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  description: Yup.string().required("Description is required"),
+});

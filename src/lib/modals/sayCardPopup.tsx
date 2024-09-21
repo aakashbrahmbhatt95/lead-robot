@@ -68,7 +68,7 @@ const SayCardPopup = ({
   });
 
   return (
-    <SheetContent>
+    <SheetContent className="overflow-scroll">
       <div className="flex justify-end">
         <X className="cursor-pointer" onClick={() => setIsSaySetPopup(null)} />
       </div>
