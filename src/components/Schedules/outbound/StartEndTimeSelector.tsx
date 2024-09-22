@@ -1,4 +1,5 @@
 import { Input } from "@/lib/ui/input";
+import { ErrorMessage } from "formik";
 
 const StartEndTimeSelector = ({ values, setFieldValue, outboundData }: any) => {
   return (
@@ -15,6 +16,7 @@ const StartEndTimeSelector = ({ values, setFieldValue, outboundData }: any) => {
           onChange={(e) => setFieldValue("startDate", e.target.value)}
           disabled={outboundData?.isEdit}
         />
+          <ErrorMessage name="startDate" component="div" className="text-red-500 mt-1 text-sm" />
       </div>
       <div className="basis-1/2">
         <label className="block mt-3 text-sm font-medium text-gray-700">
@@ -26,8 +28,10 @@ const StartEndTimeSelector = ({ values, setFieldValue, outboundData }: any) => {
           name="endDate"
           value={values?.endDate || ""}
           onChange={(e) => setFieldValue("endDate", e.target.value)}
-          disabled={outboundData?.isEdit}
+          min={values?.startDate || undefined}
+          disabled={!values?.startDate || outboundData?.isEdit} 
         />
+         <ErrorMessage name="endDate" component="div" className="text-red-500 mt-1 text-sm" />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { Input } from "@/lib/ui/input";
 import { ArrowRight } from "lucide-react";
+import { ErrorMessage } from "formik";
 
 interface CallTimeSpreadProps {
   values: any;
@@ -32,10 +33,24 @@ const CallTimeSpread: React.FC<CallTimeSpreadProps> = ({
           name="callTimeEnd"
           value={values?.callTimeEnd || ""}
           onChange={(e) => setFieldValue("callTimeEnd", e.target.value)}
+          disabled={!values.callTimeStart}
+          min={values.callTimeStart || undefined}
         />
+        <div className="flex flex-col">
+          <ErrorMessage
+            name="callTimeStart"
+            component="div"
+            className="text-red-500 text-sm"
+          />
+          <ErrorMessage
+            name="callTimeEnd"
+            component="div"
+            className="text-red-500 text-sm"
+          />
+        </div>
       </>
     ) : (
-      <p className="block pl-2 text-sm font-medium w-[100px] text-gray-700">
+      <p className="block pl-2 text-sm font-medium text-gray-700">
         {`${values?.callTimeStart} - ${values?.callTimeEnd}`}
       </p>
     )}

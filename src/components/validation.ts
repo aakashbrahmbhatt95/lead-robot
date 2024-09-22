@@ -68,6 +68,25 @@ export const inboundValidationSchema = Yup.object().shape({
   schedule: Yup.object().shape(scheduleValidation), // Apply dynamic schedule validation
 });
 
+export const outboundValidationSchema = Yup.object().shape({
+  startDate: Yup.date().required("Start date is required"),
+  endDate: Yup.date()
+    .required("End date is required")
+    .min(Yup.ref("startDate"), "End date must be later than start date"),
+  callTimeStart: Yup.string().required("Call start time is required"),
+  callTimeEnd: Yup.string()
+    .required("Call end time is required")
+    .test(
+      "is-greater",
+      "Call end time must be later than call start time",
+      function (value) {
+        const { callTimeStart } = this.parent; // Access the value of callTimeStart
+        if (!callTimeStart || !value) return true; // If either field is empty, skip validation
+        return value > callTimeStart; // Check if callTimeEnd is later than callTimeStart
+      }
+    ),
+});
+
 export const CampaignValidationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   description: Yup.string().required("Description is required"),

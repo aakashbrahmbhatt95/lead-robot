@@ -50,7 +50,10 @@ const Inbound = () => {
       }));
     } else {
       //Todo Hardcoded Id
-      getScheduleHandler(campaignDataById?.inbound_schedule, setScheduleSettings);
+      getScheduleHandler(
+        campaignDataById?.inbound_schedule,
+        setScheduleSettings
+      );
       // getScheduleHandler(4, setScheduleSettings);
     }
   }, [campaignDataById]);
@@ -72,12 +75,7 @@ const Inbound = () => {
         byyeardata: [],
       }));
     if (scheduleSettings?.scheduleId === null) {
-      addScheduleHandler(
-        campaignDataById,
-        dispatch,
-        output,
-        setScheduleSettings
-      );
+      addScheduleHandler(campaignDataById, dispatch, output);
     } else {
       editScheduleHandler(setScheduleSettings, scheduleSettings, output);
     }

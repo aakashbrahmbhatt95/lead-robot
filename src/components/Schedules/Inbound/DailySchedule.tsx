@@ -65,7 +65,7 @@ const DailySchedule = ({ day, values, setFieldValue, isEdit }: any) => {
             </div>
           </>
         ) : (
-          <p className="block pl-2 text-sm font-medium w-[100px] text-gray-700">
+          <p className="block pl-2 text-sm font-medium text-gray-700">
             {`${daySchedule.startTime} - ${daySchedule.endTime}`}
           </p>
         ))}

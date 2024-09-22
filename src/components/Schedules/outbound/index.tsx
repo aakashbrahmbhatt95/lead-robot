@@ -1,16 +1,27 @@
 import { Formik } from "formik";
 import { Switch } from "@/lib/ui/switch";
 import TimeZoneAndHolidays from "./TimeZoneAndHoliday";
-import { weekMap } from "./helper";
+import {
+  addOutboundScheduleHandler,
+  editOutboundScheduleHandler,
+  getOutboundScheduleHandler,
+  weekDaysMap,
+  weekMap,
+} from "./helper";
 import { Button } from "@/lib/ui/button";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import WeekSelector from "./WeekSelector";
 import CallTimeSpread from "./CallTimeSpread";
 import StartEndTimeSelector from "./StartEndTimeSelector";
+import { calculateDuration } from "../Inbound/helper";
+import { outboundValidationSchema } from "@/components/validation";
 
 const Outbound = () => {
+  const dispatch = useAppDispatch();
   const [weekData, setWeekData] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
   const [outboundData, setOutboundData] = useState({
     excludePublicHolidays: "",
     timeZone: "",
@@ -41,22 +52,39 @@ const Outbound = () => {
         },
       }));
     } else {
-      // Set form values based on schedule data
-      // getScheduleHandler logic can be added here if needed
+      getOutboundScheduleHandler(
+        campaignDataById?.outbound_schedule,
+        setOutboundData,
+        setWeekData
+      );
     }
   }, [campaignDataById]);
 
   const handleSubmit = (values: any) => {
-    console.log("Form Submitted with values:", {
-      ...values,
-      timeZone: outboundData?.timeZone,
-      excludePublicHolidays: outboundData?.excludePublicHolidays,
-      weekData: weekData,
-    });
-    setOutboundData((prev: any) => ({
-      ...prev,
-      isEdit: true,
+    if (weekData.length === 0) {
+      setError("Please select at least one weekday.");
+      return;
+    }
+    setError(null);
+    const output: any = weekData?.map((ele: any) => ({
+      interval: 1,
+      start_date: values.startDate,
+      end_date: values.endDate,
+      times: [values?.callTimeStart],
+      exclude: false,
+      duration: calculateDuration(values?.callTimeStart, values?.callTimeEnd),
+      byweekno: [weekDaysMap[ele]],
     }));
+    if (outboundData?.outboundId === null) {
+      addOutboundScheduleHandler(campaignDataById, dispatch, output);
+    } else {
+      editOutboundScheduleHandler(
+        setOutboundData,
+        outboundData,
+        output,
+        setWeekData
+      );
+    }
   };
 
   return (
@@ -75,6 +103,7 @@ const Outbound = () => {
           <Formik
             initialValues={outboundData.formValues}
             enableReinitialize={true}
+            validationSchema={outboundValidationSchema}
             onSubmit={handleSubmit}
           >
             {({ values, setFieldValue, handleSubmit }) => (
@@ -91,6 +120,7 @@ const Outbound = () => {
                     setWeekData={setWeekData}
                     isEdit={outboundData?.isEdit}
                   />
+                  {error && <p className="text-red-500 ml-4">{error}</p>}{" "}
                   <CallTimeSpread
                     values={values}
                     setFieldValue={setFieldValue}

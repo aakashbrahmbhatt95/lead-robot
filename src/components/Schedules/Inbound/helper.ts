@@ -1,4 +1,5 @@
 import { editCampaignsAction } from "@/redux/action/campaigns-action";
+import { campaignDataByIdReducer } from "@/redux/reducer/campaigns-reducer";
 import { BASE_URL1, GET_SCHEDULE_URL } from "@/utils/apiConstants";
 import { getToken } from "@/utils/constants";
 import { HttpUtil } from "@/utils/http-util";
@@ -35,8 +36,7 @@ export const getScheduleHandler = async (id: any, setScheduleSettings: any) => {
 export const addScheduleHandler = async (
   campaignDataById: any,
   dispatch: any,
-  output: any,
-  setScheduleSettings: any
+  output: any
 ) => {
   try {
     const res = await HttpUtil.makePOST(
@@ -64,12 +64,17 @@ export const addScheduleHandler = async (
             is_active: campaignDataById?.is_active,
             dynamic: campaignDataById?.dynamic,
             inbound_schedule_id: res?.data?.id,
-            outbound_schedule_id: 0,
+            outbound_schedule_id: campaignDataById?.outbound_schedule,
           },
           campaignDataById?.id
         )
       );
-      getScheduleHandler(res?.data?.id, setScheduleSettings);
+      dispatch(
+        campaignDataByIdReducer({
+          ...campaignDataById,
+          inbound_schedule: res?.data?.id,
+        })
+      );
       toast.success("Schedule Added Successfully!");
     } else {
       throw new Error("Failed to save schedule");
@@ -141,7 +146,7 @@ function convertInput(input: any) {
   return output;
 }
 
-function addDuration(time: any, duration: any) {
+export function addDuration(time: any, duration: any) {
   const [hours, minutes, seconds] = time.split(":").map(Number);
   const durationMatch = /P.*T(\d{2})H(\d{2})M(\d{2})S/.exec(duration);
   if (!durationMatch) return time;

@@ -24,6 +24,7 @@ const ScheduleAvailability = ({
             name="startDate"
             value={values?.startDate}
             onChange={(e) => setFieldValue("startDate", e.target.value)}
+            disabled={isEdit}
           />
           <ErrorMessage name="startDate" component="div" className="text-red-500 text-sm" />
         </div>
@@ -38,7 +39,7 @@ const ScheduleAvailability = ({
             value={values?.endDate}
             onChange={(e) => setFieldValue("endDate", e.target.value)}
             min={values?.startDate || undefined}
-            disabled={!values?.startDate} 
+            disabled={!values?.startDate || isEdit} 
           />
          <ErrorMessage name="endDate" component="div" className="text-red-500 mt-1 text-sm" />
         </div>
