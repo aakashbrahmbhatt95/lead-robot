@@ -49,12 +49,10 @@ const Inbound = () => {
         },
       }));
     } else {
-      //Todo Hardcoded Id
       getScheduleHandler(
         campaignDataById?.inbound_schedule,
         setScheduleSettings
       );
-      // getScheduleHandler(4, setScheduleSettings);
     }
   }, [campaignDataById]);
 
