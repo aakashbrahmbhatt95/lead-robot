@@ -15,7 +15,7 @@ import CallTimeSpread from "./CallTimeSpread";
 import StartEndTimeSelector from "./StartEndTimeSelector";
 import { calculateDuration } from "../Inbound/helper";
 import { outboundValidationSchema } from "@/components/validation";
-import { Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus } from "lucide-react";
 import { TrashSimple } from "@phosphor-icons/react";
 
 const Outbound = () => {
@@ -28,6 +28,7 @@ const Outbound = () => {
     outboundId: null,
     formValues: [initialFormValues],
   });
+  const [accordionOpen, setAccordionOpen] = useState([true]);
 
   const { campaignDataById } = useAppSelector(
     (state: any) => state.campaignReducer
@@ -40,6 +41,7 @@ const Outbound = () => {
         isEdit: false,
         formValues: [initialFormValues],
       }));
+      setAccordionOpen([true]);
     } else {
       getOutboundScheduleHandler(
         campaignDataById?.outbound_schedule,
@@ -69,6 +71,12 @@ const Outbound = () => {
     }
   };
 
+  const toggleAccordion = (index: number) => {
+    setAccordionOpen((prev) =>
+      prev.map((isOpen, i) => (i === index ? !isOpen : isOpen))
+    );
+  };
+
   return (
     <div className="flex">
       <div className="basis-3/4">
@@ -95,59 +103,72 @@ const Outbound = () => {
                     <>
                       {values.formValues.map((formValue, index) => (
                         <>
-                          <div className="flex justify-end mt-3">
+                          <div className="flex justify-end items-center mt-3 mb-2">
                             {values.formValues?.length > 1 && (
                               <TrashSimple
-                                className={`mr-3 ${outboundData?.isEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                                className={`mr-2 ${outboundData?.isEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                                 size={20}
-                                onClick={() =>
-                                  !outboundData?.isEdit && remove(index)
-                                }
+                                onClick={() => {
+                                  if (!outboundData?.isEdit) {
+                                    remove(index);
+                                    setAccordionOpen((prev) => {
+                                      const newAccordionOpen = [...prev];
+                                      newAccordionOpen.splice(index, 1);
+                                      return newAccordionOpen;
+                                    });
+                                  }
+                                }}
                               />
                             )}
+                            <div className="mr-2" onClick={() => toggleAccordion(index)}>
+                              {accordionOpen[index] ? (
+                                <ChevronDown />
+                              ) : (
+                                <ChevronUp />
+                              )}
+                            </div>
                           </div>
-                          <div
-                            key={index}
-                            className="border-[1px] mt-4 pb-3 border-[#E4E4E7] rounded"
-                          >
-                            <StartEndTimeSelector
-                              values={formValue}
-                              setFieldValue={(field: any, value: any) =>
-                                setFieldValue(
-                                  `formValues.${index}.${field}`,
-                                  value
-                                )
-                              }
-                              index={index}
-                              isEdit={outboundData?.isEdit}
-                            />
-                            <WeekSelector
-                              values={formValue}
-                              setFieldValue={(field: any, value: any) =>
-                                setFieldValue(
-                                  `formValues.${index}.${field}`,
-                                  value
-                                )
-                              }
-                              isEdit={outboundData?.isEdit}
-                            />
-                            <ErrorMessage
-                              name={`formValues.${index}.weeks`}
-                              component="div"
-                              className="text-red-500 ml-4"
-                            />
-                            <CallTimeSpread
-                              values={formValue}
-                              setFieldValue={(field: any, value: any) =>
-                                setFieldValue(
-                                  `formValues.${index}.${field}`,
-                                  value
-                                )
-                              }
-                              index={index}
-                              isEdit={outboundData?.isEdit}
-                            />
-                          </div>
+                          {accordionOpen[index] && (
+                            <div className="border-[1px] pb-3 border-[#E4E4E7] rounded">
+                              <StartEndTimeSelector
+                                values={formValue}
+                                setFieldValue={(field: any, value: any) =>
+                                  setFieldValue(
+                                    `formValues.${index}.${field}`,
+                                    value
+                                  )
+                                }
+                                index={index}
+                                isEdit={outboundData?.isEdit}
+                              />
+                              <WeekSelector
+                                values={formValue}
+                                setFieldValue={(field: any, value: any) =>
+                                  setFieldValue(
+                                    `formValues.${index}.${field}`,
+                                    value
+                                  )
+                                }
+                                isEdit={outboundData?.isEdit}
+                              />
+                              <ErrorMessage
+                                name={`formValues.${index}.weeks`}
+                                component="div"
+                                className="text-red-500 ml-4"
+                              />
+                              <CallTimeSpread
+                                values={formValue}
+                                setFieldValue={(field: any, value: any) =>
+                                  setFieldValue(
+                                    `formValues.${index}.${field}`,
+                                    value
+                                  )
+                                }
+                                index={index}
+                                isEdit={outboundData?.isEdit}
+                              />
+                            </div>
+                          )}
                         </>
                       ))}
                       {!outboundData?.isEdit && (
@@ -155,7 +176,10 @@ const Outbound = () => {
                           <Button
                             variant="outline"
                             type="button"
-                            onClick={() => push(initialFormValues)}
+                            onClick={() => {
+                              push(initialFormValues);
+                              setAccordionOpen((prev) => [...prev, true]);
+                            }}
                           >
                             <Plus className="mr-3" /> Add call time
                           </Button>
