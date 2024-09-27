@@ -69,22 +69,32 @@ export const inboundValidationSchema = Yup.object().shape({
 });
 
 export const outboundValidationSchema = Yup.object().shape({
-  startDate: Yup.date().required("Start date is required"),
-  endDate: Yup.date()
-    .required("End date is required")
-    .min(Yup.ref("startDate"), "End date must be later than start date"),
-  callTimeStart: Yup.string().required("Call start time is required"),
-  callTimeEnd: Yup.string()
-    .required("Call end time is required")
-    .test(
-      "is-greater",
-      "Call end time must be later than call start time",
-      function (value) {
-        const { callTimeStart } = this.parent; // Access the value of callTimeStart
-        if (!callTimeStart || !value) return true; // If either field is empty, skip validation
-        return value > callTimeStart; // Check if callTimeEnd is later than callTimeStart
-      }
-    ),
+  formValues: Yup.array()
+    .of(
+      Yup.object().shape({
+        startDate: Yup.date().required("Start date is required"),
+        endDate: Yup.date()
+          .required("End date is required")
+          .min(Yup.ref("startDate"), "End date must be later than start date"),
+        callTimeStart: Yup.string().required("Call start time is required"),
+        callTimeEnd: Yup.string()
+          .required("Call end time is required")
+          .test(
+            "is-greater",
+            "Call end time must be later than call start time",
+            function (value) {
+              const { callTimeStart } = this.parent; // Access the value of callTimeStart
+              if (!callTimeStart || !value) return true; // If either field is empty, skip validation
+              return value > callTimeStart; // Check if callTimeEnd is later than callTimeStart
+            }
+          ),
+        weeks: Yup.array()
+          .of(Yup.string()) // Assuming weeks is an array of string days like ["Monday", "Tuesday"]
+          .min(1, "At least one weekday must be selected"),
+      })
+    )
+    .required("At least one schedule is required")
+    .min(1, "At least one schedule is required"),
 });
 
 export const CampaignValidationSchema = Yup.object().shape({

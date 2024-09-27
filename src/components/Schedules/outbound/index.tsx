@@ -1,12 +1,11 @@
-import { Formik } from "formik";
+import { Formik, FieldArray, ErrorMessage } from "formik";
 import { Switch } from "@/lib/ui/switch";
 import TimeZoneAndHolidays from "./TimeZoneAndHoliday";
 import {
   addOutboundScheduleHandler,
   editOutboundScheduleHandler,
   getOutboundScheduleHandler,
-  weekDaysMap,
-  weekMap,
+  initialFormValues,
 } from "./helper";
 import { Button } from "@/lib/ui/button";
 import { useEffect, useState } from "react";
@@ -16,23 +15,18 @@ import CallTimeSpread from "./CallTimeSpread";
 import StartEndTimeSelector from "./StartEndTimeSelector";
 import { calculateDuration } from "../Inbound/helper";
 import { outboundValidationSchema } from "@/components/validation";
+import { Plus } from "lucide-react";
+import { TrashSimple } from "@phosphor-icons/react";
 
 const Outbound = () => {
   const dispatch = useAppDispatch();
-  const [weekData, setWeekData] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   const [outboundData, setOutboundData] = useState({
     excludePublicHolidays: "",
     timeZone: "",
     isEdit: false,
     outboundId: null,
-    formValues: {
-      startDate: "",
-      endDate: "",
-      callTimeStart: "",
-      callTimeEnd: "",
-    },
+    formValues: [initialFormValues],
   });
 
   const { campaignDataById } = useAppSelector(
@@ -44,46 +38,34 @@ const Outbound = () => {
       setOutboundData((prev: any) => ({
         ...prev,
         isEdit: false,
-        formValues: {
-          startDate: "",
-          endDate: "",
-          callTimeStart: "",
-          callTimeEnd: "",
-        },
+        formValues: [initialFormValues],
       }));
     } else {
       getOutboundScheduleHandler(
         campaignDataById?.outbound_schedule,
-        setOutboundData,
-        setWeekData
+        setOutboundData
       );
     }
   }, [campaignDataById]);
 
   const handleSubmit = (values: any) => {
-    if (weekData.length === 0) {
-      setError("Please select at least one weekday.");
-      return;
-    }
-    setError(null);
-    const output: any = weekData?.map((ele: any) => ({
+    const output = values.formValues.map((formValue: any) => ({
       interval: 1,
-      start_date: values.startDate,
-      end_date: values.endDate,
-      times: [values?.callTimeStart],
+      start_date: formValue.startDate,
+      end_date: formValue.endDate,
+      byweekday: formValue.weeks,
+      times: [formValue.callTimeStart],
       exclude: false,
-      duration: calculateDuration(values?.callTimeStart, values?.callTimeEnd),
-      byweekno: [weekDaysMap[ele]],
+      duration: calculateDuration(
+        formValue.callTimeStart,
+        formValue.callTimeEnd
+      ),
     }));
+
     if (outboundData?.outboundId === null) {
       addOutboundScheduleHandler(campaignDataById, dispatch, output);
     } else {
-      editOutboundScheduleHandler(
-        setOutboundData,
-        outboundData,
-        output,
-        setWeekData
-      );
+      editOutboundScheduleHandler(setOutboundData, outboundData, output);
     }
   };
 
@@ -101,49 +83,108 @@ const Outbound = () => {
         </p>
         {outboundData?.formValues && (
           <Formik
-            initialValues={outboundData.formValues}
+            initialValues={outboundData}
             enableReinitialize={true}
             validationSchema={outboundValidationSchema}
             onSubmit={handleSubmit}
           >
             {({ values, setFieldValue, handleSubmit }) => (
               <form onSubmit={handleSubmit}>
-                <div className="border-[1px] mt-4 pb-3 border-[#E4E4E7] rounded">
-                  <StartEndTimeSelector
-                    values={values}
-                    setFieldValue={setFieldValue}
-                    outboundData={outboundData}
-                  />
-                  <WeekSelector
-                    weekMap={weekMap}
-                    weekData={weekData}
-                    setWeekData={setWeekData}
-                    isEdit={outboundData?.isEdit}
-                  />
-                  {error && <p className="text-red-500 ml-4">{error}</p>}{" "}
-                  <CallTimeSpread
-                    values={values}
-                    setFieldValue={setFieldValue}
-                    isEdit={outboundData?.isEdit}
-                  />
-                  {outboundData?.isEdit && (
-                    <p
-                      className="text-sm font-medium mt-[20px] text-gray-700 my-5 ml-3 cursor-pointer underline"
-                      onClick={() =>
-                        setOutboundData((prev) => ({ ...prev, isEdit: false }))
-                      }
+                <FieldArray name="formValues">
+                  {({ push, remove }) => (
+                    <>
+                      {values.formValues.map((formValue, index) => (
+                        <>
+                          <div className="flex justify-end mt-3">
+                            {values.formValues?.length > 1 && (
+                              <TrashSimple
+                                className={`mr-3 ${outboundData?.isEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                                size={20}
+                                onClick={() =>
+                                  !outboundData?.isEdit && remove(index)
+                                }
+                              />
+                            )}
+                          </div>
+                          <div
+                            key={index}
+                            className="border-[1px] mt-4 pb-3 border-[#E4E4E7] rounded"
+                          >
+                            <StartEndTimeSelector
+                              values={formValue}
+                              setFieldValue={(field: any, value: any) =>
+                                setFieldValue(
+                                  `formValues.${index}.${field}`,
+                                  value
+                                )
+                              }
+                              index={index}
+                              isEdit={outboundData?.isEdit}
+                            />
+                            <WeekSelector
+                              values={formValue}
+                              setFieldValue={(field: any, value: any) =>
+                                setFieldValue(
+                                  `formValues.${index}.${field}`,
+                                  value
+                                )
+                              }
+                              isEdit={outboundData?.isEdit}
+                            />
+                            <ErrorMessage
+                              name={`formValues.${index}.weeks`}
+                              component="div"
+                              className="text-red-500 ml-4"
+                            />
+                            <CallTimeSpread
+                              values={formValue}
+                              setFieldValue={(field: any, value: any) =>
+                                setFieldValue(
+                                  `formValues.${index}.${field}`,
+                                  value
+                                )
+                              }
+                              index={index}
+                              isEdit={outboundData?.isEdit}
+                            />
+                          </div>
+                        </>
+                      ))}
+                      {!outboundData?.isEdit && (
+                        <div className="flex mt-3">
+                          <Button
+                            variant="outline"
+                            type="button"
+                            onClick={() => push(initialFormValues)}
+                          >
+                            <Plus className="mr-3" /> Add call time
+                          </Button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </FieldArray>
+                <div className="flex mt-3">
+                  {outboundData?.isEdit ? (
+                    <Button
+                      variant="outline"
+                      type="button"
+                      onClick={(e: any) => {
+                        e.preventDefault();
+                        setOutboundData((prev) => ({
+                          ...prev,
+                          isEdit: false,
+                        }));
+                      }}
                     >
                       Edit
-                    </p>
-                  )}
-                </div>
-                {!outboundData?.isEdit && (
-                  <div className="flex mt-3">
+                    </Button>
+                  ) : (
                     <Button variant="outline" type="submit">
                       Save
                     </Button>
-                  </div>
-                )}
+                  )}
+                </div>
               </form>
             )}
           </Formik>

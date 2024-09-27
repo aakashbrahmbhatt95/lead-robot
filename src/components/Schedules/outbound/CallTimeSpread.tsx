@@ -5,12 +5,14 @@ import { ErrorMessage } from "formik";
 interface CallTimeSpreadProps {
   values: any;
   setFieldValue: (field: string, value: any) => void;
+  index: number;
   isEdit: boolean;
 }
 
 const CallTimeSpread: React.FC<CallTimeSpreadProps> = ({
   values,
   setFieldValue,
+  index,
   isEdit,
 }) => (
   <div className="flex items-center my-5 ml-3 gap-3">
@@ -38,12 +40,12 @@ const CallTimeSpread: React.FC<CallTimeSpreadProps> = ({
         />
         <div className="flex flex-col">
           <ErrorMessage
-            name="callTimeStart"
+            name={`formValues.${index}.callTimeStart`}
             component="div"
             className="text-red-500 text-sm"
           />
           <ErrorMessage
-            name="callTimeEnd"
+            name={`formValues.${index}.callTimeEnd`}
             component="div"
             className="text-red-500 text-sm"
           />
