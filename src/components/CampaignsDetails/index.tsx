@@ -9,13 +9,16 @@ import { useParams, useRouter } from "next/navigation";
 import { getcampaignsDatByIdAction } from "@/redux/action/campaigns-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import ReactFlowChart from "./reactFlowChart";
-import { row, tabBarData } from "./helper";
+import { tabBarData } from "./helper";
 import Schedules from "../Schedules";
+import { Sheet } from "@/lib/ui/sheet";
+import AgentPopup from "@/lib/modals/AgentPopup/index";
 
 const CampaignsDetails = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [taskId, setTaskId] = useState(1);
+  const [isAgentPopup, setIsAgentPopup] = useState<any>(null);
   const params = useParams();
   const isEdit = !params.id.includes("create");
   const { campaignDataById }: any = useAppSelector(
@@ -46,20 +49,16 @@ const CampaignsDetails = () => {
         Task template
       </p>
       <div className="mt-[15px] flex justify-between items-center">
-        <div className="flex gap-[10px]">
-          {row?.map((ele: any, index: any) => {
-            return (
-              <div
-                className="flex items-center rounded-md border-[1px] border-[#18181B] px-4 py-2 gap-[5px]"
-                key={index}
-              >
-                <Image src={PencilSimple} alt="Logo" />
-                <p className="text-sm font-medium text-[#18181B]">
-                  {ele?.text}
-                </p>
-              </div>
-            );
-          })}
+        <div
+          className="flex items-center rounded-md border-[1px] border-[#18181B] px-4 py-2 gap-[5px] cursor-pointer"
+          onClick={() =>
+            setIsAgentPopup({
+              isEdit: false,
+            })
+          }
+        >
+          <Image src={PencilSimple} alt="Logo" />
+          <p className="text-sm font-medium text-[#18181B]">Agents</p>
         </div>
         <div className="flex items-center rounded-md bg-[#F4F4F5] px-4 py-2 gap-[8px]">
           <p className="text-sm font-medium text-[#71717A]">Next</p>
@@ -88,6 +87,11 @@ const CampaignsDetails = () => {
       </div>
       {taskId === 1 && <ReactFlowChart />}
       {taskId === 3 && <Schedules />}
+      <Sheet open={isAgentPopup !== null}>
+        {isAgentPopup !== null && (
+          <AgentPopup setIsAgentPopup={setIsAgentPopup} />
+        )}
+      </Sheet>
     </div>
   );
 };
