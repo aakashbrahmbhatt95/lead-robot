@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import DotsThree from "@/../public/DotsThree.svg";
 import PencilSimple from "@/../public/PencilSimple.svg";
 import Vector from "@/../public/Vector.svg";
 import { useEffect, useState } from "react";
@@ -43,7 +42,6 @@ const CampaignsDetails = () => {
           className="ml-[8px] cursor-pointer"
           onClick={() => router.push(`/create-campaign/${params?.id}`)}
         />
-        <Image src={DotsThree} alt="Logo" className="ml-[15px]" />
       </div>
       <p className="text-[20px] mt-[15px] font-semibold text-black underline">
         Task template

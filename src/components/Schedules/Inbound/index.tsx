@@ -13,13 +13,14 @@ import {
 } from "./helper";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { inboundValidationSchema } from "@/components/validation";
+import { editCampaignsAction } from "@/redux/action/campaigns-action";
 
 const Inbound = () => {
   const dispatch = useAppDispatch();
   const [scheduleSettings, setScheduleSettings] = useState({
     isAlwaysOn: "isalwayson",
     excludePublicHolidays: "",
-    timeZone: "",
+    timeZone: "UTC",
     isEdit: false,
     scheduleId: null,
     formValues: null,
@@ -30,10 +31,12 @@ const Inbound = () => {
   );
 
   useEffect(() => {
-    if (campaignDataById?.inbound_schedule === null) {
+    if (campaignDataById?.inbound_schedule_id === null) {
       setScheduleSettings((prev: any) => ({
         ...prev,
         isEdit: false,
+        isAlwaysOn: "isalwayson",
+        excludePublicHolidays: campaignDataById?.exclude_holidays_country,
         formValues: {
           schedule: {
             monday: { active: true, startTime: "", endTime: "" },
@@ -50,8 +53,9 @@ const Inbound = () => {
       }));
     } else {
       getScheduleHandler(
-        campaignDataById?.inbound_schedule,
-        setScheduleSettings
+        campaignDataById?.inbound_schedule_id,
+        setScheduleSettings,
+        campaignDataById?.exclude_holidays_country
       );
     }
   }, [campaignDataById]);
@@ -73,9 +77,15 @@ const Inbound = () => {
         byyeardata: [],
       }));
     if (scheduleSettings?.scheduleId === null) {
-      addScheduleHandler(campaignDataById, dispatch, output);
+      addScheduleHandler(campaignDataById, dispatch, output, scheduleSettings);
     } else {
-      editScheduleHandler(setScheduleSettings, scheduleSettings, output);
+      editScheduleHandler(
+        setScheduleSettings,
+        scheduleSettings,
+        output,
+        dispatch,
+        campaignDataById
+      );
     }
   };
 
@@ -83,18 +93,32 @@ const Inbound = () => {
     <div className="flex">
       <div className="basis-3/4">
         <div className="flex items-center mt-5">
-          <Switch checked={true} />
+          <Switch
+            checked={campaignDataById.inbound_active}
+            onCheckedChange={(checked) => {
+              dispatch(
+                editCampaignsAction(
+                  {
+                    ...campaignDataById,
+                    inbound_active: checked,
+                  },
+                  campaignDataById?.id
+                )
+              );
+            }}
+          />
           <label className="block pl-2 text-sm font-medium text-gray-700">
             On
           </label>
         </div>
-
-        <ScheduleOptions
-          isAlwaysOn={scheduleSettings.isAlwaysOn}
-          setIsAlwaysOn={(value) =>
-            setScheduleSettings((prev) => ({ ...prev, isAlwaysOn: value }))
-          }
-        />
+        {campaignDataById.inbound_active && (
+          <ScheduleOptions
+            isAlwaysOn={scheduleSettings.isAlwaysOn}
+            setIsAlwaysOn={(value) =>
+              setScheduleSettings((prev) => ({ ...prev, isAlwaysOn: value }))
+            }
+          />
+        )}
 
         {scheduleSettings.isAlwaysOn === "scheduled" && (
           <Formik
@@ -130,6 +154,7 @@ const Inbound = () => {
               excludePublicHolidays: value,
             }))
           }
+          isEdit={scheduleSettings.isEdit}
         />
       )}
     </div>

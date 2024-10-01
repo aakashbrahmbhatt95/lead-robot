@@ -1,11 +1,14 @@
 import { editCampaignsAction } from "@/redux/action/campaigns-action";
-import { campaignDataByIdReducer } from "@/redux/reducer/campaigns-reducer";
 import { BASE_URL1, GET_SCHEDULE_URL } from "@/utils/apiConstants";
 import { getToken } from "@/utils/constants";
 import { HttpUtil } from "@/utils/http-util";
 import { toast } from "react-toastify";
 
-export const getScheduleHandler = async (id: any, setScheduleSettings: any) => {
+export const getScheduleHandler = async (
+  id: any,
+  setScheduleSettings: any,
+  excludePublicHolidays: any
+) => {
   try {
     const res = await HttpUtil.makeGET(
       `${BASE_URL1}${GET_SCHEDULE_URL}${id}`,
@@ -16,12 +19,15 @@ export const getScheduleHandler = async (id: any, setScheduleSettings: any) => {
       setScheduleSettings((prev: any) => ({
         ...prev,
         isEdit: true,
+        excludePublicHolidays: excludePublicHolidays,
+        isAlwaysOn: "scheduled",
         scheduleId: {
           id: res?.data?.id,
           description: res?.data?.description,
           name: res?.data?.name,
           is_active: res?.data?.is_active,
           user: res?.data?.user,
+          daily: res?.data?.daily,
         },
         formValues: convertInput(res?.data?.daily),
       }));
@@ -36,7 +42,8 @@ export const getScheduleHandler = async (id: any, setScheduleSettings: any) => {
 export const addScheduleHandler = async (
   campaignDataById: any,
   dispatch: any,
-  output: any
+  output: any,
+  scheduleSettings: any
 ) => {
   try {
     const res = await HttpUtil.makePOST(
@@ -59,21 +66,12 @@ export const addScheduleHandler = async (
       dispatch(
         editCampaignsAction(
           {
-            name: campaignDataById?.name,
-            description: campaignDataById?.description,
-            is_active: campaignDataById?.is_active,
-            dynamic: campaignDataById?.dynamic,
+            ...campaignDataById,
             inbound_schedule_id: res?.data?.id,
-            outbound_schedule_id: campaignDataById?.outbound_schedule,
+            exclude_holidays_country: scheduleSettings?.excludePublicHolidays,
           },
           campaignDataById?.id
         )
-      );
-      dispatch(
-        campaignDataByIdReducer({
-          ...campaignDataById,
-          inbound_schedule: res?.data?.id,
-        })
       );
       toast.success("Schedule Added Successfully!");
     } else {
@@ -87,7 +85,9 @@ export const addScheduleHandler = async (
 export const editScheduleHandler = async (
   setScheduleSettings: any,
   scheduleSettings: any,
-  output: any
+  output: any,
+  dispatch: any,
+  campaignDataById: any
 ) => {
   try {
     const res = await HttpUtil.makePUT(
@@ -107,7 +107,20 @@ export const editScheduleHandler = async (
     );
 
     if (res?.success) {
-      getScheduleHandler(res?.data?.id, setScheduleSettings);
+      dispatch(
+        editCampaignsAction(
+          {
+            ...campaignDataById,
+            exclude_holidays_country: scheduleSettings?.excludePublicHolidays,
+          },
+          campaignDataById?.id
+        )
+      );
+      getScheduleHandler(
+        res?.data?.id,
+        setScheduleSettings,
+        scheduleSettings?.excludePublicHolidays
+      );
       toast.success("Schedule Edited Successfully!");
     } else {
       throw new Error("Failed to edit schedule");

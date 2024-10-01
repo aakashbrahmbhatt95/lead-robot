@@ -48,12 +48,24 @@ export const addCampaignsAction =
   };
 
 export const editCampaignsAction =
-  (body: any, id: any) => async (dispatch: AppDispatch) => {
+  (body: any, id: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { campaignsList } = getState()?.campaignReducer;
     HttpUtil.makePUT(`${BASE_URL1}${GET_CAMPAIGN_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(campaignsListAction());
+        const updatedCampaignsList = campaignsList.map((campaign: any) =>
+          campaign.id === res?.data.id ? res.data : campaign
+        );
+        dispatch(campaignsListReducer(updatedCampaignsList));
+        dispatch(
+          campaignDataByIdReducer({
+            ...res?.data,
+            inbound_schedule_id: res?.data?.inbound_schedule,
+            outbound_schedule_id: res?.data?.outbound_schedule,
+          })
+        );
         toast.success("Campaign Updated Succesfully!");
       })
       .catch((err: any) => {
@@ -83,7 +95,13 @@ export const getcampaignsDatByIdAction =
       Authorization: getToken(),
     })
       .then((res) => {
-        dispatch(campaignDataByIdReducer(res?.data));
+        dispatch(
+          campaignDataByIdReducer({
+            ...res?.data,
+            inbound_schedule_id: res?.data?.inbound_schedule,
+            outbound_schedule_id: res?.data?.outbound_schedule,
+          })
+        );
       })
       .catch((err: any) => {
         dispatch(campaignDataByIdReducer({}));

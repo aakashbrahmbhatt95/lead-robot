@@ -1,12 +1,22 @@
 import { RadioGroup, RadioGroupItem } from "@/lib/ui/radio-group";
 import { Label } from "@/lib/ui/label";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { editCampaignsAction } from "@/redux/action/campaigns-action";
 
 interface ScheduleOptionsProps {
   isAlwaysOn: string;
   setIsAlwaysOn: (value: string) => void;
 }
 
-const ScheduleOptions = ({ isAlwaysOn, setIsAlwaysOn }: ScheduleOptionsProps) => {
+const ScheduleOptions = ({
+  isAlwaysOn,
+  setIsAlwaysOn,
+}: ScheduleOptionsProps) => {
+  const dispatch = useAppDispatch();
+  const { campaignDataById } = useAppSelector(
+    (state: any) => state.campaignReducer
+  );
+
   return (
     <>
       <p className="text-sm mt-[25px] font-normal text-[#71717A]">
@@ -16,7 +26,27 @@ const ScheduleOptions = ({ isAlwaysOn, setIsAlwaysOn }: ScheduleOptionsProps) =>
       <RadioGroup
         className="flex mt-4 gap-5"
         value={isAlwaysOn}
-        onValueChange={(value) => setIsAlwaysOn(value)}
+        onValueChange={(value) => {
+          if (value === "isalwayson") {
+            const isConfirmed = window.confirm(
+              "Are you sure you want to set it as isAlwaysOn?"
+            );
+
+            if (isConfirmed) {
+              dispatch(
+                editCampaignsAction(
+                  {
+                    ...campaignDataById,
+                    inbound_schedule_id: null,
+                  },
+                  campaignDataById?.id
+                )
+              );
+            }
+          } else {
+            setIsAlwaysOn(value);
+          }
+        }}
       >
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="isalwayson" id="r1" />

@@ -47,7 +47,15 @@ const CreateCampaign = () => {
 
   const handleSubmit = (values: any) => {
     if (isEdit) {
-      dispatch(editCampaignsAction(values, params?.id));
+      dispatch(
+        editCampaignsAction(
+          {
+            ...campaignDataById,
+            ...values,
+          },
+          params?.id
+        )
+      );
     } else {
       dispatch(addCampaignsAction(values));
     }

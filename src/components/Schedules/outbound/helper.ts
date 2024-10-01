@@ -4,7 +4,6 @@ import { getToken } from "@/utils/constants";
 import { HttpUtil } from "@/utils/http-util";
 import { toast } from "react-toastify";
 import { addDuration } from "../Inbound/helper";
-import { campaignDataByIdReducer } from "@/redux/reducer/campaigns-reducer";
 
 export const weekMap = [
   { label: "Mon", value: 0 },
@@ -51,8 +50,6 @@ export const getOutboundScheduleHandler = async (
           callTimeStart: ele?.times[0],
           callTimeEnd: addDuration(ele?.times[0], ele?.duration),
           weeks: ele?.byweekday,
-          timeZone: "",
-          excludePublicHolidays: "",
         })),
       }));
     } else {
@@ -66,7 +63,8 @@ export const getOutboundScheduleHandler = async (
 export const addOutboundScheduleHandler = async (
   campaignDataById: any,
   dispatch: any,
-  output: any
+  output: any,
+  excludePublicHolidays: any
 ) => {
   try {
     const res = await HttpUtil.makePOST(
@@ -88,21 +86,12 @@ export const addOutboundScheduleHandler = async (
       dispatch(
         editCampaignsAction(
           {
-            name: campaignDataById?.name,
-            description: campaignDataById?.description,
-            is_active: campaignDataById?.is_active,
-            dynamic: campaignDataById?.dynamic,
-            inbound_schedule_id: campaignDataById?.inbound_schedule,
+            ...campaignDataById,
             outbound_schedule_id: res?.data?.id,
+            exclude_holidays_country: excludePublicHolidays,
           },
           campaignDataById?.id
         )
-      );
-      dispatch(
-        campaignDataByIdReducer({
-          campaignDataById,
-          outbound_schedule: res?.data?.id,
-        })
       );
       toast.success("Schedule Added Successfully!");
     } else {
@@ -116,7 +105,10 @@ export const addOutboundScheduleHandler = async (
 export const editOutboundScheduleHandler = async (
   setOutboundData: any,
   outboundData: any,
-  output: any
+  output: any,
+  dispatch: any,
+  campaignDataById: any,
+  excludePublicHolidays: any
 ) => {
   try {
     const res = await HttpUtil.makePUT(
@@ -136,6 +128,15 @@ export const editOutboundScheduleHandler = async (
     );
 
     if (res?.success) {
+      dispatch(
+        editCampaignsAction(
+          {
+            ...campaignDataById,
+            exclude_holidays_country: excludePublicHolidays,
+          },
+          campaignDataById?.id
+        )
+      );
       getOutboundScheduleHandler(res?.data?.id, setOutboundData);
       toast.success("Schedule Edited Successfully!");
     } else {

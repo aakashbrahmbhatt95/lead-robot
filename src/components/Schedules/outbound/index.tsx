@@ -17,13 +17,13 @@ import { calculateDuration } from "../Inbound/helper";
 import { outboundValidationSchema } from "@/components/validation";
 import { ChevronDown, ChevronUp, Plus } from "lucide-react";
 import { TrashSimple } from "@phosphor-icons/react";
+import { editCampaignsAction } from "@/redux/action/campaigns-action";
 
 const Outbound = () => {
   const dispatch = useAppDispatch();
-
+  const [excludePublicHolidays, setExcludePublicHolidays] = useState("");
   const [outboundData, setOutboundData] = useState({
-    excludePublicHolidays: "",
-    timeZone: "",
+    timeZone: "UTC",
     isEdit: false,
     outboundId: null,
     formValues: [initialFormValues],
@@ -35,7 +35,7 @@ const Outbound = () => {
   );
 
   useEffect(() => {
-    if (campaignDataById?.outbound_schedule === null) {
+    if (campaignDataById?.outbound_schedule_id === null) {
       setOutboundData((prev: any) => ({
         ...prev,
         isEdit: false,
@@ -43,8 +43,9 @@ const Outbound = () => {
       }));
       setAccordionOpen([true]);
     } else {
+      setExcludePublicHolidays(campaignDataById?.exclude_holidays_country);
       getOutboundScheduleHandler(
-        campaignDataById?.outbound_schedule,
+        campaignDataById?.outbound_schedule_id,
         setOutboundData
       );
     }
@@ -65,9 +66,21 @@ const Outbound = () => {
     }));
 
     if (outboundData?.outboundId === null) {
-      addOutboundScheduleHandler(campaignDataById, dispatch, output);
+      addOutboundScheduleHandler(
+        campaignDataById,
+        dispatch,
+        output,
+        excludePublicHolidays
+      );
     } else {
-      editOutboundScheduleHandler(setOutboundData, outboundData, output);
+      editOutboundScheduleHandler(
+        setOutboundData,
+        outboundData,
+        output,
+        dispatch,
+        campaignDataById,
+        excludePublicHolidays
+      );
     }
   };
 
@@ -81,152 +94,170 @@ const Outbound = () => {
     <div className="flex">
       <div className="basis-3/4">
         <div className="flex items-center mt-5">
-          <Switch checked={true} />
+          <Switch
+            checked={campaignDataById.outbound_active}
+            onCheckedChange={(checked) => {
+              dispatch(
+                editCampaignsAction(
+                  {
+                    ...campaignDataById,
+                    outbound_active: checked,
+                  },
+                  campaignDataById?.id
+                )
+              );
+            }}
+          />
           <label className="block pl-2 text-sm font-medium text-gray-700">
             On
           </label>
         </div>
-        <p className="text-[20px] mt-[20px] font-semibold text-black">
-          Schedule Call Times
-        </p>
-        {outboundData?.formValues && (
-          <Formik
-            initialValues={outboundData}
-            enableReinitialize={true}
-            validationSchema={outboundValidationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ values, setFieldValue, handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
-                <FieldArray name="formValues">
-                  {({ push, remove }) => (
-                    <>
-                      {values.formValues.map((formValue, index) => (
+        {campaignDataById.outbound_active && (
+          <>
+            <p className="text-[20px] mt-[20px] font-semibold text-black">
+              Schedule Call Times
+            </p>
+            {outboundData?.formValues && (
+              <Formik
+                initialValues={outboundData}
+                enableReinitialize={true}
+                validationSchema={outboundValidationSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ values, setFieldValue, handleSubmit }) => (
+                  <form onSubmit={handleSubmit}>
+                    <FieldArray name="formValues">
+                      {({ push, remove }) => (
                         <>
-                          <div className="flex justify-end items-center mt-3 mb-2">
-                            {values.formValues?.length > 1 && (
-                              <TrashSimple
-                                className={`mr-2 ${outboundData?.isEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-                                size={20}
-                                onClick={() => {
-                                  if (!outboundData?.isEdit) {
-                                    remove(index);
-                                    setAccordionOpen((prev) => {
-                                      const newAccordionOpen = [...prev];
-                                      newAccordionOpen.splice(index, 1);
-                                      return newAccordionOpen;
-                                    });
-                                  }
-                                }}
-                              />
-                            )}
-                            <div className="mr-2" onClick={() => toggleAccordion(index)}>
-                              {accordionOpen[index] ? (
-                                <ChevronDown />
-                              ) : (
-                                <ChevronUp />
+                          {values.formValues.map((formValue, index) => (
+                            <>
+                              <div className="flex justify-end items-center mt-3 mb-2">
+                                {values.formValues?.length > 1 && (
+                                  <TrashSimple
+                                    className={`mr-2 ${outboundData?.isEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                                    size={20}
+                                    onClick={() => {
+                                      if (!outboundData?.isEdit) {
+                                        remove(index);
+                                        setAccordionOpen((prev) => {
+                                          const newAccordionOpen = [...prev];
+                                          newAccordionOpen.splice(index, 1);
+                                          return newAccordionOpen;
+                                        });
+                                      }
+                                    }}
+                                  />
+                                )}
+                                <div
+                                  className="mr-2"
+                                  onClick={() => toggleAccordion(index)}
+                                >
+                                  {accordionOpen[index] ? (
+                                    <ChevronDown />
+                                  ) : (
+                                    <ChevronUp />
+                                  )}
+                                </div>
+                              </div>
+                              {accordionOpen[index] && (
+                                <div className="border-[1px] pb-3 border-[#E4E4E7] rounded">
+                                  <StartEndTimeSelector
+                                    values={formValue}
+                                    setFieldValue={(field: any, value: any) =>
+                                      setFieldValue(
+                                        `formValues.${index}.${field}`,
+                                        value
+                                      )
+                                    }
+                                    index={index}
+                                    isEdit={outboundData?.isEdit}
+                                  />
+                                  <WeekSelector
+                                    values={formValue}
+                                    setFieldValue={(field: any, value: any) =>
+                                      setFieldValue(
+                                        `formValues.${index}.${field}`,
+                                        value
+                                      )
+                                    }
+                                    isEdit={outboundData?.isEdit}
+                                  />
+                                  <ErrorMessage
+                                    name={`formValues.${index}.weeks`}
+                                    component="div"
+                                    className="text-red-500 ml-4"
+                                  />
+                                  <CallTimeSpread
+                                    values={formValue}
+                                    setFieldValue={(field: any, value: any) =>
+                                      setFieldValue(
+                                        `formValues.${index}.${field}`,
+                                        value
+                                      )
+                                    }
+                                    index={index}
+                                    isEdit={outboundData?.isEdit}
+                                  />
+                                </div>
                               )}
-                            </div>
-                          </div>
-                          {accordionOpen[index] && (
-                            <div className="border-[1px] pb-3 border-[#E4E4E7] rounded">
-                              <StartEndTimeSelector
-                                values={formValue}
-                                setFieldValue={(field: any, value: any) =>
-                                  setFieldValue(
-                                    `formValues.${index}.${field}`,
-                                    value
-                                  )
-                                }
-                                index={index}
-                                isEdit={outboundData?.isEdit}
-                              />
-                              <WeekSelector
-                                values={formValue}
-                                setFieldValue={(field: any, value: any) =>
-                                  setFieldValue(
-                                    `formValues.${index}.${field}`,
-                                    value
-                                  )
-                                }
-                                isEdit={outboundData?.isEdit}
-                              />
-                              <ErrorMessage
-                                name={`formValues.${index}.weeks`}
-                                component="div"
-                                className="text-red-500 ml-4"
-                              />
-                              <CallTimeSpread
-                                values={formValue}
-                                setFieldValue={(field: any, value: any) =>
-                                  setFieldValue(
-                                    `formValues.${index}.${field}`,
-                                    value
-                                  )
-                                }
-                                index={index}
-                                isEdit={outboundData?.isEdit}
-                              />
+                            </>
+                          ))}
+                          {!outboundData?.isEdit && (
+                            <div className="flex mt-3">
+                              <Button
+                                variant="outline"
+                                type="button"
+                                onClick={() => {
+                                  push(initialFormValues);
+                                  setAccordionOpen((prev) => [...prev, true]);
+                                }}
+                              >
+                                <Plus className="mr-3" /> Add call time
+                              </Button>
                             </div>
                           )}
                         </>
-                      ))}
-                      {!outboundData?.isEdit && (
-                        <div className="flex mt-3">
-                          <Button
-                            variant="outline"
-                            type="button"
-                            onClick={() => {
-                              push(initialFormValues);
-                              setAccordionOpen((prev) => [...prev, true]);
-                            }}
-                          >
-                            <Plus className="mr-3" /> Add call time
-                          </Button>
-                        </div>
                       )}
-                    </>
-                  )}
-                </FieldArray>
-                <div className="flex mt-3">
-                  {outboundData?.isEdit ? (
-                    <Button
-                      variant="outline"
-                      type="button"
-                      onClick={(e: any) => {
-                        e.preventDefault();
-                        setOutboundData((prev) => ({
-                          ...prev,
-                          isEdit: false,
-                        }));
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  ) : (
-                    <Button variant="outline" type="submit">
-                      Save
-                    </Button>
-                  )}
-                </div>
-              </form>
+                    </FieldArray>
+                    <div className="flex mt-3">
+                      {outboundData?.isEdit ? (
+                        <Button
+                          variant="outline"
+                          type="button"
+                          onClick={(e: any) => {
+                            e.preventDefault();
+                            setOutboundData((prev) => ({
+                              ...prev,
+                              isEdit: false,
+                            }));
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      ) : (
+                        <Button variant="outline" type="submit">
+                          Save
+                        </Button>
+                      )}
+                    </div>
+                  </form>
+                )}
+              </Formik>
             )}
-          </Formik>
+          </>
         )}
       </div>
-      <TimeZoneAndHolidays
-        timeZone={outboundData.timeZone}
-        setTimeZone={(value) =>
-          setOutboundData((prev) => ({ ...prev, timeZone: value }))
-        }
-        excludePublicHolidays={outboundData.excludePublicHolidays}
-        setExcludePublicHolidays={(value) =>
-          setOutboundData((prev) => ({
-            ...prev,
-            excludePublicHolidays: value,
-          }))
-        }
-      />
+      {campaignDataById.outbound_active && (
+        <TimeZoneAndHolidays
+          timeZone={outboundData.timeZone}
+          setTimeZone={(value) =>
+            setOutboundData((prev) => ({ ...prev, timeZone: value }))
+          }
+          excludePublicHolidays={excludePublicHolidays}
+          setExcludePublicHolidays={setExcludePublicHolidays}
+          isEdit={outboundData.isEdit}
+        />
+      )}
     </div>
   );
 };

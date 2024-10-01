@@ -98,13 +98,8 @@ export const columns: any = (
             dispatch(
               editCampaignsAction(
                 {
-                  name: updateCampaignsList?.name,
-                  description: updateCampaignsList?.description,
+                  ...updateCampaignsList,
                   is_active: checked,
-                  inbound_schedule_id: updateCampaignsList?.inbound_schedule_id,
-                  outbound_schedule_id:
-                    updateCampaignsList?.outbound_schedule_id,
-                  dynamic: updateCampaignsList?.dynamic,
                 },
                 row.original.id
               )
