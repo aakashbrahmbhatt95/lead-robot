@@ -35,7 +35,7 @@ const TimeZoneAndHolidays = ({
           name="timeZone"
           value={timeZone}
           onChange={(e) => setTimeZone(e.target.value)}
-          disabled
+          disabled={isEdit}
         />
       </div>
       <div>
@@ -55,7 +55,7 @@ const TimeZoneAndHolidays = ({
             {countriesWithRegionCode?.map((ele: any) => {
               return (
                 <SelectItem key={ele?.code} value={ele?.code}>
-                  {ele?.name} ({ele?.dial_code})
+                  {ele?.name}
                 </SelectItem>
               );
             })}

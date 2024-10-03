@@ -20,7 +20,7 @@ const Inbound = () => {
   const [scheduleSettings, setScheduleSettings] = useState({
     isAlwaysOn: "isalwayson",
     excludePublicHolidays: "",
-    timeZone: "UTC",
+    timeZone: "",
     isEdit: false,
     scheduleId: null,
     formValues: null,
@@ -37,6 +37,7 @@ const Inbound = () => {
         isEdit: false,
         isAlwaysOn: "isalwayson",
         excludePublicHolidays: campaignDataById?.exclude_holidays_country,
+        timeZone: campaignDataById?.timezone,
         formValues: {
           schedule: {
             monday: { active: true, startTime: "", endTime: "" },
@@ -55,7 +56,8 @@ const Inbound = () => {
       getScheduleHandler(
         campaignDataById?.inbound_schedule_id,
         setScheduleSettings,
-        campaignDataById?.exclude_holidays_country
+        campaignDataById?.exclude_holidays_country,
+        campaignDataById?.timezone
       );
     }
   }, [campaignDataById]);

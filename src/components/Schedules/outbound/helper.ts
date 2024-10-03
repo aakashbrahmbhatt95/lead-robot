@@ -64,7 +64,8 @@ export const addOutboundScheduleHandler = async (
   campaignDataById: any,
   dispatch: any,
   output: any,
-  excludePublicHolidays: any
+  excludePublicHolidays: any,
+  timeZone: any
 ) => {
   try {
     const res = await HttpUtil.makePOST(
@@ -89,6 +90,7 @@ export const addOutboundScheduleHandler = async (
             ...campaignDataById,
             outbound_schedule_id: res?.data?.id,
             exclude_holidays_country: excludePublicHolidays,
+            timezone: timeZone,
           },
           campaignDataById?.id
         )
@@ -108,7 +110,8 @@ export const editOutboundScheduleHandler = async (
   output: any,
   dispatch: any,
   campaignDataById: any,
-  excludePublicHolidays: any
+  excludePublicHolidays: any,
+  timeZone: any
 ) => {
   try {
     const res = await HttpUtil.makePUT(
@@ -133,6 +136,7 @@ export const editOutboundScheduleHandler = async (
           {
             ...campaignDataById,
             exclude_holidays_country: excludePublicHolidays,
+            timezone: timeZone,
           },
           campaignDataById?.id
         )

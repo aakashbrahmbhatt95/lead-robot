@@ -55,18 +55,22 @@ export const editCampaignsAction =
       Authorization: getToken(),
     })
       .then((res: any) => {
-        const updatedCampaignsList = campaignsList.map((campaign: any) =>
-          campaign.id === res?.data.id ? res.data : campaign
-        );
-        dispatch(campaignsListReducer(updatedCampaignsList));
-        dispatch(
-          campaignDataByIdReducer({
-            ...res?.data,
-            inbound_schedule_id: res?.data?.inbound_schedule,
-            outbound_schedule_id: res?.data?.outbound_schedule,
-          })
-        );
-        toast.success("Campaign Updated Succesfully!");
+        if (res?.success) {
+          const updatedCampaignsList = campaignsList.map((campaign: any) =>
+            campaign.id === res?.data.id ? res.data : campaign
+          );
+          dispatch(campaignsListReducer(updatedCampaignsList));
+          dispatch(
+            campaignDataByIdReducer({
+              ...res?.data,
+              inbound_schedule_id: res?.data?.inbound_schedule,
+              outbound_schedule_id: res?.data?.outbound_schedule,
+            })
+          );
+          toast.success("Campaign Updated Succesfully!");
+        } else {
+          throw Error;
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");

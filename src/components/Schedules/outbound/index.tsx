@@ -22,8 +22,8 @@ import { editCampaignsAction } from "@/redux/action/campaigns-action";
 const Outbound = () => {
   const dispatch = useAppDispatch();
   const [excludePublicHolidays, setExcludePublicHolidays] = useState("");
+  const [timeZone, setTimeZone] = useState("");
   const [outboundData, setOutboundData] = useState({
-    timeZone: "UTC",
     isEdit: false,
     outboundId: null,
     formValues: [initialFormValues],
@@ -44,6 +44,7 @@ const Outbound = () => {
       setAccordionOpen([true]);
     } else {
       setExcludePublicHolidays(campaignDataById?.exclude_holidays_country);
+      setTimeZone(campaignDataById?.timezone);
       getOutboundScheduleHandler(
         campaignDataById?.outbound_schedule_id,
         setOutboundData
@@ -70,7 +71,8 @@ const Outbound = () => {
         campaignDataById,
         dispatch,
         output,
-        excludePublicHolidays
+        excludePublicHolidays,
+        timeZone
       );
     } else {
       editOutboundScheduleHandler(
@@ -79,7 +81,8 @@ const Outbound = () => {
         output,
         dispatch,
         campaignDataById,
-        excludePublicHolidays
+        excludePublicHolidays,
+        timeZone
       );
     }
   };
@@ -249,10 +252,8 @@ const Outbound = () => {
       </div>
       {campaignDataById.outbound_active && (
         <TimeZoneAndHolidays
-          timeZone={outboundData.timeZone}
-          setTimeZone={(value) =>
-            setOutboundData((prev) => ({ ...prev, timeZone: value }))
-          }
+          timeZone={timeZone}
+          setTimeZone={setTimeZone}
           excludePublicHolidays={excludePublicHolidays}
           setExcludePublicHolidays={setExcludePublicHolidays}
           isEdit={outboundData.isEdit}

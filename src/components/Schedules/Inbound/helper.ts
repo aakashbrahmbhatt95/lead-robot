@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 export const getScheduleHandler = async (
   id: any,
   setScheduleSettings: any,
-  excludePublicHolidays: any
+  excludePublicHolidays: any,
+  timeZone: any
 ) => {
   try {
     const res = await HttpUtil.makeGET(
@@ -20,6 +21,7 @@ export const getScheduleHandler = async (
         ...prev,
         isEdit: true,
         excludePublicHolidays: excludePublicHolidays,
+        timeZone: timeZone,
         isAlwaysOn: "scheduled",
         scheduleId: {
           id: res?.data?.id,
@@ -69,6 +71,7 @@ export const addScheduleHandler = async (
             ...campaignDataById,
             inbound_schedule_id: res?.data?.id,
             exclude_holidays_country: scheduleSettings?.excludePublicHolidays,
+            timezone: scheduleSettings?.timeZone,
           },
           campaignDataById?.id
         )
@@ -112,6 +115,7 @@ export const editScheduleHandler = async (
           {
             ...campaignDataById,
             exclude_holidays_country: scheduleSettings?.excludePublicHolidays,
+            timezone: scheduleSettings?.timeZone,
           },
           campaignDataById?.id
         )
@@ -119,7 +123,8 @@ export const editScheduleHandler = async (
       getScheduleHandler(
         res?.data?.id,
         setScheduleSettings,
-        scheduleSettings?.excludePublicHolidays
+        scheduleSettings?.excludePublicHolidays,
+        scheduleSettings?.timeZone
       );
       toast.success("Schedule Edited Successfully!");
     } else {
