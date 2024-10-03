@@ -18,7 +18,7 @@ export const weekMap = [
 export const initialFormValues = {
   startDate: "",
   endDate: "",
-  weeks: [],
+  weeks: [0, 1, 2, 3, 4, 5, 6],
   callTimeStart: "",
   callTimeEnd: "",
 };

@@ -134,32 +134,37 @@ const Outbound = () => {
                         <>
                           {values.formValues.map((formValue, index) => (
                             <>
-                              <div className="flex justify-end items-center mt-3 mb-2">
-                                {values.formValues?.length > 1 && (
-                                  <TrashSimple
-                                    className={`mr-2 ${outboundData?.isEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-                                    size={20}
-                                    onClick={() => {
-                                      if (!outboundData?.isEdit) {
-                                        remove(index);
-                                        setAccordionOpen((prev) => {
-                                          const newAccordionOpen = [...prev];
-                                          newAccordionOpen.splice(index, 1);
-                                          return newAccordionOpen;
-                                        });
-                                      }
-                                    }}
-                                  />
-                                )}
-                                <div
-                                  className="mr-2"
-                                  onClick={() => toggleAccordion(index)}
-                                >
-                                  {accordionOpen[index] ? (
-                                    <ChevronDown />
-                                  ) : (
-                                    <ChevronUp />
+                              <div
+                                className={`flex justify-between items-center mt-2 ${accordionOpen[index] ? "" : "border-b border-[#E4E4E7]"}`}
+                              >
+                                <p>Schedule - {index + 1}</p>
+                                <div className="flex justify-end items-center mt-3 mb-2">
+                                  {values.formValues?.length > 1 && (
+                                    <TrashSimple
+                                      className={`mr-2 ${outboundData?.isEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                                      size={20}
+                                      onClick={() => {
+                                        if (!outboundData?.isEdit) {
+                                          remove(index);
+                                          setAccordionOpen((prev) => {
+                                            const newAccordionOpen = [...prev];
+                                            newAccordionOpen.splice(index, 1);
+                                            return newAccordionOpen;
+                                          });
+                                        }
+                                      }}
+                                    />
                                   )}
+                                  <div
+                                    className="mr-2"
+                                    onClick={() => toggleAccordion(index)}
+                                  >
+                                    {accordionOpen[index] ? (
+                                      <ChevronDown />
+                                    ) : (
+                                      <ChevronUp />
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                               {accordionOpen[index] && (

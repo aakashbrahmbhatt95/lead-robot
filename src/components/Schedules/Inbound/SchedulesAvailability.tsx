@@ -13,43 +13,50 @@ const ScheduleAvailability = ({
 }: any) => {
   return (
     <Form>
-      <div className="flex items-center gap-2.5">
-        <div className="basis-1/2">
-          <label className="block mt-3 text-sm font-medium text-gray-700">
-            Start
-          </label>
-          <Input
-            className="mt-2 w-full"
-            type="date"
-            name="startDate"
-            value={values?.startDate}
-            onChange={(e) => setFieldValue("startDate", e.target.value)}
-            disabled={isEdit}
-          />
-          <ErrorMessage name="startDate" component="div" className="text-red-500 text-sm" />
-        </div>
-        <div className="basis-1/2">
-          <label className="block mt-3 text-sm font-medium text-gray-700">
-            End
-          </label>
-          <Input
-            className="mt-2 w-full"
-            type="date"
-            name="endDate"
-            value={values?.endDate}
-            onChange={(e) => setFieldValue("endDate", e.target.value)}
-            min={values?.startDate || undefined}
-            disabled={!values?.startDate || isEdit} 
-          />
-         <ErrorMessage name="endDate" component="div" className="text-red-500 mt-1 text-sm" />
-        </div>
-      </div>
-
       <p className="text-[20px] mt-[20px] font-semibold text-black">
         Schedule Availability
       </p>
 
       <div className="border-[1px] mt-4 border-[#E4E4E7] rounded">
+        <div className="flex items-center gap-2.5 my-5 mx-3">
+          <div className="basis-1/2">
+            <label className="block text-sm font-medium text-gray-700">
+              Start
+            </label>
+            <Input
+              className="mt-2 w-full"
+              type="date"
+              name="startDate"
+              value={values?.startDate}
+              onChange={(e) => setFieldValue("startDate", e.target.value)}
+              disabled={isEdit}
+            />
+            <ErrorMessage
+              name="startDate"
+              component="div"
+              className="text-red-500 text-sm"
+            />
+          </div>
+          <div className="basis-1/2">
+            <label className="block text-sm font-medium text-gray-700">
+              End
+            </label>
+            <Input
+              className="mt-2 w-full"
+              type="date"
+              name="endDate"
+              value={values?.endDate}
+              onChange={(e) => setFieldValue("endDate", e.target.value)}
+              min={values?.startDate || undefined}
+              disabled={!values?.startDate || isEdit}
+            />
+            <ErrorMessage
+              name="endDate"
+              component="div"
+              className="text-red-500 mt-1 text-sm"
+            />
+          </div>
+        </div>
         {weekdaysMap.map((day) => (
           <DailySchedule
             key={day}
@@ -60,23 +67,25 @@ const ScheduleAvailability = ({
             formValues={formValues}
           />
         ))}
-
-        {isEdit && (
-          <p
-            className="text-sm font-medium mt-[20px] text-gray-700 my-5 ml-3 cursor-pointer underline"
-            onClick={() => setIsEdit(false)}
+      </div>
+      <div className="flex mt-3">
+        {isEdit ? (
+          <Button
+            variant="outline"
+            type="button"
+            onClick={(e: any) => {
+              e.preventDefault();
+              setIsEdit(false);
+            }}
           >
             Edit
-          </p>
-        )}
-      </div>
-      {!isEdit && (
-        <div className="flex justify-end mt-3">
+          </Button>
+        ) : (
           <Button variant="outline" type="submit">
             Save
           </Button>
-        </div>
-      )}
+        )}
+      </div>
     </Form>
   );
 };
