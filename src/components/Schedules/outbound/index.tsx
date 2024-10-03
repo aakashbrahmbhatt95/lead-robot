@@ -47,7 +47,8 @@ const Outbound = () => {
       setTimeZone(campaignDataById?.timezone);
       getOutboundScheduleHandler(
         campaignDataById?.outbound_schedule_id,
-        setOutboundData
+        setOutboundData,
+        setAccordionOpen
       );
     }
   }, [campaignDataById]);
@@ -56,7 +57,7 @@ const Outbound = () => {
     const output = values.formValues.map((formValue: any) => ({
       interval: 1,
       start_date: formValue.startDate,
-      end_date: formValue.endDate,
+      end_date: formValue.endDate || undefined,
       byweekday: formValue.weeks,
       times: [formValue.callTimeStart],
       exclude: false,

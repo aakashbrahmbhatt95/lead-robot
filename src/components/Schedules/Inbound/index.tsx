@@ -70,7 +70,7 @@ const Inbound = () => {
       .map(([day, data]: any) => ({
         interval: 1,
         start_date: values.startDate,
-        end_date: values.endDate,
+        end_date: values.endDate || undefined,
         times: [data?.startTime],
         exclude: false,
         duration: calculateDuration(data?.startTime, data?.endTime),

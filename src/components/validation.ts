@@ -62,9 +62,10 @@ const scheduleValidation = weekdaysMap.reduce((acc, day) => {
 // Main validation schema for the form
 export const inboundValidationSchema = Yup.object().shape({
   startDate: Yup.date().required("Start date is required"),
-  endDate: Yup.date()
-    .required("End date is required")
-    .min(Yup.ref("startDate"), "End date must be later than start date"),
+  endDate: Yup.date().min(
+    Yup.ref("startDate"),
+    "End date must be later than start date"
+  ),
   schedule: Yup.object().shape(scheduleValidation), // Apply dynamic schedule validation
 });
 
@@ -73,9 +74,10 @@ export const outboundValidationSchema = Yup.object().shape({
     .of(
       Yup.object().shape({
         startDate: Yup.date().required("Start date is required"),
-        endDate: Yup.date()
-          .required("End date is required")
-          .min(Yup.ref("startDate"), "End date must be later than start date"),
+        endDate: Yup.date().min(
+          Yup.ref("startDate"),
+          "End date must be later than start date"
+        ),
         callTimeStart: Yup.string().required("Call start time is required"),
         callTimeEnd: Yup.string()
           .required("Call end time is required")

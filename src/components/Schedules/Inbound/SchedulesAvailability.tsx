@@ -42,10 +42,13 @@ const ScheduleAvailability = ({
               End
             </label>
             <Input
-              className="mt-2 w-full"
-              type="date"
+              className="mt-2 w-full placeholder:text-2xl placeholder:font-black"
+              type="text"
               name="endDate"
-              value={values?.endDate}
+              value={values?.endDate || ""}
+              placeholder={values?.endDate ? "" :  "∞"}
+              onFocus={(e) => (e.target.type = "date")}
+              onBlur={(e) => !values?.endDate && (e.target.type = "text")}
               onChange={(e) => setFieldValue("endDate", e.target.value)}
               min={values?.startDate || undefined}
               disabled={!values?.startDate || isEdit}

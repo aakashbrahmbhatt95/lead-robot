@@ -25,7 +25,8 @@ export const initialFormValues = {
 
 export const getOutboundScheduleHandler = async (
   id: any,
-  setOutboundData: any
+  setOutboundData: any,
+  setAccordionOpen?: any
 ) => {
   try {
     const res = await HttpUtil.makeGET(
@@ -52,6 +53,7 @@ export const getOutboundScheduleHandler = async (
           weeks: ele?.byweekday,
         })),
       }));
+      setAccordionOpen(res?.data?.daily?.map(() => true));
     } else {
       throw new Error("Failed to fetch schedule");
     }
