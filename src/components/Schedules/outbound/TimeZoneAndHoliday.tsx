@@ -7,13 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/lib/ui/select";
+import { timeZoneData } from "./helper";
 
 interface TimeZoneAndHolidaysProps {
   timeZone: string;
   setTimeZone: (value: string) => void;
   excludePublicHolidays: string;
   setExcludePublicHolidays: (value: string) => void;
-  isEdit: boolean
+  isEdit: boolean;
 }
 
 const TimeZoneAndHolidays = ({
@@ -21,7 +22,7 @@ const TimeZoneAndHolidays = ({
   setTimeZone,
   excludePublicHolidays,
   setExcludePublicHolidays,
-  isEdit
+  isEdit,
 }: TimeZoneAndHolidaysProps) => {
   return (
     <div className="basis-1/4 p-3">
@@ -29,14 +30,25 @@ const TimeZoneAndHolidays = ({
         <label className="block mt-3 text-sm font-medium text-gray-700">
           Time Zone
         </label>
-        <Input
-          className="mt-2 w-full"
-          type="text"
+        <Select
           name="timeZone"
           value={timeZone}
-          onChange={(e) => setTimeZone(e.target.value)}
+          onValueChange={(value) => setTimeZone(value)}
           disabled={isEdit}
-        />
+        >
+          <SelectTrigger className="w-full mt-1">
+            <SelectValue placeholder="Select" />
+          </SelectTrigger>
+          <SelectContent>
+            {timeZoneData?.map((ele: any) => {
+              return (
+                <SelectItem key={ele} value={ele}>
+                  {ele}
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
       </div>
       <div>
         <label className="block mt-3 text-sm font-medium text-gray-700">

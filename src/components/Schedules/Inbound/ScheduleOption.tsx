@@ -29,7 +29,7 @@ const ScheduleOptions = ({
         onValueChange={(value) => {
           if (value === "isalwayson") {
             const isConfirmed = window.confirm(
-              "Are you sure you want to set it as isAlwaysOn?"
+              `Are you sure you want to update the schedule and set it to "Always On"?`
             );
 
             if (isConfirmed) {
