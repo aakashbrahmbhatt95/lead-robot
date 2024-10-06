@@ -3,6 +3,7 @@ import campaignReducer from "./reducer/campaigns-reducer";
 import contactReducer from "./reducer/contacts-reducer";
 import attributeReducer from "./reducer/attributes-reducer";
 import tagReducer from "./reducer/tags-reducer";
+import globalReducer from "./reducer/global-reducer";
 import componentsReducer from "./componentsSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     contactReducer,
     attributeReducer,
     tagReducer,
+    globalReducer,
     components: componentsReducer,
   },
 });

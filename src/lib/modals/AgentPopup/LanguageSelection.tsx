@@ -9,11 +9,14 @@ import {
 } from "@/lib/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/lib/ui/popover";
 import { ChevronDown } from "lucide-react";
-import { languageList } from "./helper";
 import { useState } from "react";
+import { useAppSelector } from "@/redux/store";
 
 const LanguageSelection = ({ formik }: any) => {
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const { languageList }: any = useAppSelector(
+    (state: any) => state.globalReducer
+  );
 
   const handleLanguageSelect = (language: string) => {
     formik.setFieldValue("language", language);
@@ -36,11 +39,13 @@ const LanguageSelection = ({ formik }: any) => {
               {languageList.map((language: any) => (
                 <CommandItem
                   key={language.key}
-                  value={language.label}
-                  onSelect={() => handleLanguageSelect(language.label)}
+                  value={language?.attributes?.city}
+                  onSelect={() =>
+                    handleLanguageSelect(language?.attributes?.city)
+                  }
                   className="m-2 mt-3"
                 >
-                  {language.label}
+                  {language?.attributes?.city}
                 </CommandItem>
               ))}
             </CommandGroup>
