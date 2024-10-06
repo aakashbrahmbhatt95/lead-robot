@@ -39,13 +39,11 @@ const LanguageSelection = ({ formik }: any) => {
               {languageList.map((language: any) => (
                 <CommandItem
                   key={language.key}
-                  value={language?.attributes?.city}
-                  onSelect={() =>
-                    handleLanguageSelect(language?.attributes?.city)
-                  }
+                  value={language[1] || ""}
+                  onSelect={() => handleLanguageSelect(language[1] || "")}
                   className="m-2 mt-3"
                 >
-                  {language?.attributes?.city}
+                  {language[1]}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -7,12 +7,16 @@ import LanguageSelection from "@/lib/modals/AgentPopup/LanguageSelection";
 import { Label } from "@/lib/ui/label";
 import { Textarea } from "@/lib/ui/textarea";
 import VersionHistory from "./VersionHistory";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/store";
 import { languagesListAction } from "@/redux/action/global-action";
+import { Dialog, DialogTrigger } from "@/lib/ui/dialog";
+import VoiceLibrary from "@/lib/modals/VoiceLibrary";
+import fill_arrowdown from "@/../public/fill_arrowdown.svg";
 
 const Agents = () => {
   const dispatch = useAppDispatch();
+  const [isVoiceLibrary, setIsVoiceLibrary] = useState(false);
 
   useEffect(() => {
     dispatch(languagesListAction());
@@ -44,7 +48,15 @@ const Agents = () => {
           </div>
           <div className="w-3/4">
             <LanguageSelection formik={{}} />
-            <p>Voice</p>
+            <Dialog open={isVoiceLibrary} onOpenChange={setIsVoiceLibrary}>
+              <DialogTrigger asChild onClick={() => setIsVoiceLibrary(true)}>
+                <div className="mt-2 flex gap-2 items-center">
+                  Voice
+                  <Image src={fill_arrowdown} alt="arrowDown" />
+                </div>
+              </DialogTrigger>
+              <VoiceLibrary />
+            </Dialog>
           </div>
         </div>
         <p className="text-xl text-semibold mt-3">Agents personality</p>
