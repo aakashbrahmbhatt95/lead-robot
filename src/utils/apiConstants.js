@@ -18,3 +18,4 @@ export const GET_ATTRIBUTES_URL = "/contacts/attribute/";
 export const GET_CONTACT_IMPORT_JOB_URL = "/contacts/import-job/";
 export const GET_SCHEDULE_URL = "/schedules/schedule/";
 export const GET_LANGUAGE_URL = "/campaigns/agent/languages";
+export const GET_VOICES_URL = "/campaigns/agent/voices";
