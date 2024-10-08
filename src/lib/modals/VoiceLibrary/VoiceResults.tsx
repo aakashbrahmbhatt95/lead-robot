@@ -1,21 +1,59 @@
 import { Button } from "@/lib/ui/button";
-import { Play } from "lucide-react";
+import { Play, X } from "lucide-react";
 
-const VoiceResults = ({ filters, filteredVoices }: any) => {
+const VoiceResults = ({ filters, filteredVoices, handleSelectChange }: any) => {
   return (
     <div className="border-[1px] border-[#E4E4E7] rounded">
       <div className="m-3 flex flex-wrap gap-2">
         {filters.voice_provider !== "all_providers" && (
-          <Button type="button" className="capitalize">{filters.voice_provider}</Button>
+          <Button type="button" className="capitalize">
+            {filters.voice_provider}
+            <X
+              className="ml-2"
+              color="white"
+              width={14}
+              height={14}
+              onClick={() =>
+                handleSelectChange("voice_provider", "all_providers")
+              }
+            />
+          </Button>
         )}
         {filters.accent !== "all_accents" && (
-          <Button type="button" className="capitalize">{filters.accent}</Button>
+          <Button type="button" className="capitalize">
+            {filters.accent}
+            <X
+              className="ml-2"
+              color="white"
+              width={14}
+              height={14}
+              onClick={() => handleSelectChange("accent", "all_accents")}
+            />
+          </Button>
         )}
         {filters.gender !== "all_genders" && (
-          <Button type="button" className="capitalize">{filters.gender}</Button>
+          <Button type="button" className="capitalize">
+            {filters.gender}
+            <X
+              className="ml-2"
+              color="white"
+              width={14}
+              height={14}
+              onClick={() => handleSelectChange("gender", "all_genders")}
+            />
+          </Button>
         )}
         {filters.age !== "all_ages" && (
-          <Button type="button" className="capitalize">{filters.age}</Button>
+          <Button type="button" className="capitalize">
+            {filters.age}
+            <X
+              className="ml-2"
+              color="white"
+              width={14}
+              height={14}
+              onClick={() => handleSelectChange("age", "all_ages")}
+            />
+          </Button>
         )}
         {filters.voice_provider === "all_providers" &&
           filters.accent === "all_accents" &&

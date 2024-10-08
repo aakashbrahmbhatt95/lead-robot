@@ -6,11 +6,12 @@ import {
   SelectValue,
 } from "@/lib/ui/select";
 
-const VoiceFilters = ({ handleSelectChange }: any) => {
+const VoiceFilters = ({ filters, handleSelectChange }: any) => {
   return (
     <div className="flex items-center justify-between">
       <Select
         name="voice_provider"
+        value={filters.voice_provider}
         onValueChange={(value) => handleSelectChange("voice_provider", value)}
       >
         <SelectTrigger className="w-[24%]">
@@ -26,6 +27,7 @@ const VoiceFilters = ({ handleSelectChange }: any) => {
 
       <Select
         name="accent"
+        value={filters.accent}
         onValueChange={(value) => handleSelectChange("accent", value)}
       >
         <SelectTrigger className="w-[24%]">
@@ -40,6 +42,7 @@ const VoiceFilters = ({ handleSelectChange }: any) => {
 
       <Select
         name="gender"
+        value={filters.gender}
         onValueChange={(value) => handleSelectChange("gender", value)}
       >
         <SelectTrigger className="w-[24%]">
@@ -54,6 +57,7 @@ const VoiceFilters = ({ handleSelectChange }: any) => {
 
       <Select
         name="age"
+        value={filters.age}
         onValueChange={(value) => handleSelectChange("age", value)}
       >
         <SelectTrigger className="w-[24%]">

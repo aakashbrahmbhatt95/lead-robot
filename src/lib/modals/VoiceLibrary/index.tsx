@@ -47,8 +47,8 @@ const VoiceLibrary = () => {
       <p className="text-[#71717A] text-sm font-normal">
         Find your perfect voice
       </p>
-      <VoiceFilters handleSelectChange={handleSelectChange} />
-      <VoiceResults filters={filters} filteredVoices={filteredVoices} />
+      <VoiceFilters filters={filters} handleSelectChange={handleSelectChange} />
+      <VoiceResults filters={filters} filteredVoices={filteredVoices} handleSelectChange={handleSelectChange} />
       <div className="flex justify-end p-3">
         <Button>Select</Button>
       </div>
