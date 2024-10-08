@@ -6,6 +6,7 @@ import tagReducer from "./reducer/tags-reducer";
 import globalReducer from "./reducer/global-reducer";
 import componentsReducer from "./componentsSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import agentsReducer from "./reducer/agents-reducer";
 export const store = configureStore({
   reducer: {
     campaignReducer,
@@ -13,6 +14,7 @@ export const store = configureStore({
     attributeReducer,
     tagReducer,
     globalReducer,
+    agentsReducer,
     components: componentsReducer,
   },
 });

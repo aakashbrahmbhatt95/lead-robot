@@ -8,6 +8,7 @@ import VoiceResults from "./VoiceResults";
 const VoiceLibrary = () => {
   const [voicesList, setVoicesList] = useState([]);
   const [filteredVoices, setFilteredVoices] = useState([]);
+  const [selectedVoice, setSelectedVoice] = useState<any>(null);
   const [filters, setFilters] = useState({
     voice_provider: "all_providers",
     accent: "all_accents",
@@ -18,6 +19,10 @@ const VoiceLibrary = () => {
   useEffect(() => {
     getVoiceList(setVoicesList);
   }, []);
+
+  const handleSelect = () => {
+    console.log("selectedVoice", selectedVoice);
+  };
 
   useEffect(() => {
     const filtered = voicesList.filter((voice: any) => {
@@ -48,9 +53,17 @@ const VoiceLibrary = () => {
         Find your perfect voice
       </p>
       <VoiceFilters filters={filters} handleSelectChange={handleSelectChange} />
-      <VoiceResults filters={filters} filteredVoices={filteredVoices} handleSelectChange={handleSelectChange} />
+      <VoiceResults
+        filters={filters}
+        filteredVoices={filteredVoices}
+        handleSelectChange={handleSelectChange}
+        selectedVoice={selectedVoice}
+        setSelectedVoice={setSelectedVoice}
+      />
       <div className="flex justify-end p-3">
-        <Button>Select</Button>
+        <Button type="button" onClick={handleSelect}>
+          Select
+        </Button>
       </div>
     </DialogContent>
   );

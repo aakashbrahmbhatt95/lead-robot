@@ -13,13 +13,18 @@ import { languagesListAction } from "@/redux/action/global-action";
 import { Dialog, DialogTrigger } from "@/lib/ui/dialog";
 import VoiceLibrary from "@/lib/modals/VoiceLibrary";
 import fill_arrowdown from "@/../public/fill_arrowdown.svg";
+import { ambientSoundsListAction } from "@/redux/action/agents-action";
+import { Sheet } from "@/lib/ui/sheet";
+import AgentSettingsPopup from "@/lib/modals/AgentSettingsPopup";
 
 const Agents = () => {
   const dispatch = useAppDispatch();
+  const [isAgentSettingsPopup, setIsAgentSettingsPopup] = useState<any>(null);
   const [isVoiceLibrary, setIsVoiceLibrary] = useState(false);
 
   useEffect(() => {
     dispatch(languagesListAction());
+    dispatch(ambientSoundsListAction());
   }, []);
 
   return (
@@ -35,6 +40,11 @@ const Agents = () => {
             type="button"
             variant="outline"
             className="flex gap-2 items-center"
+            onClick={() =>
+              setIsAgentSettingsPopup({
+                isEdit: false,
+              })
+            }
           >
             <Mic width={20} height={20} /> Agent settings
           </Button>
@@ -91,6 +101,11 @@ const Agents = () => {
       <div className="w-1/4">
         <VersionHistory />
       </div>
+      <Sheet open={isAgentSettingsPopup !== null}>
+        {isAgentSettingsPopup !== null && (
+          <AgentSettingsPopup setIsAgentSettingsPopup={setIsAgentSettingsPopup} />
+        )}
+      </Sheet>
     </div>
   );
 };

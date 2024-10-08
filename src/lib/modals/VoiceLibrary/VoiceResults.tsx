@@ -1,7 +1,13 @@
 import { Button } from "@/lib/ui/button";
 import { Play, X } from "lucide-react";
 
-const VoiceResults = ({ filters, filteredVoices, handleSelectChange }: any) => {
+const VoiceResults = ({
+  filters,
+  filteredVoices,
+  handleSelectChange,
+  selectedVoice,
+  setSelectedVoice,
+}: any) => {
   return (
     <div className="border-[1px] border-[#E4E4E7] rounded">
       <div className="m-3 flex flex-wrap gap-2">
@@ -64,17 +70,29 @@ const VoiceResults = ({ filters, filteredVoices, handleSelectChange }: any) => {
       <p className="border-t-[1px] border-[#E4E4E7] p-3">Results</p>
       <div className="p-3">
         {filteredVoices.map((ele: any, index: any, array: any) => {
+          const isSelected =
+            selectedVoice && selectedVoice.voice_name === ele.voice_name;
+
           return (
             <div
               key={index}
-              className={`flex mt-2 ${index !== array.length - 1 ? "border-b-[1px]" : ""} border-[#E4E4E7]`}
+              className={`flex mt-2 p-3 rounded-lg cursor-pointer 
+              ${isSelected ? "bg-blue-100 border-blue-400" : "bg-white"} 
+              ${index !== array.length - 1 ? "border-b-[1px]" : ""} border-[#E4E4E7]`}
+              onClick={() => setSelectedVoice(ele)}
             >
               <div className="w-3/4 flex flex-col gap-2 pb-4">
-                <div className="text-sm font-semibold pl-2 flex items-center gap-3">
+                <div
+                  className={`text-sm font-semibold pl-2 flex items-center gap-3 
+                  ${isSelected ? "text-blue-700" : "text-black"}`}
+                >
                   <img src={ele?.avatar_url} alt="" width={25} height={25} />{" "}
                   {ele?.voice_name}
                 </div>
-                <p className="font-medium text-xs text-[#71717A] mt-3 capitalize">
+                <p
+                  className={`font-medium text-xs mt-3 capitalize 
+                ${isSelected ? "text-blue-500" : "text-[#71717A]"}`}
+                >
                   {ele?.provider} &nbsp;&nbsp;{ele?.accent} &nbsp;&nbsp;{" "}
                   {ele?.gender}
                   &nbsp;&nbsp; {ele?.age} &nbsp;&nbsp; {ele?.voice_type}
@@ -83,7 +101,8 @@ const VoiceResults = ({ filters, filteredVoices, handleSelectChange }: any) => {
               <div className="w-1/4 flex justify-end items-center">
                 <div
                   className="bg-[#F4F4F5] rounded h-fit p-2 mr-2 cursor-pointer"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     const audio = new Audio(ele?.preview_audio_url);
                     audio.play();
                   }}
