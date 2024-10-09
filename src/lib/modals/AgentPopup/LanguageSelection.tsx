@@ -27,7 +27,7 @@ const LanguageSelection = ({ formik }: any) => {
     <Popover open={isLanguageOpen} onOpenChange={setIsLanguageOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" className="w-full justify-between">
-          <span>Language</span>
+          <span>{formik.values.language || "Language"}</span>
           <ChevronDown />
         </Button>
       </PopoverTrigger>

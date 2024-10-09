@@ -5,7 +5,7 @@ import SpeechSettings from "./SpeechSettings";
 import CallSettings from "./CallSettings";
 import SecuritySettings from "./SecuritySettings";
 
-const AgentSettingsPopup = ({ setIsAgentSettingsPopup }: any) => {
+const AgentSettingsPopup = ({ setIsAgentSettingsPopup, formik }: any) => {
   return (
     <SheetContent className="overflow-scroll">
       <div className="flex justify-end">
@@ -15,9 +15,9 @@ const AgentSettingsPopup = ({ setIsAgentSettingsPopup }: any) => {
         />
       </div>
       <Accordion type="single" collapsible className="w-full mt-3">
-        <SpeechSettings />
-        <CallSettings />
-        <SecuritySettings />
+        <SpeechSettings formik={formik} />
+        <CallSettings formik={formik}  />
+        <SecuritySettings formik={formik} />
       </Accordion>
     </SheetContent>
   );

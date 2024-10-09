@@ -70,8 +70,7 @@ const VoiceResults = ({
       <p className="border-t-[1px] border-[#E4E4E7] p-3">Results</p>
       <div className="p-3">
         {filteredVoices.map((ele: any, index: any, array: any) => {
-          const isSelected =
-            selectedVoice && selectedVoice.voice_name === ele.voice_name;
+          const isSelected = selectedVoice && selectedVoice === ele.voice_id;
 
           return (
             <div
@@ -79,7 +78,7 @@ const VoiceResults = ({
               className={`flex mt-2 p-3 rounded-lg cursor-pointer 
               ${isSelected ? "bg-blue-100 border-blue-400" : "bg-white"} 
               ${index !== array.length - 1 ? "border-b-[1px]" : ""} border-[#E4E4E7]`}
-              onClick={() => setSelectedVoice(ele)}
+              onClick={() => setSelectedVoice(ele?.voice_id)}
             >
               <div className="w-3/4 flex flex-col gap-2 pb-4">
                 <div

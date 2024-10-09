@@ -8,7 +8,7 @@ import { Label } from "@/lib/ui/label";
 import { Switch } from "@/lib/ui/switch";
 import { Plus, ShieldAlert } from "lucide-react";
 
-const SecuritySettings = () => {
+const SecuritySettings = ({formik}: any) => {
   return (
     <AccordionItem value="securitysettings">
       <AccordionTrigger>
@@ -22,7 +22,14 @@ const SecuritySettings = () => {
           <p className="text-[#71717A] text-sm font-normal">
             Control whether we should store sensitive data. (Learn more)
           </p>
-          <Switch className="mt-2" />
+          <Switch
+            className="mt-2"
+            name="opt_out_sensitive_data_storage"
+            checked={formik.values.opt_out_sensitive_data_storage}
+            onCheckedChange={(checked) =>
+              formik.setFieldValue("opt_out_sensitive_data_storage", checked)
+            }
+          />
         </div>
         <div className="mt-8">
           <Label>Fallback Value</Label>

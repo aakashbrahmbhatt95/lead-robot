@@ -5,7 +5,7 @@ import VoiceFilters from "./VoiceFilters";
 import { Button } from "@/lib/ui/button";
 import VoiceResults from "./VoiceResults";
 
-const VoiceLibrary = () => {
+const VoiceLibrary = ({ formik, setIsVoiceLibrary }: any) => {
   const [voicesList, setVoicesList] = useState([]);
   const [filteredVoices, setFilteredVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState<any>(null);
@@ -21,7 +21,8 @@ const VoiceLibrary = () => {
   }, []);
 
   const handleSelect = () => {
-    console.log("selectedVoice", selectedVoice);
+    formik.setFieldValue("voice_id", selectedVoice);
+    setIsVoiceLibrary(false);
   };
 
   useEffect(() => {
