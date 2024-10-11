@@ -53,6 +53,13 @@ export const SideBarData = [
     secondarySideBarData: [],
   },
   {
+    icon: Group3,
+    text: "Segments",
+    url: "/segments",
+    showSecondarySidebar: false,
+    secondarySideBarData: [],
+  },
+  {
     icon: Group5,
     text: "Settings",
     url: "",

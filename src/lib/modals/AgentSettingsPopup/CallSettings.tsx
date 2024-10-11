@@ -35,7 +35,6 @@ const CallSettings = ({ formik }: any) => {
         </div>
         <div className="p-4 mt-8 bg-[#E9F9FE] rounded">
           <RadioGroup
-            defaultValue="comfortable"
             name="voicemail_message"
             value={formik.values.voicemail_message}
             onValueChange={(value) =>
