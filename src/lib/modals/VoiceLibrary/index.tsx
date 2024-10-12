@@ -2,16 +2,14 @@ import { useEffect, useState } from "react";
 import { DialogContent, DialogHeader } from "@/lib/ui/dialog";
 import { getVoiceList } from "./helper";
 import VoiceFilters from "./VoiceFilters";
-import { Button } from "@/lib/ui/button";
 import VoiceResults from "./VoiceResults";
 
 const VoiceLibrary = ({
   formik,
   setIsVoiceLibrary,
-  selectedVoice,
-  setSelectedVoice,
+  voicesList,
+  setVoicesList,
 }: any) => {
-  const [voicesList, setVoicesList] = useState([]);
   const [filteredVoices, setFilteredVoices] = useState([]);
   const [filters, setFilters] = useState({
     voice_provider: "all_providers",
@@ -23,11 +21,6 @@ const VoiceLibrary = ({
   useEffect(() => {
     getVoiceList(setVoicesList);
   }, []);
-
-  const handleSelect = () => {
-    formik.setFieldValue("voice_id", selectedVoice);
-    setIsVoiceLibrary(false);
-  };
 
   useEffect(() => {
     const filtered = voicesList.filter((voice: any) => {
@@ -62,14 +55,9 @@ const VoiceLibrary = ({
         filters={filters}
         filteredVoices={filteredVoices}
         handleSelectChange={handleSelectChange}
-        selectedVoice={selectedVoice}
-        setSelectedVoice={setSelectedVoice}
+        formik={formik}
+        setIsVoiceLibrary={setIsVoiceLibrary}
       />
-      <div className="flex justify-end p-3">
-        <Button type="button" onClick={handleSelect}>
-          Select
-        </Button>
-      </div>
     </DialogContent>
   );
 };

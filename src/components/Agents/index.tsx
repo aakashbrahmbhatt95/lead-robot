@@ -21,14 +21,14 @@ import AgentSettingsPopup from "@/lib/modals/AgentSettingsPopup";
 import AgentsPersonality from "./AgentsPersonality";
 import { useFormik } from "formik";
 import { useParams } from "next/navigation";
-import { initialAgentValues } from "./helper";
+import { getSelectedVoiceData, initialAgentValues } from "./helper";
 
 const Agents = () => {
   const dispatch = useAppDispatch();
   const params = useParams();
   const [isAgentSettingsPopup, setIsAgentSettingsPopup] = useState<any>(null);
+  const [voicesList, setVoicesList] = useState([]);
   const [isVoiceLibrary, setIsVoiceLibrary] = useState(false);
-  const [selectedVoice, setSelectedVoice] = useState<any>(null);
   const { agentDataByID }: any = useAppSelector(
     (state: any) => state.agentsReducer
   );
@@ -50,7 +50,6 @@ const Agents = () => {
         backchannel_words: agentDataByID?.backchannel_words?.join(","),
         boosted_keywords: agentDataByID?.boosted_keywords?.join(","),
       });
-      setSelectedVoice(formik.values.voice_id);
     } else {
       formik.setValues(initialAgentValues);
     }
@@ -98,10 +97,11 @@ const Agents = () => {
         </div>
         <div className="flex items-center border-[1px] mt-4 p-[20px] border-[#E4E4E7] rounded">
           <div className="w-1/4 flex flex-col justify-center items-center">
-            <Image width={96} height={96} src={speaker} alt="speaker" />
-            <p className="text-[#71717A] text-sm font-normal mt-2 underline">
-              Preview
-            </p>
+            {formik?.values?.voice_id ? (
+              getSelectedVoiceData(formik?.values?.voice_id, voicesList)
+            ) : (
+              <Image width={96} height={96} src={speaker} alt="speaker" />
+            )}
           </div>
           <div className="w-3/4">
             <LanguageSelection formik={formik} />
@@ -110,16 +110,13 @@ const Agents = () => {
                 <div className="mt-2 flex gap-2 items-center">
                   Voice
                   <Image src={fill_arrowdown} alt="arrowDown" />
-                  {formik?.values?.voice_id ? (
-                    <p>{formik.values.voice_id}</p>
-                  ) : null}
                 </div>
               </DialogTrigger>
               <VoiceLibrary
                 formik={formik}
                 setIsVoiceLibrary={setIsVoiceLibrary}
-                selectedVoice={selectedVoice}
-                setSelectedVoice={setSelectedVoice}
+                voicesList={voicesList}
+                setVoicesList={setVoicesList}
               />
             </Dialog>
           </div>
