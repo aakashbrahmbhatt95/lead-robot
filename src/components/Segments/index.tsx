@@ -10,7 +10,7 @@ const Segments = () => {
     <div>
       <div>
         <RadioGroup
-          className="flex gap-10 mt-5"
+          className="flex gap-10 mt-10"
           value={entireAudience}
           onValueChange={(value) => setEntireAudience(value)}
         >

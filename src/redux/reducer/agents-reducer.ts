@@ -2,19 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
   ambientSoundsList: any;
-  agentList: any;
+  agentDataByID: any;
 };
 const initialState = {
   ambientSoundsList: [],
-  agentList: [],
+  agentDataByID: [],
 } as InitialState;
 
 export const Agents = createSlice({
   name: "Agents ",
   initialState,
   reducers: {
-    agentListReducer: (state, action) => {
-      state.agentList = action.payload;
+    agentListByIdReducer: (state, action) => {
+      state.agentDataByID = action.payload;
     },
     ambientSoundsListReducer: (state, action) => {
       state.ambientSoundsList = action.payload;
@@ -22,6 +22,7 @@ export const Agents = createSlice({
   },
 });
 
-export const { ambientSoundsListReducer, agentListReducer } = Agents.actions;
+export const { ambientSoundsListReducer, agentListByIdReducer } =
+  Agents.actions;
 
 export default Agents.reducer;

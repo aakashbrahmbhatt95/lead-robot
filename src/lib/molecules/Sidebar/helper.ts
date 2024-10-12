@@ -18,13 +18,6 @@ export const SideBarData = [
     secondarySideBarData: [],
   },
   {
-    icon: Group3,
-    text: "AI Agents",
-    url: "/agent",
-    showSecondarySidebar: false,
-    secondarySideBarData: [],
-  },
-  {
     icon: Group4,
     text: "Attributes",
     url: "/attributes",
@@ -49,13 +42,6 @@ export const SideBarData = [
     icon: Group4,
     text: "Campaigns",
     url: "/campaigns",
-    showSecondarySidebar: false,
-    secondarySideBarData: [],
-  },
-  {
-    icon: Group3,
-    text: "Segments",
-    url: "/segments",
     showSecondarySidebar: false,
     secondarySideBarData: [],
   },

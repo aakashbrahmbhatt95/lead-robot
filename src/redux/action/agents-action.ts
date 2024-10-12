@@ -7,7 +7,7 @@ import {
 } from "../../utils/apiConstants";
 import { getToken } from "../../utils/constants";
 import {
-  agentListReducer,
+  agentListByIdReducer,
   ambientSoundsListReducer,
 } from "../reducer/agents-reducer";
 import { toast } from "react-toastify";
@@ -26,7 +26,7 @@ export const ambientSoundsListAction = () => async (dispatch: AppDispatch) => {
 };
 
 export const getAgentAction =
-  () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  (campaign_id: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makeGET(`${BASE_URL1}${GET_AGENT}`, "", {
       Authorization: getToken(),
     })
@@ -34,7 +34,14 @@ export const getAgentAction =
         if (res?.error) {
           throw Error;
         } else {
-          dispatch(agentListReducer(res?.data?.[0]));
+          const filteredAgentUsingCampaignID = res?.data?.filter(
+            (ele: any) => ele?.campaign == campaign_id
+          )?.[0];
+          if (filteredAgentUsingCampaignID) {
+            dispatch(agentListByIdReducer(filteredAgentUsingCampaignID));
+          } else {
+            dispatch(agentListByIdReducer([]));
+          }
         }
       })
       .catch((err: any) => {
@@ -43,16 +50,34 @@ export const getAgentAction =
       .finally(() => {});
   };
 
-export const addAgentAction =
+export const addAgentAction = (body: any) => async (dispatch: AppDispatch) => {
+  HttpUtil.makePOST(`${BASE_URL1}${GET_AGENT}`, body, {
+    Authorization: getToken(),
+  })
+    .then((res: any) => {
+      if (res?.error) {
+        throw Error;
+      } else {
+        dispatch(agentListByIdReducer(res?.data));
+      }
+    })
+    .catch((err: any) => {
+      toast.error("Oops! Something went wrong");
+    })
+    .finally(() => {});
+};
+
+export const editAgentAction =
   (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    HttpUtil.makePOST(`${BASE_URL1}${GET_AGENT}`, body, {
+    const { agentDataByID } = getState()?.agentsReducer;
+    HttpUtil.makePUT(`${BASE_URL1}${GET_AGENT}${agentDataByID?.id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
         if (res?.error) {
           throw Error;
         } else {
-          dispatch(agentListReducer(res?.data));
+          dispatch(agentListByIdReducer(res?.data));
         }
       })
       .catch((err: any) => {

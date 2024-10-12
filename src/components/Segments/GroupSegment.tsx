@@ -12,9 +12,9 @@ const GroupSegment = () => {
   return (
     <Formik
       initialValues={{
-        includeCondition: "",
+        includeCondition: "all",
         includeConditions: [{ field: "", operator: "", value: "" }],
-        excludeCondition: [{ field: "", operator: "", value: "" }],
+        excludeCondition: "all",
         excludeConditions: [{ field: "", operator: "", value: "" }],
         overrideOptOut: "",
       }}

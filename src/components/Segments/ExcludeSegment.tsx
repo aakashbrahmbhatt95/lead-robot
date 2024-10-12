@@ -39,7 +39,7 @@ const ExcludeSegment = ({ values }: any) => {
         {({ remove, push }) => (
           <>
             {values.excludeConditions.map(
-              (excludeCondition: any, index: any) => (
+              (ele: any, index: any) => (
                 <div key={index}>
                   {index > 0 && (
                     <p className="pt-3 font-bold">

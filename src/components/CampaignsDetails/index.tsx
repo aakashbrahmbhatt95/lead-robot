@@ -12,6 +12,7 @@ import { tabBarData } from "./helper";
 import Schedules from "../Schedules";
 import { Sheet } from "@/lib/ui/sheet";
 import AgentPopup from "@/lib/modals/AgentPopup/index";
+import Segments from "../Segments";
 
 const CampaignsDetails = () => {
   const router = useRouter();
@@ -49,11 +50,9 @@ const CampaignsDetails = () => {
       <div className="mt-[15px] flex justify-between items-center">
         <div
           className="flex items-center rounded-md border-[1px] border-[#18181B] px-4 py-2 gap-[5px] cursor-pointer"
-          onClick={() =>
-            setIsAgentPopup({
-              isEdit: false,
-            })
-          }
+          onClick={() => {
+            router.push(`/agent/${params.id}`);
+          }}
         >
           <Image src={PencilSimple} alt="Logo" />
           <p className="text-sm font-medium text-[#18181B]">Agents</p>
@@ -84,6 +83,7 @@ const CampaignsDetails = () => {
         ))}
       </div>
       {taskId === 1 && <ReactFlowChart />}
+      {taskId === 2 && <Segments />}
       {taskId === 3 && <Schedules />}
       <Sheet open={isAgentPopup !== null}>
         {isAgentPopup !== null && (

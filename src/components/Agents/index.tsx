@@ -13,90 +13,70 @@ import fill_arrowdown from "@/../public/fill_arrowdown.svg";
 import {
   addAgentAction,
   ambientSoundsListAction,
+  editAgentAction,
   getAgentAction,
 } from "@/redux/action/agents-action";
 import { Sheet } from "@/lib/ui/sheet";
 import AgentSettingsPopup from "@/lib/modals/AgentSettingsPopup";
 import AgentsPersonality from "./AgentsPersonality";
 import { useFormik } from "formik";
+import { useParams } from "next/navigation";
+import { initialAgentValues } from "./helper";
 
 const Agents = () => {
   const dispatch = useAppDispatch();
+  const params = useParams();
   const [isAgentSettingsPopup, setIsAgentSettingsPopup] = useState<any>(null);
   const [isVoiceLibrary, setIsVoiceLibrary] = useState(false);
-  const { agentList }: any = useAppSelector(
+  const [selectedVoice, setSelectedVoice] = useState<any>(null);
+  const { agentDataByID }: any = useAppSelector(
     (state: any) => state.agentsReducer
   );
-
-  const formik: any = useFormik({
-    initialValues: {
-      identity: "",
-      style: "",
-      response: "",
-      language: "",
-      voice_id: "",
-      ambient_sound: "",
-      responsiveness: 100,
-      interruption_sensitivity: 100,
-      enable_backchannel: true,
-      backchannel_frequency: 100,
-      backchannel_words: "",
-      boosted_keywords: "",
-      enable_transcription_formatting: false,
-      reminder_trigger_ms: 0,
-      reminder_max_count: 0,
-      normalize_for_speech: false,
-      enable_voicemail_detection: false,
-      voicemail_message: "",
-      voicemail_content: "",
-      voicemail_detection_timeout_ms: 100,
-      end_call_after_silence_ms: 40,
-      max_call_duration_ms: 40,
-      opt_out_sensitive_data_storage: true,
-      //Todo
-      fallback_voice_ids: [],
-      webhook_url: "",
-      pronunciation_dictionary: {},
-      voice_model: "",
-      voice_temperature: 1,
-      voice_speed: 1,
-      volume: 1,
-      ambient_sound_volume: 1,
-      //Todo end
-    },
-    onSubmit: (values: any) => {
-      dispatch(
-        addAgentAction({
-          //Todo
-          campaign_id: 66,
-          name: "Testing",
-          //Todo end
-          boosted_keywords: values?.boosted_keywords
-            ?.split(",")
-            .map((item: any) => item.trim()),
-          backchannel_words: values?.backchannel_words
-            ?.split(",")
-            .map((item: any) => item.trim()),
-          ...values,
-        })
-      );
-    },
-  });
+  const { campaignDataById }: any = useAppSelector(
+    (state: any) => state.campaignReducer
+  );
 
   useEffect(() => {
     dispatch(languagesListAction());
     dispatch(ambientSoundsListAction());
-    dispatch(getAgentAction());
+    dispatch(getAgentAction(params?.id));
   }, [dispatch]);
 
-  useEffect(()=>{
-    if (agentList) {
+  useEffect(() => {
+    if (agentDataByID?.campaign) {
       formik.setValues({
         ...formik.values,
-        ...agentList,
+        ...agentDataByID,
+        backchannel_words: agentDataByID?.backchannel_words?.join(","),
+        boosted_keywords: agentDataByID?.boosted_keywords?.join(","),
       });
+      setSelectedVoice(formik.values.voice_id);
+    } else {
+      formik.setValues(initialAgentValues);
     }
-  },[agentList])
+  }, [agentDataByID]);
+
+  const formik: any = useFormik({
+    initialValues: { initialAgentValues },
+    onSubmit: (values: any) => {
+      const body = {
+        campaign_id: params?.id,
+        name: campaignDataById?.name || "Agents",
+        ...values,
+        boosted_keywords: values?.boosted_keywords
+          ?.split(",")
+          .map((item: any) => item.trim()),
+        backchannel_words: values?.backchannel_words
+          ?.split(",")
+          .map((item: any) => item.trim()),
+      };
+      if (agentDataByID?.campaign) {
+        dispatch(editAgentAction(body));
+      } else {
+        dispatch(addAgentAction(body));
+      }
+    },
+  });
 
   return (
     <div className="flex gap-4 mt-5">
@@ -138,13 +118,17 @@ const Agents = () => {
               <VoiceLibrary
                 formik={formik}
                 setIsVoiceLibrary={setIsVoiceLibrary}
+                selectedVoice={selectedVoice}
+                setSelectedVoice={setSelectedVoice}
               />
             </Dialog>
           </div>
         </div>
         <AgentsPersonality formik={formik} />
         <div className="flex justify-end mt-5">
-          <Button type="submit">Save Agent</Button>
+          <Button type="submit">
+            {agentDataByID?.campaign ? "Update Agent" : "Save Agent"}
+          </Button>
         </div>
       </form>
       <div className="w-1/4">
