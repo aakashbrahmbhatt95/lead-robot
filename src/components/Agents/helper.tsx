@@ -1,4 +1,4 @@
-import { Play } from "lucide-react";
+import VoicePlayer from "./VoicePlayer";
 
 export const initialAgentValues = {
   identity: "",
@@ -40,7 +40,7 @@ export const getSelectedVoiceData = (voice_id: any, voiceList: any) => {
   const filteredVoiceId = voiceList?.filter(
     (ele: any) => ele.voice_id === voice_id
   )?.[0];
-  console.log("filteredVoiceId", filteredVoiceId);
+
   return (
     <>
       <div className="flex">
@@ -49,16 +49,7 @@ export const getSelectedVoiceData = (voice_id: any, voiceList: any) => {
           <p className="font-medium text-xs ml-3 capitalize">
             {filteredVoiceId?.voice_name}
           </p>
-          <div
-            className="bg-[#F4F4F5] rounded ml-3 w-fit p-2 cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              const audio = new Audio(filteredVoiceId?.preview_audio_url);
-              audio.play();
-            }}
-          >
-            <Play fill="black" width={12} height={12} />
-          </div>
+          <VoicePlayer ele={filteredVoiceId} />
         </div>
       </div>
       <p className="font-sm text-xs mt-3 capitalize">
