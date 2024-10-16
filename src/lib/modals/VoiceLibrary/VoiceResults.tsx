@@ -8,6 +8,7 @@ const VoiceResults = ({
   filteredVoices,
   handleSelectChange,
   formik,
+  keyName,
   setIsVoiceLibrary,
 }: any) => {
   const { playingVoiceId, handlePlayPause } = useVoicePlayer();
@@ -26,8 +27,8 @@ const VoiceResults = ({
         <div className="p-3 max-h-[300px] overflow-y-auto">
           {filteredVoices.map((ele: any, index: any, array: any) => {
             const isSelected =
-              formik?.values?.voice_id &&
-              formik?.values?.voice_id === ele.voice_id;
+              formik?.values[keyName] &&
+              formik?.values[keyName] === ele.voice_id;
             const isPlaying = playingVoiceId === ele.voice_id;
 
             return (
@@ -36,7 +37,7 @@ const VoiceResults = ({
                 voice={ele}
                 isSelected={isSelected}
                 isPlaying={isPlaying}
-                onSelect={() => formik.setFieldValue("voice_id", ele?.voice_id)}
+                onSelect={() => formik.setFieldValue(keyName, ele?.voice_id)}
                 onPlayPause={handlePlayPause}
               />
             );

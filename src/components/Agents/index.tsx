@@ -49,6 +49,7 @@ const Agents = () => {
         ...agentDataByID,
         backchannel_words: agentDataByID?.backchannel_words?.join(","),
         boosted_keywords: agentDataByID?.boosted_keywords?.join(","),
+        fallback_voice_ids: agentDataByID?.fallback_voice_ids?.[0],
       });
     } else {
       formik.setValues(initialAgentValues);
@@ -68,6 +69,7 @@ const Agents = () => {
         backchannel_words: values?.backchannel_words
           ?.split(",")
           .map((item: any) => item.trim()),
+        fallback_voice_ids: [values?.fallback_voice_ids],
       };
       if (agentDataByID?.campaign) {
         dispatch(editAgentAction(body));
@@ -114,6 +116,7 @@ const Agents = () => {
               </DialogTrigger>
               <VoiceLibrary
                 formik={formik}
+                keyName="voice_id"
                 setIsVoiceLibrary={setIsVoiceLibrary}
                 voicesList={voicesList}
                 setVoicesList={setVoicesList}
@@ -136,6 +139,8 @@ const Agents = () => {
           <AgentSettingsPopup
             setIsAgentSettingsPopup={setIsAgentSettingsPopup}
             formik={formik}
+            voicesList={voicesList}
+            setVoicesList={setVoicesList}
           />
         )}
       </Sheet>

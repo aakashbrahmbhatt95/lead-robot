@@ -28,8 +28,8 @@ export const initialAgentValues = {
   voice_speed: 0.50,
   volume: 0.50,
   ambient_sound_volume: 0.50,
+  fallback_voice_ids: "",
   //Todo
-  fallback_voice_ids: [],
   webhook_url: "",
   pronunciation_dictionary: {},
   voice_model: "",

@@ -7,8 +7,13 @@ import { Button } from "@/lib/ui/button";
 import { Label } from "@/lib/ui/label";
 import { Switch } from "@/lib/ui/switch";
 import { Plus, ShieldAlert } from "lucide-react";
+import { Dialog, DialogTrigger } from "@/lib/ui/dialog";
+import VoiceLibrary from "../VoiceLibrary";
+import { useState } from "react";
+import { getSelectedVoiceData } from "@/components/Agents/helper";
 
-const SecuritySettings = ({formik}: any) => {
+const SecuritySettings = ({ formik, voicesList, setVoicesList }: any) => {
+  const [isFallBackVoice, setIsFallBackVoice] = useState(false);
   return (
     <AccordionItem value="securitysettings">
       <AccordionTrigger>
@@ -37,9 +42,29 @@ const SecuritySettings = ({formik}: any) => {
             If the current voice provider fails, assign a fallback voice to
             continue the call.
           </p>
-          <Button variant="outline" className="mt-3 flex gap-1">
-            <Plus width={16} height={16} /> Add
-          </Button>
+          {formik?.values?.fallback_voice_ids?.length ? (
+            <div className="mt-5">
+              {getSelectedVoiceData(
+                formik?.values?.fallback_voice_ids,
+                voicesList
+              )}
+            </div>
+          ) : null}
+          <Dialog open={isFallBackVoice} onOpenChange={setIsFallBackVoice}>
+            <DialogTrigger asChild onClick={() => setIsFallBackVoice(true)}>
+              <Button variant="outline" className="mt-3 flex gap-1">
+                <Plus width={16} height={16} />{" "}
+                {formik?.values?.fallback_voice_ids?.length ? "Edit" : "Add"}
+              </Button>
+            </DialogTrigger>
+            <VoiceLibrary
+              formik={formik}
+              keyName="fallback_voice_ids"
+              setIsVoiceLibrary={setIsFallBackVoice}
+              voicesList={voicesList}
+              setVoicesList={setVoicesList}
+            />
+          </Dialog>
         </div>
       </AccordionContent>
     </AccordionItem>

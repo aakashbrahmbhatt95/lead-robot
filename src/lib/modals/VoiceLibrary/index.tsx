@@ -6,6 +6,7 @@ import VoiceResults from "./VoiceResults";
 
 const VoiceLibrary = ({
   formik,
+  keyName,
   setIsVoiceLibrary,
   voicesList,
   setVoicesList,
@@ -56,6 +57,7 @@ const VoiceLibrary = ({
         filteredVoices={filteredVoices}
         handleSelectChange={handleSelectChange}
         formik={formik}
+        keyName={keyName}
         setIsVoiceLibrary={setIsVoiceLibrary}
       />
     </DialogContent>
