@@ -10,15 +10,13 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import ReactFlowChart from "./reactFlowChart";
 import { tabBarData } from "./helper";
 import Schedules from "../Schedules";
-import { Sheet } from "@/lib/ui/sheet";
-import AgentPopup from "@/lib/modals/AgentPopup/index";
 import Segments from "../Segments";
+import Agents from "../Agents";
 
 const CampaignsDetails = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [taskId, setTaskId] = useState(1);
-  const [isAgentPopup, setIsAgentPopup] = useState<any>(null);
   const params = useParams();
   const isEdit = !params.id.includes("create");
   const { campaignDataById }: any = useAppSelector(
@@ -47,20 +45,9 @@ const CampaignsDetails = () => {
       <p className="text-[20px] mt-[15px] font-semibold text-black underline">
         Task template
       </p>
-      <div className="mt-[15px] flex justify-between items-center">
-        <div
-          className="flex items-center rounded-md border-[1px] border-[#18181B] px-4 py-2 gap-[5px] cursor-pointer"
-          onClick={() => {
-            router.push(`/agent/${params.id}`);
-          }}
-        >
-          <Image src={PencilSimple} alt="Logo" />
-          <p className="text-sm font-medium text-[#18181B]">Agents</p>
-        </div>
-        <div className="flex items-center rounded-md bg-[#F4F4F5] px-4 py-2 gap-[8px]">
-          <p className="text-sm font-medium text-[#71717A]">Next</p>
-          <Image src={Vector} alt="Logo" />
-        </div>
+      <div className="mt-[15px] flex items-center justify-end rounded-md bg-[#F4F4F5] w-fit px-4 py-2 gap-[8px] ml-auto">
+        <p className="text-sm font-medium text-[#71717A]">Next</p>
+        <Image src={Vector} alt="Logo" />
       </div>
       <div className="flex mt-[20px]">
         {tabBarData?.map((ele, index) => (
@@ -85,11 +72,7 @@ const CampaignsDetails = () => {
       {taskId === 1 && <ReactFlowChart />}
       {taskId === 2 && <Segments />}
       {taskId === 3 && <Schedules />}
-      <Sheet open={isAgentPopup !== null}>
-        {isAgentPopup !== null && (
-          <AgentPopup setIsAgentPopup={setIsAgentPopup} />
-        )}
-      </Sheet>
+      {taskId === 4 && <Agents />}
     </div>
   );
 };

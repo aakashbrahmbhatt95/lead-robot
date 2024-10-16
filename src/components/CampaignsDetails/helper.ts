@@ -80,7 +80,11 @@ export const tabBarData = [
     value: 3,
   },
   {
-    text: "Setup call",
+    text: "Agents",
     value: 4,
+  },
+  {
+    text: "Setup call",
+    value: 5,
   },
 ];

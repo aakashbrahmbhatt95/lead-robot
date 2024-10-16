@@ -78,7 +78,7 @@ const Agents = () => {
   });
 
   return (
-    <div className="flex gap-4 mt-5">
+    <div className="flex gap-4 mt-10">
       <form onSubmit={formik.handleSubmit} className="w-3/4">
         <div className="flex justify-between items-center">
           <p className="text-xl text-semibold">Voice</p>

@@ -9,6 +9,7 @@ import { Slider } from "@/lib/ui/slider";
 import { Switch } from "@/lib/ui/switch";
 import { Textarea } from "@/lib/ui/textarea";
 import { Headset } from "lucide-react";
+import AgentSlider from "./AgentSlider";
 
 const CallSettings = ({ formik }: any) => {
   return (
@@ -63,7 +64,7 @@ const CallSettings = ({ formik }: any) => {
             Set the duration to run for voicemail detection
           </p>
           <Slider
-            value={[formik.values.voicemail_detection_timeout_ms]} // Bind value to Formik
+            value={[formik.values.voicemail_detection_timeout_ms]}
             onValueChange={(value) =>
               formik.setFieldValue("voicemail_detection_timeout_ms", value[0])
             }
@@ -75,7 +76,7 @@ const CallSettings = ({ formik }: any) => {
         <div className="mt-8">
           <Label>End Call on Silence</Label>
           <Slider
-            value={[formik.values.end_call_after_silence_ms]} // Bind value to Formik
+            value={[formik.values.end_call_after_silence_ms]}
             onValueChange={(value) =>
               formik.setFieldValue("end_call_after_silence_ms", value[0])
             }
@@ -87,7 +88,7 @@ const CallSettings = ({ formik }: any) => {
         <div className="mt-8">
           <Label>Max Call Duration</Label>
           <Slider
-            value={[formik.values.max_call_duration_ms]} // Bind value to Formik
+            value={[formik.values.max_call_duration_ms]}
             onValueChange={(value) =>
               formik.setFieldValue("max_call_duration_ms", value[0])
             }
@@ -96,6 +97,46 @@ const CallSettings = ({ formik }: any) => {
             className="w-full mt-3"
           />
         </div>
+        <div className="mt-8">
+          <Label>Voice Temperature</Label>
+          <Slider
+            value={[formik.values.voice_temperature]}
+            onValueChange={(value) =>
+              formik.setFieldValue("voice_temperature", value[0])
+            }
+            max={100}
+            step={1}
+            className="w-full mt-3"
+          />
+        </div>
+        <div className="mt-8">
+          <Label>Voice Speed</Label>
+          <Slider
+            value={[formik.values.voice_speed]}
+            onValueChange={(value) =>
+              formik.setFieldValue("voice_speed", value[0])
+            }
+            max={100}
+            step={1}
+            className="w-full mt-3"
+          />
+        </div>
+        <AgentSlider
+          heading="Volume"
+          keyName="volume"
+          formik={formik}
+          min={0}
+          max={1}
+          step={0.01}
+        />
+         <AgentSlider
+          heading="Ambient Sound Volume"
+          keyName="ambient_sound_volume"
+          formik={formik}
+          min={0}
+          max={1}
+          step={0.01}
+        />
       </AccordionContent>
     </AccordionItem>
   );

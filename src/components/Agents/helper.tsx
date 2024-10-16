@@ -24,15 +24,15 @@ export const initialAgentValues = {
   end_call_after_silence_ms: 40,
   max_call_duration_ms: 40,
   opt_out_sensitive_data_storage: true,
+  voice_temperature: 10,
+  voice_speed: 20,
+  volume: 0.50,
+  ambient_sound_volume: 0.50,
   //Todo
   fallback_voice_ids: [],
   webhook_url: "",
   pronunciation_dictionary: {},
   voice_model: "",
-  voice_temperature: 1,
-  voice_speed: 1,
-  volume: 1,
-  ambient_sound_volume: 1,
   //Todo end
 };
 

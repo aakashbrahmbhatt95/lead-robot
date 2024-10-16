@@ -23,7 +23,7 @@ const VoiceResults = ({
         </div>
 
         <p className="border-t-[1px] border-[#E4E4E7] p-3">Results</p>
-        <div className="p-3">
+        <div className="p-3 max-h-[300px] overflow-y-auto">
           {filteredVoices.map((ele: any, index: any, array: any) => {
             const isSelected =
               formik?.values?.voice_id &&
@@ -43,7 +43,7 @@ const VoiceResults = ({
           })}
         </div>
       </div>
-      <div className="flex justify-end p-3">
+      <div className="flex justify-end sticky bottom-0 bg-white">
         <Button type="button" onClick={() => setIsVoiceLibrary(false)}>
           Select
         </Button>
