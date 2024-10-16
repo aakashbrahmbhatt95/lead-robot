@@ -63,64 +63,47 @@ const CallSettings = ({ formik }: any) => {
           <p className="text-[#71717A] mt-4 text-sm font-normal">
             Set the duration to run for voicemail detection
           </p>
-          <Slider
-            value={[formik.values.voicemail_detection_timeout_ms]}
-            onValueChange={(value) =>
-              formik.setFieldValue("voicemail_detection_timeout_ms", value[0])
-            }
-            max={100}
-            step={1}
-            className="w-full mt-3"
+          <AgentSlider
+            keyName="voicemail_detection_timeout_ms"
+            formik={formik}
+            min={1000}
+            max={1000000}
+            step={1000}
+            marginTop="mt-2"
           />
         </div>
-        <div className="mt-8">
-          <Label>End Call on Silence</Label>
-          <Slider
-            value={[formik.values.end_call_after_silence_ms]}
-            onValueChange={(value) =>
-              formik.setFieldValue("end_call_after_silence_ms", value[0])
-            }
-            max={100}
-            step={1}
-            className="w-full mt-3"
-          />
-        </div>
-        <div className="mt-8">
-          <Label>Max Call Duration</Label>
-          <Slider
-            value={[formik.values.max_call_duration_ms]}
-            onValueChange={(value) =>
-              formik.setFieldValue("max_call_duration_ms", value[0])
-            }
-            max={100}
-            step={1}
-            className="w-full mt-3"
-          />
-        </div>
-        <div className="mt-8">
-          <Label>Voice Temperature</Label>
-          <Slider
-            value={[formik.values.voice_temperature]}
-            onValueChange={(value) =>
-              formik.setFieldValue("voice_temperature", value[0])
-            }
-            max={100}
-            step={1}
-            className="w-full mt-3"
-          />
-        </div>
-        <div className="mt-8">
-          <Label>Voice Speed</Label>
-          <Slider
-            value={[formik.values.voice_speed]}
-            onValueChange={(value) =>
-              formik.setFieldValue("voice_speed", value[0])
-            }
-            max={100}
-            step={1}
-            className="w-full mt-3"
-          />
-        </div>
+        <AgentSlider
+          heading="End Call on Silence"
+          keyName="end_call_after_silence_ms"
+          formik={formik}
+          min={1000}
+          max={1000000}
+          step={1000}
+        />
+        <AgentSlider
+          heading="Max Call Duration"
+          keyName="max_call_duration_ms"
+          formik={formik}
+          min={1000}
+          max={1000000}
+          step={1000}
+        />
+        <AgentSlider
+          heading="Voice Temperature"
+          keyName="voice_temperature"
+          formik={formik}
+          min={0}
+          max={1}
+          step={0.01}
+        />
+        <AgentSlider
+          heading="Voice Speed"
+          keyName="voice_speed"
+          formik={formik}
+          min={0}
+          max={1}
+          step={0.01}
+        />
         <AgentSlider
           heading="Volume"
           keyName="volume"
@@ -129,7 +112,7 @@ const CallSettings = ({ formik }: any) => {
           max={1}
           step={0.01}
         />
-         <AgentSlider
+        <AgentSlider
           heading="Ambient Sound Volume"
           keyName="ambient_sound_volume"
           formik={formik}

@@ -1,12 +1,12 @@
 import { Label } from "@/lib/ui/label";
 import { Slider } from "@/lib/ui/slider";
 
-const AgentSlider = ({ formik, heading, min, max, step, keyName }: any) => {
+const AgentSlider = ({ formik, heading, min, max, step, keyName, marginTop }: any) => {
   return (
-    <div className="mt-8">
+    <div className={marginTop ? marginTop : "mt-8"}>
       <Label htmlFor={heading} className="flex justify-between">
         <span>{heading}</span>
-        <span>{formik.values[keyName].toFixed(2)}</span>
+        <span>{formik.values[keyName]}</span>
       </Label>
       <Slider
         id={heading}

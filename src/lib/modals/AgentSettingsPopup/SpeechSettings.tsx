@@ -16,6 +16,7 @@ import { Slider } from "@/lib/ui/slider";
 import { Switch } from "@/lib/ui/switch";
 import { useAppSelector } from "@/redux/store";
 import { Settings, Speech } from "lucide-react";
+import AgentSlider from "./AgentSlider";
 
 const SpeechSettings = ({ formik }: any) => {
   const { ambientSoundsList }: any = useAppSelector(
@@ -58,35 +59,26 @@ const SpeechSettings = ({ formik }: any) => {
             </div>
           </div>
         </div>
-        <div className="mt-8">
-          <Label>Responsiveness</Label>
-          <Slider
-            value={[formik.values.responsiveness]}
-            onValueChange={(value) =>
-              formik.setFieldValue("responsiveness", value[0])
-            }
-            max={100}
-            step={1}
-            className="w-full mt-3"
-          />
-          <div className="flex justify-between my-2">
-            <p className="text-[#71717A] text-sm font-normal">Slow</p>
-            <p className="text-[#71717A] text-sm font-normal">Fast</p>
-          </div>
-        </div>
+        <AgentSlider
+          heading="Responsiveness"
+          keyName="responsiveness"
+          formik={formik}
+          min={0}
+          max={1}
+          step={0.01}
+        />
         <div className="mt-8">
           <Label>Interruption Sensitivity (1.00)</Label>
           <p className="text-[#71717A] text-sm font-normal">
             Control how sensitively AI can be interrupted by human speech.
           </p>
-          <Slider
-            value={[formik.values.interruption_sensitivity]}
-            onValueChange={(value) =>
-              formik.setFieldValue("interruption_sensitivity", value[0])
-            }
-            max={100}
-            step={1}
-            className="w-full mt-3"
+          <AgentSlider
+            keyName="interruption_sensitivity"
+            formik={formik}
+            min={0}
+            max={1}
+            step={0.01}
+            marginTop="mt-1"
           />
         </div>
         <div className="mt-8 flex justify-between items-center">
@@ -105,18 +97,15 @@ const SpeechSettings = ({ formik }: any) => {
           conversations, indicating active listening and engagement.
         </p>
         <div className="p-3 mt-8 bg-[#E9F9FE] rounded">
-          <div className="">
-            <Label>Backchannel Frequency</Label>
-            <Slider
-              value={[formik.values.backchannel_frequency]}
-              onValueChange={(value) =>
-                formik.setFieldValue("backchannel_frequency", value[0])
-              }
-              max={100}
-              step={1}
-              className="w-full mt-3"
-            />
-          </div>
+          <AgentSlider
+            heading="Backchannel Frequency"
+            keyName="backchannel_frequency"
+            formik={formik}
+            min={0}
+            max={1}
+            step={0.01}
+            marginTop="mt-1"
+          />
           <div className="mt-8">
             <Label>Backchannel Words</Label>
             <p className="text-[#71717A] text-sm font-normal mt-2">

@@ -59,6 +59,7 @@ export const addAgentAction = (body: any) => async (dispatch: AppDispatch) => {
         throw Error;
       } else {
         dispatch(agentListByIdReducer(res?.data));
+        toast.success("Agent Added Successfully");
       }
     })
     .catch((err: any) => {
@@ -78,6 +79,7 @@ export const editAgentAction =
           throw Error;
         } else {
           dispatch(agentListByIdReducer(res?.data));
+          toast.success("Agent Updated Successfully");
         }
       })
       .catch((err: any) => {
