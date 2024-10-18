@@ -12,6 +12,8 @@ import { tabBarData } from "./helper";
 import Schedules from "../Schedules";
 import Segments from "../Segments";
 import Agents from "../Agents";
+import { ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
+import { Button } from "@/lib/ui/button";
 
 const CampaignsDetails = () => {
   const router = useRouter();
@@ -42,12 +44,31 @@ const CampaignsDetails = () => {
           onClick={() => router.push(`/create-campaign/${params?.id}`)}
         />
       </div>
-      <p className="text-[20px] mt-[15px] font-semibold text-black underline">
-        Task template
-      </p>
-      <div className="mt-[15px] flex items-center justify-end rounded-md bg-[#F4F4F5] w-fit px-4 py-2 gap-[8px] ml-auto">
-        <p className="text-sm font-medium text-[#71717A]">Next</p>
-        <Image src={Vector} alt="Logo" />
+      <div className="flex justify-between items-center mt-5">
+        <Button type="button" className="flex gap-2">
+          <PhoneCall width={20} height={20} />
+          Preview
+        </Button>
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            className="flex items-center cursor-pointer rounded-md bg-[#F4F4F5] px-4 py-2"
+            onClick={() => setTaskId(Math.max(0, taskId - 1))}
+            disabled={taskId === 1}
+          >
+            <ChevronLeft color="#71717A" width="25" height="25" />
+            <p className="text-sm font-medium text-[#71717A] ml-2">Previous</p>
+          </Button>
+          <Button
+            variant="outline"
+            className="flex items-center cursor-pointer rounded-md bg-[#F4F4F5] px-4 py-2"
+            onClick={() => setTaskId(taskId + 1)}
+            disabled={taskId === 5}
+          >
+            <p className="text-sm font-medium text-[#71717A] mr-2">Next</p>
+            <ChevronRight color="#71717A" width="25" height="25" />
+          </Button>
+        </div>
       </div>
       <div className="flex mt-[20px]">
         {tabBarData?.map((ele, index) => (
