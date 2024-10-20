@@ -14,6 +14,8 @@ import Segments from "../Segments";
 import Agents from "../Agents";
 import { ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { Button } from "@/lib/ui/button";
+import { Sheet } from "@/lib/ui/sheet";
+import PreviewSideBarPopup from "@/lib/modals/PreviewSideBarPopup";
 
 const CampaignsDetails = () => {
   const router = useRouter();
@@ -21,6 +23,7 @@ const CampaignsDetails = () => {
   const [taskId, setTaskId] = useState(1);
   const params = useParams();
   const isEdit = !params.id.includes("create");
+  const [isPreviewSideBarPopup, setIsPreviewSideBarPopup] = useState(false);
   const { campaignDataById }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
@@ -45,7 +48,11 @@ const CampaignsDetails = () => {
         />
       </div>
       <div className="flex justify-between items-center mt-5">
-        <Button type="button" className="flex gap-2">
+        <Button
+          type="button"
+          className="flex gap-2"
+          onClick={() => setIsPreviewSideBarPopup(true)}
+        >
           <PhoneCall width={20} height={20} />
           Preview
         </Button>
@@ -94,6 +101,13 @@ const CampaignsDetails = () => {
       {taskId === 2 && <Segments />}
       {taskId === 3 && <Schedules />}
       {taskId === 4 && <Agents />}
+      <Sheet open={isPreviewSideBarPopup}>
+        {isPreviewSideBarPopup && (
+          <PreviewSideBarPopup
+            setIsPreviewSideBarPopup={setIsPreviewSideBarPopup}
+          />
+        )}
+      </Sheet>
     </div>
   );
 };
