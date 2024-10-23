@@ -25,7 +25,7 @@ import { useAppDispatch } from "@/redux/store";
 import { addAskAction, editAskAction } from "@/redux/action/campaigns-action";
 import { useFormik } from "formik";
 import { askCardValidationScheme } from "@/components/validation";
-import { X } from "lucide-react";
+import { Minus, X } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 
 const AskCardPopup = ({
@@ -44,10 +44,11 @@ const AskCardPopup = ({
         response_type: isAskSetPopup?.response_type || "",
         regex_format: isAskSetPopup?.validations?.regex_format || "",
         error_response: isAskSetPopup?.error_response || "",
-        options: [],
+        options: isAskSetPopup?.validations?.options,
         is_active: isAskSetPopup.is_active,
         is_required: isAskSetPopup.is_required,
       });
+      setOptions(isAskSetPopup?.validations?.options);
     }
   }, [isAskSetPopup?.isEdit]);
 
@@ -79,6 +80,7 @@ const AskCardPopup = ({
         error_response: values?.error_response,
         validations: {
           regex_format: values?.regex_format,
+          options: options,
         },
       };
       if (isAskSetPopup?.isEdit) {
@@ -191,26 +193,43 @@ const AskCardPopup = ({
             ) : null}
             {formik.values.response_type === "option" ? (
               <div className="mt-5">
-                <button
-                  className="w-full flex justify-center my-5"
-                  onClick={handleAddOption}
-                >
-                  <Plus />
-                </button>
                 {options.map((option: any, index: any) => (
-                  <Input
-                    key={index}
-                    placeholder={option}
-                    className="mt-2"
-                    value={option}
-                    onChange={(e) => {
-                      const newOptions = [...options];
-                      newOptions[index] = e.target.value;
-                      setOptions(newOptions);
-                      formik.setFieldValue("options", newOptions);
-                    }}
-                  />
+                  <div key={index} className="flex items-center mt-2">
+                    <Input
+                      placeholder={option}
+                      className="flex-grow"
+                      value={option}
+                      onChange={(e) => {
+                        const newOptions = [...options];
+                        newOptions[index] = e.target.value;
+                        setOptions(newOptions);
+                        formik.setFieldValue("options", newOptions);
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() => {
+                        const newOptions = options.filter(
+                          (_: any, i: number) => i !== index
+                        );
+                        setOptions(newOptions);
+                        formik.setFieldValue("options", newOptions);
+                      }}
+                    >
+                      <Minus />
+                    </button>
+                  </div>
                 ))}
+                <div className="flex justify-center mt-5">
+                  <button
+                    type="button"
+                    className="flex items-center"
+                    onClick={handleAddOption}
+                  >
+                    <Plus />
+                  </button>
+                </div>
               </div>
             ) : null}
             <div className="flex items-center space-x-2 mt-5">
