@@ -1,6 +1,7 @@
 import Image from "next/image";
 import ArrowLeft from "@/../public/ArrowLeft.svg";
 import { logout } from "@/utils/http-util";
+import { useRouter } from "next/navigation";
 
 interface SecondarySidebarProps {
   activeSidebarItem: any;
@@ -11,6 +12,8 @@ export const SecondarySidebar = ({
   activeSidebarItem,
   setActiveSidebarItem,
 }: SecondarySidebarProps) => {
+  const router = useRouter();
+
   const handleClose = () => {
     setActiveSidebarItem(null);
   };
@@ -33,6 +36,8 @@ export const SecondarySidebar = ({
               onClick={() => {
                 if (ele?.text === "Logout") {
                   logout();
+                } else if (ele?.url !== "") {
+                  router.push(ele?.url);
                 }
               }}
             >

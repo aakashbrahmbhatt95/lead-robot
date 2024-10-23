@@ -60,7 +60,7 @@ const ResetPassword = () => {
               description: "Password Changed Successfully",
             });
             setCookie(SESSION_KEY, res.data.meta.session_token);
-            router.push("/");
+            router.push("/campaigns");
           }
           if (res.error) {
             res.data.errors.map((ele: any) =>

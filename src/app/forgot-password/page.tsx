@@ -26,7 +26,7 @@ const ForgotPassword = () => {
 
   useEffect(() => {
       if(getCookie(SESSION_KEY)) {
-          router.push('/')
+          router.push('/campaigns')
       }
   }, []);
 

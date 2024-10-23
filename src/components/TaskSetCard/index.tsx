@@ -91,7 +91,6 @@ const TaskSetCard: React.FC<{
                   />
                 </div>
               )}
-              <TaskSetPopover handleAddComponent={handleAddComponent} />
               <SubCardContainer
                 ele={ele}
                 isCardDraggingRef={isCardDraggingRef}

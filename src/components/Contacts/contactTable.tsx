@@ -174,15 +174,15 @@ const ContactTable: React.FC<{
       <div className="flex items-center py-4 gap-1">
         <Input
           placeholder="Search lists, attributes, tags"
-          value={(table?.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table?.getColumn("phone")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table?.getColumn("name")?.setFilterValue(event.target.value)
+            table?.getColumn("phone")?.setFilterValue(event.target.value)
           }
         />
         <Button
           type="button"
-          className="h-[24px] py-0 px-3 rounded bg-[#E4E4E7] text-[#18181B]"
-          onClick={() => table?.getColumn("name")?.setFilterValue("")}
+          className="ml-3 py-0 px-3 rounded bg-[#E4E4E7] text-[#18181B]"
+          onClick={() => table?.getColumn("phone")?.setFilterValue("")}
         >
           Clear all
         </Button>

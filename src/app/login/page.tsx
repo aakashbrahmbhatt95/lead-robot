@@ -39,7 +39,7 @@ const Login = () => {
   useEffect(() => {
     setIsMounted(true);
       if(getCookie(SESSION_KEY)) {
-          router.push('/')
+          router.push('/campaigns')
       }
   }, []);
 
@@ -157,7 +157,7 @@ const Login = () => {
                         });
                         setCookie(TOKEN_KEY, res.data.meta.access_token);
                         setCookie(SESSION_KEY, res.data.meta.session_token);
-                        router.push("/");
+                        router.push("/campaigns");
                       }
                       if (res.error) {
                         res.data.errors.map((ele: any) =>

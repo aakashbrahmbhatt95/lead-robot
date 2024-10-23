@@ -23,7 +23,7 @@ const Contacts = () => {
         <Dialog open={isContactPopup} onOpenChange={setIsContactPopup}>
           <DialogTrigger asChild onClick={() => setIsContactPopup(true)}>
             <Button variant="primary" style={{ border: "1px solid black" }}>
-              Open Popup
+              Import
             </Button>
           </DialogTrigger>
           <ContactPopup

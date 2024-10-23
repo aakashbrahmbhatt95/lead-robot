@@ -109,10 +109,9 @@ const Agents = () => {
             <LanguageSelection formik={formik} />
             <Dialog open={isVoiceLibrary} onOpenChange={setIsVoiceLibrary}>
               <DialogTrigger asChild onClick={() => setIsVoiceLibrary(true)}>
-                <div className="mt-2 flex gap-2 items-center">
-                  Voice
-                  <Image src={fill_arrowdown} alt="arrowDown" />
-                </div>
+                <Button className="mt-3">
+                  Select Voice
+                </Button>
               </DialogTrigger>
               <VoiceLibrary
                 formik={formik}

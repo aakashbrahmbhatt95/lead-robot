@@ -198,20 +198,12 @@ const CampaignTable: React.FC<{
             table?.getColumn("name")?.setFilterValue(event.target.value)
           }
         />
-        <Button variant="outline" className="cursor-pointer h-full rounded">
-          <Image src={List} alt="List" />
-        </Button>
-        <Button className="h-[24px] py-0 px-3 rounded">All</Button>
         <Button
-          className="h-[24px] py-0 px-3 rounded bg-[#E4E4E7] hover:bg-[#E4E4E7] text-[#18181B]"
+          className="py-0 ml-3 px-3 rounded bg-[#E4E4E7] hover:bg-[#E4E4E7] text-[#18181B]"
           onClick={() => table?.getColumn("name")?.setFilterValue("")}
         >
           Clear all
         </Button>
-        <Button className="h-[24px] py-0 px-3 rounded">Campaign</Button>
-        <Button className="h-[24px] py-0 px-3 rounded">Attributes</Button>
-        <Button className="h-[24px] py-0 px-3 rounded">Tag</Button>
-        <Button className="h-[24px] py-0 px-3 rounded">Disposition</Button>
         {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
