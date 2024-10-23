@@ -1,9 +1,16 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 const Home = () => {
-  return (
-    <div className="py-[20px] px-[40px]">
-      <h2 className="text-3xl font-semibold text-black">Dashboard Page</h2>
-    </div>
-  );
-}; 
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/campaigns");
+  }, []);
+
+  return null;
+};
 
 export default Home;
