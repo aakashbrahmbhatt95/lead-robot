@@ -9,14 +9,14 @@ import {
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { FieldArray, Field } from "formik";
 
-const ExcludeSegment = ({ values }: any) => {
+const SegmentFieldArray = ({ values, valueName, arrayFields , heading }: any) => {
   return (
     <div className="py-5 px-3 mt-8 border-[1px] border-gray-300">
       <div className="flex items-center gap-2 border-b-[1px] border-gray-300 pb-3">
         <p>
-          <span className="font-bold">Exclude</span> if contacts match
+          <span className="font-bold">{heading}</span> if contacts match
         </p>
-        <Field as="select" name="excludeCondition">
+        <Field as="select" name={valueName}>
           {({ field }: any) => (
             <Select
               value={field.value}
@@ -35,15 +35,15 @@ const ExcludeSegment = ({ values }: any) => {
         <p>of the following conditions:</p>
       </div>
 
-      <FieldArray name="excludeConditions">
+      <FieldArray name={arrayFields}>
         {({ remove, push }) => (
           <>
-            {values.excludeConditions.map(
+            {values[arrayFields].map(
               (ele: any, index: any) => (
                 <div key={index}>
                   {index > 0 && (
                     <p className="pt-3 font-bold">
-                      {values?.excludeCondition === "all" ? "AND" : "OR"}
+                      {values[valueName] === "all" ? "AND" : "OR"}
                     </p>
                   )}
 
@@ -54,7 +54,7 @@ const ExcludeSegment = ({ values }: any) => {
                     />
                     <Field
                       as="select"
-                      name={`excludeConditions[${index}].field`}
+                      name={`${arrayFields}[${index}].field`}
                     >
                       {({ field }: any) => (
                         <Select
@@ -73,7 +73,7 @@ const ExcludeSegment = ({ values }: any) => {
                     </Field>
                     <Field
                       as="select"
-                      name={`excludeConditions[${index}].operator`}
+                      name={`${arrayFields}[${index}].operator`}
                     >
                       {({ field }: any) => (
                         <Select
@@ -92,7 +92,7 @@ const ExcludeSegment = ({ values }: any) => {
                     </Field>
                     <Field
                       as={Input}
-                      name={`excludeConditions[${index}].value`}
+                      name={`${arrayFields}[${index}].value`}
                       className="w-[250px]"
                     />
                   </div>
@@ -113,4 +113,4 @@ const ExcludeSegment = ({ values }: any) => {
   );
 };
 
-export default ExcludeSegment;
+export default SegmentFieldArray;
