@@ -72,15 +72,15 @@ export const tabBarData = [
     value: 1,
   },
   {
-    text: "Assign contacts",
+    text: "Create Agent",
     value: 2,
   },
   {
-    text: "Schedule",
+    text: "Assign contacts",
     value: 3,
   },
   {
-    text: "Agents",
+    text: "Schedule",
     value: 4,
   },
   {

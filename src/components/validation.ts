@@ -1,6 +1,13 @@
 import * as Yup from "yup";
 import { weekdaysMap } from "./Schedules/Inbound/helper";
 
+export const loginFormValidation = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string().required("Password is required"),
+});
+
 export const askCardValidationScheme = Yup.object({
   question: Yup.string().required("Question is required"),
 });

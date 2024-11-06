@@ -53,13 +53,13 @@ const CreateCampaign = () => {
             ...campaignDataById,
             ...values,
           },
-          params?.id
+          params?.id,
+          router
         )
       );
     } else {
-      dispatch(addCampaignsAction(values));
+      dispatch(addCampaignsAction(values, router));
     }
-    router.push("/campaigns");
   };
 
   return (

@@ -4,7 +4,7 @@ import { Textarea } from "@/lib/ui/textarea";
 const AgentsPersonality = ({ formik }: any) => {
   return (
     <>
-      <p className="text-xl text-semibold mt-3">Agents personality</p>
+      <p className="text-xl text-semibold mt-3">Personality</p>
       <div className="mt-5">
         <Label>Identity</Label>
         <Textarea

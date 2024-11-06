@@ -98,9 +98,9 @@ const CampaignsDetails = () => {
         ))}
       </div>
       {taskId === 1 && <ReactFlowChart />}
-      {taskId === 2 && <Segments />}
-      {taskId === 3 && <Schedules />}
-      {taskId === 4 && <Agents />}
+      {taskId === 2 && <Agents />}
+      {taskId === 3 && <Segments />}
+      {taskId === 4 && <Schedules />}
       <Sheet open={isPreviewSideBarPopup}>
         {isPreviewSideBarPopup && (
           <PreviewSideBarPopup

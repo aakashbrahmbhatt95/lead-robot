@@ -33,13 +33,14 @@ export const campaignsListAction = () => async (dispatch: AppDispatch) => {
 };
 
 export const addCampaignsAction =
-  (body: any) => async (dispatch: AppDispatch) => {
+  (body: any, router: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makePOST(`${BASE_URL1}${GET_CAMPAIGN_URL}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
         dispatch(campaignsListAction());
         toast.success("Campaign Added Succesfully!");
+        router.push(`/campaigns/${res?.data?.id}`);
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -48,7 +49,7 @@ export const addCampaignsAction =
   };
 
 export const editCampaignsAction =
-  (body: any, id: any) =>
+  (body: any, id: any, router?: any) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     const { campaignsList } = getState()?.campaignReducer;
     HttpUtil.makePUT(`${BASE_URL1}${GET_CAMPAIGN_URL}${id}`, body, {
@@ -68,6 +69,9 @@ export const editCampaignsAction =
             })
           );
           toast.success("Campaign Updated Succesfully!");
+          if (router) {
+            router.push(`/campaigns/${res?.data?.id}`);
+          }
         } else {
           throw Error;
         }
