@@ -21,3 +21,5 @@ export const GET_LANGUAGE_URL = "/campaigns/agent/languages";
 export const GET_VOICES_URL = "/campaigns/agent/voices";
 export const GET_AMBIENT_SOUNDS_URL = "/campaigns/agent/ambient-sounds";
 export const GET_AGENT = "/campaigns/agent/";
+export const GET_CONFIG_FILTER = "/filters/config";
+export const GET_FILTERS = "/filters/";
