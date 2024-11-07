@@ -7,7 +7,11 @@ import {
 } from "@/lib/ui/select";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { FieldArray, Field } from "formik";
-import { getConfigFilterHandler, getFiltersHandler } from "./helper";
+import {
+  getConfigFilterHandler,
+  getFiltersHandler,
+  initialConditionRowState,
+} from "./helper";
 import { useEffect, useState } from "react";
 
 const SegmentFieldArray = ({
@@ -15,11 +19,10 @@ const SegmentFieldArray = ({
   valueName,
   arrayFields,
   heading,
+  setFieldValue,
 }: any) => {
   const [filters, setFilters] = useState<any>(null);
   const [configFilters, setConfigFilters] = useState<any>(null);
-  const [fieldFilters, setFieldFilters] = useState<any>([]);
-  const [selectedConfigFilter, setSelectedConfigFilter] = useState<any>(null);
 
   useEffect(() => {
     getConfigFilterHandler(setConfigFilters);
@@ -29,6 +32,8 @@ const SegmentFieldArray = ({
   if (filters === null || configFilters === null) {
     return null;
   }
+  console.log("arrayFields", arrayFields);
+  console.log("values", values);
   return (
     <div className="py-5 px-3 mt-8 border-[1px] border-gray-300">
       <div className="flex items-center gap-2 border-b-[1px] border-gray-300 pb-3">
@@ -85,7 +90,10 @@ const SegmentFieldArray = ({
                           );
 
                           if (temp.length > 0) {
-                            setFieldFilters(temp[0][1].filters);
+                            setFieldValue(
+                              `${arrayFields}[${index}]operatorArrays`,
+                              temp[0][1].filters
+                            );
                           }
                         }}
                       >
@@ -112,9 +120,12 @@ const SegmentFieldArray = ({
                           });
                           const temp: any = Object.entries(
                             configFilters
-                          ).filter(([key, option]: any) => key === value);
+                          ).filter(([key]: any) => key === value);
                           if (temp) {
-                            setSelectedConfigFilter(temp[0][1]);
+                            setFieldValue(
+                              `${arrayFields}[${index}]valueArrays`,
+                              temp[0][1]
+                            );
                           }
                         }}
                       >
@@ -122,11 +133,13 @@ const SegmentFieldArray = ({
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
-                          {fieldFilters?.map((ele: any) => (
-                            <SelectItem key={ele} value={ele}>
-                              {ele}
-                            </SelectItem>
-                          ))}
+                          {values[arrayFields][index].operatorArrays?.map(
+                            (ele: any) => (
+                              <SelectItem key={ele} value={ele}>
+                                {ele}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
                     )}
@@ -145,13 +158,15 @@ const SegmentFieldArray = ({
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
-                          {selectedConfigFilter?.lookups?.map((ele: any) => {
-                            return (
-                              <SelectItem key={ele} value={ele?.value}>
-                                {ele?.label}
-                              </SelectItem>
-                            );
-                          })}
+                          {values[arrayFields][index].valueArrays?.lookups?.map(
+                            (ele: any) => {
+                              return (
+                                <SelectItem key={ele} value={ele?.value}>
+                                  {ele?.label}
+                                </SelectItem>
+                              );
+                            }
+                          )}
                         </SelectContent>
                       </Select>
                     )}
@@ -161,7 +176,7 @@ const SegmentFieldArray = ({
             ))}
             <div
               className="flex items-center mt-5 text-[#6f99a8] gap-2 cursor-pointer"
-              onClick={() => push({ field: "", operator: "", value: "" })}
+              onClick={() => push(initialConditionRowState)}
             >
               <CirclePlus color="#6f99a8" />
               Add

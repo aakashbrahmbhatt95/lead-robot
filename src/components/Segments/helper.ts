@@ -36,3 +36,11 @@ export const getFiltersHandler = async (setFilters: any) => {
     toast.error("Oops! Something went wrong");
   }
 };
+
+export const initialConditionRowState = {
+  field: "",
+  operator: "",
+  operatorArrays: [],
+  value: "",
+  valueArrays: [],
+};

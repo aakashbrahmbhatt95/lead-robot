@@ -2,6 +2,7 @@ import OverrideOptOut from "./OverrideOptOut";
 import { Button } from "@/lib/ui/button";
 import { Formik, Form } from "formik";
 import SegmentFieldArray from "./SegmentFieldArray";
+import { initialConditionRowState } from "./helper";
 
 const GroupSegment = () => {
   const handleSubmit = (values: any) => {
@@ -12,9 +13,9 @@ const GroupSegment = () => {
     <Formik
       initialValues={{
         includeCondition: "all",
-        includeConditions: [{ field: "", operator: "", value: "" }],
+        includeConditions: [initialConditionRowState],
         excludeCondition: "all",
-        excludeConditions: [{ field: "", operator: "", value: "" }],
+        excludeConditions: [initialConditionRowState],
         overrideOptOut: "",
       }}
       onSubmit={handleSubmit}
@@ -31,13 +32,27 @@ const GroupSegment = () => {
               Update Recipient Count
             </p>
           </div>
-          <SegmentFieldArray values={values} valueName="includeCondition" arrayFields="includeConditions" heading ="Include"  />
-          <SegmentFieldArray values={values} valueName="excludeCondition" arrayFields="excludeConditions" heading ="Exclude" />
+          <SegmentFieldArray
+            values={values}
+            valueName="includeCondition"
+            arrayFields="includeConditions"
+            heading="Include"
+            setFieldValue={setFieldValue}
+          />
+          <SegmentFieldArray
+            values={values}
+            valueName="excludeCondition"
+            arrayFields="excludeConditions"
+            heading="Exclude"
+            setFieldValue={setFieldValue}
+          />
           <OverrideOptOut
             values={values}
             setFieldValue={(field, value) => setFieldValue(field, value)}
           />
-          <Button type="submit" className="mt-5">Save</Button>
+          <Button type="submit" className="mt-5">
+            Save
+          </Button>
         </Form>
       )}
     </Formik>
