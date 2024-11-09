@@ -13,6 +13,8 @@ import {
   initialConditionRowState,
 } from "./helper";
 import { useEffect, useState } from "react";
+import LastInputValue from "./LastValueInput";
+import ConditionRow from "./ConditionRow";
 
 const SegmentFieldArray = ({
   values,
@@ -36,31 +38,7 @@ const SegmentFieldArray = ({
   console.log("values", values);
   return (
     <div className="py-5 px-3 mt-8 border-[1px] border-gray-300">
-      <div className="flex items-center gap-2 border-b-[1px] border-gray-300 pb-3">
-        <p>
-          <span className="font-bold">{heading}</span> if contacts match
-        </p>
-        <Field name={valueName}>
-          {({ field }: any) => (
-            <Select
-              value={field.value}
-              onValueChange={(value: any) =>
-                field.onChange({ target: { name: field.name, value } })
-              }
-            >
-              <SelectTrigger className="w-[100px] mt-1">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="any">ANY</SelectItem>
-              </SelectContent>
-            </Select>
-          )}
-        </Field>
-        <p>of the following conditions:</p>
-      </div>
-
+      <ConditionRow heading={heading} valueName={valueName} />
       <FieldArray name={arrayFields}>
         {({ remove, push }) => (
           <>
@@ -92,7 +70,7 @@ const SegmentFieldArray = ({
                           if (temp.length > 0) {
                             setFieldValue(
                               `${arrayFields}[${index}]operatorArrays`,
-                              temp[0][1].filters
+                              temp[0][1]
                             );
                           }
                         }}
@@ -133,13 +111,13 @@ const SegmentFieldArray = ({
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
-                          {values[arrayFields][index].operatorArrays?.map(
-                            (ele: any) => (
-                              <SelectItem key={ele} value={ele}>
-                                {ele}
-                              </SelectItem>
-                            )
-                          )}
+                          {values[arrayFields][
+                            index
+                          ].operatorArrays?.filters?.map((ele: any) => (
+                            <SelectItem key={ele} value={ele}>
+                              {ele}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}
@@ -171,6 +149,12 @@ const SegmentFieldArray = ({
                       </Select>
                     )}
                   </Field>
+                  <LastInputValue
+                    values={values}
+                    arrayFields={arrayFields}
+                    index={index}
+                    setFieldValue={setFieldValue}
+                  />
                 </div>
               </div>
             ))}

@@ -43,4 +43,5 @@ export const initialConditionRowState = {
   operatorArrays: [],
   value: "",
   valueArrays: [],
+  inputValue: "",
 };
