@@ -45,3 +45,61 @@ export const initialConditionRowState = {
   valueArrays: [],
   inputValue: "",
 };
+
+export const handleValueChange = (
+  field: any,
+  index: any,
+  value: any,
+  setFieldValue: any,
+  arrayFields: any
+) => {
+  field.onChange({ target: { name: field.name, value } });
+  setFieldValue(`${arrayFields}[${index}].inputValue`, "");
+};
+
+export const handleOperatorChange = (
+  field: any,
+  index: any,
+  value: any,
+  configFilters: any,
+  setFieldValue: any,
+  arrayFields: any
+) => {
+  field.onChange({ target: { name: field.name, value } });
+  const selectedConfigFilter = Object.entries(configFilters).find(
+    ([key]) => key === value
+  );
+
+  if (selectedConfigFilter) {
+    setFieldValue(
+      `${arrayFields}[${index}].valueArrays`,
+      selectedConfigFilter[1]
+    );
+  }
+
+  setFieldValue(`${arrayFields}[${index}].value`, "");
+  setFieldValue(`${arrayFields}[${index}].inputValue`, "");
+};
+
+export const handleFieldChange = (
+  field: any,
+  index: any,
+  value: any,
+  filters: any,
+  setFieldValue: any,
+  arrayFields: any
+) => {
+  field.onChange({ target: { name: field.name, value } });
+  const selectedFilter = Object.entries(filters).find(
+    ([, option]: any) => option.field === value
+  );
+
+  if (selectedFilter) {
+    setFieldValue(`${arrayFields}[${index}].operatorArrays`, selectedFilter[1]);
+  }
+
+  setFieldValue(`${arrayFields}[${index}].valueArrays`, []);
+  setFieldValue(`${arrayFields}[${index}].operator`, "");
+  setFieldValue(`${arrayFields}[${index}].value`, "");
+  setFieldValue(`${arrayFields}[${index}].inputValue`, "");
+};

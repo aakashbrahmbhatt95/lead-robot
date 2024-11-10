@@ -7,14 +7,17 @@ import {
 } from "@/lib/ui/select";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { FieldArray, Field } from "formik";
-import {
-  getConfigFilterHandler,
-  getFiltersHandler,
-  initialConditionRowState,
-} from "./helper";
 import { useEffect, useState } from "react";
 import LastInputValue from "./LastValueInput";
 import ConditionRow from "./ConditionRow";
+import {
+  getConfigFilterHandler,
+  getFiltersHandler,
+  handleFieldChange,
+  handleOperatorChange,
+  handleValueChange,
+  initialConditionRowState,
+} from "./helper";
 
 const SegmentFieldArray = ({
   values,
@@ -23,19 +26,16 @@ const SegmentFieldArray = ({
   heading,
   setFieldValue,
 }: any) => {
-  const [filters, setFilters] = useState<any>(null);
-  const [configFilters, setConfigFilters] = useState<any>(null);
+  const [filters, setFilters] = useState(null);
+  const [configFilters, setConfigFilters] = useState(null);
 
   useEffect(() => {
     getConfigFilterHandler(setConfigFilters);
     getFiltersHandler(setFilters);
   }, []);
 
-  if (filters === null || configFilters === null) {
-    return null;
-  }
-  console.log("arrayFields", arrayFields);
-  console.log("values", values);
+  if (!filters || !configFilters) return null;
+
   return (
     <div className="py-5 px-3 mt-8 border-[1px] border-gray-300">
       <ConditionRow heading={heading} valueName={valueName} />
@@ -49,7 +49,6 @@ const SegmentFieldArray = ({
                     {values[valueName] === "all" ? "AND" : "OR"}
                   </p>
                 )}
-
                 <div className="flex items-center py-3 gap-2 border-b-[1px] border-gray-300 pb-3">
                   <CircleMinus
                     onClick={() => remove(index)}
@@ -59,21 +58,16 @@ const SegmentFieldArray = ({
                     {({ field }: any) => (
                       <Select
                         value={field.value}
-                        onValueChange={(value: any) => {
-                          field.onChange({
-                            target: { name: field.name, value },
-                          });
-                          const temp: any = Object.entries(filters).filter(
-                            ([, option]: any) => option.field === value
-                          );
-
-                          if (temp.length > 0) {
-                            setFieldValue(
-                              `${arrayFields}[${index}]operatorArrays`,
-                              temp[0][1]
-                            );
-                          }
-                        }}
+                        onValueChange={(value) =>
+                          handleFieldChange(
+                            field,
+                            index,
+                            value,
+                            filters,
+                            setFieldValue,
+                            arrayFields
+                          )
+                        }
                       >
                         <SelectTrigger className="w-[300px] mt-1">
                           <SelectValue placeholder="Select" />
@@ -92,20 +86,16 @@ const SegmentFieldArray = ({
                     {({ field }: any) => (
                       <Select
                         value={field.value}
-                        onValueChange={(value: any) => {
-                          field.onChange({
-                            target: { name: field.name, value },
-                          });
-                          const temp: any = Object.entries(
-                            configFilters
-                          ).filter(([key]: any) => key === value);
-                          if (temp) {
-                            setFieldValue(
-                              `${arrayFields}[${index}]valueArrays`,
-                              temp[0][1]
-                            );
-                          }
-                        }}
+                        onValueChange={(value: any) =>
+                          handleOperatorChange(
+                            field,
+                            index,
+                            value,
+                            configFilters,
+                            setFieldValue,
+                            arrayFields
+                          )
+                        }
                       >
                         <SelectTrigger className="w-[250px] mt-1">
                           <SelectValue placeholder="Select" />
@@ -126,10 +116,14 @@ const SegmentFieldArray = ({
                     {({ field }: any) => (
                       <Select
                         value={field.value}
-                        onValueChange={(value: any) =>
-                          field.onChange({
-                            target: { name: field.name, value },
-                          })
+                        onValueChange={(value) =>
+                          handleValueChange(
+                            field,
+                            index,
+                            value,
+                            setFieldValue,
+                            arrayFields
+                          )
                         }
                       >
                         <SelectTrigger className="w-[250px] mt-1">
@@ -137,13 +131,11 @@ const SegmentFieldArray = ({
                         </SelectTrigger>
                         <SelectContent>
                           {values[arrayFields][index].valueArrays?.lookups?.map(
-                            (ele: any) => {
-                              return (
-                                <SelectItem key={ele} value={ele?.value}>
-                                  {ele?.label}
-                                </SelectItem>
-                              );
-                            }
+                            (ele: any) => (
+                              <SelectItem key={ele.value} value={ele.value}>
+                                {ele.label}
+                              </SelectItem>
+                            )
                           )}
                         </SelectContent>
                       </Select>
