@@ -3,55 +3,106 @@ import { Button } from "@/lib/ui/button";
 import { Formik, Form } from "formik";
 import GroupSegmentRow from "./GroupSegmentRow";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { getContactFilterAction } from "@/redux/action/contactFilter-action";
 import {
-  addFilterByFilterSetId,
   getConfigFilterHandler,
   getFiltersHandler,
 } from "./GroupSegmentRow/helper";
+import {
+  addFilterByFilterSetId,
+  editFilterByFilterSetId,
+  getContactFilterAction,
+  initialContactFilterData,
+} from "./helper";
+import { useParams } from "next/navigation";
 
 const GroupSegment = () => {
-  const dispatch = useAppDispatch();
-  const [filters, setFilters] = useState(null);
-  const [configFilters, setConfigFilters] = useState(null);
-
-  const { contactFilterList }: any = useAppSelector(
-    (state: any) => state.contactFilterReducer
+  const params = useParams();
+  const [filters, setFilters] = useState<any>(null);
+  const [configFilters, setConfigFilters] = useState<any>(null);
+  const [contactFilterList, setContactFilterList] = useState<any>([]);
+  const [contactFilterData, setContactFilterData] = useState<any>(
+    initialContactFilterData
   );
-  const contactFilterId = (value: any) => {
-    const temp = contactFilterList?.filter(
-      (ele: any) => ele?.exclude === value
-    )?.[0]?.id;
-    return temp;
+
+  const fetchData = async () => {
+    await getConfigFilterHandler(setConfigFilters);
+    await getFiltersHandler(setFilters);
   };
+
+  const fetchContactData = async () => {
+    await getContactFilterAction(
+      contactFilterData,
+      setContactFilterData,
+      contactFilterList,
+      setContactFilterList,
+      params?.id,
+      filters,
+      configFilters
+    );
+  };
+
   useEffect(() => {
-    dispatch(getContactFilterAction());
-    getConfigFilterHandler(setConfigFilters);
-    getFiltersHandler(setFilters);
+    fetchData();
   }, []);
 
+  useEffect(() => {
+    if (filters && configFilters) {
+      fetchContactData();
+    }
+  }, [filters, configFilters]);
+
   const handleSubmit = (values: any) => {
-    values?.includeConditions?.map((ele: any) => {
-      const body: any = {
-        field: ele?.field,
-        filter_type: ele?.filter_type,
-        lookup: ele?.lookup,
-        value: ele?.lastInputValue,
-        cast: ele?.cast,
-      };
-      addFilterByFilterSetId(body, contactFilterId(false));
-    });
-    values?.excludeConditions?.map((ele: any) => {
-      const body: any = {
-        field: ele?.field,
-        filter_type: ele?.filter_type,
-        lookup: ele?.lookup,
-        value: ele?.lastInputValue,
-        cast: ele?.cast,
-      };
-      addFilterByFilterSetId(body, contactFilterId(true));
-    });
+    const contactFilterId = (isExcluded: boolean) =>
+      contactFilterList?.find((ele: any) => ele?.exclude === isExcluded)?.id;
+
+    const processConditions = (
+      conditions: any[],
+      isExcluded: boolean,
+      action: "add" | "edit"
+    ) => {
+      conditions?.forEach((condition: any) => {
+        const body = {
+          field: condition?.field,
+          filter_type: condition?.filter_type,
+          lookup: condition?.lookup,
+          value: condition?.lastInputValue,
+          cast: condition?.cast,
+        };
+
+        if (action === "add" && !condition?.id) {
+          addFilterByFilterSetId(
+            body,
+            contactFilterId(isExcluded),
+            contactFilterData,
+            setContactFilterData,
+            contactFilterList,
+            setContactFilterList,
+            params?.id,
+            filters,
+            configFilters
+          );
+        } else if (action === "edit" && condition?.id) {
+          editFilterByFilterSetId(
+            body,
+            contactFilterId(isExcluded),
+            condition?.id,
+            contactFilterData,
+            setContactFilterData,
+            contactFilterList,
+            setContactFilterList,
+            params?.id,
+            filters,
+            configFilters
+          );
+        }
+      });
+    };
+
+    // Process include and exclude conditions
+    processConditions(values?.includeConditions, false, "add");
+    processConditions(values?.includeConditions, true, "edit");
+    processConditions(values?.excludeConditions, false, "add");
+    processConditions(values?.excludeConditions, true, "edit");
   };
 
   if (!contactFilterList?.length) {
@@ -60,13 +111,8 @@ const GroupSegment = () => {
 
   return (
     <Formik
-      initialValues={{
-        includeCondition: "all",
-        includeConditions: [],
-        excludeCondition: "all",
-        excludeConditions: [],
-        overrideOptOut: "",
-      }}
+      initialValues={contactFilterData}
+      enableReinitialize
       onSubmit={handleSubmit}
     >
       {({ values, setFieldValue }) => (
@@ -89,6 +135,11 @@ const GroupSegment = () => {
             setFieldValue={setFieldValue}
             filters={filters}
             configFilters={configFilters}
+            contactFilterData={contactFilterData}
+            setContactFilterData={setContactFilterData}
+            contactFilterList={contactFilterList}
+            setContactFilterList={setContactFilterList}
+            campaignDataById={params.id}
           />
           <GroupSegmentRow
             values={values}
@@ -98,6 +149,11 @@ const GroupSegment = () => {
             setFieldValue={setFieldValue}
             filters={filters}
             configFilters={configFilters}
+            contactFilterData={contactFilterData}
+            setContactFilterData={setContactFilterData}
+            contactFilterList={contactFilterList}
+            setContactFilterList={setContactFilterList}
+            campaignDataById={params.id}
           />
           <OverrideOptOut
             values={values}

@@ -7,6 +7,7 @@ import CastField from "./CastField";
 import OperatorField from "./OperatorField";
 import SelectFilterValue from "./SelectFilterValue";
 import SelectLookupValue from "./SelectLookupValue";
+import { deleteFilterByFilterSetId } from "../helper";
 
 const GroupSegmentRow = ({
   values,
@@ -16,6 +17,11 @@ const GroupSegmentRow = ({
   setFieldValue,
   filters,
   configFilters,
+  contactFilterData,
+  setContactFilterData,
+  contactFilterList,
+  setContactFilterList,
+  campaignDataById,
 }: any) => {
   if (!filters || !configFilters) return null;
 
@@ -34,7 +40,25 @@ const GroupSegmentRow = ({
                 )}
                 <div className="flex items-center py-3 gap-2 border-b-[1px] border-gray-300 pb-3">
                   <CircleMinus
-                    onClick={() => remove(index)}
+                    onClick={() => {
+                      const contactFilterId = (isExcluded: boolean) =>
+                        contactFilterList?.find(
+                          (ele: any) => ele?.exclude === isExcluded
+                        )?.id;
+                      deleteFilterByFilterSetId(
+                        contactFilterId(
+                          arrayFields === "includeConditions" ? false : true
+                        ),
+                        ele?.id,
+                        contactFilterData,
+                        setContactFilterData,
+                        contactFilterList,
+                        setContactFilterList,
+                        campaignDataById,
+                        filters,
+                        configFilters
+                      );
+                    }}
                     className="cursor-pointer"
                   />
                   <SelectFilterValue
@@ -43,7 +67,7 @@ const GroupSegmentRow = ({
                     filters={filters}
                     setFieldValue={setFieldValue}
                   />
-                  {values[arrayFields][index].filterTypeOptions?.filters
+                  {values[arrayFields][index]?.filterTypeOptions?.filters
                     ?.length && (
                     <>
                       <OperatorField
