@@ -57,12 +57,12 @@ export const addFilterByFilterSetId = async (body: any, filterSetId: any) => {
 };
 
 export const initialConditionRowState = {
-  filterValue: "",
-  operator: "",
-  operatorArrays: [],
-  lookupValue: "",
-  lookupArrays: [],
-  castValue: "",
+  field: "",
+  filter_type: "",
+  filterTypeOptions: [],
+  lookup: "",
+  lookupOptions: [],
+  cast: "",
   castInputType: "",
   lastInputValue: "",
 };

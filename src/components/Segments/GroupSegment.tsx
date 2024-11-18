@@ -34,21 +34,21 @@ const GroupSegment = () => {
   const handleSubmit = (values: any) => {
     values?.includeConditions?.map((ele: any) => {
       const body: any = {
-        field: ele?.filterValue,
-        filter_type: ele?.operator,
-        lookup: ele?.lookupValue,
+        field: ele?.field,
+        filter_type: ele?.filter_type,
+        lookup: ele?.lookup,
         value: ele?.lastInputValue,
-        cast: ele?.castValue,
+        cast: ele?.cast,
       };
       addFilterByFilterSetId(body, contactFilterId(false));
     });
     values?.excludeConditions?.map((ele: any) => {
       const body: any = {
-        field: ele?.filterValue,
-        filter_type: ele?.operator,
-        lookup: ele?.lookupValue,
+        field: ele?.field,
+        filter_type: ele?.filter_type,
+        lookup: ele?.lookup,
         value: ele?.lastInputValue,
-        cast: ele?.castValue,
+        cast: ele?.cast,
       };
       addFilterByFilterSetId(body, contactFilterId(true));
     });

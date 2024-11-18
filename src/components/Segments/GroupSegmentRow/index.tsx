@@ -43,7 +43,7 @@ const GroupSegmentRow = ({
                     filters={filters}
                     setFieldValue={setFieldValue}
                   />
-                  {values[arrayFields][index].operatorArrays?.filters
+                  {values[arrayFields][index].filterTypeOptions?.filters
                     ?.length && (
                     <>
                       <OperatorField
@@ -53,7 +53,7 @@ const GroupSegmentRow = ({
                         setFieldValue={setFieldValue}
                         configFilters={configFilters}
                       />
-                      {values[arrayFields][index].lookupArrays?.lookups
+                      {values[arrayFields][index].lookupOptions?.lookups
                         ?.length && (
                         <>
                           <SelectLookupValue

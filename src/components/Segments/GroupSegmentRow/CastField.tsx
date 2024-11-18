@@ -9,16 +9,16 @@ import { Field } from "formik";
 
 const CastField = ({ values, arrayFields, index, setFieldValue }: any) => {
   const rowIndexData = values[arrayFields][index];
-  return rowIndexData?.lookupArrays?.casts?.length ? (
-    <Field name={`${arrayFields}[${index}].castValue`}>
+  return rowIndexData?.lookupOptions?.casts?.length ? (
+    <Field name={`${arrayFields}[${index}].cast`}>
       {({ field }: any) => (
         <Select
-          value={rowIndexData?.castValue}
+          value={rowIndexData?.cast}
           onValueChange={(value: any) => {
             field.onChange({
               target: { name: field.name, value },
             });
-            const temp = rowIndexData?.lookupArrays?.casts?.find(
+            const temp = rowIndexData?.lookupOptions?.casts?.find(
               (ele: any) => ele.value === value
             );
             setFieldValue(`${arrayFields}[${index}].castInputType`, temp);
@@ -28,7 +28,7 @@ const CastField = ({ values, arrayFields, index, setFieldValue }: any) => {
             <SelectValue placeholder="Select" />
           </SelectTrigger>
           <SelectContent>
-            {rowIndexData?.lookupArrays?.casts?.map((ele: any) => (
+            {rowIndexData?.lookupOptions?.casts?.map((ele: any) => (
               <SelectItem key={ele.value} value={ele.value || null}>
                 {ele.label}
               </SelectItem>

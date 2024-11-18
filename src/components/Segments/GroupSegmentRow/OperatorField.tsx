@@ -16,7 +16,7 @@ const OperatorField = ({
 }: any) => {
   const rowIndexData = values[arrayFields][index];
   return (
-    <Field name={`${arrayFields}[${index}].operator`}>
+    <Field name={`${arrayFields}[${index}].filter_type`}>
       {({ field }: any) => (
         <Select
           value={field.value}
@@ -28,12 +28,12 @@ const OperatorField = ({
 
             if (selectedConfigFilter) {
               setFieldValue(
-                `${arrayFields}[${index}].lookupArrays`,
+                `${arrayFields}[${index}].lookupOptions`,
                 selectedConfigFilter[1]
               );
             }
 
-            setFieldValue(`${arrayFields}[${index}].lookupValue`, "");
+            setFieldValue(`${arrayFields}[${index}].lookup`, "");
             setFieldValue(`${arrayFields}[${index}].lastInputValue`, "");
           }}
         >
@@ -41,7 +41,7 @@ const OperatorField = ({
             <SelectValue placeholder="Select" />
           </SelectTrigger>
           <SelectContent>
-            {rowIndexData.operatorArrays?.filters?.map((ele: any) => (
+            {rowIndexData.filterTypeOptions?.filters?.map((ele: any) => (
               <SelectItem key={ele} value={ele}>
                 {ele}
               </SelectItem>

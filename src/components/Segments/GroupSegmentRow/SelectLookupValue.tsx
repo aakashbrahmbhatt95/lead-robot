@@ -14,7 +14,7 @@ const SelectLookupValue = ({
   values,
 }: any) => {
   return (
-    <Field name={`${arrayFields}[${index}].lookupValue`}>
+    <Field name={`${arrayFields}[${index}].lookup`}>
       {({ field }: any) => (
         <Select
           value={field.value}
@@ -29,7 +29,7 @@ const SelectLookupValue = ({
             <SelectValue placeholder="Select" />
           </SelectTrigger>
           <SelectContent>
-            {values[arrayFields][index].lookupArrays?.lookups?.map(
+            {values[arrayFields][index].lookupOptions?.lookups?.map(
               (ele: any) => (
                 <SelectItem key={ele.value} value={ele.value}>
                   {ele.label}

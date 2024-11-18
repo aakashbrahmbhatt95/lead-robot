@@ -6,9 +6,9 @@ import { MultiSelect } from "./MultiSelect";
 
 const LastInputValue = ({ values, arrayFields, index, setFieldValue }: any) => {
   const rowIndexData = values[arrayFields][index];
-  const inputType = rowIndexData.lookupArrays?.casts?.length
+  const inputType = rowIndexData.lookupOptions?.casts?.length
     ? rowIndexData.castInputType?.input_type
-    : rowIndexData.lookupArrays?.input_type;
+    : rowIndexData.lookupOptions?.input_type;
 
   const fieldName = `${arrayFields}[${index}].lastInputValue`;
 
@@ -17,7 +17,7 @@ const LastInputValue = ({ values, arrayFields, index, setFieldValue }: any) => {
       {({ field }: any) => (
         <MultiSelect
           field={field}
-          options={rowIndexData.operatorArrays?.choices || []}
+          options={rowIndexData.filterTypeOptions?.choices || []}
           setFieldValue={setFieldValue}
         />
       )}

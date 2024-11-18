@@ -14,7 +14,7 @@ const SelectFilterValue = ({
   setFieldValue,
 }: any) => {
   return (
-    <Field name={`${arrayFields}[${index}].filterValue`}>
+    <Field name={`${arrayFields}[${index}].field`}>
       {({ field }: any) => (
         <Select
           value={field.value}
@@ -26,14 +26,14 @@ const SelectFilterValue = ({
 
             if (selectedFilter) {
               setFieldValue(
-                `${arrayFields}[${index}].operatorArrays`,
+                `${arrayFields}[${index}].filterTypeOptions`,
                 selectedFilter[1]
               );
             }
 
-            setFieldValue(`${arrayFields}[${index}].lookupArrays`, []);
-            setFieldValue(`${arrayFields}[${index}].operator`, "");
-            setFieldValue(`${arrayFields}[${index}].lookupValue`, "");
+            setFieldValue(`${arrayFields}[${index}].lookupOptions`, []);
+            setFieldValue(`${arrayFields}[${index}].filter_type`, "");
+            setFieldValue(`${arrayFields}[${index}].lookup`, "");
             setFieldValue(`${arrayFields}[${index}].lastInputValue`, "");
           }}
         >
