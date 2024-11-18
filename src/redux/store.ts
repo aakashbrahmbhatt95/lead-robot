@@ -7,6 +7,7 @@ import globalReducer from "./reducer/global-reducer";
 import componentsReducer from "./componentsSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import agentsReducer from "./reducer/agents-reducer";
+import contactFilterReducer from "./reducer/contactFilter-reducer";
 export const store = configureStore({
   reducer: {
     campaignReducer,
@@ -15,6 +16,7 @@ export const store = configureStore({
     tagReducer,
     globalReducer,
     agentsReducer,
+    contactFilterReducer,
     components: componentsReducer,
   },
 });

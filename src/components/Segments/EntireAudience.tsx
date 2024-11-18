@@ -3,9 +3,7 @@ import { Button } from "@/lib/ui/button";
 import { Formik, Form } from "formik";
 
 const EntireAudience = () => {
-  const handleSubmit = (values: any) => {
-    console.log("Form Values:", values);
-  };
+  const handleSubmit = (values: any) => {};
 
   return (
     <Formik
@@ -26,7 +24,9 @@ const EntireAudience = () => {
             values={values}
             setFieldValue={(field, value) => setFieldValue(field, value)}
           />
-          <Button type="submit" className="mt-5">Save</Button>
+          <Button type="submit" className="mt-5">
+            Save
+          </Button>
         </Form>
       )}
     </Formik>

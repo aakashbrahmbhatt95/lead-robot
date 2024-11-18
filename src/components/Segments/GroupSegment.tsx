@@ -2,11 +2,61 @@ import OverrideOptOut from "./OverrideOptOut";
 import { Button } from "@/lib/ui/button";
 import { Formik, Form } from "formik";
 import GroupSegmentRow from "./GroupSegmentRow";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { getContactFilterAction } from "@/redux/action/contactFilter-action";
+import {
+  addFilterByFilterSetId,
+  getConfigFilterHandler,
+  getFiltersHandler,
+} from "./GroupSegmentRow/helper";
 
 const GroupSegment = () => {
-  const handleSubmit = (values: any) => {
-    console.log("Form Values:", values);
+  const dispatch = useAppDispatch();
+  const [filters, setFilters] = useState(null);
+  const [configFilters, setConfigFilters] = useState(null);
+
+  const { contactFilterList }: any = useAppSelector(
+    (state: any) => state.contactFilterReducer
+  );
+  const contactFilterId = (value: any) => {
+    const temp = contactFilterList?.filter(
+      (ele: any) => ele?.exclude === value
+    )?.[0]?.id;
+    return temp;
   };
+  useEffect(() => {
+    dispatch(getContactFilterAction());
+    getConfigFilterHandler(setConfigFilters);
+    getFiltersHandler(setFilters);
+  }, []);
+
+  const handleSubmit = (values: any) => {
+    values?.includeConditions?.map((ele: any) => {
+      const body: any = {
+        field: ele?.filterValue,
+        filter_type: ele?.operator,
+        lookup: ele?.lookupValue,
+        value: ele?.lastInputValue,
+        cast: ele?.castValue,
+      };
+      addFilterByFilterSetId(body, contactFilterId(false));
+    });
+    values?.excludeConditions?.map((ele: any) => {
+      const body: any = {
+        field: ele?.filterValue,
+        filter_type: ele?.operator,
+        lookup: ele?.lookupValue,
+        value: ele?.lastInputValue,
+        cast: ele?.castValue,
+      };
+      addFilterByFilterSetId(body, contactFilterId(true));
+    });
+  };
+
+  if (!contactFilterList?.length) {
+    return null;
+  }
 
   return (
     <Formik
@@ -21,7 +71,7 @@ const GroupSegment = () => {
     >
       {({ values, setFieldValue }) => (
         <Form>
-          <div className="flex gap-4 py-5 border-b-[1px] border-gray-300 items-center">
+          <div className="flex gap-4 py-5 border-b-[1px] mt-3 border-gray-300 items-center">
             <p>
               <span className="font-bold">0</span> contact match these
               conditions (of a total <span className="font-bold">0</span>{" "}
@@ -37,6 +87,8 @@ const GroupSegment = () => {
             arrayFields="includeConditions"
             heading="Include"
             setFieldValue={setFieldValue}
+            filters={filters}
+            configFilters={configFilters}
           />
           <GroupSegmentRow
             values={values}
@@ -44,6 +96,8 @@ const GroupSegment = () => {
             arrayFields="excludeConditions"
             heading="Exclude"
             setFieldValue={setFieldValue}
+            filters={filters}
+            configFilters={configFilters}
           />
           <OverrideOptOut
             values={values}

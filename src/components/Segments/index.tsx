@@ -6,27 +6,31 @@ import EntireAudience from "./EntireAudience";
 
 const Segments = () => {
   const [entireAudience, setEntireAudience] = useState("group");
-  return (
-    <div>
-      <div>
-        <RadioGroup
-          className="flex gap-10 mt-10"
-          value={entireAudience}
-          onValueChange={(value) => setEntireAudience(value)}
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="group" id="r1" />
-            <Label htmlFor="r1" className="text-base font-normal">Group or new segment</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="entireAudience" id="r2" />
-            <Label htmlFor="r2" className="text-base font-normal">Entire audience</Label>
-          </div>
-        </RadioGroup>
-      </div>
-      {entireAudience === "group" ? <GroupSegment /> : <EntireAudience />}
-    </div>
-  );
+
+  if (entireAudience == "group") {
+    return <GroupSegment />;
+  }
+  // return (
+  //   <div>
+  //     <div>
+  //       <RadioGroup
+  //         className="flex gap-10 mt-10"
+  //         value={entireAudience}
+  //         onValueChange={(value) => setEntireAudience(value)}
+  //       >
+  //         <div className="flex items-center space-x-2">
+  //           <RadioGroupItem value="group" id="r1" />
+  //           <Label htmlFor="r1" className="text-base font-normal">Group or new segment</Label>
+  //         </div>
+  //         <div className="flex items-center space-x-2">
+  //           <RadioGroupItem value="entireAudience" id="r2" />
+  //           <Label htmlFor="r2" className="text-base font-normal">Entire audience</Label>
+  //         </div>
+  //       </RadioGroup>
+  //     </div>
+  //     {entireAudience === "group" ? <GroupSegment /> : <EntireAudience />}
+  //   </div>
+  // );
 };
 
 export default Segments;

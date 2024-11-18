@@ -23,3 +23,4 @@ export const GET_AMBIENT_SOUNDS_URL = "/campaigns/agent/ambient-sounds";
 export const GET_AGENT = "/campaigns/agent/";
 export const GET_CONFIG_FILTER = "/filters/config";
 export const GET_FILTERS = "/filters/";
+export const GET_CONTACT_FILTER = "/campaigns/contact-filter/";

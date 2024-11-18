@@ -1,13 +1,8 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { FieldArray } from "formik";
-import { useEffect, useState } from "react";
 import LastInputValue from "./LastValueInput";
 import ConditionRow from "./ConditionRow";
-import {
-  getConfigFilterHandler,
-  getFiltersHandler,
-  initialConditionRowState,
-} from "./helper";
+import { initialConditionRowState } from "./helper";
 import CastField from "./CastField";
 import OperatorField from "./OperatorField";
 import SelectFilterValue from "./SelectFilterValue";
@@ -19,18 +14,11 @@ const GroupSegmentRow = ({
   arrayFields,
   heading,
   setFieldValue,
+  filters,
+  configFilters,
 }: any) => {
-  const [filters, setFilters] = useState(null);
-  const [configFilters, setConfigFilters] = useState(null);
-
-  useEffect(() => {
-    getConfigFilterHandler(setConfigFilters);
-    getFiltersHandler(setFilters);
-  }, []);
-
   if (!filters || !configFilters) return null;
-  console.log("values", values);
-  console.log("arrayFields", arrayFields);
+
   return (
     <div className="py-5 px-3 mt-8 border-[1px] border-gray-300">
       <ConditionRow heading={heading} valueName={valueName} />
