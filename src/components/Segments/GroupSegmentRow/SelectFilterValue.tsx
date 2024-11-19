@@ -20,7 +20,7 @@ const SelectFilterValue = ({ arrayFields, index, setFieldValue }: any) => {
           onValueChange={(value) => {
             field.onChange({ target: { name: field.name, value } });
             const selectedFilter = Object.entries(filterList).find(
-              ([, option]: any) => option.field === value
+              ([, option]: any) => option?.field === value
             );
 
             if (selectedFilter) {
@@ -31,9 +31,9 @@ const SelectFilterValue = ({ arrayFields, index, setFieldValue }: any) => {
             }
 
             setFieldValue(`${arrayFields}[${index}].lookupOptions`, []);
-            setFieldValue(`${arrayFields}[${index}].filter_type`, "");
             setFieldValue(`${arrayFields}[${index}].lookup`, "");
             setFieldValue(`${arrayFields}[${index}].lastInputValue`, "");
+            setFieldValue(`${arrayFields}[${index}].cast`, "");
           }}
         >
           <SelectTrigger className="w-[300px] mt-1">

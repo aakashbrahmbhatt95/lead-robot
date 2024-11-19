@@ -48,8 +48,10 @@ const GroupSegmentRow = ({
                         arrayFields === "includeConditions" ? false : true;
                       const filterId = getContactFilterId(isExcluded);
 
-                      if (filterId) {
+                      if (ele?.id) {
                         dispatch(deleteFilterByFilterSetId(filterId, ele?.id));
+                      } else {
+                        remove(index);
                       }
                     }}
                     className="cursor-pointer"
@@ -78,18 +80,22 @@ const GroupSegmentRow = ({
                             setFieldValue={setFieldValue}
                             values={values}
                           />
-                          <LastInputValue
-                            values={values}
-                            arrayFields={arrayFields}
-                            index={index}
-                            setFieldValue={setFieldValue}
-                          />
-                          <CastField
-                            values={values}
-                            arrayFields={arrayFields}
-                            index={index}
-                            setFieldValue={setFieldValue}
-                          />
+                          {values[arrayFields][index].lookup !== "" && (
+                            <>
+                              <LastInputValue
+                                values={values}
+                                arrayFields={arrayFields}
+                                index={index}
+                                setFieldValue={setFieldValue}
+                              />
+                              <CastField
+                                values={values}
+                                arrayFields={arrayFields}
+                                index={index}
+                                setFieldValue={setFieldValue}
+                              />
+                            </>
+                          )}
                         </>
                       )}
                     </>
