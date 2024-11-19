@@ -14,7 +14,10 @@ import {
   contactFilterListReducer,
   filterReducer,
 } from "../reducer/contactFilter-reducer";
-import { filterConditionDatByFilterId } from "@/components/Segments/helper";
+import {
+  filterConditionDatByFilterId,
+  initialContactFilterData,
+} from "@/components/Segments/helper";
 
 export const getFiltersAction = () => async (dispatch: AppDispatch) => {
   HttpUtil.makeGET(`${BASE_URL1}${GET_FILTERS}`, "", {
@@ -29,18 +32,6 @@ export const getFiltersAction = () => async (dispatch: AppDispatch) => {
 };
 
 export const getConfigFiltersAction = () => async (dispatch: AppDispatch) => {
-  HttpUtil.makeGET(`${BASE_URL1}${GET_CONFIG_FILTER}`, "", {
-    Authorization: getToken(),
-  })
-    .then((res: any) => {
-      dispatch(configFilterReducer(res?.data));
-    })
-    .catch((err: any) => {
-      toast.error("Oops! Something went wrong");
-    });
-};
-
-export const getContactFlterAction = () => async (dispatch: AppDispatch) => {
   HttpUtil.makeGET(`${BASE_URL1}${GET_CONFIG_FILTER}`, "", {
     Authorization: getToken(),
   })
@@ -110,6 +101,7 @@ export const getContactFilterAction =
         );
         const updatedData = [firstAction?.data, secondAction?.data];
         dispatch(contactFilterListReducer(updatedData));
+        dispatch(contactFilterDataReducer(initialContactFilterData));
       }
     } catch (error) {
       console.error("Error fetching contact filters:", error);
