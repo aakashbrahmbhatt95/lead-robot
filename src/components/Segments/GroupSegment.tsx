@@ -4,9 +4,9 @@ import { Formik, Form } from "formik";
 import GroupSegmentRow from "./GroupSegmentRow";
 import { useEffect, useState } from "react";
 import {
-  getConfigFilterHandler,
-  getFiltersHandler,
-} from "./GroupSegmentRow/helper";
+  getConfigFiltersAction,
+  getFiltersAction,
+} from "@/redux/action/contactFilter-action";
 import {
   addFilterByFilterSetId,
   editFilterByFilterSetId,
@@ -14,20 +14,19 @@ import {
   initialContactFilterData,
 } from "./helper";
 import { useParams } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 
 const GroupSegment = () => {
+  const dispatch = useAppDispatch();
   const params = useParams();
-  const [filters, setFilters] = useState<any>(null);
-  const [configFilters, setConfigFilters] = useState<any>(null);
   const [contactFilterList, setContactFilterList] = useState<any>([]);
   const [contactFilterData, setContactFilterData] = useState<any>(
     initialContactFilterData
   );
 
-  const fetchData = async () => {
-    await getConfigFilterHandler(setConfigFilters);
-    await getFiltersHandler(setFilters);
-  };
+  const { filterList, configFilterList }: any = useAppSelector(
+    (state: any) => state.contactFilterReducer
+  );
 
   const fetchContactData = async () => {
     await getContactFilterAction(
@@ -36,20 +35,21 @@ const GroupSegment = () => {
       contactFilterList,
       setContactFilterList,
       params?.id,
-      filters,
-      configFilters
+      filterList,
+      configFilterList
     );
   };
 
   useEffect(() => {
-    fetchData();
+    dispatch(getFiltersAction());
+    dispatch(getConfigFiltersAction());
   }, []);
 
   useEffect(() => {
-    if (filters && configFilters) {
+    if (filterList && configFilterList) {
       fetchContactData();
     }
-  }, [filters, configFilters]);
+  }, [filterList, configFilterList]);
 
   const handleSubmit = (values: any) => {
     const contactFilterId = (isExcluded: boolean) =>
@@ -78,8 +78,8 @@ const GroupSegment = () => {
             contactFilterList,
             setContactFilterList,
             params?.id,
-            filters,
-            configFilters
+            filterList,
+            configFilterList
           );
         } else if (action === "edit" && condition?.id) {
           editFilterByFilterSetId(
@@ -91,8 +91,8 @@ const GroupSegment = () => {
             contactFilterList,
             setContactFilterList,
             params?.id,
-            filters,
-            configFilters
+            filterList,
+            configFilterList
           );
         }
       });
@@ -133,8 +133,6 @@ const GroupSegment = () => {
             arrayFields="includeConditions"
             heading="Include"
             setFieldValue={setFieldValue}
-            filters={filters}
-            configFilters={configFilters}
             contactFilterData={contactFilterData}
             setContactFilterData={setContactFilterData}
             contactFilterList={contactFilterList}
@@ -147,8 +145,6 @@ const GroupSegment = () => {
             arrayFields="excludeConditions"
             heading="Exclude"
             setFieldValue={setFieldValue}
-            filters={filters}
-            configFilters={configFilters}
             contactFilterData={contactFilterData}
             setContactFilterData={setContactFilterData}
             contactFilterList={contactFilterList}

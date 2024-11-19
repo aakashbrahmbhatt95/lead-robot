@@ -5,15 +5,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/lib/ui/select";
+import { useAppSelector } from "@/redux/store";
 import { Field } from "formik";
 
-const OperatorField = ({
-  values,
-  arrayFields,
-  index,
-  setFieldValue,
-  configFilters,
-}: any) => {
+const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
+  const { configFilterList }: any = useAppSelector(
+    (state: any) => state.contactFilterReducer
+  );
   const rowIndexData = values[arrayFields][index];
   return (
     <Field name={`${arrayFields}[${index}].filter_type`}>
@@ -22,7 +20,7 @@ const OperatorField = ({
           value={field.value}
           onValueChange={(value: any) => {
             field.onChange({ target: { name: field.name, value } });
-            const selectedConfigFilter = Object.entries(configFilters).find(
+            const selectedConfigFilter = Object.entries(configFilterList).find(
               ([key]) => key === value
             );
 

@@ -13,15 +13,15 @@ export const initialContactFilterData = {
 
 export const filterConditionDatByFilterId = (
   conditionsData: any,
-  filters: any,
-  configFilters: any
+  filterList: any,
+  configFilterList: any
 ) => {
   const filterConditionData = conditionsData.map((ele: any) => {
-    const selectedFilter = Object.entries(filters).find(
+    const selectedFilter = Object.entries(filterList).find(
       ([, option]: any) => option.field === ele.field
     );
 
-    const selectedConfigFilter = Object.entries(configFilters).find(
+    const selectedConfigFilter = Object.entries(configFilterList).find(
       ([key]) => key === ele?.type
     );
 
@@ -46,8 +46,8 @@ export const getContactFilterAction = async (
   contactFilterList: any,
   setContactFilterList: any,
   campaignDataById: any,
-  filters: any,
-  configFilters: any
+  filterList: any,
+  configFilterList: any
 ) => {
   try {
     const res = await HttpUtil.makeGET(
@@ -70,13 +70,13 @@ export const getContactFilterAction = async (
         ...contactFilterData,
         includeConditions: filterConditionDatByFilterId(
           includeConditionsData,
-          filters,
-          configFilters
+          filterList,
+          configFilterList
         ),
         excludeConditions: filterConditionDatByFilterId(
           excludeConditionsData,
-          filters,
-          configFilters
+          filterList,
+          configFilterList
         ),
       });
     } else {
@@ -124,8 +124,8 @@ export const addFilterByFilterSetId = async (
   contactFilterList: any,
   setContactFilterList: any,
   campaignDataById: any,
-  filters: any,
-  configFilters: any
+  filterList: any,
+  configFilterList: any
 ) => {
   try {
     const res = await HttpUtil.makePOST(
@@ -142,8 +142,8 @@ export const addFilterByFilterSetId = async (
         contactFilterList,
         setContactFilterList,
         campaignDataById,
-        filters,
-        configFilters
+        filterList,
+        configFilterList
       );
     } else {
       throw new Error("Failed to fetch schedule");
@@ -162,8 +162,8 @@ export const editFilterByFilterSetId = async (
   contactFilterList: any,
   setContactFilterList: any,
   campaignDataById: any,
-  filters: any,
-  configFilters: any
+  filterList: any,
+  configFilterList: any
 ) => {
   try {
     const res = await HttpUtil.makePUT(
@@ -180,8 +180,8 @@ export const editFilterByFilterSetId = async (
         contactFilterList,
         setContactFilterList,
         campaignDataById,
-        filters,
-        configFilters
+        filterList,
+        configFilterList
       );
     } else {
       throw new Error("Failed to fetch schedule");
@@ -199,8 +199,8 @@ export const deleteFilterByFilterSetId = async (
   contactFilterList: any,
   setContactFilterList: any,
   campaignDataById: any,
-  filters: any,
-  configFilters: any
+  filterList: any,
+  configFilterList: any
 ) => {
   try {
     const res = await HttpUtil.makeDELETE(
@@ -217,8 +217,8 @@ export const deleteFilterByFilterSetId = async (
         contactFilterList,
         setContactFilterList,
         campaignDataById,
-        filters,
-        configFilters
+        filterList,
+        configFilterList
       );
     } else {
       throw new Error("Failed to fetch schedule");

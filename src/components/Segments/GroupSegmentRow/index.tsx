@@ -8,6 +8,7 @@ import OperatorField from "./OperatorField";
 import SelectFilterValue from "./SelectFilterValue";
 import SelectLookupValue from "./SelectLookupValue";
 import { deleteFilterByFilterSetId } from "../helper";
+import { useAppSelector } from "@/redux/store";
 
 const GroupSegmentRow = ({
   values,
@@ -15,15 +16,16 @@ const GroupSegmentRow = ({
   arrayFields,
   heading,
   setFieldValue,
-  filters,
-  configFilters,
   contactFilterData,
   setContactFilterData,
   contactFilterList,
   setContactFilterList,
   campaignDataById,
 }: any) => {
-  if (!filters || !configFilters) return null;
+  const { filterList, configFilterList }: any = useAppSelector(
+    (state: any) => state.contactFilterReducer
+  );
+  if (!filterList || !configFilterList) return null;
 
   return (
     <div className="py-5 px-3 mt-8 border-[1px] border-gray-300">
@@ -55,8 +57,8 @@ const GroupSegmentRow = ({
                         contactFilterList,
                         setContactFilterList,
                         campaignDataById,
-                        filters,
-                        configFilters
+                        filterList,
+                        configFilterList
                       );
                     }}
                     className="cursor-pointer"
@@ -64,7 +66,6 @@ const GroupSegmentRow = ({
                   <SelectFilterValue
                     arrayFields={arrayFields}
                     index={index}
-                    filters={filters}
                     setFieldValue={setFieldValue}
                   />
                   {values[arrayFields][index]?.filterTypeOptions?.filters
@@ -75,7 +76,7 @@ const GroupSegmentRow = ({
                         arrayFields={arrayFields}
                         index={index}
                         setFieldValue={setFieldValue}
-                        configFilters={configFilters}
+                        configFilterList={configFilterList}
                       />
                       {values[arrayFields][index].lookupOptions?.lookups
                         ?.length && (
@@ -86,13 +87,13 @@ const GroupSegmentRow = ({
                             setFieldValue={setFieldValue}
                             values={values}
                           />
-                          <CastField
+                          <LastInputValue
                             values={values}
                             arrayFields={arrayFields}
                             index={index}
                             setFieldValue={setFieldValue}
                           />
-                          <LastInputValue
+                          <CastField
                             values={values}
                             arrayFields={arrayFields}
                             index={index}
