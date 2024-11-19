@@ -7,8 +7,8 @@ import CastField from "./CastField";
 import OperatorField from "./OperatorField";
 import SelectFilterValue from "./SelectFilterValue";
 import SelectLookupValue from "./SelectLookupValue";
-import { deleteFilterByFilterSetId } from "../helper";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { deleteFilterByFilterSetId } from "@/redux/action/contactFilter-action";
 
 const GroupSegmentRow = ({
   values,
@@ -16,15 +16,10 @@ const GroupSegmentRow = ({
   arrayFields,
   heading,
   setFieldValue,
-  contactFilterData,
-  setContactFilterData,
-  contactFilterList,
-  setContactFilterList,
-  campaignDataById,
 }: any) => {
-  const { filterList, configFilterList }: any = useAppSelector(
-    (state: any) => state.contactFilterReducer
-  );
+  const dispatch = useAppDispatch();
+  const { filterList, configFilterList, contactFilterList }: any =
+    useAppSelector((state: any) => state.contactFilterReducer);
   if (!filterList || !configFilterList) return null;
 
   return (
@@ -43,23 +38,19 @@ const GroupSegmentRow = ({
                 <div className="flex items-center py-3 gap-2 border-b-[1px] border-gray-300 pb-3">
                   <CircleMinus
                     onClick={() => {
-                      const contactFilterId = (isExcluded: boolean) =>
-                        contactFilterList?.find(
+                      const getContactFilterId = (isExcluded: boolean) => {
+                        return contactFilterList?.find(
                           (ele: any) => ele?.exclude === isExcluded
                         )?.id;
-                      deleteFilterByFilterSetId(
-                        contactFilterId(
-                          arrayFields === "includeConditions" ? false : true
-                        ),
-                        ele?.id,
-                        contactFilterData,
-                        setContactFilterData,
-                        contactFilterList,
-                        setContactFilterList,
-                        campaignDataById,
-                        filterList,
-                        configFilterList
-                      );
+                      };
+
+                      const isExcluded =
+                        arrayFields === "includeConditions" ? false : true;
+                      const filterId = getContactFilterId(isExcluded);
+
+                      if (filterId) {
+                        dispatch(deleteFilterByFilterSetId(filterId, ele?.id));
+                      }
                     }}
                     className="cursor-pointer"
                   />

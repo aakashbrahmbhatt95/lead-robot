@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import PencilSimple from "@/../public/PencilSimple.svg";
-import Vector from "@/../public/Vector.svg";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getcampaignsDatByIdAction } from "@/redux/action/campaigns-action";
@@ -16,6 +15,10 @@ import { ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { Button } from "@/lib/ui/button";
 import { Sheet } from "@/lib/ui/sheet";
 import PreviewSideBarPopup from "@/lib/modals/PreviewSideBarPopup";
+import {
+  getConfigFiltersAction,
+  getFiltersAction,
+} from "@/redux/action/contactFilter-action";
 
 const CampaignsDetails = () => {
   const router = useRouter();
@@ -27,6 +30,11 @@ const CampaignsDetails = () => {
   const { campaignDataById }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
+
+  useEffect(() => {
+    dispatch(getFiltersAction());
+    dispatch(getConfigFiltersAction());
+  }, []);
 
   useEffect(() => {
     if (isEdit) {

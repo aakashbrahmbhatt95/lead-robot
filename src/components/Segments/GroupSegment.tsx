@@ -2,65 +2,36 @@ import OverrideOptOut from "./OverrideOptOut";
 import { Button } from "@/lib/ui/button";
 import { Formik, Form } from "formik";
 import GroupSegmentRow from "./GroupSegmentRow";
-import { useEffect, useState } from "react";
-import {
-  getConfigFiltersAction,
-  getFiltersAction,
-} from "@/redux/action/contactFilter-action";
+import { useEffect } from "react";
 import {
   addFilterByFilterSetId,
   editFilterByFilterSetId,
   getContactFilterAction,
-  initialContactFilterData,
-} from "./helper";
-import { useParams } from "next/navigation";
+} from "@/redux/action/contactFilter-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 
 const GroupSegment = () => {
   const dispatch = useAppDispatch();
-  const params = useParams();
-  const [contactFilterList, setContactFilterList] = useState<any>([]);
-  const [contactFilterData, setContactFilterData] = useState<any>(
-    initialContactFilterData
-  );
 
-  const { filterList, configFilterList }: any = useAppSelector(
+  const { contactFilterData, contactFilterList }: any = useAppSelector(
     (state: any) => state.contactFilterReducer
   );
 
-  const fetchContactData = async () => {
-    await getContactFilterAction(
-      contactFilterData,
-      setContactFilterData,
-      contactFilterList,
-      setContactFilterList,
-      params?.id,
-      filterList,
-      configFilterList
-    );
-  };
-
   useEffect(() => {
-    dispatch(getFiltersAction());
-    dispatch(getConfigFiltersAction());
+    dispatch(getContactFilterAction());
   }, []);
 
-  useEffect(() => {
-    if (filterList && configFilterList) {
-      fetchContactData();
-    }
-  }, [filterList, configFilterList]);
-
   const handleSubmit = (values: any) => {
-    const contactFilterId = (isExcluded: boolean) =>
-      contactFilterList?.find((ele: any) => ele?.exclude === isExcluded)?.id;
-
     const processConditions = (
       conditions: any[],
       isExcluded: boolean,
       action: "add" | "edit"
     ) => {
-      conditions?.forEach((condition: any) => {
+      const filterSetId = contactFilterList?.find(
+        (ele: any) => ele?.exclude === isExcluded
+      )?.id;
+
+      conditions.forEach((condition: any) => {
         const body = {
           field: condition?.field,
           filter_type: condition?.filter_type,
@@ -70,38 +41,17 @@ const GroupSegment = () => {
         };
 
         if (action === "add" && !condition?.id) {
-          addFilterByFilterSetId(
-            body,
-            contactFilterId(isExcluded),
-            contactFilterData,
-            setContactFilterData,
-            contactFilterList,
-            setContactFilterList,
-            params?.id,
-            filterList,
-            configFilterList
-          );
+          dispatch(addFilterByFilterSetId(body, filterSetId));
         } else if (action === "edit" && condition?.id) {
-          editFilterByFilterSetId(
-            body,
-            contactFilterId(isExcluded),
-            condition?.id,
-            contactFilterData,
-            setContactFilterData,
-            contactFilterList,
-            setContactFilterList,
-            params?.id,
-            filterList,
-            configFilterList
-          );
+          dispatch(editFilterByFilterSetId(body, filterSetId, condition?.id));
         }
       });
     };
 
     // Process include and exclude conditions
     processConditions(values?.includeConditions, false, "add");
-    processConditions(values?.includeConditions, true, "edit");
-    processConditions(values?.excludeConditions, false, "add");
+    processConditions(values?.includeConditions, false, "edit");
+    processConditions(values?.excludeConditions, true, "add");
     processConditions(values?.excludeConditions, true, "edit");
   };
 
@@ -133,11 +83,6 @@ const GroupSegment = () => {
             arrayFields="includeConditions"
             heading="Include"
             setFieldValue={setFieldValue}
-            contactFilterData={contactFilterData}
-            setContactFilterData={setContactFilterData}
-            contactFilterList={contactFilterList}
-            setContactFilterList={setContactFilterList}
-            campaignDataById={params.id}
           />
           <GroupSegmentRow
             values={values}
@@ -145,11 +90,6 @@ const GroupSegment = () => {
             arrayFields="excludeConditions"
             heading="Exclude"
             setFieldValue={setFieldValue}
-            contactFilterData={contactFilterData}
-            setContactFilterData={setContactFilterData}
-            contactFilterList={contactFilterList}
-            setContactFilterList={setContactFilterList}
-            campaignDataById={params.id}
           />
           <OverrideOptOut
             values={values}

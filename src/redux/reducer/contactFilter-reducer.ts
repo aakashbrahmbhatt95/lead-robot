@@ -1,14 +1,17 @@
+import { initialContactFilterData } from "@/components/Segments/helper";
 import { createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
   filterList: any;
   configFilterList: any;
   contactFilterList: any;
+  contactFilterData: any;
 };
 const initialState = {
   filterList: [],
   configFilterList: [],
   contactFilterList: [],
+  contactFilterData: initialContactFilterData,
 } as InitialState;
 
 export const ContactFilter = createSlice({
@@ -24,10 +27,17 @@ export const ContactFilter = createSlice({
     contactFilterListReducer: (state, action) => {
       state.contactFilterList = action.payload;
     },
+    contactFilterDataReducer: (state, action) => {
+      state.contactFilterData = action.payload;
+    },
   },
 });
 
-export const { filterReducer, configFilterReducer, contactFilterListReducer } =
-  ContactFilter.actions;
+export const {
+  filterReducer,
+  configFilterReducer,
+  contactFilterListReducer,
+  contactFilterDataReducer,
+} = ContactFilter.actions;
 
 export default ContactFilter.reducer;
