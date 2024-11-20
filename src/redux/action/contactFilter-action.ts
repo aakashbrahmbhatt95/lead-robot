@@ -139,6 +139,7 @@ export const addFilterByFilterSetId =
       );
       if (res?.success) {
         dispatch(getContactFilterAction());
+        toast.success("Contact Filter Added Succesfully!");
       } else {
         throw new Error("Failed to fetch schedule");
       }
@@ -160,6 +161,7 @@ export const editFilterByFilterSetId =
       );
       if (res?.success) {
         dispatch(getContactFilterAction());
+        toast.success("Contact Filter Updated Succesfully!");
       } else {
         throw new Error("Failed to fetch schedule");
       }
@@ -180,6 +182,7 @@ export const deleteFilterByFilterSetId =
       );
       if (res?.success) {
         dispatch(getContactFilterAction());
+        toast.success("Contact Filter Deleted Succesfully!");
       } else {
         throw new Error("Failed to fetch schedule");
       }

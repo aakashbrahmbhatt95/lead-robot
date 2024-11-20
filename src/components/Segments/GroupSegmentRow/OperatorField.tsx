@@ -14,6 +14,7 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
     (state: any) => state.contactFilterReducer
   );
   const rowIndexData = values[arrayFields]?.[index];
+
   useEffect(() => {
     if (rowIndexData?.filterTypeOptions?.filters?.length === 1) {
       setFieldValue(
@@ -34,6 +35,10 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
       setFieldValue(`${arrayFields}[${index}].filter_type`, "");
     }
   }, [rowIndexData?.filterTypeOptions]);
+
+  if (rowIndexData?.filterTypeOptions?.filters?.length === 1) {
+    return null;
+  }
 
   return (
     <Field name={`${arrayFields}[${index}].filter_type`}>

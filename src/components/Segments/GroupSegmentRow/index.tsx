@@ -71,33 +71,41 @@ const GroupSegmentRow = ({
                         setFieldValue={setFieldValue}
                         configFilterList={configFilterList}
                       />
-                      {values[arrayFields][index].lookupOptions?.lookups
-                        ?.length && (
-                        <>
-                          <SelectLookupValue
-                            arrayFields={arrayFields}
-                            index={index}
-                            setFieldValue={setFieldValue}
-                            values={values}
-                          />
-                          {values[arrayFields][index].lookup !== "" && (
-                            <>
-                              <LastInputValue
-                                values={values}
-                                arrayFields={arrayFields}
-                                index={index}
-                                setFieldValue={setFieldValue}
-                              />
-                              <CastField
-                                values={values}
-                                arrayFields={arrayFields}
-                                index={index}
-                                setFieldValue={setFieldValue}
-                              />
-                            </>
-                          )}
-                        </>
-                      )}
+                      {values[arrayFields][
+                        index
+                      ].lookupOptions?.form_display?.map((ele: any) => {
+                        if (ele === "lookup") {
+                          return (
+                            <SelectLookupValue
+                              arrayFields={arrayFields}
+                              index={index}
+                              setFieldValue={setFieldValue}
+                              values={values}
+                            />
+                          );
+                        }
+                        if (ele === "cast") {
+                          return (
+                            <CastField
+                              values={values}
+                              arrayFields={arrayFields}
+                              index={index}
+                              setFieldValue={setFieldValue}
+                            />
+                          );
+                        }
+                        if (ele === "value") {
+                          return (
+                            <LastInputValue
+                              values={values}
+                              arrayFields={arrayFields}
+                              index={index}
+                              setFieldValue={setFieldValue}
+                            />
+                          );
+                        }
+                        return null;
+                      })}
                     </>
                   )}
                 </div>

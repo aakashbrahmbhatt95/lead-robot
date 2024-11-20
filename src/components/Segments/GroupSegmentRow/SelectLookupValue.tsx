@@ -22,8 +22,6 @@ const SelectLookupValue = ({
             field.onChange({
               target: { name: field.name, value },
             });
-            setFieldValue(`${arrayFields}[${index}].lastInputValue`, "");
-            setFieldValue(`${arrayFields}[${index}].cast`, "");
           }}
         >
           <SelectTrigger className="w-[250px] mt-1">
