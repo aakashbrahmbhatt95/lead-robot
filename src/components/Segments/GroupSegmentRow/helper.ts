@@ -1,10 +1,10 @@
 export const initialConditionRowState = {
   field: "",
-  filter_type: "",
+  filter: "",
   filterTypeOptions: [],
   lookup: "",
   lookupOptions: [],
   cast: "",
   castInputType: "",
-  lastInputValue: "",
+  value: "",
 };

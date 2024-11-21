@@ -18,7 +18,7 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
   useEffect(() => {
     if (rowIndexData?.filterTypeOptions?.filters?.length === 1) {
       setFieldValue(
-        `${arrayFields}[${index}].filter_type`,
+        `${arrayFields}[${index}].filter`,
         rowIndexData.filterTypeOptions.filters[0]
       );
       const selectedConfigFilter = Object.entries(configFilterList).find(
@@ -32,7 +32,7 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
         );
       }
     } else {
-      setFieldValue(`${arrayFields}[${index}].filter_type`, "");
+      setFieldValue(`${arrayFields}[${index}].filter`, "");
     }
   }, [rowIndexData?.filterTypeOptions]);
 
@@ -41,7 +41,7 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
   }
 
   return (
-    <Field name={`${arrayFields}[${index}].filter_type`}>
+    <Field name={`${arrayFields}[${index}].filter`}>
       {({ field }: any) => (
         <Select
           value={field.value || ""}
@@ -60,7 +60,7 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
               }
 
               setFieldValue(`${arrayFields}[${index}].lookup`, "");
-              setFieldValue(`${arrayFields}[${index}].lastInputValue`, "");
+              setFieldValue(`${arrayFields}[${index}].value`, "");
             }
           }}
         >

@@ -32,7 +32,7 @@ const SelectFilterValue = ({ arrayFields, index, setFieldValue }: any) => {
 
             setFieldValue(`${arrayFields}[${index}].lookupOptions`, []);
             setFieldValue(`${arrayFields}[${index}].lookup`, "");
-            setFieldValue(`${arrayFields}[${index}].lastInputValue`, "");
+            setFieldValue(`${arrayFields}[${index}].value`, "");
             setFieldValue(`${arrayFields}[${index}].cast`, "");
           }}
         >

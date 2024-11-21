@@ -10,7 +10,7 @@ const LastInputValue = ({ values, arrayFields, index, setFieldValue }: any) => {
     ? rowIndexData.castInputType?.input_type
     : rowIndexData.lookupOptions?.input_type;
 
-  const fieldName = `${arrayFields}[${index}].lastInputValue`;
+  const fieldName = `${arrayFields}[${index}].value`;
 
   return inputType === "list" ? (
     <Field name={fieldName}>
@@ -25,7 +25,7 @@ const LastInputValue = ({ values, arrayFields, index, setFieldValue }: any) => {
   ) : inputType === "bool" ? (
     <div className="w-[25%] px-4">
       <Switch
-        checked={rowIndexData.lastInputValue || false}
+        checked={rowIndexData.value || false}
         onCheckedChange={(checked) => {
           setFieldValue(fieldName, checked);
         }}
@@ -36,7 +36,7 @@ const LastInputValue = ({ values, arrayFields, index, setFieldValue }: any) => {
     inputType === "this_datetime" ? (
     <div className="w-[25%]">
       <DateTimePicker
-        value={rowIndexData.lastInputValue}
+        value={rowIndexData.value}
         onChangeDatePicker={(value: any) => {
           setFieldValue(fieldName, value);
         }}

@@ -1,9 +1,3 @@
-import { getContactFilterAction } from "@/redux/action/contactFilter-action";
-import { BASE_URL1, GET_CONTACT_FILTER } from "@/utils/apiConstants";
-import { getToken } from "@/utils/constants";
-import { HttpUtil } from "@/utils/http-util";
-import { toast } from "react-toastify";
-
 export const initialContactFilterData = {
   includeCondition: "all",
   includeConditions: [],
@@ -28,14 +22,34 @@ export const filterConditionDatByFilterId = (
     return {
       id: ele?.id,
       field: ele.field,
-      filter_type: ele?.type,
+      filter: ele?.type,
       filterTypeOptions: selectedFilter ? selectedFilter[1] : [],
       lookup: ele?.lookup,
       lookupOptions: selectedConfigFilter ? selectedConfigFilter[1] : [],
       cast: ele?.cast,
       castInputType: "",
-      lastInputValue: ele?.value,
+      value: ele?.value,
     };
   });
   return filterConditionData;
 };
+
+export function validateData(data: any) {
+  for (const item of data) {
+    if (!item.field || !item.filter) return false;
+    console.log("1");
+    if (!Array.isArray(item.lookupOptions.form_display)) continue;
+    console.log("2");
+
+    for (const key of item.lookupOptions.form_display) {
+      if (!item[key] || (Array.isArray(item[key]) && item[key].length === 0)) {
+        console.log("3", key);
+        console.log("3 item", item);
+        return false;
+      }
+    }
+  }
+
+  console.log("4");
+  return true;
+}

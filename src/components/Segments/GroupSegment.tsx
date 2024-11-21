@@ -9,6 +9,7 @@ import {
   getContactFilterAction,
 } from "@/redux/action/contactFilter-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { validateData } from "./helper";
 
 const GroupSegment = () => {
   const dispatch = useAppDispatch();
@@ -34,9 +35,9 @@ const GroupSegment = () => {
       conditions.forEach((condition: any) => {
         const body = {
           field: condition?.field,
-          filter_type: condition?.filter_type,
+          filter_type: condition?.filter,
           lookup: condition?.lookup,
-          value: condition?.lastInputValue,
+          value: condition?.value,
           cast: condition?.cast,
         };
 
@@ -65,41 +66,51 @@ const GroupSegment = () => {
       enableReinitialize
       onSubmit={handleSubmit}
     >
-      {({ values, setFieldValue }) => (
-        <Form>
-          <div className="flex gap-4 py-5 border-b-[1px] mt-3 border-gray-300 items-center">
-            <p>
-              <span className="font-bold">0</span> contact match these
-              conditions (of a total <span className="font-bold">0</span>{" "}
-              contacts)
-            </p>
-            <p className="bg-[#e6e4e4] w-fit py-2 px-4 rounded-full font-semibold">
-              Update Recipient Count
-            </p>
-          </div>
-          <GroupSegmentRow
-            values={values}
-            valueName="includeCondition"
-            arrayFields="includeConditions"
-            heading="Include"
-            setFieldValue={setFieldValue}
-          />
-          <GroupSegmentRow
-            values={values}
-            valueName="excludeCondition"
-            arrayFields="excludeConditions"
-            heading="Exclude"
-            setFieldValue={setFieldValue}
-          />
-          <OverrideOptOut
-            values={values}
-            setFieldValue={(field, value) => setFieldValue(field, value)}
-          />
-          <Button type="submit" className="mt-5">
-            Save
-          </Button>
-        </Form>
-      )}
+      {({ values, setFieldValue }) => {
+        console.log("ca", values);
+        const isDisabled =
+          !(
+            values.excludeConditions.length || values.includeConditions.length
+          ) ||
+          !validateData(values.includeConditions) ||
+          !validateData(values.excludeConditions);
+
+        return (
+          <Form>
+            <div className="flex gap-4 py-5 border-b-[1px] mt-3 border-gray-300 items-center">
+              <p>
+                <span className="font-bold">0</span> contact match these
+                conditions (of a total <span className="font-bold">0</span>{" "}
+                contacts)
+              </p>
+              <p className="bg-[#e6e4e4] w-fit py-2 px-4 rounded-full font-semibold">
+                Update Recipient Count
+              </p>
+            </div>
+            <GroupSegmentRow
+              values={values}
+              valueName="includeCondition"
+              arrayFields="includeConditions"
+              heading="Include"
+              setFieldValue={setFieldValue}
+            />
+            <GroupSegmentRow
+              values={values}
+              valueName="excludeCondition"
+              arrayFields="excludeConditions"
+              heading="Exclude"
+              setFieldValue={setFieldValue}
+            />
+            <OverrideOptOut
+              values={values}
+              setFieldValue={(field, value) => setFieldValue(field, value)}
+            />
+            <Button type="submit" className="mt-5" disabled={isDisabled}>
+              Save
+            </Button>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
