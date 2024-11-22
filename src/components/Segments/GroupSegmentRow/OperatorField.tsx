@@ -19,10 +19,10 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
     if (rowIndexData?.filterTypeOptions?.filters?.length === 1) {
       setFieldValue(
         `${arrayFields}[${index}].filter`,
-        rowIndexData.filterTypeOptions.filters[0]
+        rowIndexData.filterTypeOptions.filters[0]?.type
       );
       const selectedConfigFilter = Object.entries(configFilterList).find(
-        ([key]) => key === rowIndexData.filterTypeOptions.filters[0]
+        ([key]) => key === rowIndexData.filterTypeOptions.filters[0]?.type
       );
 
       if (selectedConfigFilter) {
@@ -69,8 +69,8 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
           </SelectTrigger>
           <SelectContent>
             {rowIndexData?.filterTypeOptions?.filters?.map((ele: any) => (
-              <SelectItem key={ele} value={ele}>
-                {ele}
+              <SelectItem key={ele?.type} value={ele?.type}>
+                {ele?.label || "Select Option"}
               </SelectItem>
             ))}
           </SelectContent>
