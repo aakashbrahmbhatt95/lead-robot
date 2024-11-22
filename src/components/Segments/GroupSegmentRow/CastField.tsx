@@ -30,7 +30,7 @@ const CastField = ({ values, arrayFields, index, setFieldValue }: any) => {
           <SelectContent>
             {rowIndexData?.lookupOptions?.casts?.map((ele: any) => (
               <SelectItem key={ele.value} value={ele.value || null}>
-                {ele.label}
+                {ele.label || "Select option"}
               </SelectItem>
             ))}
           </SelectContent>

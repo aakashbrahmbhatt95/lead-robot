@@ -76,12 +76,21 @@ export const getContactFilterAction =
           filterList,
           configFilterList
         );
-
         dispatch(
           contactFilterDataReducer({
             ...contactFilterData,
             includeConditions: filterIncludeConditionData,
             excludeConditions: filterExcludeConditionData,
+            includeCondition:
+              res?.data?.filter((ele: any) => ele?.exclude === false)?.[0]
+                ?.any === true
+                ? "any"
+                : "all",
+            excludeCondition:
+              res?.data?.filter((ele: any) => ele?.exclude === true)?.[0]
+                ?.any === true
+                ? "any"
+                : "all",
           })
         );
       } else {

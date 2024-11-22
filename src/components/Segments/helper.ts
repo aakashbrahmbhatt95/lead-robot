@@ -37,19 +37,14 @@ export const filterConditionDatByFilterId = (
 export function validateData(data: any) {
   for (const item of data) {
     if (!item.field || !item.filter) return false;
-    console.log("1");
     if (!Array.isArray(item.lookupOptions.form_display)) continue;
-    console.log("2");
 
     for (const key of item.lookupOptions.form_display) {
       if (!item[key] || (Array.isArray(item[key]) && item[key].length === 0)) {
-        console.log("3", key);
-        console.log("3 item", item);
         return false;
       }
     }
   }
 
-  console.log("4");
   return true;
 }

@@ -24,7 +24,11 @@ const GroupSegmentRow = ({
 
   return (
     <div className="py-5 px-3 mt-8 border-[1px] border-gray-300">
-      <ConditionRow heading={heading} valueName={valueName} />
+      <ConditionRow
+        heading={heading}
+        valueName={valueName}
+        arrayFields={arrayFields}
+      />
       <FieldArray name={arrayFields}>
         {({ remove, push }) => (
           <>

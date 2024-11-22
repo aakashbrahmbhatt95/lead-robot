@@ -67,7 +67,6 @@ const GroupSegment = () => {
       onSubmit={handleSubmit}
     >
       {({ values, setFieldValue }) => {
-        console.log("ca", values);
         const isDisabled =
           !(
             values.excludeConditions.length || values.includeConditions.length
