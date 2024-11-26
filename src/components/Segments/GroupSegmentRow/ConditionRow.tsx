@@ -53,7 +53,7 @@ const ConditionRow = ({ heading, valueName, arrayFields }: any) => {
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="all">ALL</SelectItem>
               <SelectItem value="any">ANY</SelectItem>
             </SelectContent>
           </Select>

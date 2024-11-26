@@ -8,42 +8,26 @@ export const SideBarData = [
     icon: Group5,
     text: "Campaigns",
     url: "/campaigns",
-    showSecondarySidebar: false,
-    secondarySideBarData: [],
   },
   {
     icon: Group4,
     text: "Insights",
     url: "",
-    showSecondarySidebar: false,
-    secondarySideBarData: [],
   },
 
   {
     icon: ContactsIcon,
     text: "Contacts",
     url: "/contacts",
-    showSecondarySidebar: false,
-    secondarySideBarData: [],
   },
   {
     icon: Group3,
     text: "Settings",
     url: "",
-    showSecondarySidebar: true,
-    secondarySideBarData: [
-      {
-        text: "Attributes",
-        url: "/attributes",
-      },
-      {
-        text: "Tags",
-        url: "/tags",
-      },
-      {
-        text: "Logout",
-        url: "",
-      },
+    dropdownContent: [
+      { label: "Attributes", url: "/attributes" },
+      { label: "Tags", url: "/tags" },
+      { label: "Logout", url: "" },
     ],
   },
 ];

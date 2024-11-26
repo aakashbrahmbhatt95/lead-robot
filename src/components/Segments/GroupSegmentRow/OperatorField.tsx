@@ -70,7 +70,7 @@ const OperatorField = ({ values, arrayFields, index, setFieldValue }: any) => {
           <SelectContent>
             {rowIndexData?.filterTypeOptions?.filters?.map((ele: any) => (
               <SelectItem key={ele?.type} value={ele?.type}>
-                {ele?.label || "Select Option"}
+                {ele?.label || "---"}
               </SelectItem>
             ))}
           </SelectContent>

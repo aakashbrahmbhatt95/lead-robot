@@ -8,7 +8,7 @@ type InitialState = {
   pathConditionList: any;
 };
 const initialState = {
-  campaignsList: [],
+  campaignsList: null,
   campaignDataById: {},
   taskSetList: [],
   taskSetDataById: {},

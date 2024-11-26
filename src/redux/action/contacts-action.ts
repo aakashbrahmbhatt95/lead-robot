@@ -27,8 +27,14 @@ export const addContactsAction =
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(contactsListAction());
-        toast.success("Contact Added Succesfully!");
+        if (res?.error) {
+          res?.data?.errors?.map((ele: any) => {
+            return toast.error(ele);
+          });
+        } else {
+          dispatch(contactsListAction());
+          toast.success("Contact Added Succesfully!");
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");

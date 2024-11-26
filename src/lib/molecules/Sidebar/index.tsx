@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { SidebarContext, SidebarItem } from "./SidebarItem";
 import Image from "next/image";
-import SecondarySidebar from "./SecondarySidebar";
 import CaretDoubleLeft from "@/../public/CaretDoubleLeft.png";
 import CaretDoubleRight from "@/../public/CaretDoubleRight.png";
 import { SideBarData } from "./helper";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { logout } from "@/utils/http-util";
 
 const Sidebar = () => {
   const router = useRouter();
   const [expanded, setExpanded] = useState<boolean>(true);
   const [activeSidebarItem, setActiveSidebarItem] = useState<any>(null);
-
+  const pathname = usePathname();
   const handleSidebarItemClick = (ele: any) => {
-    setActiveSidebarItem(ele);
+    setActiveSidebarItem((prev: any) =>
+      prev?.text === ele?.text ? null : ele
+    );
     if (ele?.url !== "") {
       router.push(ele?.url);
     }
@@ -34,7 +36,7 @@ const Sidebar = () => {
           >
             <Image
               src={expanded ? CaretDoubleLeft : CaretDoubleRight}
-              alt="CaretDoubleLeft"
+              alt="Toggle Sidebar"
               width={20}
               height={20}
             />
@@ -42,10 +44,9 @@ const Sidebar = () => {
         </div>
         <SidebarContext.Provider value={{ expanded }}>
           <ul className="flex-1 px-4">
-            {SideBarData?.map((ele, index: any) => {
-              return (
+            {SideBarData?.map((ele: any, index: any) => (
+              <li key={index} className="mb-2">
                 <SidebarItem
-                  key={index}
                   text={ele?.text}
                   icon={
                     <Image
@@ -55,20 +56,39 @@ const Sidebar = () => {
                       height={20}
                     />
                   }
-                  active={activeSidebarItem?.text === ele?.text ? true : false}
+                  active={activeSidebarItem?.text === ele?.text}
                   handleSidebarItemClick={() => handleSidebarItemClick(ele)}
                 />
-              );
-            })}
+                {/* Accordion Dropdown */}
+                {activeSidebarItem?.text === ele?.text &&
+                  ele?.dropdownContent && (
+                    <div className={`space-y-2 bg-white py-4`}>
+                      {ele.dropdownContent.map((item: any, idx: any) => (
+                        <button
+                          key={idx}
+                          className={`w-full text-left px-4 py-2 rounded-md ${
+                            pathname === item.url
+                              ? "bg-gray-200 font-semibold"
+                              : "bg-white hover:bg-gray-200"
+                          }${expanded ? "" : "text-sm"}`}
+                          onClick={() => {
+                            if (item?.label === "Logout") {
+                              logout();
+                            } else {
+                              router.push(item.url);
+                            }
+                          }}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+              </li>
+            ))}
           </ul>
         </SidebarContext.Provider>
       </nav>
-      {activeSidebarItem?.showSecondarySidebar && (
-        <SecondarySidebar
-          activeSidebarItem={activeSidebarItem}
-          setActiveSidebarItem={setActiveSidebarItem}
-        />
-      )}
     </aside>
   );
 };

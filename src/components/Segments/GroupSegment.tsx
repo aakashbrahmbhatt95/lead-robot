@@ -13,7 +13,9 @@ import { validateData } from "./helper";
 
 const GroupSegment = () => {
   const dispatch = useAppDispatch();
-
+  const { campaignDataById }: any = useAppSelector(
+    (state: any) => state.campaignReducer
+  );
   const { contactFilterData, contactFilterList }: any = useAppSelector(
     (state: any) => state.contactFilterReducer
   );
@@ -78,8 +80,13 @@ const GroupSegment = () => {
           <Form>
             <div className="flex gap-4 py-5 border-b-[1px] mt-3 border-gray-300 items-center">
               <p>
-                <span className="font-bold">0</span> contact match these
-                conditions (of a total <span className="font-bold">0</span>{" "}
+                <span className="font-bold">
+                  {campaignDataById?.contact_count}
+                </span>{" "}
+                contact match these conditions (of a total{" "}
+                <span className="font-bold">
+                  {campaignDataById?.total_contact_count}
+                </span>{" "}
                 contacts)
               </p>
               <p className="bg-[#e6e4e4] w-fit py-2 px-4 rounded-full font-semibold">

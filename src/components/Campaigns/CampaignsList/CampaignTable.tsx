@@ -34,7 +34,6 @@ import {
   deleteCampaignsAction,
   editCampaignsAction,
 } from "@/redux/action/campaigns-action";
-import List from "../../../../public/List.svg";
 import DotsThree from "../../../../public/DotsThree.svg";
 
 export const columns: any = (
@@ -77,7 +76,14 @@ export const columns: any = (
         </Button>
       );
     },
-    cell: ({ row }: any) => <div>{row.getValue("name")}</div>,
+    cell: ({ row }: any) => (
+      <div
+        onClick={() => handleAction("edit", row.original)}
+        className="cursor-pointer"
+      >
+        {row.getValue("name")}
+      </div>
+    ),
   },
   {
     accessorKey: "description",
