@@ -44,6 +44,7 @@
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@radix-ui/themes": "^3.0.5",
+    "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.5",
     "@tanstack/react-table": "^8.17.3",
     "annyang": "^2.6.1",

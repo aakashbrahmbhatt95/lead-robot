@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/lib/ui/button";
 import watson from "../../../public/Watson.svg";
-import googleicon from "../../../public/Google.svg";
 import Image from "next/image";
 import { Input } from "@/lib/ui/input";
 import Link from "next/link";
@@ -17,6 +16,7 @@ import { useToast } from "@/lib/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { getCookie, setCookie } from "cookies-next";
 import { loginFormValidation } from "@/components/validation";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -86,13 +86,16 @@ const Login = () => {
               <p className="text-[#71717A] text-[14px] ">
                 Continue with Google or your personal Email
               </p>
-              <Button
-                variant="outline"
-                className="rounded-[20px] flex items-center gap-4 w-full"
-              >
-                <Image src={googleicon} alt="Google Icon" className="w-6 h-6" />
-                Continue with Google
-              </Button>
+              <GoogleOAuthProvider clientId="1088482495941-e4jgbnmnda3q1k498aa9rp1qrljevit8.apps.googleusercontent.com">
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    console.log(credentialResponse);
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
+              </GoogleOAuthProvider>
               <div className="relative mt-4">
                 <Label
                   htmlFor="email"
