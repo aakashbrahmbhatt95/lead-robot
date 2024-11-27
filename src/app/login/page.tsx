@@ -16,7 +16,7 @@ import { useToast } from "@/lib/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { getCookie, setCookie } from "cookies-next";
 import { loginFormValidation } from "@/components/validation";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleAuthContainer from "./googleLogin";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -86,16 +86,7 @@ const Login = () => {
               <p className="text-[#71717A] text-[14px] ">
                 Continue with Google or your personal Email
               </p>
-              <GoogleOAuthProvider clientId="1088482495941-e4jgbnmnda3q1k498aa9rp1qrljevit8.apps.googleusercontent.com">
-                <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                    console.log(credentialResponse);
-                  }}
-                  onError={() => {
-                    console.log("Login Failed");
-                  }}
-                />
-              </GoogleOAuthProvider>
+              <GoogleAuthContainer />
               <div className="relative mt-4">
                 <Label
                   htmlFor="email"

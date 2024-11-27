@@ -6,6 +6,7 @@ export const DELETE_SESSION = "/auth/session";
 export const REQUEST_PASSWORD = "/auth/password/request";
 export const CHANGE_PASSWORD = "/account/password/change";
 export const RESET_PASSWORD = "/auth/password/reset";
+export const PROVIDER_TOKEN = "/auth/provider/token";
 export const GET_CAMPAIGN_URL = "/campaigns/campaign/";
 export const GET_TASKSET_URL = "/tasks/taskset/";
 export const GET_PATHCONDITION_URL = "/tasks/pathcondition/";
