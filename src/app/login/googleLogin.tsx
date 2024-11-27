@@ -44,6 +44,7 @@ const GoogleAuthButton = () => {
   return (
     <Button
       variant="outline"
+      type="button"
       className="rounded-[20px] flex items-center gap-4 w-full"
       onClick={() => login()}
     >
