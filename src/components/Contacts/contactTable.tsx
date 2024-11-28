@@ -69,7 +69,7 @@ export const columns: any = (handleAction: any, attributesList: any) => [
     enableHiding: false,
   },
   {
-    accessorKey: "phone_number",
+    accessorKey: "phone",
     header: "Phone Number",
     cell: ({ row }: any) => <div>{row.original?.phone}</div>,
   },
@@ -129,6 +129,7 @@ const ContactTable: React.FC<{
   const [columnFilters, setColumnFilters] = useState<any>([]);
   const [columnVisibility, setColumnVisibility] = useState<any>({});
   const [rowSelection, setRowSelection] = useState({});
+
   const { contactsList }: any = useAppSelector(
     (state: any) => state.contactReducer
   );
@@ -173,7 +174,7 @@ const ContactTable: React.FC<{
     <div className="w-full">
       <div className="flex items-center py-4 gap-1">
         <Input
-          placeholder="Search lists, attributes, tags"
+          placeholder="Search contacts by phone number"
           value={(table?.getColumn("phone")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table?.getColumn("phone")?.setFilterValue(event.target.value)

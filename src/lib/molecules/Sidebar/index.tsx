@@ -66,11 +66,9 @@ const Sidebar = () => {
                       {ele.dropdownContent.map((item: any, idx: any) => (
                         <button
                           key={idx}
-                          className={`w-full text-left px-4 py-2 rounded-md ${
-                            pathname === item.url
-                              ? "bg-gray-200 font-semibold"
-                              : "bg-white hover:bg-gray-200"
-                          }${expanded ? "" : "text-sm"}`}
+                          className={`w-full text-left py-2 rounded-md 
+                            ${pathname === item.url ? "bg-gray-200 font-semibold" : "bg-white hover:bg-gray-200"} 
+                            ${expanded ? "px-4" : "pl-2 text-sm"}`}
                           onClick={() => {
                             if (item?.label === "Logout") {
                               logout();

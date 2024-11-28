@@ -50,8 +50,10 @@ const EditContactPopup = ({
   useEffect(() => {
     if (isEdit && tagsList) {
       formik.setValues({
-        phone: removeCountryCode(isEditContactPopup?.phone)?.phoneWithoutCode || "",
-        country_code: removeCountryCode(isEditContactPopup?.phone)?.country || "",
+        phone:
+          removeCountryCode(isEditContactPopup?.phone)?.phoneWithoutCode || "",
+        country_code:
+          removeCountryCode(isEditContactPopup?.phone)?.country || "",
         attributes: attributesList.reduce((acc: any, attribute: any) => {
           acc[attribute.key] =
             isEditContactPopup?.attributes?.[attribute.key] || "";
@@ -70,7 +72,8 @@ const EditContactPopup = ({
 
   const formik: any = useFormik({
     initialValues: {
-      phone: removeCountryCode(isEditContactPopup?.phone)?.phoneWithoutCode || "",
+      phone:
+        removeCountryCode(isEditContactPopup?.phone)?.phoneWithoutCode || "",
       country_code: removeCountryCode(isEditContactPopup?.phone)?.country || "",
       attributes: attributesList.reduce((acc: any, attribute: any) => {
         acc[attribute.key] =
@@ -234,7 +237,12 @@ const EditContactPopup = ({
               className="mt-1 w-[70%]"
               placeholder="Phone Number"
               value={formik.values.phone}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                const phonePattern = /^[+]?[0-9]*$/; // Accepts digits and optional '+' at the start
+                if (phonePattern.test(e.target.value)) {
+                  formik.handleChange(e); // Update form value if input is valid
+                }
+              }}
               onBlur={formik.handleBlur}
             />
           </div>

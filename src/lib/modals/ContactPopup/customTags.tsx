@@ -30,7 +30,13 @@ const CustomTags = ({ tags, setTags }: any) => {
   return (
     <div>
       <div className="my-4 border-[#D4D4D8] border-[0.5px] rounded">
-        <Command>
+        <Command
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+            }
+          }}
+        >
           <CommandInput
             placeholder="Search tag..."
             className="h-9"

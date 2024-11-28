@@ -90,7 +90,7 @@ const GroupSegment = () => {
                 contacts)
               </p>
               <p className="bg-[#e6e4e4] w-fit py-2 px-4 rounded-full font-semibold">
-                Update Recipient Count
+                Save & Update Recipient Count
               </p>
             </div>
             <GroupSegmentRow

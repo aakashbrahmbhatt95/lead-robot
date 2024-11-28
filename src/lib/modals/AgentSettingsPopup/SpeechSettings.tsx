@@ -164,20 +164,28 @@ const SpeechSettings = ({ formik }: any) => {
             Control how often AI will send a reminder message.
             <div className="flex gap-3 mt-2">
               <Input
-                type="number"
                 className="w-[100px]"
                 name="reminder_trigger_ms"
                 value={formik.values.reminder_trigger_ms}
-                onChange={formik.handleChange}
+                onChange={(e) => {
+                  const phonePattern = /^[+]?[0-9]*$/; // Accepts digits and optional '+' at the start
+                  if (phonePattern.test(e.target.value)) {
+                    formik.handleChange(e); // Update form value if input is valid
+                  }
+                }}
                 onBlur={formik.handleBlur}
               />
               <p className="text-[#71717A] text-sm font-normal mt-2">seconds</p>
               <Input
-                type="number"
                 className="w-[100px]"
                 name="reminder_max_count"
                 value={formik.values.reminder_max_count}
-                onChange={formik.handleChange}
+                onChange={(e) => {
+                  const phonePattern = /^[+]?[0-9]*$/; // Accepts digits and optional '+' at the start
+                  if (phonePattern.test(e.target.value)) {
+                    formik.handleChange(e); // Update form value if input is valid
+                  }
+                }}
                 onBlur={formik.handleBlur}
               />
               <p className="text-[#71717A] text-sm font-normal mt-2">times</p>
