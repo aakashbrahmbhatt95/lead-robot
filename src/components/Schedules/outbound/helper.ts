@@ -47,7 +47,7 @@ export const getOutboundScheduleHandler = async (
         },
         formValues: res?.data?.daily?.map((ele: any) => ({
           startDate: ele.start_date,
-          endDate: ele.end_date,
+          endDate: ele.end_date === null ? "" : ele?.end_date,
           callTimeStart: ele?.times[0],
           callTimeEnd: addDuration(ele?.times[0], ele?.duration),
           weeks: ele?.byweekday,
@@ -57,9 +57,7 @@ export const getOutboundScheduleHandler = async (
     } else {
       throw new Error("Failed to fetch schedule");
     }
-  } catch (error) {
-    toast.error("Oops! Something went wrong");
-  }
+  } catch (error) {}
 };
 
 export const addOutboundScheduleHandler = async (

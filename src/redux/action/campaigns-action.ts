@@ -76,9 +76,7 @@ export const editCampaignsAction =
           throw Error;
         }
       })
-      .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
-      })
+      .catch(() => {})
       .finally(() => {});
   };
 
