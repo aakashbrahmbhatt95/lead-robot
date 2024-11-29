@@ -2,7 +2,6 @@ import Image from "next/image";
 import { reviewBoxArray } from "@/components/CampaignsDetails/helper";
 import { Switch } from "@/lib/ui/switch";
 import info from "@/../public/info_black.svg";
-import warningCircle from "@/../public/WarningCircle.svg";
 import {
   Tooltip,
   TooltipContent,
@@ -52,19 +51,10 @@ const Review = ({
                   </div>
                 );
               })}
-              <div className=" flex flex-col justify-center items-center border-[1px] h-[216px] w-[20%] border-[#D4D4D8] rounded-lg">
-                <Image src={warningCircle} alt="warningCircle" />
-                <p className="text-lg font-semibold	text-[#18181B] mt-3">
-                  {error?.length || 0}
-                </p>
-                <p className="text-sm font-normal text-[#71717A] mt-2">
-                  Errors
-                </p>
-              </div>
             </>
           </div>
           <p className="text-sm font-normal text-[#71717A] mt-4">
-            Total contacts: 1904
+            Total contacts: {dryRunRes?.submitted_count}
           </p>
           <p className="text-lg font-semibold	text-[#18181B] mt-3">
             {EXISTING_CONTACTS_TEXT}

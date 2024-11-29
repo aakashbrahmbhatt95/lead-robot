@@ -6,8 +6,6 @@ import FileCsv from "@/../public/FileCsv.svg";
 import Image from "next/image";
 import { Button } from "@/lib/ui/button";
 import * as XLSX from "xlsx";
-import { IMPORT_JOB_TEXT } from "./contactsPopupHelper";
-import { Input } from "@/lib/ui/input";
 
 const UploadCSV = ({
   files,

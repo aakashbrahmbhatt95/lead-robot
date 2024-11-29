@@ -10,6 +10,7 @@ import {
 } from "@/redux/action/contactFilter-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { validateData } from "./helper";
+import { getcampaignsDatByIdAction } from "@/redux/action/campaigns-action";
 
 const GroupSegment = () => {
   const dispatch = useAppDispatch();
@@ -48,6 +49,7 @@ const GroupSegment = () => {
         } else if (action === "edit" && condition?.id) {
           dispatch(editFilterByFilterSetId(body, filterSetId, condition?.id));
         }
+        dispatch(getcampaignsDatByIdAction(campaignDataById?.id));
       });
     };
 
@@ -89,9 +91,13 @@ const GroupSegment = () => {
                 </span>{" "}
                 contacts)
               </p>
-              <p className="bg-[#e6e4e4] w-fit py-2 px-4 rounded-full font-semibold">
+              <Button
+                className=" w-fit py-2 px-4 rounded-full font-semibold"
+                type="submit"
+                disabled={isDisabled}
+              >
                 Save & Update Recipient Count
-              </p>
+              </Button>
             </div>
             <GroupSegmentRow
               values={values}

@@ -32,7 +32,6 @@ const EditContactPopup = ({
   setIsEditContactPopup,
 }: any) => {
   const dispatch = useAppDispatch();
-  const [date, setDate] = useState<any>("");
   const isEdit = isEditContactPopup !== "add";
   const [tags, setTags] = useState<any>([]);
   const [contactTagList, setContactTagList] = useState<any>([]);
@@ -124,12 +123,16 @@ const EditContactPopup = ({
               return (
                 <Input
                   id={`attributes.${attribute.key}`}
-                  type="number"
                   name={`attributes.${attribute.key}`}
                   className="mt-1"
                   placeholder={attribute.label}
                   value={formik.values.attributes[attribute.key]}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    const phonePattern = /^[+]?[0-9]*$/; // Accepts digits and optional '+' at the start
+                    if (phonePattern.test(e.target.value)) {
+                      formik.handleChange(e); // Update form value if input is valid
+                    }
+                  }}
                   onBlur={formik.handleBlur}
                 />
               );

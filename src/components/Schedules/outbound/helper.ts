@@ -138,7 +138,7 @@ export const editOutboundScheduleHandler = async (
           {
             ...campaignDataById,
             exclude_holidays_country: excludePublicHolidays,
-            timezone: timeZone,
+            timezone: "",
           },
           campaignDataById?.id
         )

@@ -17,8 +17,10 @@ const GoogleAuthButton = () => {
         provider: "google",
         process: "login",
         token: {
-          client_id: "123.apps.googleusercontent.com",
+          client_id:
+            "1088482495941-e4jgbnmnda3q1k498aa9rp1qrljevit8.apps.googleusercontent.com",
           access_token, // Access token from Google response
+          id_token: "",
         },
       };
 
@@ -35,7 +37,10 @@ const GoogleAuthButton = () => {
   };
 
   const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => handleGoogleAuth(tokenResponse),
+    onSuccess: (tokenResponse) => {
+      console.log("tokenResponse", tokenResponse);
+      handleGoogleAuth(tokenResponse);
+    },
     onError: () => {
       console.error("Google Login Failed");
     },

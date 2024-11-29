@@ -31,7 +31,7 @@ const LanguageSelection = ({ formik }: any) => {
           <ChevronDown />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
+      <PopoverContent side="bottom" align="start" className="w-[575px] p-0">
         <Command>
           <CommandInput placeholder="Search language..." className="h-9" />
           <CommandList>

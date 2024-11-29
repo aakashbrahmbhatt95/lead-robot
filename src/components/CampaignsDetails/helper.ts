@@ -2,6 +2,7 @@ import user from "@/../public/User.svg";
 import userSwitch from "@/../public/UserSwitch.svg";
 import phoneIncoming from "@/../public/PhoneIncoming.svg";
 import table from "@/../public/Table.svg";
+import warningCircle from "@/../public/WarningCircle.svg";
 
 export const menuBarArray = [
   {
@@ -22,28 +23,35 @@ export const menuBarArray = [
   },
 ];
 
-export const reviewBoxArray = (v: any) => [
-  {
-    img: user,
-    count: "1884",
-    text: "New people",
-  },
-  {
-    img: userSwitch,
-    count: v?.existing_count || "N/A",
-    text: "Existing people",
-  },
-  {
-    img: phoneIncoming,
-    count: "10",
-    text: " Number charges",
-  },
-  {
-    img: table,
-    count: "20",
-    text: "Attributes",
-  },
-];
+export const reviewBoxArray = (v: any) => {
+  return [
+    {
+      img: user,
+      count: v?.imported_count,
+      text: "New people",
+    },
+    {
+      img: userSwitch,
+      count: v?.existing_count,
+      text: "Existing people",
+    },
+    {
+      img: phoneIncoming,
+      count: "10",
+      text: " Number charges",
+    },
+    {
+      img: table,
+      count: v?.tags?.[0],
+      text: "Attributes",
+    },
+    {
+      img: warningCircle,
+      count: v?.invalid_row_count,
+      text: "Errors",
+    },
+  ];
+};
 
 export const invoices = [
   {

@@ -76,20 +76,20 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
     });
 
     if (!dryRunRes) {
-      const res = await getImportJobId(
+      const res: any = await getImportJobId(
         {
           ...importJobIdPayload,
           tags: tags.map((tag: any) => tag.id),
         },
         fileUploadData
       );
+
       if (res.data.success) {
-        setDryRunRes(res.data);
+        setDryRunRes(res.data?.data);
         setImportJobId(res.jobId);
-        const error = res.data?.invalid_row_count;
-        if (error) {
-          setError(Boolean(res.data.invalid_rows || res.data.deta));
-          setErrorsTableData(res.data.invalid_rows);
+        if (res.data?.data?.invalid_row_count) {
+          setError(Boolean(res.data.data.invalid_rows || res.data.deta));
+          setErrorsTableData(res.data.data.invalid_rows);
         }
       }
       if (res.data.errors) {
