@@ -11,6 +11,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { validateData } from "./helper";
 import { getcampaignsDatByIdAction } from "@/redux/action/campaigns-action";
+import { toast } from "react-toastify";
 
 const GroupSegment = () => {
   const dispatch = useAppDispatch();
@@ -52,6 +53,7 @@ const GroupSegment = () => {
         dispatch(getcampaignsDatByIdAction(campaignDataById?.id));
       });
     };
+    toast.success("Contact Filter Added Succesfully!");
 
     // Process include and exclude conditions
     processConditions(values?.includeConditions, false, "add");

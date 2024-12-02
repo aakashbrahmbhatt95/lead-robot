@@ -148,9 +148,8 @@ export const addFilterByFilterSetId =
       );
       if (res?.success) {
         dispatch(getContactFilterAction());
-        toast.success("Contact Filter Added Succesfully!");
       } else {
-        throw new Error("Failed to fetch schedule");
+        throw new Error();
       }
     } catch (error) {
       toast.error("Oops! Something went wrong");
@@ -170,9 +169,8 @@ export const editFilterByFilterSetId =
       );
       if (res?.success) {
         dispatch(getContactFilterAction());
-        toast.success("Contact Filter Updated Succesfully!");
       } else {
-        throw new Error("Failed to fetch schedule");
+        throw new Error();
       }
     } catch (error) {
       toast.error("Oops! Something went wrong");
