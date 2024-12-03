@@ -12,7 +12,7 @@ export const SideBarData = [
   {
     icon: Group4,
     text: "Insights",
-    url: "",
+    url: "/insights",
   },
 
   {
