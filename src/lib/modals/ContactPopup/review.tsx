@@ -27,6 +27,7 @@ const Review = ({
   error,
   setError,
   errorsTableData,
+  errorsTableDataType,
 }: any) => {
   const [isShowError, setIsShowError] = useState(false);
   return (
@@ -132,7 +133,12 @@ const Review = ({
           {HELP_IMPORT_TEXT}
         </p>
       </div>
-      {isShowError && errorsTableData && <ErrorsTable data={errorsTableData} />}
+      {isShowError && errorsTableData && (
+        <ErrorsTable
+          data={errorsTableData}
+          errorsTableDataType={errorsTableDataType}
+        />
+      )}
     </div>
   );
 };

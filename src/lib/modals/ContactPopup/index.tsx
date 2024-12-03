@@ -37,6 +37,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   const [validMapping, setValidMapping] = useState<any>(null);
   const [importJobId, setImportJobId] = useState();
   const [errorsTableData, setErrorsTableData] = useState(null);
+  const [errorsTableDataType, setErrorsTableDataType] = useState(null);
   const [selectAllAttributes, setSelectAllAttributes] = useState<boolean>(true);
 
   useEffect(() => {
@@ -87,9 +88,24 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
       if (res.data.success) {
         setDryRunRes(res.data?.data);
         setImportJobId(res.jobId);
-        if (res.data?.data?.invalid_row_count) {
+        if (res.data?.data) {
           setError(Boolean(res.data.data.invalid_rows || res.data.deta));
-          setErrorsTableData(res.data.data.invalid_rows);
+          setErrorsTableData(
+            res.data.data.invalid_rows?.length
+              ? res.data.data.invalid_rows
+              : res.data.data.invalid_phones?.length
+                ? res.data.data.invalid_phones
+                : res.data.data.duplicated_phones
+          );
+          let dataType: any = "duplicated_phones";
+
+          if (res.data.data.invalid_rows?.length > 0) {
+            dataType = "invalid_rows";
+          } else if (res.data.data.invalid_phones?.length > 0) {
+            dataType = "invalid_phones";
+          }
+
+          setErrorsTableDataType(dataType);
         }
       }
       if (res.data.errors) {
@@ -194,6 +210,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           setImportJobIdPayload={setImportJobIdPayload}
           importJobIdPayload={importJobIdPayload}
           errorsTableData={errorsTableData}
+          errorsTableDataType={errorsTableDataType}
         />
       )}
       <div
