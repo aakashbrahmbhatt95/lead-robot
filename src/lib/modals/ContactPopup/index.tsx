@@ -140,15 +140,24 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
         setErrorsTableData(res.data.data.detail);
       }
     }
-
-    if (dryRunRes && importJobId) {
-      dispatch(uploadContacts(fileUploadData, importJobId, setIsContactPopup));
-    }
   };
 
   const handleNext = () => {
     if (selectedTab === 3) {
       uploadCSVHandler();
+    } else if (selectedTab === 4) {
+      const fileUploadData = fileData.map((ele: any) => {
+        const attr: any = {};
+        Object.keys(selectedAttributes).forEach((sa: any) => {
+          attr[sa] = ele[selectedAttributes[sa]];
+        });
+        return {
+          phone: ele?.phone_number.toString(),
+          attributes: attr,
+          tags: tags.map((tag: any) => tag.name),
+        };
+      });
+      dispatch(uploadContacts(fileUploadData, importJobId, setSelectedTab));
     } else if (selectedTab === 5) {
       setIsContactPopup(false);
     } else {
@@ -258,13 +267,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           onClick={handleNext}
           disabled={tabsDisabled}
         >
-          {selectedTab === 4
-            ? dryRunRes
-              ? "Save"
-              : "Upload"
-            : selectedTab === 5
-              ? "Close"
-              : "Next"}
+          {selectedTab === 4 ? "Upload" : selectedTab === 5 ? "Close" : "Next"}
         </Button>
       </div>
     </DialogContent>
