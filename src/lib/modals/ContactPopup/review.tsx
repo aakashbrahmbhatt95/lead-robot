@@ -12,24 +12,14 @@ import { useState } from "react";
 import {
   EXISTING_CONTACTS_TEXT,
   HELP_IMPORT_TEXT,
-  IMPORT_JOB_TEXT,
   UPDATE_EXISTING_TEXT,
   UPDATE_NEW_DATA_TEXT,
 } from "./contactsPopupHelper";
 import ErrorsTable from "./ErrorsTable";
-import { Input } from "@/lib/ui/input";
 
-const Review = ({
-  dryRunRes,
-  setDryRunRes,
-  importJobIdPayload,
-  setImportJobIdPayload,
-  error,
-  setError,
-  errorsTableData,
-  errorsTableDataType,
-}: any) => {
+const Review = ({ dryRunRes, errorsTableData, errorsTableDataType }: any) => {
   const [isShowError, setIsShowError] = useState(false);
+
   return (
     <div>
       {dryRunRes ? (
@@ -61,47 +51,9 @@ const Review = ({
             {EXISTING_CONTACTS_TEXT}
           </p>
         </>
-      ) : (
-        <>
-          <div className="space-x-2 mt-4">
-            <p className="ml-2 mb-2 text-sm font-medium text-[#18181B]">
-              {IMPORT_JOB_TEXT}
-            </p>
-            <Input
-              value={importJobIdPayload?.name}
-              onChange={(event: any) => {
-                setImportJobIdPayload({
-                  ...importJobIdPayload,
-                  name: event.target.value,
-                });
-                setDryRunRes(null);
-                setError(null);
-              }}
-            />
-            {error?.[0] ? (
-              <div className="text-red-500 text-sm mt-4">
-                {JSON.stringify(error)}
-              </div>
-            ) : null}
-          </div>
-          <div className="flex items-center space-x-2 mt-4">
-            <Switch
-              checked={importJobIdPayload?.update_existing}
-              onCheckedChange={(checked: any) =>
-                setImportJobIdPayload({
-                  ...importJobIdPayload,
-                  update_existing: checked,
-                })
-              }
-            />
-            <p className="text-sm font-medium text-[#18181B]">
-              {UPDATE_EXISTING_TEXT}
-            </p>
-          </div>
-        </>
-      )}
+      ) : null}
 
-      {errorsTableData && !dryRunRes ? (
+      {errorsTableData?.length !== 0 ? (
         <div className="flex items-center space-x-2 mt-4">
           <Switch
             checked={isShowError}

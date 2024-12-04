@@ -37,8 +37,8 @@ export const reviewBoxArray = (v: any) => {
     },
     {
       img: phoneIncoming,
-      count: "10",
-      text: " Number charges",
+      count: v?.duplicated_phone_count,
+      text: " Duplicate number",
     },
     {
       img: table,
@@ -47,7 +47,10 @@ export const reviewBoxArray = (v: any) => {
     },
     {
       img: warningCircle,
-      count: v?.invalid_row_count,
+      count:
+        v?.invalid_row_count ||
+        v?.invalid_phone_count ||
+        v?.duplicated_phone_count,
       text: "Errors",
     },
   ];

@@ -36,7 +36,14 @@ const UploadCSV = ({
       setColumns(formattedHeaders);
       const result = rows.map((row: any) => {
         return row.reduce((obj: any, value: any, index: any) => {
-          obj[formattedHeaders[index]] = value;
+          const key = formattedHeaders[index];
+
+          if (key === "date_of_birth") {
+            obj[key] = XLSX.SSF.format("yyyy-mm-dd", value); // Format the date
+          } else {
+            obj[key] = value;
+          }
+
           return obj;
         }, {});
       });

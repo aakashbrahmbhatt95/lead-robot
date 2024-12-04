@@ -29,6 +29,7 @@ const Contacts = () => {
           <ContactPopup
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}
+            isContactPopup={isContactPopup}
             setIsContactPopup={setIsContactPopup}
           />
         </Dialog>

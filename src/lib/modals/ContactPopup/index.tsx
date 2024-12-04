@@ -17,12 +17,14 @@ import { uploadContacts } from "@/redux/action/contacts-action";
 interface ContactPopupProps {
   selectedTab: number;
   setSelectedTab: (value: number) => void;
+  isContactPopup: any;
   setIsContactPopup: (value: boolean) => void;
 }
 
 const ContactPopup: React.FC<ContactPopupProps> = ({
   selectedTab,
   setSelectedTab,
+  isContactPopup,
   setIsContactPopup,
 }) => {
   const dispatch = useAppDispatch();
@@ -35,10 +37,34 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   const [columns, setColumns] = useState<Array<string>>([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<any>(null);
   const [validMapping, setValidMapping] = useState<any>(null);
-  const [importJobId, setImportJobId] = useState();
-  const [errorsTableData, setErrorsTableData] = useState(null);
+  const [importJobId, setImportJobId] = useState<any>(null);
+  const [errorsTableData, setErrorsTableData] = useState<any>(null);
   const [errorsTableDataType, setErrorsTableDataType] = useState(null);
   const [selectAllAttributes, setSelectAllAttributes] = useState<boolean>(true);
+  const [importJobIdPayload, setImportJobIdPayload] = useState({
+    name: "",
+    update_existing: false,
+  });
+  const [hasMappingError, setHasMappingError] = useState(false);
+
+  useEffect(() => {
+    if (!isContactPopup) {
+      setSelectedAttributes([]);
+      setFileData([]);
+      setFiles(null);
+      setError(null);
+      setTags([]);
+      setColumns([]);
+      setDryRunRes(null);
+      setSelectedCheckboxes(null);
+      setValidMapping(null);
+      setImportJobId(null);
+      setErrorsTableData(null);
+      setErrorsTableDataType(null);
+      setSelectAllAttributes(true);
+      setHasMappingError(false);
+    }
+  }, [isContactPopup]);
 
   useEffect(() => {
     if (columns.length) {
@@ -46,12 +72,6 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
       setValidMapping(reduceColumns(columns, 0));
     }
   }, [columns.length]);
-
-  const [importJobIdPayload, setImportJobIdPayload] = useState({
-    name: "",
-    update_existing: false,
-  });
-  const [hasMappingError, setHasMappingError] = useState(false);
 
   useEffect(() => {
     if (files?.[0]?.name) {
@@ -88,6 +108,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
       if (res.data.success) {
         setDryRunRes(res.data?.data);
         setImportJobId(res.jobId);
+        setSelectedTab(selectedTab + 1);
         if (res.data?.data) {
           setError(Boolean(res.data.data.invalid_rows || res.data.deta));
           setErrorsTableData(
@@ -126,8 +147,10 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
   };
 
   const handleNext = () => {
-    if (selectedTab === 4) {
+    if (selectedTab === 3) {
       uploadCSVHandler();
+    } else if (selectedTab === 5) {
+      setIsContactPopup(false);
     } else {
       setSelectedTab(selectedTab + 1);
     }
@@ -139,7 +162,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
     (selectedTab === 1 &&
       (fileData.length === 0 || !importJobIdPayload.name)) ||
     (selectedTab === 2 && hasMappingError) ||
-    (selectedTab === 4 && (error || errorsTableData));
+    (selectedTab === 4 && errorsTableData?.length);
 
   return (
     <DialogContent className="sm:max-w-[60%] max-h-[75%] overflow-scroll">
@@ -200,15 +223,20 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           setSelectAllAttributes={setSelectAllAttributes}
         />
       )}
-      {selectedTab === 3 && <CustomTags tags={tags} setTags={setTags} />}
-      {selectedTab === 4 && (
-        <Review
-          dryRunRes={dryRunRes?.data}
+      {selectedTab === 3 && (
+        <CustomTags
+          tags={tags}
+          setTags={setTags}
           setDryRunRes={setDryRunRes}
           error={error}
           setError={setError}
           setImportJobIdPayload={setImportJobIdPayload}
           importJobIdPayload={importJobIdPayload}
+        />
+      )}
+      {selectedTab === 4 && (
+        <Review
+          dryRunRes={dryRunRes}
           errorsTableData={errorsTableData}
           errorsTableDataType={errorsTableDataType}
         />
@@ -230,7 +258,13 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           onClick={handleNext}
           disabled={tabsDisabled}
         >
-          {selectedTab === 4 ? (dryRunRes ? "Save" : "Upload") : "Next"}
+          {selectedTab === 4
+            ? dryRunRes
+              ? "Save"
+              : "Upload"
+            : selectedTab === 5
+              ? "Close"
+              : "Next"}
         </Button>
       </div>
     </DialogContent>
