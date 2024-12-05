@@ -70,7 +70,7 @@ export const deleteContactsAction =
   };
 
 export const uploadContacts =
-  (body: any, importJobId: any, setSelectedTab: any) =>
+  (body: any, importJobId: any, setIsContactPopup: any) =>
   async (dispatch: AppDispatch) => {
     HttpUtil.makePOST(
       `${BASE_URL1}${GET_CONTACT_IMPORT_JOB_URL}${importJobId}/import`,
@@ -82,7 +82,8 @@ export const uploadContacts =
       .then((res: any) => {
         if (res?.success) {
           dispatch(contactsListAction());
-          setSelectedTab(5);
+          setIsContactPopup(false);
+          toast.success("Upload Succesfully!");
         }
       })
       .catch((err: any) => {

@@ -157,7 +157,7 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
           tags: tags.map((tag: any) => tag.name),
         };
       });
-      dispatch(uploadContacts(fileUploadData, importJobId, setSelectedTab));
+      dispatch(uploadContacts(fileUploadData, importJobId, setIsContactPopup));
     } else if (selectedTab === 5) {
       setIsContactPopup(false);
     } else {
