@@ -6,7 +6,11 @@ import { HttpUtil } from "@/utils/http-util";
 import { BASE_URL, PROVIDER_TOKEN } from "@/utils/apiConstants";
 import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
-import { SESSION_KEY, TOKEN_KEY } from "@/utils/constants";
+import {
+  NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+  SESSION_KEY,
+  TOKEN_KEY,
+} from "@/utils/constants";
 import { useRouter } from "next/navigation";
 
 const GoogleAuthButton = () => {
@@ -19,7 +23,7 @@ const GoogleAuthButton = () => {
         provider: "google",
         process: "login",
         token: {
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+          client_id: NEXT_PUBLIC_GOOGLE_CLIENT_ID,
           access_token: "", // Not required in this flow
           id_token,
         },
@@ -64,9 +68,7 @@ const GoogleAuthButton = () => {
 
 const GoogleAuthContainer = () => {
   return (
-    <GoogleOAuthProvider
-      clientId={`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}
-    >
+    <GoogleOAuthProvider clientId={`${NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}>
       <GoogleAuthButton />
     </GoogleOAuthProvider>
   );
