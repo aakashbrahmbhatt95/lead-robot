@@ -85,13 +85,17 @@ function SimpleVoiceAssistant(props: {
 
   useEffect(() => {
     props.onStateChange(state);
+  }, [props, state]);
+
+  useEffect(() => {
     if (state === "connecting") {
       toast.success("Connecting to agent");
     }
     if (state === "connected") {
       toast.success("Agent is ready to speak!");
     }
-  }, [props, state]);
+  }, [state]);
+
   return (
     <div className="h-[300px] max-w-[90vw] mx-auto">
       <BarVisualizer

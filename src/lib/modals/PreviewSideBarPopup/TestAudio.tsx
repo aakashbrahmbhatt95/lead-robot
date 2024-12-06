@@ -6,7 +6,7 @@ const TestAudio = ({
 }: any) => {
   return (
     <div
-      className="h-[80vh] flex flex-col items-center justify-center gap-5"
+      className="h-[80vh] flex flex-col items-center justify-center gap-5 cursor-pointer"
       onClick={() => {
         setIsVoiceAssitantPopup(true);
         setIsPreviewSideBarPopup(null);
