@@ -5,7 +5,10 @@ import TestLLM from "./TestLLM";
 import TestAudio from "./TestAudio";
 import PreviewMenuBar from "./PreviewMenuBar";
 
-const PreviewSideBarPopup = ({ setIsPreviewSideBarPopup }: any) => {
+const PreviewSideBarPopup = ({
+  setIsPreviewSideBarPopup,
+  setIsVoiceAssitantPopup,
+}: any) => {
   const [menuBar, setMenuBar] = useState("testaudio");
   return (
     <SheetContent className="overflow-scroll">
@@ -16,7 +19,12 @@ const PreviewSideBarPopup = ({ setIsPreviewSideBarPopup }: any) => {
         />
       </div>
       <PreviewMenuBar setMenuBar={setMenuBar} menuBar={menuBar} />
-      {menuBar === "testaudio" && <TestAudio />}
+      {menuBar === "testaudio" && (
+        <TestAudio
+          setIsVoiceAssitantPopup={setIsVoiceAssitantPopup}
+          setIsPreviewSideBarPopup={setIsPreviewSideBarPopup}
+        />
+      )}
       {menuBar === "testllm" && <TestLLM />}
     </SheetContent>
   );

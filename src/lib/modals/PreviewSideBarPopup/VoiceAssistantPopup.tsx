@@ -12,27 +12,41 @@ import {
 } from "@livekit/components-react";
 import { useCallback, useEffect, useState } from "react";
 import { MediaDeviceFailure } from "livekit-client";
-import type { ConnectionDetails } from "./../api/connection-details/route";
-import { NoAgentNotification } from "./../../lib/molecules/LiveKitComponent/NoAgentNotification";
-import { CloseIcon } from "./../../lib/molecules/LiveKitComponent/CloseIcon";
 import { useKrispNoiseFilter } from "@livekit/components-react/krisp";
+import { HttpUtil } from "@/utils/http-util";
+import { BASE_URL1 } from "@/utils/apiConstants";
+import { getToken } from "@/utils/constants";
+import { toast } from "react-toastify";
+import { CloseIcon } from "@/lib/molecules/LiveKitComponent/CloseIcon";
+import { NoAgentNotification } from "@/lib/molecules/LiveKitComponent/NoAgentNotification";
+import { useParams } from "next/navigation";
 
-export default function Page() {
-  const [connectionDetails, updateConnectionDetails] = useState<
-    ConnectionDetails | undefined
-  >(undefined);
+const VoiceAssistantPopup = () => {
+  const [connectionDetails, setConnectionDetails] = useState<any>(undefined);
   const [agentState, setAgentState] = useState<AgentState>("disconnected");
+  const params = useParams();
+  const onConnectButtonClicked = async () => {
+    try {
+      const res = await HttpUtil.makeGET(
+        `${BASE_URL1}/agents/${params?.id}`,
+        "",
+        {
+          Authorization: getToken(),
+        }
+      );
+      toast.success("Agent details fetch successfully");
 
-  const onConnectButtonClicked = useCallback(async () => {
-    const url = new URL(
-      process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT ??
-        "/api/connection-details",
-      window.location.origin
-    );
-    const response = await fetch(url.toString());
-    const connectionDetailsData = await response.json();
-    updateConnectionDetails(connectionDetailsData);
-  }, []);
+      setConnectionDetails({
+        serverUrl: res?.data?.server_url,
+        roomName: res?.data?.room_name,
+        participantToken: res?.data?.token,
+        participantName: res?.data?.participant_identity,
+      });
+    } catch (err: any) {
+      toast.error("Connection failed");
+      return err;
+    }
+  };
 
   return (
     <main
@@ -47,7 +61,8 @@ export default function Page() {
         video={false}
         onMediaDeviceFailure={onDeviceFailure}
         onDisconnected={() => {
-          updateConnectionDetails(undefined);
+          setConnectionDetails(undefined);
+          toast.error("Connection failed");
         }}
         className="grid grid-rows-[2fr_1fr] items-center"
       >
@@ -61,14 +76,21 @@ export default function Page() {
       </LiveKitRoom>
     </main>
   );
-}
+};
 
 function SimpleVoiceAssistant(props: {
   onStateChange: (state: AgentState) => void;
 }) {
-  const { state, audioTrack } = useVoiceAssistant();
+  const { state, audioTrack }: any = useVoiceAssistant();
+
   useEffect(() => {
     props.onStateChange(state);
+    if (state === "connecting") {
+      toast.success("Connecting to agent");
+    }
+    if (state === "connected") {
+      toast.success("Agent is ready to speak!");
+    }
   }, [props, state]);
   return (
     <div className="h-[300px] max-w-[90vw] mx-auto">
@@ -134,8 +156,9 @@ function ControlBar(props: {
 }
 
 function onDeviceFailure(error?: MediaDeviceFailure) {
-  console.error(error);
-  alert(
+  toast.error(
     "Error acquiring camera or microphone permissions. Please make sure you grant the necessary permissions in your browser and reload the tab"
   );
 }
+
+export default VoiceAssistantPopup;

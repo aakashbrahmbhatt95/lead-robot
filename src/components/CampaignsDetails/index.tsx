@@ -19,6 +19,8 @@ import {
   getConfigFiltersAction,
   getFiltersAction,
 } from "@/redux/action/contactFilter-action";
+import { Dialog, DialogContent } from "@/lib/ui/dialog";
+import VoiceAssistantPopup from "@/lib/modals/PreviewSideBarPopup/VoiceAssistantPopup";
 
 const CampaignsDetails = () => {
   const router = useRouter();
@@ -27,6 +29,7 @@ const CampaignsDetails = () => {
   const params = useParams();
   const isEdit = !params.id.includes("create");
   const [isPreviewSideBarPopup, setIsPreviewSideBarPopup] = useState(false);
+  const [isVoiceAssitantPopup, setIsVoiceAssitantPopup] = useState(false);
   const { campaignDataById }: any = useAppSelector(
     (state: any) => state.campaignReducer
   );
@@ -113,9 +116,18 @@ const CampaignsDetails = () => {
         {isPreviewSideBarPopup && (
           <PreviewSideBarPopup
             setIsPreviewSideBarPopup={setIsPreviewSideBarPopup}
+            setIsVoiceAssitantPopup={setIsVoiceAssitantPopup}
           />
         )}
       </Sheet>
+      <Dialog
+        open={isVoiceAssitantPopup}
+        onOpenChange={setIsVoiceAssitantPopup}
+      >
+        <DialogContent className="sm:max-w-[60%] max-h-[75%] p-[40px] overflow-scroll bg-white">
+          <VoiceAssistantPopup />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
