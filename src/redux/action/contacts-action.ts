@@ -22,7 +22,7 @@ export const contactsListAction = () => async (dispatch: AppDispatch) => {
 };
 
 export const addContactsAction =
-  (body: any) => async (dispatch: AppDispatch) => {
+  (body: any, setIsEditContactPopup: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makePOST(`${BASE_URL1}${GET_CONTACT_URL}`, body, {
       Authorization: getToken(),
     })
@@ -34,6 +34,7 @@ export const addContactsAction =
         } else {
           dispatch(contactsListAction());
           toast.success("Contact Added Succesfully!");
+          setIsEditContactPopup(null);
         }
       })
       .catch((err: any) => {
@@ -42,13 +43,21 @@ export const addContactsAction =
   };
 
 export const editContactsAction =
-  (body: any, id: any) => async (dispatch: AppDispatch) => {
+  (body: any, id: any, setIsEditContactPopup: any) =>
+  async (dispatch: AppDispatch) => {
     HttpUtil.makePUT(`${BASE_URL1}${GET_CONTACT_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(contactsListAction());
-        toast.success("Contact Updated Succesfully!");
+        if (res?.success) {
+          dispatch(contactsListAction());
+          toast.success("Contact Updated Succesfully!");
+          setIsEditContactPopup(null);
+        } else {
+          res?.data?.errors?.map((ele: any) => {
+            return toast.error(ele);
+          });
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");

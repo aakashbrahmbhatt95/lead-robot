@@ -155,7 +155,9 @@ const MapAttributes = ({
             <div className="w-[40%]">
               <MapComboBox
                 value={selectedAttributes[column] || ""}
-                onChange={(newValue: any) => handleAttributeChange(column, newValue)}
+                onChange={(newValue: any) =>
+                  handleAttributeChange(column, newValue)
+                }
                 disabled={!selectedCheckboxes[column]}
                 error={errors[column]}
               />

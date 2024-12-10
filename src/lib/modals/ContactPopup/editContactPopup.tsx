@@ -92,11 +92,16 @@ const EditContactPopup = ({
         tags: tags,
       };
       if (isEdit) {
-        dispatch(editContactsAction(body, isEditContactPopup?.id));
+        dispatch(
+          editContactsAction(
+            body,
+            isEditContactPopup?.id,
+            setIsEditContactPopup
+          )
+        );
       } else {
-        dispatch(addContactsAction(body));
+        dispatch(addContactsAction(body, setIsEditContactPopup));
       }
-      setIsEditContactPopup(null);
     },
   });
 

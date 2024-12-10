@@ -13,6 +13,7 @@ import { useAppDispatch } from "../../../redux/store";
 import { getMenuBarTitle, reduceColumns } from "./contactsPopupHelper";
 import { getImportJobId } from "@/api/contactsApi";
 import { uploadContacts } from "@/redux/action/contacts-action";
+import { toast } from "react-toastify";
 
 interface ContactPopupProps {
   selectedTab: number;
@@ -57,7 +58,6 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
       setColumns([]);
       setDryRunRes(null);
       setSelectedCheckboxes(null);
-      setValidMapping(null);
       setImportJobId(null);
       setErrorsTableData(null);
       setErrorsTableDataType(null);
@@ -165,7 +165,14 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
     }
   };
 
-  const handleBack = () => setSelectedTab(selectedTab - 1);
+  const handleBack = () => {
+    if (selectedTab === 4) {
+      setSelectedTab(3);
+      setDryRunRes(null);
+    } else {
+      setSelectedTab(selectedTab - 1);
+    }
+  };
 
   const tabsDisabled =
     (selectedTab === 1 &&
@@ -196,7 +203,21 @@ const ContactPopup: React.FC<ContactPopupProps> = ({
                     backgroundColor:
                       selectedTab === ele.value ? "white" : "#F4F4F5",
                   }}
-                  onClick={() => setSelectedTab(ele.value)}
+                  onClick={() => {
+                    if (selectedTab === 1 && fileData.length === 0) {
+                      toast.error("please upload the CSV file");
+                    } else if (selectedTab === 2 && hasMappingError) {
+                      toast.error(
+                        "Please map all checked columns to attributes."
+                      );
+                    } else if (selectedTab === 3 && dryRunRes === null) {
+                      toast.error(
+                        "Import job with this Name and User already exists."
+                      );
+                    } else {
+                      setSelectedTab(ele.value);
+                    }
+                  }}
                 >
                   {ele.text}
                 </MenubarTrigger>
