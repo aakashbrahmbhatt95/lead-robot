@@ -21,11 +21,12 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Checkbox } from "../ui/checkbox";
-import { useAppDispatch } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { addDoAction, editDoAction } from "@/redux/action/campaigns-action";
 import { X } from "lucide-react";
 import { useFormik } from "formik";
 import { doCardValidationSchema } from "@/components/validation";
+import { getTasksAction } from "@/redux/action/global-action";
 
 const DoCardPopup = ({
   isDoSetPopup,
@@ -33,6 +34,13 @@ const DoCardPopup = ({
   setIsDoSetPopup,
 }: any) => {
   const dispatch = useAppDispatch();
+  const { taskActionList }: any = useAppSelector(
+    (state: any) => state.globalReducer
+  );
+
+  useEffect(() => {
+    dispatch(getTasksAction());
+  }, []);
 
   useEffect(() => {
     if (isDoSetPopup?.isEdit) {
@@ -40,7 +48,7 @@ const DoCardPopup = ({
         name: isDoSetPopup?.data?.name || "",
         number: isDoSetPopup?.data?.number || "",
         description: isDoSetPopup?.data?.description || "",
-        action: isDoSetPopup?.action || "",
+        action_id: isDoSetPopup?.action_id || "",
         is_active: isDoSetPopup?.is_active,
         is_required: isDoSetPopup?.is_required,
       });
@@ -52,7 +60,7 @@ const DoCardPopup = ({
       name: isDoSetPopup?.name || "",
       number: isDoSetPopup?.number || "",
       description: isDoSetPopup?.validations?.description || "",
-      action: isDoSetPopup?.action || "",
+      action_id: isDoSetPopup?.action_id || "",
       options: [],
       is_active: isDoSetPopup?.is_active || true,
       is_required: isDoSetPopup?.is_required || true,
@@ -71,7 +79,7 @@ const DoCardPopup = ({
         is_active: values.is_active,
         include_condition: "string",
         exclude_condition: "string",
-        action: values.action,
+        action_id: values.action_id,
         data: {
           name: values.name,
           number: values.number,
@@ -82,11 +90,10 @@ const DoCardPopup = ({
         say_after: "string",
       };
       if (isDoSetPopup?.isEdit) {
-        dispatch(editDoAction(body, isDoSetPopup?.id));
+        dispatch(editDoAction(body, isDoSetPopup?.id, setIsDoSetPopup));
       } else {
-        dispatch(addDoAction(body));
+        dispatch(addDoAction(body, setIsDoSetPopup));
       }
-      setIsDoSetPopup(null);
     },
   });
 
@@ -116,34 +123,25 @@ const DoCardPopup = ({
         <CardContent>
           <form onSubmit={formik.handleSubmit}>
             <div className="mt-2">
-              {formik.values.action && (
-                <Select
-                  name="action"
-                  value={formik.values.action}
-                  onValueChange={(value) =>
-                    formik.setFieldValue("action", value)
-                  }
-                >
-                  <SelectTrigger className="w-full mt-3">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="end call">End call</SelectItem>
-                    <SelectItem value="transfer call">Transfer call</SelectItem>
-                    <SelectItem value="sms">SMS</SelectItem>
-                    <SelectItem value="email">Email</SelectItem>
-                    <SelectItem value="availability">Availability</SelectItem>
-                    <SelectItem value="book">Book</SelectItem>
-                    <SelectItem value="reschedule">Reschedule</SelectItem>
-                    <SelectItem value="cancel">Cancel</SelectItem>
-                    <SelectItem value="addcampagin">Add Campaign</SelectItem>
-                    <SelectItem value="removecampaign">
-                      Remove Campaign
-                    </SelectItem>
-                    <SelectItem value="custom">Custom</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
+              <Select
+                name="action_id"
+                value={formik.values.action_id}
+                onValueChange={(value) =>
+                  formik.setFieldValue("action_id", +value)
+                }
+              >
+                <SelectTrigger className="w-full mt-3">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  {taskActionList?.map((ele: any) => {
+                    return <SelectItem value={ele?.id}>{ele?.name}</SelectItem>;
+                  })}
+                </SelectContent>
+              </Select>
+              {formik.touched.action_id && formik.errors.action_id ? (
+                <div className="text-red-600">{formik.errors.action_id}</div>
+              ) : null}
             </div>
             <div className="mt-3">
               <Label>Name</Label>

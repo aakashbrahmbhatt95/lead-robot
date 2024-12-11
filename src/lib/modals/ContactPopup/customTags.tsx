@@ -100,7 +100,7 @@ const CustomTags = ({
               />
             </div>
             <p
-              className="text-sm font-normal text-[#18181B] p-[10px] cursor-pointer"
+              className="text-sm font-normal text-[#18181B] w-fit p-[10px] cursor-pointer"
               onClick={() => {
                 if (newTag?.length) {
                   dispatch(addTagAction({ name: newTag }));

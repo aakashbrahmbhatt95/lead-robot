@@ -28,7 +28,6 @@ const TaskSetCard: React.FC<{
 
     if (type === "ask") {
       setIsAskSetPopup({
-        response_type: subType,
         isEdit: false,
         order: roundedValue,
       });
@@ -39,7 +38,6 @@ const TaskSetCard: React.FC<{
       });
     } else if (type === "do") {
       setIsDoSetPopup({
-        action: subType,
         isEdit: false,
         order: roundedValue,
       });

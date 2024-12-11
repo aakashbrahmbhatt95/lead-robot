@@ -58,7 +58,8 @@ const DoCard = ({
                           taskset_id: taskSetDetails?.id,
                           is_active: checked,
                         },
-                        doDetail?.id
+                        doDetail?.id,
+                        setIsDoSetPopup
                       )
                     );
                   }}
@@ -92,7 +93,8 @@ const DoCard = ({
                             taskset_id: taskSetDetails?.id,
                             is_required: checked,
                           },
-                          doDetail?.id
+                          doDetail?.id,
+                          setIsDoSetPopup
                         )
                       );
                     }}

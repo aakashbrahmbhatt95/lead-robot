@@ -377,7 +377,8 @@ export const deleteSaysAction =
   };
 
 export const addDoAction =
-  (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  (body: any, setIsDoSetPopup: any) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePOST(`${BASE_URL1}${GET_DO_URL}`, body, {
       Authorization: getToken(),
@@ -385,6 +386,7 @@ export const addDoAction =
       .then((res: any) => {
         if (res?.success) {
           dispatch(taskSetListAction(campaignDataById?.id));
+          setIsDoSetPopup(null);
         }
       })
       .catch((err: any) => {
@@ -394,15 +396,20 @@ export const addDoAction =
   };
 
 export const editDoAction =
-  (body: any, id: any) =>
+  (body: any, id: any, setIsDoSetPopup: any) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     const { campaignDataById } = getState()?.campaignReducer;
     HttpUtil.makePUT(`${BASE_URL1}${GET_DO_URL}${id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(taskSetListAction(campaignDataById?.id));
-        toast.success("Do Card Updated Succesfully!");
+        if (res?.success) {
+          dispatch(taskSetListAction(campaignDataById?.id));
+          toast.success("Do Card Updated Succesfully!");
+          setIsDoSetPopup(null);
+        } else {
+          throw Error;
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -417,8 +424,12 @@ export const deleteDoAction =
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(taskSetListAction(campaignDataById?.id));
-        toast.success("Do Card Deleted Succesfully!");
+        if (res?.success) {
+          dispatch(taskSetListAction(campaignDataById?.id));
+          toast.success("Do Card Deleted Succesfully!");
+        } else {
+          throw Error;
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");

@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
   languageList: any;
+  taskActionList: any;
 };
 const initialState = {
   languageList: [],
+  taskActionList: [],
 } as InitialState;
 
 export const Globals = createSlice({
@@ -14,9 +16,12 @@ export const Globals = createSlice({
     languageListReducer: (state, action) => {
       state.languageList = action.payload;
     },
+    taskActionReducer: (state, action) => {
+      state.taskActionList = action.payload;
+    },
   },
 });
 
-export const { languageListReducer } = Globals.actions;
+export const { languageListReducer, taskActionReducer } = Globals.actions;
 
 export default Globals.reducer;

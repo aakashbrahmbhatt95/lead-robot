@@ -31,7 +31,7 @@ const SubCardContainer = ({
   const toggleAccordion = (id: string) => {
     setOpenAccordions((prev) => ({ ...prev, [id]: !prev[id] }));
   };
-  
+
   const handleOnDragStart = () => {
     isCardDraggingRef.current = true;
     setIsCardDraggingState(true);
@@ -104,7 +104,8 @@ const SubCardContainer = ({
               say_during: "string",
               say_after: "string",
             },
-            reorderedItem?.id
+            reorderedItem?.id,
+            setIsDoSetPopup
           )
         );
       }
@@ -114,10 +115,7 @@ const SubCardContainer = ({
   };
 
   return (
-    <DndContext
-      onDragStart={handleOnDragStart}
-      onDragEnd={handleDragEnd}
-    >
+    <DndContext onDragStart={handleOnDragStart} onDragEnd={handleDragEnd}>
       <SortableContext items={items}>
         {sortedTasks?.map((taskDetail: any, index: any) => (
           <SortableItem key={taskDetail.id} id={taskDetail.id}>

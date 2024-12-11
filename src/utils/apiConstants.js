@@ -13,6 +13,7 @@ export const GET_PATHCONDITION_URL = "/tasks/pathcondition/";
 export const GET_ASK_URL = "/tasks/ask/";
 export const GET_SAY_URL = "/tasks/say/";
 export const GET_DO_URL = "/tasks/do/";
+export const GET_TASK_ACTION_URL = "/tasks/action/";
 export const GET_CONTACT_URL = "/contacts/contact/";
 export const GET_TAG_URL = "/contacts/tag/";
 export const GET_ATTRIBUTES_URL = "/contacts/attribute/";

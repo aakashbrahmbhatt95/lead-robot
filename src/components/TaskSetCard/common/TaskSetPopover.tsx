@@ -1,6 +1,6 @@
-import { Plus, Chat } from "@phosphor-icons/react";
+import { Plus, Chat, Question } from "@phosphor-icons/react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/lib/ui/popover";
-import { DropdownItems } from "./DropdownItems";
+import { Wrench } from "lucide-react";
 
 const TaskSetPopover = ({ handleAddComponent }: any) => {
   return (
@@ -19,8 +19,20 @@ const TaskSetPopover = ({ handleAddComponent }: any) => {
             <Chat size={20} />
             <span>Say</span>
           </button>
-          {DropdownItems("ask", handleAddComponent)}
-          {DropdownItems("do", handleAddComponent)}
+          <button
+            className="px-4 rounded-md py-1 text-sm flex items-center gap-1"
+            onClick={() => handleAddComponent("ask", "")}
+          >
+            <Question size={20} />
+            <span>Ask</span>
+          </button>
+          <button
+            className="px-4 rounded-md py-1 text-sm flex items-center gap-1"
+            onClick={() => handleAddComponent("do", "")}
+          >
+            <Wrench size={20} />
+            <span>Do</span>
+          </button>
         </PopoverContent>
       </Popover>
     </div>

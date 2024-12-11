@@ -153,6 +153,11 @@ const AskCardPopup = ({
                   <SelectItem value="yesno">Yes/No</SelectItem>
                 </SelectContent>
               </Select>
+              {formik.touched.response_type && formik.errors.response_type ? (
+                <div className="text-red-600">
+                  {formik.errors.response_type}
+                </div>
+              ) : null}
             </div>
             {formik.values.response_type === "text" ||
             formik.values.response_type === "number" ? (

@@ -10,10 +10,12 @@ export const loginFormValidation = Yup.object({
 
 export const askCardValidationScheme = Yup.object({
   question: Yup.string().required("Question is required"),
+  response_type: Yup.string().required("Response type is required"),
 });
 
 export const doCardValidationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  action_id: Yup.string().required("Action is required"),
 });
 
 export const sayCardValidationSchema = Yup.object({
