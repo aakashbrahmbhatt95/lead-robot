@@ -10,9 +10,12 @@ import {
   AgentState,
   DisconnectButton,
 } from "@livekit/components-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MediaDeviceFailure } from "livekit-client";
 import { useKrispNoiseFilter } from "@livekit/components-react/krisp";
+import { HttpUtil } from "@/utils/http-util";
+import { BASE_URL1 } from "@/utils/apiConstants";
+import { getToken } from "@/utils/constants";
 import { toast } from "react-toastify";
 import { CloseIcon } from "@/lib/molecules/LiveKitComponent/CloseIcon";
 import { NoAgentNotification } from "@/lib/molecules/LiveKitComponent/NoAgentNotification";
@@ -22,17 +25,27 @@ const VoiceAssistantPopup = () => {
   const [connectionDetails, setConnectionDetails] = useState<any>(undefined);
   const [agentState, setAgentState] = useState<AgentState>("disconnected");
   const params = useParams();
-
-  const onConnectButtonClicked = useCallback(async () => {
-    const url = new URL(
-      process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT ??
-        "/api/connection-details",
-      window.location.origin
-    );
-    const response = await fetch(url.toString());
-    const connectionDetailsData = await response.json();
-    setConnectionDetails(connectionDetailsData);
-  }, []);
+  const onConnectButtonClicked = async () => {
+    try {
+      const res = await HttpUtil.makeGET(
+        `${BASE_URL1}/agents/${params?.id}`,
+        "",
+        {
+          Authorization: getToken(),
+        }
+      );
+      toast.success("Agent details fetch successfully");
+      setConnectionDetails({
+        serverUrl: res?.data?.server_url,
+        roomName: res?.data?.room_name,
+        participantToken: res?.data?.token,
+        participantName: res?.data?.participant_identity,
+      });
+    } catch (err: any) {
+      toast.error("Connection failed");
+      return err;
+    }
+  };
 
   return (
     <main
