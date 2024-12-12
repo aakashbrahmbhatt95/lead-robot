@@ -44,7 +44,7 @@ const VoiceLibrary = ({
   };
 
   return (
-    <DialogContent className="sm:max-w-[40%] max-h-[75%] overflow-scroll">
+    <DialogContent className="sm:max-w-[40%] max-h-[85%] overflow-scroll">
       <DialogHeader>
         <p className="text-center text-lg font-semibold">Voice Library</p>
       </DialogHeader>

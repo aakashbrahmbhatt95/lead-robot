@@ -106,6 +106,7 @@ const Outbound = () => {
                   {
                     ...campaignDataById,
                     outbound_active: checked,
+                    timezone: "",
                   },
                   campaignDataById?.id
                 )

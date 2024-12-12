@@ -103,6 +103,10 @@ const Inbound = () => {
                   {
                     ...campaignDataById,
                     inbound_active: checked,
+                    timezone:
+                      scheduleSettings?.timeZone === "None"
+                        ? ""
+                        : scheduleSettings?.timeZone,
                   },
                   campaignDataById?.id
                 )

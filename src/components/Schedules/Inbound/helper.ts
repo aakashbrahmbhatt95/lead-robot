@@ -71,7 +71,10 @@ export const addScheduleHandler = async (
             ...campaignDataById,
             inbound_schedule_id: res?.data?.id,
             exclude_holidays_country: scheduleSettings?.excludePublicHolidays,
-            timezone: scheduleSettings?.timeZone,
+            timezone:
+              scheduleSettings?.timeZone === "None"
+                ? ""
+                : scheduleSettings?.timeZone,
           },
           campaignDataById?.id
         )
@@ -115,7 +118,10 @@ export const editScheduleHandler = async (
           {
             ...campaignDataById,
             exclude_holidays_country: scheduleSettings?.excludePublicHolidays,
-            timezone: scheduleSettings?.timeZone,
+            timezone:
+              scheduleSettings?.timeZone === "None"
+                ? ""
+                : scheduleSettings?.timeZone,
           },
           campaignDataById?.id
         )

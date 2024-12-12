@@ -66,6 +66,8 @@ export const editCampaignsAction =
               ...res?.data,
               inbound_schedule_id: res?.data?.inbound_schedule,
               outbound_schedule_id: res?.data?.outbound_schedule,
+              outbound_active: res?.data?.outbound_active,
+              inbound_active: res?.data?.inbound_active,
             })
           );
           toast.success("Campaign Updated Succesfully!");
