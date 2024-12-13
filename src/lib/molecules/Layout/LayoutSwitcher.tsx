@@ -18,7 +18,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 const LayoutSwitcher = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const isLivekitAudio = pathname.includes("livekit-audio");
+  const isLivekitAudio = pathname.includes("agents");
 
   return (
     <div>
