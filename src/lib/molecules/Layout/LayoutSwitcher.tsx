@@ -24,6 +24,9 @@ const LayoutSwitcher = ({ children }: { children: React.ReactNode }) => {
     <div>
       {isLivekitAudio ? (
         <body className={`h-full ${publicSans400.className} bg-[#111]`}>
+
+<Toaster />
+              <ToastContainer />
           {children}
         </body>
       ) : (

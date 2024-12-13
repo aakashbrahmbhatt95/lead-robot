@@ -12,7 +12,7 @@ import {
 } from "@livekit/components-react";
 import { useCallback, useEffect, useState } from "react";
 import { MediaDeviceFailure } from "livekit-client";
-import type { ConnectionDetails } from "../../api/connection-details/route";
+import { ConnectionDetails } from "@/app/api/connection-details/route";
 import { useKrispNoiseFilter } from "@livekit/components-react/krisp";
 import { NoAgentNotification } from "@/lib/molecules/LiveKitComponent/NoAgentNotification";
 import { CloseIcon } from "@/lib/molecules/LiveKitComponent/CloseIcon";
@@ -65,6 +65,7 @@ export default function Page() {
         onMediaDeviceFailure={onDeviceFailure}
         onDisconnected={() => {
           setConnectionDetails(undefined);
+          toast.error("Connection failed");
         }}
         className="grid grid-rows-[2fr_1fr] items-center"
       >
@@ -83,10 +84,21 @@ export default function Page() {
 function SimpleVoiceAssistant(props: {
   onStateChange: (state: AgentState) => void;
 }) {
-  const { state, audioTrack } = useVoiceAssistant();
+  const { state, audioTrack }: any = useVoiceAssistant();
+
   useEffect(() => {
     props.onStateChange(state);
   }, [props, state]);
+
+  useEffect(() => {
+    if (state === "connecting") {
+      toast.success("Connecting to agent");
+    }
+    if (state === "connected") {
+      toast.success("Agent is ready to speak!");
+    }
+  }, [state]);
+
   return (
     <div className="h-[300px] max-w-[90vw] mx-auto">
       <BarVisualizer
@@ -151,8 +163,7 @@ function ControlBar(props: {
 }
 
 function onDeviceFailure(error?: MediaDeviceFailure) {
-  console.error(error);
-  alert(
+  toast.error(
     "Error acquiring camera or microphone permissions. Please make sure you grant the necessary permissions in your browser and reload the tab"
   );
 }
