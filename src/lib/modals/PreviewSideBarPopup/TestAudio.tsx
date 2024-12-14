@@ -1,17 +1,16 @@
 "use client";
 
 import { Mic } from "lucide-react";
-import { useParams } from "next/navigation";
 
 const TestAudio = ({
+  setIsVoiceAssitantPopup,
   setIsPreviewSideBarPopup,
 }: any) => {
-  const params = useParams()
   return (
     <div
       className="h-[80vh] flex flex-col items-center justify-center gap-5 cursor-pointer"
       onClick={() => {
-        window.open(`/agents/${params?.id}`, "_blank");
+        setIsVoiceAssitantPopup(true);
         setIsPreviewSideBarPopup(null);
       }}
     >
