@@ -29,58 +29,60 @@ export const campaignsListAction = () => async (dispatch: AppDispatch) => {
     .catch((err: any) => {
       dispatch(campaignsListReducer([]));
     })
-    .finally(() => {});
+    .finally(() => { });
 };
 
 export const addCampaignsAction =
-  (body: any, router: any) => async (dispatch: AppDispatch) => {
+  (body: any, router: any, setIsLoading: any) => async (dispatch: AppDispatch) => {
     HttpUtil.makePOST(`${BASE_URL1}${GET_CAMPAIGN_URL}`, body, {
       Authorization: getToken(),
     })
-      .then((res: any) => {
-        dispatch(campaignsListAction());
+      .then(async (res: any) => {
+        await dispatch(campaignsListAction());
         toast.success("Campaign Added Succesfully!");
         router.push(`/campaigns/${res?.data?.id}`);
+        setIsLoading(false)
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
+        setIsLoading(false)
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const editCampaignsAction =
   (body: any, id: any, router?: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignsList } = getState()?.campaignReducer;
-    HttpUtil.makePUT(`${BASE_URL1}${GET_CAMPAIGN_URL}${id}`, body, {
-      Authorization: getToken(),
-    })
-      .then((res: any) => {
-        if (res?.success) {
-          const updatedCampaignsList = campaignsList.map((campaign: any) =>
-            campaign.id === res?.data.id ? res.data : campaign
-          );
-          dispatch(campaignsListReducer(updatedCampaignsList));
-          dispatch(
-            campaignDataByIdReducer({
-              ...res?.data,
-              inbound_schedule_id: res?.data?.inbound_schedule,
-              outbound_schedule_id: res?.data?.outbound_schedule,
-              outbound_active: res?.data?.outbound_active,
-              inbound_active: res?.data?.inbound_active,
-            })
-          );
-          toast.success("Campaign Updated Succesfully!");
-          if (router) {
-            router.push(`/campaigns/${res?.data?.id}`);
-          }
-        } else {
-          throw Error;
-        }
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+      const { campaignsList } = getState()?.campaignReducer;
+      HttpUtil.makePUT(`${BASE_URL1}${GET_CAMPAIGN_URL}${id}`, body, {
+        Authorization: getToken(),
       })
-      .catch(() => {})
-      .finally(() => {});
-  };
+        .then((res: any) => {
+          if (res?.success) {
+            const updatedCampaignsList = campaignsList.map((campaign: any) =>
+              campaign.id === res?.data.id ? res.data : campaign
+            );
+            dispatch(campaignsListReducer(updatedCampaignsList));
+            dispatch(
+              campaignDataByIdReducer({
+                ...res?.data,
+                inbound_schedule_id: res?.data?.inbound_schedule,
+                outbound_schedule_id: res?.data?.outbound_schedule,
+                outbound_active: res?.data?.outbound_active,
+                inbound_active: res?.data?.inbound_active,
+              })
+            );
+            toast.success("Campaign Updated Succesfully!");
+            if (router) {
+              router.push(`/campaigns/${res?.data?.id}`);
+            }
+          } else {
+            throw Error;
+          }
+        })
+        .catch(() => { })
+        .finally(() => { });
+    };
 
 export const deleteCampaignsAction =
   (id: any) => async (dispatch: AppDispatch) => {
@@ -94,7 +96,7 @@ export const deleteCampaignsAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const getcampaignsDatByIdAction =
@@ -114,7 +116,7 @@ export const getcampaignsDatByIdAction =
       .catch((err: any) => {
         dispatch(campaignDataByIdReducer({}));
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const taskSetListAction =
@@ -132,7 +134,7 @@ export const taskSetListAction =
       .catch((err: any) => {
         dispatch(taskSetListReducer([]));
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const addtaskSetAction =
@@ -151,46 +153,46 @@ export const addtaskSetAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const copytaskSetAction =
   (tasksetId: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { taskSetList } = getState()?.campaignReducer;
-    HttpUtil.makePOST(
-      `${BASE_URL1}${GET_TASKSET_URL}copy/${tasksetId}`,
-      {},
-      {
-        Authorization: getToken(),
-      }
-    )
-      .then((res: any) => {
-        dispatch(
-          taskSetListReducer([
-            ...taskSetList,
-            {
-              ...res?.data,
-              x_position: res?.data?.x_position + 50,
-              y_position: res?.data?.y_position + 50,
-            },
-          ])
-        );
-        const body = {
-          campaign_id: res?.data?.campaign,
-          name: res?.data?.name,
-          speak_first: res?.data?.speak_first,
-          x_position: Math.ceil(res?.data?.x_position + 50),
-          y_position: Math.ceil(res?.data?.y_position + 50),
-          is_parent: res?.data?.is_parent,
-        };
-        dispatch(editTaskSetAction(body, res?.data?.id));
-      })
-      .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
-  };
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+      const { taskSetList } = getState()?.campaignReducer;
+      HttpUtil.makePOST(
+        `${BASE_URL1}${GET_TASKSET_URL}copy/${tasksetId}`,
+        {},
+        {
+          Authorization: getToken(),
+        }
+      )
+        .then((res: any) => {
+          dispatch(
+            taskSetListReducer([
+              ...taskSetList,
+              {
+                ...res?.data,
+                x_position: res?.data?.x_position + 50,
+                y_position: res?.data?.y_position + 50,
+              },
+            ])
+          );
+          const body = {
+            campaign_id: res?.data?.campaign,
+            name: res?.data?.name,
+            speak_first: res?.data?.speak_first,
+            x_position: Math.ceil(res?.data?.x_position + 50),
+            y_position: Math.ceil(res?.data?.y_position + 50),
+            is_parent: res?.data?.is_parent,
+          };
+          dispatch(editTaskSetAction(body, res?.data?.id));
+        })
+        .catch((err: any) => {
+          toast.error("Oops! Something went wrong");
+        })
+        .finally(() => { });
+    };
 
 export const deletetaskSetAction =
   (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -205,24 +207,24 @@ export const deletetaskSetAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const editTaskSetAction =
   (body: any, id: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignDataById } = getState()?.campaignReducer;
-    HttpUtil.makePUT(`${BASE_URL1}${GET_TASKSET_URL}${id}`, body, {
-      Authorization: getToken(),
-    })
-      .then((res: any) => {
-        dispatch(taskSetListAction(campaignDataById?.id));
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+      const { campaignDataById } = getState()?.campaignReducer;
+      HttpUtil.makePUT(`${BASE_URL1}${GET_TASKSET_URL}${id}`, body, {
+        Authorization: getToken(),
       })
-      .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
-  };
+        .then((res: any) => {
+          dispatch(taskSetListAction(campaignDataById?.id));
+        })
+        .catch((err: any) => {
+          toast.error("Oops! Something went wrong");
+        })
+        .finally(() => { });
+    };
 
 export const pathConditionListAction = () => async (dispatch: AppDispatch) => {
   HttpUtil.makeGET(`${BASE_URL1}${GET_PATHCONDITION_URL}`, "", {
@@ -234,7 +236,7 @@ export const pathConditionListAction = () => async (dispatch: AppDispatch) => {
     .catch((err: any) => {
       dispatch(pathConditionListReducer([]));
     })
-    .finally(() => {});
+    .finally(() => { });
 };
 
 export const addPathConditionAction =
@@ -248,7 +250,7 @@ export const addPathConditionAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 export const editPathConditionAction =
   (body: any, id: any) => async (dispatch: AppDispatch) => {
@@ -262,7 +264,7 @@ export const editPathConditionAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const deletePathConditionAction =
@@ -277,7 +279,7 @@ export const deletePathConditionAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const addAskAction =
@@ -292,25 +294,25 @@ export const addAskAction =
         }
       })
       .catch((err: any) => toast.error("Oops! Something went wrong"))
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const editAskAction =
   (body: any, id: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignDataById } = getState()?.campaignReducer;
-    HttpUtil.makePUT(`${BASE_URL1}${GET_ASK_URL}${id}`, body, {
-      Authorization: getToken(),
-    })
-      .then((res: any) => {
-        dispatch(taskSetListAction(campaignDataById?.id));
-        toast.success("Ask Card Updated Succesfully!");
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+      const { campaignDataById } = getState()?.campaignReducer;
+      HttpUtil.makePUT(`${BASE_URL1}${GET_ASK_URL}${id}`, body, {
+        Authorization: getToken(),
       })
-      .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
-  };
+        .then((res: any) => {
+          dispatch(taskSetListAction(campaignDataById?.id));
+          toast.success("Ask Card Updated Succesfully!");
+        })
+        .catch((err: any) => {
+          toast.error("Oops! Something went wrong");
+        })
+        .finally(() => { });
+    };
 
 export const deleteAskAction =
   (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -325,7 +327,7 @@ export const deleteAskAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const addSayAction =
@@ -342,25 +344,25 @@ export const addSayAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const editSayAction =
   (body: any, id: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignDataById } = getState()?.campaignReducer;
-    HttpUtil.makePUT(`${BASE_URL1}${GET_SAY_URL}${id}`, body, {
-      Authorization: getToken(),
-    })
-      .then((res: any) => {
-        dispatch(taskSetListAction(campaignDataById?.id));
-        toast.success("Say Card Updated Succesfully!");
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+      const { campaignDataById } = getState()?.campaignReducer;
+      HttpUtil.makePUT(`${BASE_URL1}${GET_SAY_URL}${id}`, body, {
+        Authorization: getToken(),
       })
-      .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
-  };
+        .then((res: any) => {
+          dispatch(taskSetListAction(campaignDataById?.id));
+          toast.success("Say Card Updated Succesfully!");
+        })
+        .catch((err: any) => {
+          toast.error("Oops! Something went wrong");
+        })
+        .finally(() => { });
+    };
 
 export const deleteSaysAction =
   (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -375,49 +377,49 @@ export const deleteSaysAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
 export const addDoAction =
   (body: any, setIsDoSetPopup: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignDataById } = getState()?.campaignReducer;
-    HttpUtil.makePOST(`${BASE_URL1}${GET_DO_URL}`, body, {
-      Authorization: getToken(),
-    })
-      .then((res: any) => {
-        if (res?.success) {
-          dispatch(taskSetListAction(campaignDataById?.id));
-          setIsDoSetPopup(null);
-        }
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+      const { campaignDataById } = getState()?.campaignReducer;
+      HttpUtil.makePOST(`${BASE_URL1}${GET_DO_URL}`, body, {
+        Authorization: getToken(),
       })
-      .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
-  };
+        .then((res: any) => {
+          if (res?.success) {
+            dispatch(taskSetListAction(campaignDataById?.id));
+            setIsDoSetPopup(null);
+          }
+        })
+        .catch((err: any) => {
+          toast.error("Oops! Something went wrong");
+        })
+        .finally(() => { });
+    };
 
 export const editDoAction =
   (body: any, id: any, setIsDoSetPopup: any) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { campaignDataById } = getState()?.campaignReducer;
-    HttpUtil.makePUT(`${BASE_URL1}${GET_DO_URL}${id}`, body, {
-      Authorization: getToken(),
-    })
-      .then((res: any) => {
-        if (res?.success) {
-          dispatch(taskSetListAction(campaignDataById?.id));
-          toast.success("Do Card Updated Succesfully!");
-          setIsDoSetPopup(null);
-        } else {
-          throw Error;
-        }
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+      const { campaignDataById } = getState()?.campaignReducer;
+      HttpUtil.makePUT(`${BASE_URL1}${GET_DO_URL}${id}`, body, {
+        Authorization: getToken(),
       })
-      .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
-      })
-      .finally(() => {});
-  };
+        .then((res: any) => {
+          if (res?.success) {
+            dispatch(taskSetListAction(campaignDataById?.id));
+            toast.success("Do Card Updated Succesfully!");
+            setIsDoSetPopup(null);
+          } else {
+            throw Error;
+          }
+        })
+        .catch((err: any) => {
+          toast.error("Oops! Something went wrong");
+        })
+        .finally(() => { });
+    };
 
 export const deleteDoAction =
   (id: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -436,5 +438,5 @@ export const deleteDoAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };

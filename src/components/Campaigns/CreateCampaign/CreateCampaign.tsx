@@ -18,6 +18,7 @@ const CreateCampaign = () => {
   const router = useRouter();
   const params = useParams();
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false)
   const isEdit = !params.id.includes("create");
   const { campaignDataById }: any = useAppSelector(
     (state: any) => state.campaignReducer
@@ -58,7 +59,8 @@ const CreateCampaign = () => {
         )
       );
     } else {
-      dispatch(addCampaignsAction(values, router));
+      setIsLoading(true)
+      dispatch(addCampaignsAction(values, router, setIsLoading));
     }
   };
 
@@ -114,7 +116,7 @@ const CreateCampaign = () => {
                 />
               </div>
             </div>
-            <Button type="submit" className="mt-4 p-2 rounded">
+            <Button type="submit" className="mt-4 p-2 rounded" disabled={isLoading}>
               Submit
             </Button>
             <Button
