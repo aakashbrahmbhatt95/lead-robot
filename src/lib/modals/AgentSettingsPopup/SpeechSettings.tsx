@@ -38,7 +38,7 @@ const SpeechSettings = ({ formik }: any) => {
               <Select
                 name="ambient_sound"
                 value={formik.values.ambient_sound}
-                onValueChange={(value) =>
+                onValueChange={(value: any) =>
                   formik.setFieldValue("ambient_sound", value)
                 }
               >
@@ -87,7 +87,7 @@ const SpeechSettings = ({ formik }: any) => {
             className="mt-2"
             name="enable_backchannel"
             checked={formik.values.enable_backchannel}
-            onCheckedChange={(checked) =>
+            onCheckedChange={(checked: any) =>
               formik.setFieldValue("enable_backchannel", checked)
             }
           />
@@ -153,7 +153,7 @@ const SpeechSettings = ({ formik }: any) => {
             className="mt-2"
             name="normalize_for_speech"
             checked={formik.values.normalize_for_speech}
-            onCheckedChange={(checked) =>
+            onCheckedChange={(checked: any) =>
               formik.setFieldValue("normalize_for_speech", checked)
             }
           />
@@ -195,7 +195,7 @@ const SpeechSettings = ({ formik }: any) => {
             className="mt-2"
             name="enable_transcription_formatting"
             checked={formik.values.enable_transcription_formatting}
-            onCheckedChange={(checked) =>
+            onCheckedChange={(checked: any) =>
               formik.setFieldValue("enable_transcription_formatting", checked)
             }
           />

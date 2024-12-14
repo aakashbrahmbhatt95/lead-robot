@@ -94,8 +94,4 @@ export const tabBarData = [
     text: "Schedule",
     value: 4,
   },
-  {
-    text: "Setup call",
-    value: 5,
-  },
 ];

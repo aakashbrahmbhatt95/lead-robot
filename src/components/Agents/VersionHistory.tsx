@@ -8,7 +8,7 @@ import {
 
 const VersionHistory = () => {
   return (
-    <div className="border-[1px] p-3 border-[#E4E4E7] rounded">
+    <div className="border-[1px] p-3 mt-4 border-[#E4E4E7] rounded">
       <p className="font-medium pb-2 border-b-[1px] border-[#E4E4E7]">
         Version History
       </p>

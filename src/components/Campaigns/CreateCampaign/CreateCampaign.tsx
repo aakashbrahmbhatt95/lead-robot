@@ -108,7 +108,7 @@ const CreateCampaign = () => {
                 </label>
                 <Switch
                   checked={values.is_active}
-                  onCheckedChange={(checked) =>
+                  onCheckedChange={(checked: any) =>
                     setFieldValue("is_active", checked)
                   }
                 />

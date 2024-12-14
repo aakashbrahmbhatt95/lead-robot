@@ -1,9 +1,6 @@
 import { SheetContent } from "@/lib/ui/sheet";
 import { X } from "lucide-react";
-import { Accordion } from "@/lib/ui/accordion";
-import SpeechSettings from "./SpeechSettings";
-import CallSettings from "./CallSettings";
-import SecuritySettings from "./SecuritySettings";
+import VersionHistory from "@/components/Agents/VersionHistory";
 
 const AgentSettingsPopup = ({
   setIsAgentSettingsPopup,
@@ -19,15 +16,7 @@ const AgentSettingsPopup = ({
           onClick={() => setIsAgentSettingsPopup(null)}
         />
       </div>
-      <Accordion type="single" collapsible className="w-full mt-3">
-        <SpeechSettings formik={formik} />
-        <CallSettings formik={formik} />
-        <SecuritySettings
-          formik={formik}
-          voicesList={voicesList}
-          setVoicesList={setVoicesList}
-        />
-      </Accordion>
+      <VersionHistory />
     </SheetContent>
   );
 };

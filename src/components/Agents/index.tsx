@@ -3,13 +3,11 @@ import { Mic } from "lucide-react";
 import speaker from "@/../public/speaker.svg";
 import Image from "next/image";
 import LanguageSelection from "@/lib/modals/AgentPopup/LanguageSelection";
-import VersionHistory from "./VersionHistory";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { languagesListAction } from "@/redux/action/global-action";
 import { Dialog, DialogTrigger } from "@/lib/ui/dialog";
 import VoiceLibrary from "@/lib/modals/VoiceLibrary";
-import fill_arrowdown from "@/../public/fill_arrowdown.svg";
 import {
   addAgentAction,
   ambientSoundsListAction,
@@ -22,12 +20,19 @@ import AgentsPersonality from "./AgentsPersonality";
 import { useFormik } from "formik";
 import { useParams } from "next/navigation";
 import { getSelectedVoiceData, initialAgentValues } from "./helper";
+import { Accordion } from "@/lib/ui/accordion";
+import SpeechSettings from "@/lib/modals/AgentSettingsPopup/SpeechSettings";
+import CallSettings from "@/lib/modals/AgentSettingsPopup/CallSettings";
+import SecuritySettings from "@/lib/modals/AgentSettingsPopup/SecuritySettings";
+import { Switch } from "@/lib/ui/switch";
+import RealTimeSettings from "@/lib/modals/AgentSettingsPopup/RealTimeSettings";
 
 const Agents = () => {
   const dispatch = useAppDispatch();
   const params = useParams();
   const [isAgentSettingsPopup, setIsAgentSettingsPopup] = useState<any>(null);
   const [voicesList, setVoicesList] = useState([]);
+  const [isRealTime, setIsRealTime] = useState(false);
   const [isVoiceLibrary, setIsVoiceLibrary] = useState(false);
   const { agentDataByID }: any = useAppSelector(
     (state: any) => state.agentsReducer
@@ -81,7 +86,18 @@ const Agents = () => {
 
   return (
     <div className="flex gap-4 mt-10">
-      <form onSubmit={formik.handleSubmit} className="w-3/4">
+      <form onSubmit={formik.handleSubmit} className="w-[65%]">
+        <div className="flex items-center mb-5">
+          <Switch
+            checked={isRealTime}
+            onCheckedChange={(checked: any) =>
+              setIsRealTime(checked)
+            }
+          />
+          <label className="block pl-2 text-sm font-medium text-gray-700">
+            Real Time
+          </label>
+        </div>
         <div className="flex justify-between items-center">
           <p className="text-xl text-semibold">Voice</p>
           <Button
@@ -94,7 +110,7 @@ const Agents = () => {
               })
             }
           >
-            <Mic width={20} height={20} /> Agent settings
+            <Mic width={20} height={20} /> New settings
           </Button>
         </div>
         <div className="flex items-center border-[1px] mt-4 p-[20px] border-[#E4E4E7] rounded">
@@ -130,8 +146,17 @@ const Agents = () => {
           </Button>
         </div>
       </form>
-      <div className="w-1/4">
-        <VersionHistory />
+      <div className="w-[35%] mt-10">
+        {isRealTime ? <RealTimeSettings formik={formik} /> :
+          <Accordion type="single" collapsible className="w-full px-3 border-[1px] border-[#E4E4E7] rounded">
+            <SpeechSettings formik={formik} />
+            <CallSettings formik={formik} />
+            <SecuritySettings
+              formik={formik}
+              voicesList={voicesList}
+              setVoicesList={setVoicesList}
+            />
+          </Accordion>}
       </div>
       <Sheet open={isAgentSettingsPopup !== null}>
         {isAgentSettingsPopup !== null && (
