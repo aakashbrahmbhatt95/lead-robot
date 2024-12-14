@@ -50,8 +50,8 @@ const SayCardPopup = ({
         order: isSaySetPopup?.isEdit
           ? isSaySetPopup?.order
           : taskSetDetails?.tasks?.length
-            ? taskSetDetails?.tasks?.length
-            : 0,
+          ? taskSetDetails?.tasks?.length
+          : 0,
         is_required: values.is_required,
         is_active: values.is_active,
         include_condition: "string",
@@ -78,7 +78,7 @@ const SayCardPopup = ({
             <CardTitle>Say</CardTitle>
             <Switch
               checked={formik.values.is_active}
-              onCheckedChange={(checked) =>
+              onCheckedChange={(checked: any) =>
                 formik.setFieldValue("is_active", checked)
               }
             />
@@ -106,7 +106,7 @@ const SayCardPopup = ({
             <div className="flex items-center space-x-2 mt-5">
               <Checkbox
                 checked={formik.values.is_required}
-                onCheckedChange={(checked) =>
+                onCheckedChange={(checked: any) =>
                   formik.setFieldValue("is_required", checked)
                 }
               />

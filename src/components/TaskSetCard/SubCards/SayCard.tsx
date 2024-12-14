@@ -68,10 +68,12 @@ const SayCard = ({
                 />
               </div>
             </div>
+            <p className="text-[#18181B] pt-[8px] pb-1 text-start text-sm break-words">
+              {sayDetail?.statement}
+            </p>
           </CardHeader>
           <AccordionContent>
             <CardContent className="flex flex-col items-start py-1">
-              <p className="text-[#18181B] text-sm">{sayDetail?.statement}</p>
               <div className="flex items-center gap-4 justify-end mt-4 w-full">
                 <DotsThree
                   size={20}

@@ -67,10 +67,12 @@ const AskCard = ({
                 />
               </div>
             </div>
+            <p className="text-[#18181B] pt-[8px] pb-1 text-start text-sm break-words">
+              {askDetail?.question}
+            </p>
           </CardHeader>
           <AccordionContent>
             <CardContent className="flex flex-col items-start py-1">
-              <p className="text-[#18181B] text-sm">{askDetail?.question}</p>
               <div className="flex items-center gap-4 justify-end mt-4 w-full">
                 <DotsThree
                   className="cursor-pointer"

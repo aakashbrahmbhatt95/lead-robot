@@ -8,7 +8,7 @@ import {
 import { Switch } from "@/lib/ui/switch";
 import { Label } from "@/lib/ui/label";
 import { Checkbox } from "@/lib/ui/checkbox";
-import { DotsThree, CopySimple, TrashSimple } from "@phosphor-icons/react";
+import { DotsThree, TrashSimple } from "@phosphor-icons/react";
 import { useAppDispatch } from "@/redux/store";
 import { deleteDoAction, editDoAction } from "@/redux/action/campaigns-action";
 import { useSortable } from "@dnd-kit/sortable";
@@ -66,10 +66,12 @@ const DoCard = ({
                 />
               </div>
             </div>
+            <p className="text-[#18181B] pt-[8px] pb-1 text-start text-sm break-words">
+              {doDetail?.action}
+            </p>
           </CardHeader>
           <AccordionContent>
             <CardContent className="flex flex-col items-start py-1">
-              <p className="text-[#18181B] text-sm">{doDetail?.action}</p>
               <div className="flex items-center gap-4 justify-end mt-4 w-full">
                 <DotsThree
                   size={20}
