@@ -69,7 +69,7 @@ const SayCard = ({
               </div>
             </div>
             <p className="text-[#18181B] pt-[8px] pb-1 text-start text-sm break-words">
-              {sayDetail?.statement}
+              {sayDetail?.statement?.slice(0, 100) + (sayDetail?.statement?.length > 100 ? "..." : "")}
             </p>
           </CardHeader>
           <AccordionContent>

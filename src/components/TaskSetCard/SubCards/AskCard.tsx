@@ -68,7 +68,7 @@ const AskCard = ({
               </div>
             </div>
             <p className="text-[#18181B] pt-[8px] pb-1 text-start text-sm break-words">
-              {askDetail?.question}
+              {askDetail?.question?.slice(0, 100) + (askDetail?.question?.length > 100 ? "..." : "")}
             </p>
           </CardHeader>
           <AccordionContent>

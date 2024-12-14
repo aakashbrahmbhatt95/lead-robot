@@ -67,7 +67,7 @@ const DoCard = ({
               </div>
             </div>
             <p className="text-[#18181B] pt-[8px] pb-1 text-start text-sm break-words">
-              {doDetail?.action}
+              {doDetail?.action?.name?.slice(0, 100) + (doDetail?.action?.name?.length > 100 ? "..." : "")}
             </p>
           </CardHeader>
           <AccordionContent>

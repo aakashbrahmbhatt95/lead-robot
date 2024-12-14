@@ -48,7 +48,7 @@ const DoCardPopup = ({
         name: isDoSetPopup?.data?.name || "",
         number: isDoSetPopup?.data?.number || "",
         description: isDoSetPopup?.data?.description || "",
-        action_id: isDoSetPopup?.action_id || "",
+        action_id: isDoSetPopup?.action?.id || "",
         is_active: isDoSetPopup?.is_active,
         is_required: isDoSetPopup?.is_required,
       });
