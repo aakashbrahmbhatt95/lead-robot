@@ -8,26 +8,26 @@ import { AgentState, LiveKitRoom, RoomAudioRenderer } from '@livekit/components-
 
 const VoiceAssistantPopup = () => {
   const params = useParams()
-  const [token, setToken] = useState('');
+  const [voiceData, setVoiceData] = useState<any>('');
   const [agentState, setAgentState] = useState<AgentState>("disconnected");
 
   useEffect(() => {
-    getLivekitTokenAPI(setToken,params)
+    getLivekitTokenAPI(setVoiceData,params)
   }, []);
 
   const onConnectButtonClicked = async () => {
-    await getLivekitTokenAPI(setToken,params)
+    await getLivekitTokenAPI(setVoiceData,params)
   };
 
-  if (token === '') {
+  if (voiceData?.token === '') {
     return <div>Getting token...</div>;
   }
 
   return (
     <LiveKitRoom
       audio={true}
-      token={token}
-      serverUrl="wss://sendcast-2tr69225.livekit.cloud"
+      token={voiceData?.token}
+      serverUrl={voiceData?.server_url}
       data-lk-theme="default"
       style={{ height: '500px' }}
     >

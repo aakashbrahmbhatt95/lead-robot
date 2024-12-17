@@ -14,17 +14,17 @@ import {
 } from "@livekit/components-react";
 import { X } from "lucide-react";
 
-export const getLivekitTokenAPI = async (setToken: any, params: any) => {
+export const getLivekitTokenAPI = async (setVoiceData: any, params: any) => {
   try {
     const res = await HttpUtil.makeGET(
-      `${BASE_URL1}/agents/${params?.id}`,
+      `${BASE_URL1}/agents/test/campaign/${params?.id}`,
       "",
       {
         Authorization: getToken(),
       }
     );
     toast.success("Agent details fetch successfully");
-    setToken(res?.data?.token);
+    setVoiceData(res?.data);
   } catch (e) {
     console.error(e);
   }

@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/lib/ui/select";
-import { Slider } from "@/lib/ui/slider";
 import { Switch } from "@/lib/ui/switch";
 import { useAppSelector } from "@/redux/store";
 import { Settings, Speech } from "lucide-react";
@@ -47,8 +46,8 @@ const SpeechSettings = ({ formik }: any) => {
                 </SelectTrigger>
                 <SelectContent>
                   {ambientSoundsList?.map((ele: any) => (
-                    <SelectItem key={ele[0]} value={ele[0]}>
-                      {ele[1]}
+                    <SelectItem key={ele?.value} value={ele?.value}>
+                      {ele?.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

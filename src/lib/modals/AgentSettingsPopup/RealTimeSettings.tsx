@@ -32,8 +32,8 @@ const RealTimeSettings = ({ formik }: any) => {
             </SelectTrigger>
             <SelectContent>
               {ambientSoundsList?.map((ele: any) => (
-                <SelectItem key={ele[0]} value={ele[0]}>
-                  {ele[1]}
+                <SelectItem key={ele?.value} value={ele?.value}>
+                  {ele?.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -78,8 +78,8 @@ const RealTimeSettings = ({ formik }: any) => {
             </SelectTrigger>
             <SelectContent>
               {ambientSoundsList?.map((ele: any) => (
-                <SelectItem key={ele[0]} value={ele[0]}>
-                  {ele[1]}
+                <SelectItem key={ele?.value} value={ele?.value}>
+                  {ele?.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -101,8 +101,8 @@ const RealTimeSettings = ({ formik }: any) => {
             </SelectTrigger>
             <SelectContent>
               {ambientSoundsList?.map((ele: any) => (
-                <SelectItem key={ele[0]} value={ele[0]}>
-                  {ele[1]}
+                <SelectItem key={ele?.value} value={ele?.value}>
+                  {ele?.label}
                 </SelectItem>
               ))}
             </SelectContent>

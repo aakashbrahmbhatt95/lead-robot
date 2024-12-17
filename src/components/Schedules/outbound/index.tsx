@@ -1,12 +1,6 @@
 import { Formik, FieldArray, ErrorMessage } from "formik";
 import { Switch } from "@/lib/ui/switch";
 import TimeZoneAndHolidays from "./TimeZoneAndHoliday";
-import {
-  addOutboundScheduleHandler,
-  editOutboundScheduleHandler,
-  getOutboundScheduleHandler,
-  initialFormValues,
-} from "./helper";
 import { Button } from "@/lib/ui/button";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
@@ -18,11 +12,14 @@ import { outboundValidationSchema } from "@/components/validation";
 import { ChevronDown, ChevronUp, Plus } from "lucide-react";
 import { TrashSimple } from "@phosphor-icons/react";
 import { editCampaignsAction } from "@/redux/action/campaigns-action";
+import { addOutboundScheduleAction, editOutboundScheduleAction, getOutboundScheduleAction } from "@/redux/action/schedules-action";
+import { initialFormValues } from "./helper";
 
 const Outbound = () => {
   const dispatch = useAppDispatch();
   const [excludePublicHolidays, setExcludePublicHolidays] = useState("");
   const [timeZone, setTimeZone] = useState("");
+  const [isOutboundActive,setIsOutboundActive] = useState(false)
   const [outboundData, setOutboundData] = useState({
     isEdit: false,
     outboundId: null,
@@ -35,56 +32,41 @@ const Outbound = () => {
   );
 
   useEffect(() => {
-    if (campaignDataById?.outbound_schedule_id === null) {
-      setOutboundData((prev: any) => ({
-        ...prev,
-        isEdit: false,
-        formValues: [initialFormValues],
-      }));
-      setAccordionOpen([true]);
-    } else {
-      setExcludePublicHolidays(campaignDataById?.exclude_holidays_country);
-      setTimeZone(campaignDataById?.timezone);
-      getOutboundScheduleHandler(
-        campaignDataById?.outbound_schedule_id,
-        setOutboundData,
-        setAccordionOpen
-      );
-    }
-  }, [campaignDataById]);
+    dispatch(getOutboundScheduleAction(setOutboundData, setAccordionOpen, setExcludePublicHolidays, setTimeZone))
+  }, [])
+
+  useEffect(()=>{
+    setIsOutboundActive(campaignDataById?.outbound_active)
+  },[campaignDataById])
 
   const handleSubmit = (values: any) => {
-    const output = values.formValues.map((formValue: any) => ({
-      interval: 1,
-      start_date: formValue.startDate,
-      end_date: formValue.endDate || undefined,
-      byweekday: formValue.weeks,
-      times: [formValue.callTimeStart],
-      exclude: false,
-      duration: calculateDuration(
-        formValue.callTimeStart,
-        formValue.callTimeEnd
-      ),
-    }));
+    const body = {
+      daily: values.formValues.map((formValue: any) => ({
+        interval: 1,
+        start_date: formValue.startDate,
+        end_date: formValue.endDate || undefined,
+        byweekday: formValue.weeks,
+        times: [formValue.callTimeStart],
+        exclude: false,
+        duration: calculateDuration(
+          formValue.callTimeStart,
+          formValue.callTimeEnd
+        ),
+      })),
+      weekly: [],
+      monthly: [],
+      yearly: [],
+      exdates: [],
+      name: campaignDataById?.name,
+      description: campaignDataById?.description,
+      rdates: [],
+      is_active: true,
+    }
 
     if (outboundData?.outboundId === null) {
-      addOutboundScheduleHandler(
-        campaignDataById,
-        dispatch,
-        output,
-        excludePublicHolidays,
-        timeZone
-      );
+      dispatch(addOutboundScheduleAction(body, setOutboundData, setAccordionOpen,excludePublicHolidays, timeZone, setExcludePublicHolidays, setTimeZone))
     } else {
-      editOutboundScheduleHandler(
-        setOutboundData,
-        outboundData,
-        output,
-        dispatch,
-        campaignDataById,
-        excludePublicHolidays,
-        timeZone
-      );
+      dispatch(editOutboundScheduleAction(body, setOutboundData, setAccordionOpen,excludePublicHolidays, setExcludePublicHolidays, setTimeZone))
     }
   };
 
@@ -99,8 +81,8 @@ const Outbound = () => {
       <div className="basis-3/4">
         <div className="flex items-center mt-5">
           <Switch
-            checked={campaignDataById.outbound_active}
-            onCheckedChange={(checked) => {
+            checked={isOutboundActive}
+            onCheckedChange={(checked: any) => {
               dispatch(
                 editCampaignsAction(
                   {

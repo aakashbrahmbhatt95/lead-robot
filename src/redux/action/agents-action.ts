@@ -22,36 +22,31 @@ export const ambientSoundsListAction = () => async (dispatch: AppDispatch) => {
     .catch((err: any) => {
       dispatch(ambientSoundsListReducer([]));
     })
-    .finally(() => {});
+    .finally(() => { });
 };
 
 export const getAgentAction =
   (campaign_id: any) => async (dispatch: AppDispatch) => {
-    HttpUtil.makeGET(`${BASE_URL1}${GET_AGENT}`, "", {
+    HttpUtil.makeGET(`${BASE_URL1}${GET_AGENT}/${campaign_id}`, "", {
       Authorization: getToken(),
     })
       .then((res: any) => {
-        if (res?.error) {
-          throw Error;
+        if (res?.success) {
+          dispatch(agentListByIdReducer(res?.data));
         } else {
-          const filteredAgentUsingCampaignID = res?.data?.filter(
-            (ele: any) => ele?.campaign == campaign_id
-          )?.[0];
-          if (filteredAgentUsingCampaignID) {
-            dispatch(agentListByIdReducer(filteredAgentUsingCampaignID));
-          } else {
-            dispatch(agentListByIdReducer([]));
-          }
+          throw Error;
+
         }
       })
       .catch((err: any) => {
-        toast.error("Oops! Something went wrong");
+        dispatch(agentListByIdReducer([]));
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
-export const addAgentAction = (body: any) => async (dispatch: AppDispatch) => {
-  HttpUtil.makePOST(`${BASE_URL1}${GET_AGENT}`, body, {
+export const addAgentAction = (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const { campaignDataById } = getState()?.campaignReducer;
+  HttpUtil.makePOST(`${BASE_URL1}/agents/tts/agent/${campaignDataById?.id}`, body, {
     Authorization: getToken(),
   })
     .then((res: any) => {
@@ -65,13 +60,13 @@ export const addAgentAction = (body: any) => async (dispatch: AppDispatch) => {
     .catch((err: any) => {
       toast.error("Oops! Something went wrong");
     })
-    .finally(() => {});
+    .finally(() => { });
 };
 
 export const editAgentAction =
   (body: any) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { agentDataByID } = getState()?.agentsReducer;
-    HttpUtil.makePUT(`${BASE_URL1}${GET_AGENT}${agentDataByID?.id}`, body, {
+    const { campaignDataById } = getState()?.campaignReducer;
+    HttpUtil.makePUT(`${BASE_URL1}${GET_AGENT}/${campaignDataById?.id}`, body, {
       Authorization: getToken(),
     })
       .then((res: any) => {
@@ -85,5 +80,5 @@ export const editAgentAction =
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
       })
-      .finally(() => {});
+      .finally(() => { });
   };

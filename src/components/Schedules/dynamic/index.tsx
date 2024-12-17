@@ -1,12 +1,19 @@
 import { Switch } from "@/lib/ui/switch";
 import { editCampaignsAction } from "@/redux/action/campaigns-action";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useEffect, useState } from "react";
 
 const Dynamic = () => {
   const dispatch = useAppDispatch();
+  const [isDynamicActive, setIsDynamicActive] = useState(false);
+
   const { campaignDataById } = useAppSelector(
     (state: any) => state.campaignReducer
   );
+
+  useEffect(() => {
+    setIsDynamicActive(campaignDataById?.dynamic_active);
+  }, [campaignDataById]);
 
   return (
     <div>
@@ -16,11 +23,18 @@ const Dynamic = () => {
       </p>
       <div className="flex items-center mt-5">
         <Switch
-          checked={campaignDataById.dynamic_active}
-          onCheckedChange={(checked) => {
+          checked={isDynamicActive}
+          onCheckedChange={(checked: any) => {
             dispatch(
               editCampaignsAction(
-                { ...campaignDataById, dynamic_active: checked },
+                {
+                  ...campaignDataById,
+                  dynamic_active: checked,
+                  timezone:
+                    campaignDataById?.timeZone === "None"
+                      ? ""
+                      : campaignDataById?.timeZone,
+                },
                 campaignDataById?.id
               )
             );

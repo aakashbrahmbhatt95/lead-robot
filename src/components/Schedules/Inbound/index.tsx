@@ -7,13 +7,11 @@ import TimeZoneAndHolidays from "./TimeZoneAndHoliday";
 import {
   calculateDuration,
   dayMap,
-  addScheduleHandler,
-  getScheduleHandler,
-  editScheduleHandler,
 } from "./helper";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { inboundValidationSchema } from "@/components/validation";
 import { editCampaignsAction } from "@/redux/action/campaigns-action";
+import { addInboundScheduleAction, editInboundScheduleAction, getInboundScheduleAction } from "@/redux/action/schedules-action";
 
 const Inbound = () => {
   const dispatch = useAppDispatch();
@@ -25,45 +23,23 @@ const Inbound = () => {
     scheduleId: null,
     formValues: null,
   });
+const [isInboundActive,setIsInboundActive] = useState(false)
 
   const { campaignDataById } = useAppSelector(
     (state: any) => state.campaignReducer
   );
 
-  useEffect(() => {
-    if (campaignDataById?.inbound_schedule_id === null) {
-      setScheduleSettings((prev: any) => ({
-        ...prev,
-        isEdit: false,
-        isAlwaysOn: "isalwayson",
-        excludePublicHolidays: campaignDataById?.exclude_holidays_country,
-        timeZone: campaignDataById?.timezone,
-        formValues: {
-          schedule: {
-            monday: { active: true, startTime: "", endTime: "" },
-            tuesday: { active: true, startTime: "", endTime: "" },
-            wednesday: { active: true, startTime: "", endTime: "" },
-            thursday: { active: true, startTime: "", endTime: "" },
-            friday: { active: false, startTime: "", endTime: "" },
-            saturday: { active: false, startTime: "", endTime: "" },
-            sunday: { active: false, startTime: "", endTime: "" },
-          },
-          startDate: "",
-          endDate: "",
-        },
-      }));
-    } else {
-      getScheduleHandler(
-        campaignDataById?.inbound_schedule_id,
-        setScheduleSettings,
-        campaignDataById?.exclude_holidays_country,
-        campaignDataById?.timezone
-      );
-    }
-  }, [campaignDataById]);
+  useEffect(()=>{
+  dispatch(getInboundScheduleAction(setScheduleSettings))
+},[])
+
+useEffect(()=>{
+  setIsInboundActive(campaignDataById?.inbound_active)
+},[campaignDataById])
 
   const handleSubmit = (values: any) => {
-    const output = Object.entries(values.schedule)
+    const body =  {
+      daily: Object.entries(values.schedule)
       .filter(
         ([, data]: any) => data?.active && data?.startTime && data?.endTime
       )
@@ -77,17 +53,20 @@ const Inbound = () => {
         byweekday: [dayMap[day]],
         bymonthday: [],
         byyeardata: [],
-      }));
+      })),
+      weekly: [],
+      monthly: [],
+      yearly: [],
+      exdates: [],
+      name: campaignDataById?.name,
+      description: campaignDataById?.description,
+      rdates: [],
+      is_active: true,
+  }
     if (scheduleSettings?.scheduleId === null) {
-      addScheduleHandler(campaignDataById, dispatch, output, scheduleSettings);
+      dispatch(addInboundScheduleAction(scheduleSettings,setScheduleSettings,body))
     } else {
-      editScheduleHandler(
-        setScheduleSettings,
-        scheduleSettings,
-        output,
-        dispatch,
-        campaignDataById
-      );
+      dispatch(editInboundScheduleAction(scheduleSettings,setScheduleSettings,body))
     }
   };
 
@@ -96,8 +75,8 @@ const Inbound = () => {
       <div className="basis-3/4">
         <div className="flex items-center mt-5">
           <Switch
-            checked={campaignDataById.inbound_active}
-            onCheckedChange={(checked) => {
+            checked={isInboundActive}
+            onCheckedChange={(checked: any) => {
               dispatch(
                 editCampaignsAction(
                   {

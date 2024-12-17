@@ -2,7 +2,7 @@ import { Button } from "@/lib/ui/button";
 import { Mic } from "lucide-react";
 import speaker from "@/../public/speaker.svg";
 import Image from "next/image";
-import LanguageSelection from "@/lib/modals/AgentPopup/LanguageSelection";
+import LanguageSelection from "@/lib/modals/AgentSettingsPopup/LanguageSelection";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { languagesListAction } from "@/redux/action/global-action";
@@ -147,7 +147,7 @@ const Agents = () => {
         </div>
       </form>
       <div className="w-[35%] mt-10">
-        {isRealTime ? <RealTimeSettings formik={formik} /> :
+        {/* {isRealTime ? <RealTimeSettings formik={formik} /> :
           <Accordion type="single" collapsible className="w-full px-3 border-[1px] border-[#E4E4E7] rounded">
             <SpeechSettings formik={formik} />
             <CallSettings formik={formik} />
@@ -156,7 +156,7 @@ const Agents = () => {
               voicesList={voicesList}
               setVoicesList={setVoicesList}
             />
-          </Accordion>}
+          </Accordion>} */}
       </div>
       <Sheet open={isAgentSettingsPopup !== null}>
         {isAgentSettingsPopup !== null && (

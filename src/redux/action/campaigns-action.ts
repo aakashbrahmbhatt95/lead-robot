@@ -23,8 +23,12 @@ export const campaignsListAction = () => async (dispatch: AppDispatch) => {
   HttpUtil.makeGET(`${BASE_URL1}${GET_CAMPAIGN_URL}`, "", {
     Authorization: getToken(),
   })
-    .then((res) => {
-      dispatch(campaignsListReducer(res?.data));
+    .then((res: any) => {
+      if (res?.success) {
+        dispatch(campaignsListReducer(res?.data));
+      } else {
+        throw Error;
+      }
     })
     .catch((err: any) => {
       dispatch(campaignsListReducer([]));
@@ -38,10 +42,14 @@ export const addCampaignsAction =
       Authorization: getToken(),
     })
       .then(async (res: any) => {
-        await dispatch(campaignsListAction());
-        toast.success("Campaign Added Succesfully!");
-        router.push(`/campaigns/${res?.data?.id}`);
-        setIsLoading(false)
+        if (res?.success) {
+          await dispatch(campaignsListAction());
+          toast.success("Campaign Added Succesfully!");
+          router.push(`/campaigns/${res?.data?.id}`);
+          setIsLoading(false)
+        } else {
+          throw Error;
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -57,30 +65,21 @@ export const editCampaignsAction =
       HttpUtil.makePUT(`${BASE_URL1}${GET_CAMPAIGN_URL}${id}`, body, {
         Authorization: getToken(),
       })
-        .then((res: any) => {
-          if (res?.success) {
-            const updatedCampaignsList = campaignsList.map((campaign: any) =>
-              campaign.id === res?.data.id ? res.data : campaign
-            );
-            dispatch(campaignsListReducer(updatedCampaignsList));
-            dispatch(
-              campaignDataByIdReducer({
-                ...res?.data,
-                inbound_schedule_id: res?.data?.inbound_schedule,
-                outbound_schedule_id: res?.data?.outbound_schedule,
-                outbound_active: res?.data?.outbound_active,
-                inbound_active: res?.data?.inbound_active,
-              })
-            );
-            toast.success("Campaign Updated Succesfully!");
-            if (router) {
-              router.push(`/campaigns/${res?.data?.id}`);
-            }
-          } else {
-            throw Error;
+        .then(async (res: any) => {
+          const updatedCampaignsId = campaignsList.filter((campaign: any) =>
+            campaign.id === res?.data.id
+          )?.[0]?.id;
+          await dispatch(campaignsListAction());
+          await dispatch(
+            getcampaignsDatByIdAction(updatedCampaignsId)
+          );
+          toast.success("Campaign Updated Succesfully!");
+          if (router) {
+            router.push(`/campaigns/${res?.data?.id}`);
           }
         })
-        .catch(() => { })
+        .catch(() => {
+        })
         .finally(() => { });
     };
 
@@ -90,8 +89,12 @@ export const deleteCampaignsAction =
       Authorization: getToken(),
     })
       .then((res: any) => {
-        dispatch(campaignsListAction());
-        toast.success("Campaign Deleted Succesfully!");
+        if (res?.success) {
+          dispatch(campaignsListAction());
+          toast.success("Campaign Deleted Succesfully!");
+        } else {
+          throw Error;
+        }
       })
       .catch((err: any) => {
         toast.error("Oops! Something went wrong");
@@ -105,16 +108,23 @@ export const getcampaignsDatByIdAction =
       Authorization: getToken(),
     })
       .then((res) => {
-        dispatch(
-          campaignDataByIdReducer({
-            ...res?.data,
-            inbound_schedule_id: res?.data?.inbound_schedule,
-            outbound_schedule_id: res?.data?.outbound_schedule,
-          })
-        );
+        if (res?.success) {
+          dispatch(
+            campaignDataByIdReducer({
+              ...res?.data,
+              inbound_schedule_id: res?.data?.inbound_schedule,
+              outbound_schedule_id: res?.data?.outbound_schedule,
+              outbound_active: res?.data?.outbound_active,
+              inbound_active: res?.data?.inbound_active,
+            })
+          );
+        } else {
+          throw Error;
+        }
       })
       .catch((err: any) => {
         dispatch(campaignDataByIdReducer({}));
+        toast.error("Oops! Something went wrong");
       })
       .finally(() => { });
   };
