@@ -5,7 +5,6 @@ import { getToken } from "../../utils/constants";
 import { addDuration, convertInput } from "@/components/Schedules/Inbound/helper";
 import { toast } from "react-toastify";
 import { initialFormValues } from "@/components/Schedules/outbound/helper";
-import { editCampaignsAction } from "./campaigns-action";
 
 export const getInboundScheduleAction =
     (setScheduleSettings: any) =>
@@ -66,7 +65,7 @@ export const getInboundScheduleAction =
         };
 
 export const addInboundScheduleAction =
-    (scheduleSettings: any, setScheduleSettings: any, body: any) =>
+    (setScheduleSettings: any, body: any) =>
         async (dispatch: AppDispatch, getState: () => RootState) => {
             const { campaignDataById } = getState()?.campaignReducer;
             HttpUtil.makePOST(
@@ -79,20 +78,6 @@ export const addInboundScheduleAction =
                 .then((res) => {
                     if (res?.success) {
                         dispatch(getInboundScheduleAction(setScheduleSettings));
-                        dispatch(
-                            editCampaignsAction(
-                                {
-                                    ...campaignDataById,
-                                    inbound_schedule_id: res?.data?.id,
-                                    exclude_holidays_country: scheduleSettings?.excludePublicHolidays,
-                                    timezone:
-                                        scheduleSettings?.timeZone === "None"
-                                            ? ""
-                                            : scheduleSettings?.timeZone,
-                                },
-                                campaignDataById?.id
-                            )
-                        );
                     } else {
                         throw Error;
                     }
@@ -104,7 +89,7 @@ export const addInboundScheduleAction =
         };
 
 export const editInboundScheduleAction =
-    (scheduleSettings: any, setScheduleSettings: any, body: any) =>
+    (setScheduleSettings: any, body: any) =>
         async (dispatch: AppDispatch, getState: () => RootState) => {
             const { campaignDataById } = getState()?.campaignReducer;
             HttpUtil.makePUT(
@@ -117,19 +102,6 @@ export const editInboundScheduleAction =
                 .then((res) => {
                     if (res?.success) {
                         dispatch(getInboundScheduleAction(setScheduleSettings));
-                        dispatch(
-                            editCampaignsAction(
-                                {
-                                    ...campaignDataById,
-                                    exclude_holidays_country: scheduleSettings?.excludePublicHolidays,
-                                    timezone:
-                                        scheduleSettings?.timeZone === "None"
-                                            ? ""
-                                            : scheduleSettings?.timeZone,
-                                },
-                                campaignDataById?.id
-                            )
-                        );
                     } else {
                         throw Error;
                     }
@@ -192,7 +164,7 @@ export const getOutboundScheduleAction =
 
 
 export const addOutboundScheduleAction =
-    (body: any, setOutboundData: any, setAccordionOpen: any, excludePublicHolidays: any, timeZone: any, setExcludePublicHolidays: any, setTimeZone: any) =>
+    (body: any, setOutboundData: any, setAccordionOpen: any, setExcludePublicHolidays: any, setTimeZone: any) =>
         async (dispatch: AppDispatch, getState: () => RootState) => {
             const { campaignDataById } = getState()?.campaignReducer;
             HttpUtil.makePOST(
@@ -205,17 +177,6 @@ export const addOutboundScheduleAction =
                 .then((res) => {
                     if (res?.success) {
                         dispatch(getOutboundScheduleAction(setOutboundData, setAccordionOpen, setExcludePublicHolidays, setTimeZone))
-                        dispatch(
-                            editCampaignsAction(
-                                {
-                                    ...campaignDataById,
-                                    outbound_schedule_id: res?.data?.id,
-                                    exclude_holidays_country: excludePublicHolidays,
-                                    timezone: timeZone,
-                                },
-                                campaignDataById?.id
-                            )
-                        );
                     } else {
                         throw Error;
                     }
@@ -227,7 +188,7 @@ export const addOutboundScheduleAction =
         };
 
 export const editOutboundScheduleAction =
-    (body: any, setOutboundData: any, setAccordionOpen: any, excludePublicHolidays: any, setExcludePublicHolidays: any, setTimeZone: any) =>
+    (body: any, setOutboundData: any, setAccordionOpen: any, setExcludePublicHolidays: any, setTimeZone: any) =>
         async (dispatch: AppDispatch, getState: () => RootState) => {
             const { campaignDataById } = getState()?.campaignReducer;
             HttpUtil.makePUT(
@@ -240,16 +201,6 @@ export const editOutboundScheduleAction =
                 .then((res) => {
                     if (res?.success) {
                         dispatch(getOutboundScheduleAction(setOutboundData, setAccordionOpen, setExcludePublicHolidays, setTimeZone))
-                        dispatch(
-                            editCampaignsAction(
-                                {
-                                    ...campaignDataById,
-                                    exclude_holidays_country: excludePublicHolidays,
-                                    timezone: "",
-                                },
-                                campaignDataById?.id
-                            )
-                        );
                     } else {
                         throw Error;
                     }

@@ -64,9 +64,9 @@ useEffect(()=>{
       is_active: true,
   }
     if (scheduleSettings?.scheduleId === null) {
-      dispatch(addInboundScheduleAction(scheduleSettings,setScheduleSettings,body))
+      dispatch(addInboundScheduleAction(setScheduleSettings,body))
     } else {
-      dispatch(editInboundScheduleAction(scheduleSettings,setScheduleSettings,body))
+      dispatch(editInboundScheduleAction(setScheduleSettings,body))
     }
   };
 

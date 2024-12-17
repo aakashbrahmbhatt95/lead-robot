@@ -56,6 +56,7 @@ const DoCard = ({
                         {
                           ...doDetail,
                           taskset_id: taskSetDetails?.id,
+                          action_id:doDetail?.action?.id,
                           is_active: checked,
                         },
                         doDetail?.id,
@@ -93,6 +94,7 @@ const DoCard = ({
                           {
                             ...doDetail,
                             taskset_id: taskSetDetails?.id,
+                            action_id:doDetail?.action?.id,
                             is_required: checked,
                           },
                           doDetail?.id,

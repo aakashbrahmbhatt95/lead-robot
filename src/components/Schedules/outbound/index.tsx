@@ -64,9 +64,9 @@ const Outbound = () => {
     }
 
     if (outboundData?.outboundId === null) {
-      dispatch(addOutboundScheduleAction(body, setOutboundData, setAccordionOpen,excludePublicHolidays, timeZone, setExcludePublicHolidays, setTimeZone))
+      dispatch(addOutboundScheduleAction(body, setOutboundData, setAccordionOpen, setExcludePublicHolidays, setTimeZone))
     } else {
-      dispatch(editOutboundScheduleAction(body, setOutboundData, setAccordionOpen,excludePublicHolidays, setExcludePublicHolidays, setTimeZone))
+      dispatch(editOutboundScheduleAction(body, setOutboundData, setAccordionOpen, setExcludePublicHolidays, setTimeZone))
     }
   };
 
