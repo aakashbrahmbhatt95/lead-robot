@@ -1,18 +1,14 @@
 import { Button } from "@/lib/ui/button";
-import { Mic } from "lucide-react";
 import speaker from "@/../public/speaker.svg";
 import Image from "next/image";
 import LanguageSelection from "@/lib/modals/AgentSettingsPopup/LanguageSelection";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { languagesListAction } from "@/redux/action/global-action";
 import { Dialog, DialogTrigger } from "@/lib/ui/dialog";
 import VoiceLibrary from "@/lib/modals/VoiceLibrary";
 import {
   addAgentAction,
-  ambientSoundsListAction,
   editAgentAction,
-  getAgentAction,
 } from "@/redux/action/agents-action";
 import { Sheet } from "@/lib/ui/sheet";
 import AgentSettingsPopup from "@/lib/modals/AgentSettingsPopup";
@@ -26,6 +22,7 @@ import CallSettings from "@/lib/modals/AgentSettingsPopup/CallSettings";
 import SecuritySettings from "@/lib/modals/AgentSettingsPopup/SecuritySettings";
 import { Switch } from "@/lib/ui/switch";
 import RealTimeSettings from "@/lib/modals/AgentSettingsPopup/RealTimeSettings";
+import { History } from "lucide-react";
 
 const Agents = () => {
   const dispatch = useAppDispatch();
@@ -38,13 +35,12 @@ const Agents = () => {
 
   const { agentDataByID }: any = useAppSelector((state: any) => state.agentsReducer);
   const { campaignDataById }: any = useAppSelector((state: any) => state.campaignReducer);
-
-  useEffect(() => {
-    dispatch(languagesListAction());
-    dispatch(ambientSoundsListAction());
-    dispatch(getAgentAction(params?.id));
-  }, [dispatch]);
-
+  const {
+    realTimeTurnDetectionList,
+    realTimeResponseModalitiesList,
+    realTimeTranscriptionsList,
+    realTimeModelsList,
+  }: any = useAppSelector((state: any) => state.agentsReducer);
 
   useEffect(() => {
     if (agentDataByID !== null) {
@@ -68,7 +64,13 @@ const Agents = () => {
     } else {
       formik.setValues({
         ...initialAgentValues,
-        ...(isRealTime ? initiatRealTimeAgentValues : initialTTSAgentValues),
+        ...(isRealTime ? {
+          ...initiatRealTimeAgentValues,  
+          model: realTimeModelsList?.length === 1 ? realTimeModelsList?.[0]?.value : "",
+          transcription: realTimeTranscriptionsList?.length === 1 ? realTimeTranscriptionsList?.[0]?.value : "",
+          response_modalities: realTimeResponseModalitiesList?.length === 1 ? realTimeResponseModalitiesList?.[0]?.value : "",
+          turn_detection: realTimeTurnDetectionList?.length === 1 ? realTimeTurnDetectionList?.[0]?.value : "",
+        } : initialTTSAgentValues),
       });
     }
   }, [agentDataByID]);
@@ -76,7 +78,13 @@ const Agents = () => {
   const formik = useFormik({
     initialValues: {
       ...initialAgentValues,
-      ...(isRealTime ? initiatRealTimeAgentValues : initialTTSAgentValues),
+      ...(isRealTime ? {
+        ...initiatRealTimeAgentValues, 
+        model: realTimeModelsList?.length === 1 ? realTimeModelsList?.[0]?.value : "",
+        transcription: realTimeTranscriptionsList?.length === 1 ? realTimeTranscriptionsList?.[0]?.value : "",
+        response_modalities: realTimeResponseModalitiesList?.length === 1 ? realTimeResponseModalitiesList?.[0]?.value : "",
+        turn_detection: realTimeTurnDetectionList?.length === 1 ? realTimeTurnDetectionList?.[0]?.value : "",
+      } : initialTTSAgentValues),
     },
     onSubmit: (values: any) => {
       const body = {
@@ -110,8 +118,9 @@ const Agents = () => {
     <div className="flex gap-4 mt-10">
       <form onSubmit={formik.handleSubmit} className="w-[65%]">
         <div className="flex items-center mb-5">
-        <Switch checked={isRealTime} onCheckedChange={handleRealTimeChange} />
-          <label className="block pl-2 text-sm font-medium text-gray-700">Real Time</label>
+          <label className="block pr-2 text-sm font-medium text-gray-700" style={{ fontWeight: !isRealTime ? "bold" : "" }}>Text to speech</label>
+          <Switch checked={isRealTime} onCheckedChange={handleRealTimeChange} />
+          <label className="block pl-2 text-sm font-medium text-gray-700" style={{ fontWeight: isRealTime ? "bold" : "" }}>Real time</label>
         </div>
         <div className="flex justify-between items-center">
           <p className="text-xl text-semibold">Voice</p>
@@ -121,7 +130,8 @@ const Agents = () => {
             className="flex gap-2 items-center"
             onClick={() => setIsAgentSettingsPopup({ isEdit: false })}
           >
-            <Mic width={20} height={20} /> Agent settings
+            <History width={20} height={20} />
+            Version history
           </Button>
         </div>
         <div className="flex items-center border-[1px] mt-4 p-[20px] border-[#E4E4E7] rounded">

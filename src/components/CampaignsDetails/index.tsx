@@ -21,6 +21,8 @@ import {
 } from "@/redux/action/contactFilter-action";
 import { Dialog, DialogContent } from "@/lib/ui/dialog";
 import VoiceAssistantPopup from "@/lib/modals/PreviewSideBarPopup/VoiceAssistantPopup";
+import { ambientSoundsListAction, getAgentAction, getRealTimeModelsListAction, getRealTimeResponseModalitiesListAction, getRealTimeTranscriptionsListAction, getRealTimeTurnDetectionListAction, getRealTimeVoicesListAction } from "@/redux/action/agents-action";
+import { languagesListAction } from "@/redux/action/global-action";
 
 const CampaignsDetails = () => {
   const router = useRouter();
@@ -37,6 +39,14 @@ const CampaignsDetails = () => {
   useEffect(() => {
     dispatch(getFiltersAction());
     dispatch(getConfigFiltersAction());
+    dispatch(getRealTimeVoicesListAction());
+    dispatch(getRealTimeModelsListAction());
+    dispatch(getRealTimeTranscriptionsListAction());
+    dispatch(getRealTimeResponseModalitiesListAction());
+    dispatch(getRealTimeTurnDetectionListAction());
+    dispatch(languagesListAction());
+    dispatch(ambientSoundsListAction());
+    dispatch(getAgentAction(params?.id));
   }, []);
 
   useEffect(() => {
@@ -124,7 +134,7 @@ const CampaignsDetails = () => {
         open={isVoiceAssitantPopup}
         onOpenChange={setIsVoiceAssitantPopup}
       >
-        <DialogContent className="sm:max-w-[60%] max-h-[70%] p-[40px] overflow-scroll bg-white">
+        <DialogContent className="sm:max-w-[60%] max-h-[70%] p-0 overflow-scroll bg-white">
           <VoiceAssistantPopup />
         </DialogContent>
       </Dialog>

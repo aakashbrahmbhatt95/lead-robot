@@ -7,19 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/lib/ui/select";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import AgentSlider from "./AgentSlider";
-import { useEffect } from "react";
-import {
-  getRealTimeModelsListAction,
-  getRealTimeResponseModalitiesListAction,
-  getRealTimeTranscriptionsListAction,
-  getRealTimeTurnDetectionListAction,
-  getRealTimeVoicesListAction,
-} from "@/redux/action/agents-action";
 
 const RealTimeSettings = ({ formik }: any) => {
-  const dispatch = useAppDispatch();
   const {
     realTimeTurnDetectionList,
     realTimeResponseModalitiesList,
@@ -27,14 +18,6 @@ const RealTimeSettings = ({ formik }: any) => {
     realTimeModelsList,
     realTimeVoicesList,
   }: any = useAppSelector((state: any) => state.agentsReducer);
-
-  useEffect(() => {
-    dispatch(getRealTimeVoicesListAction());
-    dispatch(getRealTimeModelsListAction());
-    dispatch(getRealTimeTranscriptionsListAction());
-    dispatch(getRealTimeResponseModalitiesListAction());
-    dispatch(getRealTimeTurnDetectionListAction());
-  }, []);
 
   return (
     <div className="px-4 border-[1px] border-[#E4E4E7] pb-4 rounded">

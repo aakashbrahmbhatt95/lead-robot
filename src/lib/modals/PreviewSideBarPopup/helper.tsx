@@ -94,10 +94,10 @@ export function ControlBar(props: {
               animate={{ opacity: 1, top: 0 }}
               exit={{ opacity: 0, top: "-10px" }}
               transition={{ duration: 0.4, ease: [0.09, 1.04, 0.245, 1.055] }}
-              className="flex h-8 absolute left-1/2 -translate-x-1/2"
+              className="flex absolute left-1/2 -translate-x-1/2  justify-center"
             >
               <VoiceAssistantControlBar controls={{ leave: false }} />
-              <DisconnectButton className="">
+              <DisconnectButton className="mt-4 h-[40px]">
                 <X />
               </DisconnectButton>
             </motion.div>
