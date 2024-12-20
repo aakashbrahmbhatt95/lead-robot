@@ -31,7 +31,6 @@ const GoogleAuthButton = () => {
 
       HttpUtil.makePOST(`${BASE_URL}${PROVIDER_TOKEN}`, payload)
         .then((res) => {
-          console.log("Response:", res);
           toast.success("User Logged In Successfully");
           setCookie(TOKEN_KEY, res.data.meta.access_token);
           setCookie(SESSION_KEY, res.data.meta.session_token);

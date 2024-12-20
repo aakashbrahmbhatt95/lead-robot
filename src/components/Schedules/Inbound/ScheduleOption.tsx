@@ -26,7 +26,7 @@ const ScheduleOptions = ({
       <RadioGroup
         className="flex mt-4 gap-5"
         value={isAlwaysOn}
-        onValueChange={(value) => {
+        onValueChange={(value: any) => {
           if (value === "isalwayson") {
             const isConfirmed = window.confirm(
               `Are you sure you want to update the schedule and set it to "Always On"?`
@@ -42,6 +42,7 @@ const ScheduleOptions = ({
                   campaignDataById?.id
                 )
               );
+              setIsAlwaysOn("isalwayson");
             }
           } else {
             setIsAlwaysOn(value);

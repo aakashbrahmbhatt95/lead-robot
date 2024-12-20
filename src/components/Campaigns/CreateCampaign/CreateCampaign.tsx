@@ -78,7 +78,7 @@ const CreateCampaign = () => {
       >
         {({ values, setFieldValue, errors, touched }) => (
           <Form>
-            <div className="flex justify-between">
+            <div className="block justify-between">
               <div className="flex-1 basis-1/3 p-2">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
                   Name
@@ -90,19 +90,14 @@ const CreateCampaign = () => {
               </div>
               <div className="flex-1 basis-1/3 p-2">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Description
+                General Prompt
                 </label>
                 <Field
-                  as={Input}
-                  type="text"
-                  name="description"
-                  className="w-full"
+                as="textarea"
+                name="description"
+                className="w-full p-2 border border-gray-300 rounded-md resize-none  focus:border-black"
+                rows={4}
                 />
-                {errors.description && touched.description && (
-                  <div className="text-red-500 text-sm">
-                    {errors.description}
-                  </div>
-                )}
               </div>
               <div className="flex-1 basis-1/3 p-2">
                 <label className="block mb-2 text-sm font-medium text-gray-700">

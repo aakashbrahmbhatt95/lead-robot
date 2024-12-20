@@ -124,7 +124,7 @@ const CampaignsDetails = () => {
         open={isVoiceAssitantPopup}
         onOpenChange={setIsVoiceAssitantPopup}
       >
-        <DialogContent className="sm:max-w-[60%] max-h-[75%] p-[40px] overflow-scroll bg-white">
+        <DialogContent className="sm:max-w-[60%] max-h-[70%] p-[40px] overflow-scroll bg-white">
           <VoiceAssistantPopup />
         </DialogContent>
       </Dialog>

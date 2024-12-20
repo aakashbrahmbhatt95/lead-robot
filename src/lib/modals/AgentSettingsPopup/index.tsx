@@ -4,9 +4,6 @@ import VersionHistory from "@/components/Agents/VersionHistory";
 
 const AgentSettingsPopup = ({
   setIsAgentSettingsPopup,
-  formik,
-  voicesList,
-  setVoicesList,
 }: any) => {
   return (
     <SheetContent className="overflow-scroll">

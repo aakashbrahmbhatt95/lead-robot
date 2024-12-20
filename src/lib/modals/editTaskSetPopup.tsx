@@ -11,6 +11,8 @@ import {
 } from "@/redux/action/campaigns-action";
 import { X } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
+import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
 
 const EditTaskSetPopup = ({
   isEditTaskSetPopup,
@@ -23,6 +25,7 @@ const EditTaskSetPopup = ({
   useEffect(() => {
     setFormValues({
       name: isEditTaskSetPopup?.name,
+      description: isEditTaskSetPopup?.description,
       is_parent: isEditTaskSetPopup?.is_parent,
     });
   }, [isEditTaskSetPopup]);
@@ -32,6 +35,7 @@ const EditTaskSetPopup = ({
       campaign_id: isEditTaskSetPopup?.campaign,
       name: formValues?.name,
       speak_first: false,
+      description: formValues?.description,
       x_position: isEditTaskSetPopup?.x_position,
       y_position: isEditTaskSetPopup?.y_position,
       is_parent: formValues?.is_parent,
@@ -82,6 +86,15 @@ const EditTaskSetPopup = ({
                 value={formValues?.name}
                 onChange={(e) =>
                   setFormValues({ ...formValues, name: e.target.value })
+                }
+              />
+              <Label className="mt-4">Description</Label>
+              <Textarea
+                placeholder="Description"
+                className="mt-3"
+                value={formValues?.description}
+                onChange={(e) =>
+                  setFormValues({ ...formValues, description: e.target.value })
                 }
               />
               <div className="flex items-center space-x-2 mt-5">

@@ -5,6 +5,21 @@ export const initialAgentValues = {
   style: "",
   response: "",
   language: "",
+};
+
+export const initiatRealTimeAgentValues = {
+  model: "",
+  transcription: "",
+  voice: "",
+  response_modalities: "",
+  temperature: 0.5,
+  max_output_tokens: 0,
+  turn_detection: "",
+  threshold: 0.5,
+  prefix_ms: 300,
+  silence_duration_ms: 300
+  }
+export const initialTTSAgentValues = {
   voice_id: "",
   ambient_sound: "",
   responsiveness: 0.50,
@@ -34,7 +49,7 @@ export const initialAgentValues = {
   pronunciation_dictionary: {},
   voice_model: "",
   //Todo end
-};
+  }
 
 export const getSelectedVoiceData = (voice_id: any, voiceList: any) => {
   const filteredVoiceId = voiceList?.filter(

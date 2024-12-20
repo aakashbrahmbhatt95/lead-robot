@@ -77,6 +77,7 @@ const TaskSetCard: React.FC<{
                           {
                             campaign_id: ele?.campaign,
                             name: ele?.name,
+                            description: ele?.description,
                             speak_first: checked,
                             x_position: ele?.x_position,
                             y_position: ele?.y_position,

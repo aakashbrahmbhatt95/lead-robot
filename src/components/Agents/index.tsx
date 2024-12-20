@@ -19,7 +19,7 @@ import AgentSettingsPopup from "@/lib/modals/AgentSettingsPopup";
 import AgentsPersonality from "./AgentsPersonality";
 import { useFormik } from "formik";
 import { useParams } from "next/navigation";
-import { getSelectedVoiceData, initialAgentValues } from "./helper";
+import { getSelectedVoiceData, initialAgentValues, initialTTSAgentValues, initiatRealTimeAgentValues } from "./helper";
 import { Accordion } from "@/lib/ui/accordion";
 import SpeechSettings from "@/lib/modals/AgentSettingsPopup/SpeechSettings";
 import CallSettings from "@/lib/modals/AgentSettingsPopup/CallSettings";
@@ -30,16 +30,14 @@ import RealTimeSettings from "@/lib/modals/AgentSettingsPopup/RealTimeSettings";
 const Agents = () => {
   const dispatch = useAppDispatch();
   const params = useParams();
+
   const [isAgentSettingsPopup, setIsAgentSettingsPopup] = useState<any>(null);
   const [voicesList, setVoicesList] = useState([]);
-  const [isRealTime, setIsRealTime] = useState(false);
+  const [isRealTime, setIsRealTime] = useState(true);
   const [isVoiceLibrary, setIsVoiceLibrary] = useState(false);
-  const { agentDataByID }: any = useAppSelector(
-    (state: any) => state.agentsReducer
-  );
-  const { campaignDataById }: any = useAppSelector(
-    (state: any) => state.campaignReducer
-  );
+
+  const { agentDataByID }: any = useAppSelector((state: any) => state.agentsReducer);
+  const { campaignDataById }: any = useAppSelector((state: any) => state.campaignReducer);
 
   useEffect(() => {
     dispatch(languagesListAction());
@@ -47,56 +45,73 @@ const Agents = () => {
     dispatch(getAgentAction(params?.id));
   }, [dispatch]);
 
+
   useEffect(() => {
-    if (agentDataByID?.campaign) {
+    if (agentDataByID !== null) {
       formik.setValues({
         ...formik.values,
-        ...agentDataByID,
-        backchannel_words: agentDataByID?.backchannel_words?.join(","),
-        boosted_keywords: agentDataByID?.boosted_keywords?.join(","),
-        fallback_voice_ids: agentDataByID?.fallback_voice_ids?.[0],
+        openai_settings: agentDataByID?.openai_settings,
+        id: agentDataByID?.id,
+        campaign: agentDataByID?.campaign,
+        name: agentDataByID?.name,
+        language: agentDataByID?.language,
+        identity: agentDataByID?.identity,
+        style: agentDataByID?.style,
+        response: agentDataByID?.response,
+        active_settings: agentDataByID?.active_settings,
+        ...(agentDataByID?.active_settings === "tts" ? agentDataByID?.tts_settings : agentDataByID?.openai_settings),
+        backchannel_words: agentDataByID?.tts_settings?.backchannel_words?.join(","),
+        boosted_keywords: agentDataByID?.tts_settings?.boosted_keywords?.join(","),
+        fallback_voice_ids: agentDataByID?.tts_settings?.fallback_voice_ids?.[0],
       });
+      setIsRealTime(agentDataByID?.active_settings === "tts" ? false : true);
     } else {
-      formik.setValues(initialAgentValues);
+      formik.setValues({
+        ...initialAgentValues,
+        ...(isRealTime ? initiatRealTimeAgentValues : initialTTSAgentValues),
+      });
     }
   }, [agentDataByID]);
 
-  const formik: any = useFormik({
-    initialValues: { initialAgentValues },
+  const formik = useFormik({
+    initialValues: {
+      ...initialAgentValues,
+      ...(isRealTime ? initiatRealTimeAgentValues : initialTTSAgentValues),
+    },
     onSubmit: (values: any) => {
       const body = {
         campaign_id: params?.id,
         name: campaignDataById?.name || "Agents",
         ...values,
-        boosted_keywords: values?.boosted_keywords
-          ?.split(",")
-          .map((item: any) => item.trim()),
-        backchannel_words: values?.backchannel_words
-          ?.split(",")
-          .map((item: any) => item.trim()),
+        boosted_keywords: values?.boosted_keywords?.split(",").map((item: any) => item.trim()),
+        backchannel_words: values?.backchannel_words?.split(",").map((item: any) => item.trim()),
         fallback_voice_ids: [values?.fallback_voice_ids],
       };
-      if (agentDataByID?.campaign) {
-        dispatch(editAgentAction(body));
+
+      if (agentDataByID !== null) {
+        dispatch(editAgentAction(body, isRealTime));
       } else {
-        dispatch(addAgentAction(body));
+        dispatch(addAgentAction(body, isRealTime));
       }
     },
   });
+
+  const handleRealTimeChange = (checked: boolean) => {
+    setIsRealTime(checked);
+    formik.resetForm({
+      values: {
+        ...initialAgentValues,
+        ...(checked ? initiatRealTimeAgentValues : initialTTSAgentValues),
+      },
+    });
+  };
 
   return (
     <div className="flex gap-4 mt-10">
       <form onSubmit={formik.handleSubmit} className="w-[65%]">
         <div className="flex items-center mb-5">
-          <Switch
-            checked={isRealTime}
-            onCheckedChange={(checked: any) =>
-              setIsRealTime(checked)
-            }
-          />
-          <label className="block pl-2 text-sm font-medium text-gray-700">
-            Real Time
-          </label>
+        <Switch checked={isRealTime} onCheckedChange={handleRealTimeChange} />
+          <label className="block pl-2 text-sm font-medium text-gray-700">Real Time</label>
         </div>
         <div className="flex justify-between items-center">
           <p className="text-xl text-semibold">Voice</p>
@@ -104,13 +119,9 @@ const Agents = () => {
             type="button"
             variant="outline"
             className="flex gap-2 items-center"
-            onClick={() =>
-              setIsAgentSettingsPopup({
-                isEdit: false,
-              })
-            }
+            onClick={() => setIsAgentSettingsPopup({ isEdit: false })}
           >
-            <Mic width={20} height={20} /> New settings
+            <Mic width={20} height={20} /> Agent settings
           </Button>
         </div>
         <div className="flex items-center border-[1px] mt-4 p-[20px] border-[#E4E4E7] rounded">
@@ -124,10 +135,8 @@ const Agents = () => {
           <div className="w-3/4">
             <LanguageSelection formik={formik} />
             <Dialog open={isVoiceLibrary} onOpenChange={setIsVoiceLibrary}>
-              <DialogTrigger asChild onClick={() => setIsVoiceLibrary(true)}>
-                <Button className="mt-3">
-                  Select Voice
-                </Button>
+              <DialogTrigger asChild>
+                <Button className="mt-3">Select Voice</Button>
               </DialogTrigger>
               <VoiceLibrary
                 formik={formik}
@@ -142,31 +151,23 @@ const Agents = () => {
         <AgentsPersonality formik={formik} />
         <div className="flex justify-end mt-5">
           <Button type="submit">
-            {agentDataByID?.campaign ? "Update Agent" : "Save Agent"}
+            {agentDataByID !== null ? "Update Agent" : "Save Agent"}
           </Button>
         </div>
       </form>
       <div className="w-[35%] mt-10">
-        {/* {isRealTime ? <RealTimeSettings formik={formik} /> :
+        {isRealTime ? (
+          <RealTimeSettings formik={formik} />
+        ) : (
           <Accordion type="single" collapsible className="w-full px-3 border-[1px] border-[#E4E4E7] rounded">
             <SpeechSettings formik={formik} />
             <CallSettings formik={formik} />
-            <SecuritySettings
-              formik={formik}
-              voicesList={voicesList}
-              setVoicesList={setVoicesList}
-            />
-          </Accordion>} */}
+            <SecuritySettings formik={formik} voicesList={voicesList} setVoicesList={setVoicesList} />
+          </Accordion>
+        )}
       </div>
       <Sheet open={isAgentSettingsPopup !== null}>
-        {isAgentSettingsPopup !== null && (
-          <AgentSettingsPopup
-            setIsAgentSettingsPopup={setIsAgentSettingsPopup}
-            formik={formik}
-            voicesList={voicesList}
-            setVoicesList={setVoicesList}
-          />
-        )}
+        {isAgentSettingsPopup && <AgentSettingsPopup setIsAgentSettingsPopup={setIsAgentSettingsPopup} />}
       </Sheet>
     </div>
   );

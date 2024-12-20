@@ -29,7 +29,7 @@ const VoiceAssistantPopup = () => {
       token={voiceData?.token}
       serverUrl={voiceData?.server_url}
       data-lk-theme="default"
-      style={{ height: '500px' }}
+      style={{ height: '400px' }}
     >
       <SimpleVoiceAssistant onStateChange={setAgentState} />
       <ControlBar

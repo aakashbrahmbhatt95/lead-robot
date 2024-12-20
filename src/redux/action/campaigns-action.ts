@@ -191,6 +191,7 @@ export const copytaskSetAction =
           const body = {
             campaign_id: res?.data?.campaign,
             name: res?.data?.name,
+            description: res?.data?.description,
             speak_first: res?.data?.speak_first,
             x_position: Math.ceil(res?.data?.x_position + 50),
             y_position: Math.ceil(res?.data?.y_position + 50),
