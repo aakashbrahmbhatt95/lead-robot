@@ -21,8 +21,9 @@ import {
 } from "@/redux/action/contactFilter-action";
 import { Dialog, DialogContent } from "@/lib/ui/dialog";
 import VoiceAssistantPopup from "@/lib/modals/PreviewSideBarPopup/VoiceAssistantPopup";
-import { ambientSoundsListAction, getAgentAction, getRealTimeModelsListAction, getRealTimeResponseModalitiesListAction, getRealTimeTranscriptionsListAction, getRealTimeTurnDetectionListAction, getRealTimeVoicesListAction } from "@/redux/action/agents-action";
+import { ambientSoundsListAction, getAgentAction, getRealTimeModelsListAction, getRealTimeResponseModalitiesListAction, getRealTimeTranscriptionsListAction, getRealTimeTurnDetectionListAction } from "@/redux/action/agents-action";
 import { languagesListAction } from "@/redux/action/global-action";
+import CallSettingsTab from "../CallSettingsTab";
 
 const CampaignsDetails = () => {
   const router = useRouter();
@@ -39,7 +40,6 @@ const CampaignsDetails = () => {
   useEffect(() => {
     dispatch(getFiltersAction());
     dispatch(getConfigFiltersAction());
-    dispatch(getRealTimeVoicesListAction());
     dispatch(getRealTimeModelsListAction());
     dispatch(getRealTimeTranscriptionsListAction());
     dispatch(getRealTimeResponseModalitiesListAction());
@@ -122,6 +122,7 @@ const CampaignsDetails = () => {
       {taskId === 2 && <Agents />}
       {taskId === 3 && <Segments />}
       {taskId === 4 && <Schedules />}
+      {taskId === 5 && <CallSettingsTab />}
       <Sheet open={isPreviewSideBarPopup}>
         {isPreviewSideBarPopup && (
           <PreviewSideBarPopup

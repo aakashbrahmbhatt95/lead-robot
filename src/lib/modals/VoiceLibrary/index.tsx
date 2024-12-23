@@ -10,6 +10,7 @@ const VoiceLibrary = ({
   setIsVoiceLibrary,
   voicesList,
   setVoicesList,
+  isRealTime
 }: any) => {
   const [filteredVoices, setFilteredVoices] = useState([]);
   const [filters, setFilters] = useState({
@@ -20,8 +21,8 @@ const VoiceLibrary = ({
   });
 
   useEffect(() => {
-    getVoiceList(setVoicesList);
-  }, []);
+    getVoiceList(setVoicesList, isRealTime);
+  }, [isRealTime]);
 
   useEffect(() => {
     const filtered = voicesList.filter((voice: any) => {

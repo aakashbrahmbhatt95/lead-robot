@@ -12,7 +12,7 @@ import VoiceLibrary from "../VoiceLibrary";
 import { useState } from "react";
 import { getSelectedVoiceData } from "@/components/Agents/helper";
 
-const SecuritySettings = ({ formik, voicesList, setVoicesList }: any) => {
+const SecuritySettings = ({ formik, voicesList, setVoicesList, isRealTime }: any) => {
   const [isFallBackVoice, setIsFallBackVoice] = useState(false);
   return (
     <AccordionItem value="securitysettings">
@@ -31,7 +31,7 @@ const SecuritySettings = ({ formik, voicesList, setVoicesList }: any) => {
             className="mt-2"
             name="opt_out_sensitive_data_storage"
             checked={formik.values.opt_out_sensitive_data_storage}
-            onCheckedChange={(checked) =>
+            onCheckedChange={(checked: any) =>
               formik.setFieldValue("opt_out_sensitive_data_storage", checked)
             }
           />
@@ -63,6 +63,7 @@ const SecuritySettings = ({ formik, voicesList, setVoicesList }: any) => {
               setIsVoiceLibrary={setIsFallBackVoice}
               voicesList={voicesList}
               setVoicesList={setVoicesList}
+              isRealTime={isRealTime}
             />
           </Dialog>
         </div>

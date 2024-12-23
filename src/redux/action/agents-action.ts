@@ -15,7 +15,6 @@ import {
   realTimeResponseModalitiesListReducer,
   realTimeTranscriptionsListReducer,
   realTimeTurnDetectionListReducer,
-  realTimeVoicesListReducer,
 } from "../reducer/agents-reducer";
 import { toast } from "react-toastify";
 
@@ -192,19 +191,6 @@ export const editAgentByIDAction =
       })
       .finally(() => { });
   };
-
-export const getRealTimeVoicesListAction = () => async (dispatch: AppDispatch) => {
-  HttpUtil.makeGET(`${BASE_URL1}/agents/openai/voices`, "", {
-    Authorization: getToken(),
-  })
-    .then((res) => {
-      dispatch(realTimeVoicesListReducer(res?.data));
-    })
-    .catch((err: any) => {
-      dispatch(realTimeVoicesListReducer([]));
-    })
-    .finally(() => { });
-};
 
 export const getRealTimeModelsListAction = () => async (dispatch: AppDispatch) => {
   HttpUtil.makeGET(`${BASE_URL1}/agents/openai/models`, "", {

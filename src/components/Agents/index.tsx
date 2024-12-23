@@ -109,7 +109,13 @@ const Agents = () => {
     formik.resetForm({
       values: {
         ...initialAgentValues,
-        ...(checked ? initiatRealTimeAgentValues : initialTTSAgentValues),
+        ...(checked ? {
+          ...initiatRealTimeAgentValues, 
+          model: realTimeModelsList?.length === 1 ? realTimeModelsList?.[0]?.value : "",
+          transcription: realTimeTranscriptionsList?.length === 1 ? realTimeTranscriptionsList?.[0]?.value : "",
+          response_modalities: realTimeResponseModalitiesList?.length === 1 ? realTimeResponseModalitiesList?.[0]?.value : "",
+          turn_detection: realTimeTurnDetectionList?.length === 1 ? realTimeTurnDetectionList?.[0]?.value : "",
+        } : initialTTSAgentValues),
       },
     });
   };
@@ -136,8 +142,8 @@ const Agents = () => {
         </div>
         <div className="flex items-center border-[1px] mt-4 p-[20px] border-[#E4E4E7] rounded">
           <div className="w-1/4 flex flex-col justify-center items-center">
-            {formik?.values?.voice_id ? (
-              getSelectedVoiceData(formik?.values?.voice_id, voicesList)
+            {formik?.values?.voice_id || formik?.values?.voice ? (
+              getSelectedVoiceData(isRealTime ? formik?.values?.voice :formik?.values?.voice_id, voicesList)
             ) : (
               <Image width={96} height={96} src={speaker} alt="speaker" />
             )}
@@ -150,10 +156,11 @@ const Agents = () => {
               </DialogTrigger>
               <VoiceLibrary
                 formik={formik}
-                keyName="voice_id"
+                keyName={isRealTime ? "voice": "voice_id"}
                 setIsVoiceLibrary={setIsVoiceLibrary}
                 voicesList={voicesList}
                 setVoicesList={setVoicesList}
+                isRealTime={isRealTime}
               />
             </Dialog>
           </div>
@@ -172,7 +179,7 @@ const Agents = () => {
           <Accordion type="single" collapsible className="w-full px-3 border-[1px] border-[#E4E4E7] rounded">
             <SpeechSettings formik={formik} />
             <CallSettings formik={formik} />
-            <SecuritySettings formik={formik} voicesList={voicesList} setVoicesList={setVoicesList} />
+            <SecuritySettings formik={formik} voicesList={voicesList} setVoicesList={setVoicesList} isRealTime={isRealTime} />
           </Accordion>
         )}
       </div>

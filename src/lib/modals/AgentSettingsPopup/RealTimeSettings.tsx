@@ -16,7 +16,6 @@ const RealTimeSettings = ({ formik }: any) => {
     realTimeResponseModalitiesList,
     realTimeTranscriptionsList,
     realTimeModelsList,
-    realTimeVoicesList,
   }: any = useAppSelector((state: any) => state.agentsReducer);
 
   return (
@@ -59,27 +58,6 @@ const RealTimeSettings = ({ formik }: any) => {
               {realTimeTranscriptionsList?.map((ele: any) => (
                 <SelectItem key={ele?.value} value={ele?.value}>
                   {ele?.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div className="mt-2">
-        <Label>Voice</Label>
-        <div className="w-[100%] mt-2">
-          <Select
-            name="voice"
-            value={formik.values.voice}
-            onValueChange={(value: any) => formik.setFieldValue("voice", value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select voice" />
-            </SelectTrigger>
-            <SelectContent>
-              {realTimeVoicesList?.map((ele: any) => (
-                <SelectItem key={ele?.voice_id} value={ele?.voice_id}>
-                  {ele?.voice_name}
                 </SelectItem>
               ))}
             </SelectContent>

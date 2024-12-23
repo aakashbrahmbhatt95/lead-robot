@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
   ambientSoundsList: any;
-  realTimeVoicesList: any;
   realTimeModelsList: any;
   realTimeTranscriptionsList: any;
   realTimeResponseModalitiesList: any;
@@ -11,7 +10,6 @@ type InitialState = {
 };
 const initialState = {
   ambientSoundsList: [],
-  realTimeVoicesList: [],
   realTimeModelsList: [],
   realTimeTranscriptionsList: [],
   realTimeResponseModalitiesList: [],
@@ -29,9 +27,6 @@ export const Agents = createSlice({
     ambientSoundsListReducer: (state, action) => {
       state.ambientSoundsList = action.payload;
     },
-    realTimeVoicesListReducer: (state, action) => {
-      state.realTimeVoicesList = action.payload;
-    },
     realTimeModelsListReducer: (state, action) => {
       state.realTimeModelsList = action.payload;
     },
@@ -47,7 +42,7 @@ export const Agents = createSlice({
   },
 });
 
-export const { ambientSoundsListReducer, realTimeTurnDetectionListReducer, realTimeResponseModalitiesListReducer, realTimeModelsListReducer, realTimeTranscriptionsListReducer, realTimeVoicesListReducer, agentDataReducer } =
+export const { ambientSoundsListReducer, realTimeTurnDetectionListReducer, realTimeResponseModalitiesListReducer, realTimeModelsListReducer, realTimeTranscriptionsListReducer, agentDataReducer } =
   Agents.actions;
 
 export default Agents.reducer;

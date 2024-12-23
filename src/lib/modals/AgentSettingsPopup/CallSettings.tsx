@@ -29,7 +29,7 @@ const CallSettings = ({ formik }: any) => {
             className="mt-2"
             name="enable_voicemail_detection"
             checked={formik.values.enable_voicemail_detection}
-            onCheckedChange={(checked) =>
+            onCheckedChange={(checked: any) =>
               formik.setFieldValue("enable_voicemail_detection", checked)
             }
           />
@@ -38,7 +38,7 @@ const CallSettings = ({ formik }: any) => {
           <RadioGroup
             name="voicemail_message"
             value={formik.values.voicemail_message}
-            onValueChange={(value) =>
+            onValueChange={(value: any) =>
               formik.setFieldValue("voicemail_message", value)
             }
           >
