@@ -35,19 +35,17 @@ const LanguageSelection = ({ formik }: any) => {
         <Command>
           <CommandInput placeholder="Search language..." className="h-9" />
           <CommandList>
+            <CommandEmpty>No language found</CommandEmpty>
             <CommandGroup>
               {languageList.map((language: any) => (
                 <CommandItem
-                  key={language.key}
-                  value={language?.value || ""}
                   onSelect={() => handleLanguageSelect(language?.value || "")}
                   className="m-2 mt-3"
                 >
-                  {language?.label}
+                  <span>{language?.label}</span>
                 </CommandItem>
               ))}
             </CommandGroup>
-            <CommandEmpty>No language found</CommandEmpty>
           </CommandList>
         </Command>
       </PopoverContent>
