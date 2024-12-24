@@ -90,7 +90,7 @@ const CreateCampaign = () => {
               </div>
               <div className="flex-1 basis-1/3 p-2">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
-                General Prompt
+                Description
                 </label>
                 <Field
                 as="textarea"

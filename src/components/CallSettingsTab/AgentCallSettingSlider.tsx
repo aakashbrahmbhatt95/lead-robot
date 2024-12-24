@@ -16,10 +16,10 @@ const AgentCallSettingSlider = ({
       </Label>
       <div>
         <div className="flex justify-center">
-          <span className="font-bold">{formik.values[keyName]}</span>
+          <span className="font-bold">{formik.values[keyName] / 1000}</span>
         </div>
         <div className="w-full flex items-center gap-8">
-          <span>{min}</span>
+          <span>{min / 100}</span>
           <Slider
             id={heading}
             value={[formik.values[keyName]]}
@@ -31,7 +31,7 @@ const AgentCallSettingSlider = ({
             min={min}
             step={step}
           />
-          <span>{max}</span>
+          <span>{max / 1000}</span>
         </div>
       </div>
     </div>

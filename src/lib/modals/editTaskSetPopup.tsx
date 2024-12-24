@@ -19,7 +19,6 @@ const EditTaskSetPopup = ({
   setIsEditTaskSetPopup,
 }: any) => {
   const dispatch = useAppDispatch();
-  const [isEdit, setIsEdit] = useState(false);
   const [formValues, setFormValues] = useState<any>(null);
 
   useEffect(() => {
@@ -51,7 +50,6 @@ const EditTaskSetPopup = ({
           className="cursor-pointer"
           onClick={() => {
             setIsEditTaskSetPopup(null);
-            setIsEdit(false);
           }}
         />
       </div>
@@ -62,42 +60,37 @@ const EditTaskSetPopup = ({
               Edit {isEditTaskSetPopup?.name}
             </CardTitle>
             <div className="flex items-center gap-3">
-              <PencilSimple
-                className="cursor-pointer"
-                size={20}
-                onClick={() => setIsEdit(true)}
-              />
-              <TrashSimple
-                size={20}
-                className="cursor-pointer"
-                onClick={() => {
-                  dispatch(deletetaskSetAction(isEditTaskSetPopup?.id));
-                  setIsEditTaskSetPopup(null);
-                }}
-              />
+              {!formValues?.is_parent && (
+                <TrashSimple
+                  size={20}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    dispatch(deletetaskSetAction(isEditTaskSetPopup?.id));
+                    setIsEditTaskSetPopup(null);
+                  }}
+                />
+              )}
             </div>
           </div>
         </CardHeader>
         <CardContent className="flex flex-col items-start mt-4">
-          {isEdit && (
-            <>
-              <Input
-                placeholder="Name"
-                value={formValues?.name}
-                onChange={(e) =>
-                  setFormValues({ ...formValues, name: e.target.value })
-                }
-              />
-              <Label className="mt-4">Description</Label>
-              <Textarea
-                placeholder="Description"
-                className="mt-3"
-                value={formValues?.description}
-                onChange={(e) =>
-                  setFormValues({ ...formValues, description: e.target.value })
-                }
-              />
-              <div className="flex items-center space-x-2 mt-5">
+          <Input
+            placeholder="Name"
+            value={formValues?.name}
+            onChange={(e) =>
+              setFormValues({ ...formValues, name: e.target.value })
+            }
+          />
+          <Label className="mt-4">General Prompt</Label>
+          <Textarea
+            placeholder="General Prompt"
+            className="mt-3"
+            value={formValues?.description}
+            onChange={(e) =>
+              setFormValues({ ...formValues, description: e.target.value })
+            }
+          />
+          {/* <div className="flex items-center space-x-2 mt-5">
                 <Checkbox
                   checked={formValues.is_parent}
                   onCheckedChange={(checked: any) => {
@@ -110,16 +103,14 @@ const EditTaskSetPopup = ({
                 >
                   is Parent
                 </label>
-              </div>
-              <Button
-                className="mt-4"
-                onClick={handleEditTask}
-                disabled={formValues?.name === ""}
-              >
-                Save
-              </Button>
-            </>
-          )}
+              </div> */}
+          <Button
+            className="mt-4"
+            onClick={handleEditTask}
+            disabled={formValues?.name === ""}
+          >
+            Save
+          </Button>
         </CardContent>
       </Card>
     </SheetContent>
