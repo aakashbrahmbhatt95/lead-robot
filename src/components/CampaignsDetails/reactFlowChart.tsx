@@ -123,10 +123,10 @@ const ReactFlowChart = () => {
         campaign_id: params?.id,
         name: "Task Set",
         description: "",
-        speak_first: false,
+        speak_first: taskSetList?.length ? false : true,
         x_position: 200,
         y_position: 10,
-        is_parent: false,
+        is_parent: taskSetList?.length ? false : true,
       })
     );
   };
@@ -154,7 +154,7 @@ const ReactFlowChart = () => {
       const body = {
         campaign_id: params?.id,
         name: temp?.name,
-        speak_first: false,
+        speak_first: temp?.speak_first,
         description: temp?.description,
         x_position: Math.ceil(node.position?.x),
         y_position: Math.ceil(node.position?.y),

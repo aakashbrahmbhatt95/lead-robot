@@ -33,7 +33,7 @@ const EditTaskSetPopup = ({
     const body = {
       campaign_id: isEditTaskSetPopup?.campaign,
       name: formValues?.name,
-      speak_first: false,
+      speak_first: isEditTaskSetPopup?.speak_first,
       description: formValues?.description,
       x_position: isEditTaskSetPopup?.x_position,
       y_position: isEditTaskSetPopup?.y_position,
