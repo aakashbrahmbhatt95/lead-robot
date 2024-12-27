@@ -26,21 +26,23 @@ const SubCardHeader = ({
             size={20}
             className="cursor-pointer"
           />
-          <CopySimple
-            size={20}
-            className="cursor-pointer"
-            onClick={() => {
-              dispatch(copytaskSetAction(ele?.id));
-            }}
-          />
           {ele?.is_parent ? null : (
-            <TrashSimple
-              className="cursor-pointer"
-              size={20}
-              onClick={() => {
-                dispatch(deletetaskSetAction(ele?.id));
-              }}
-            />
+            <>
+              <CopySimple
+                size={20}
+                className="cursor-pointer"
+                onClick={() => {
+                  dispatch(copytaskSetAction(ele?.id));
+                }}
+              />
+              <TrashSimple
+                className="cursor-pointer"
+                size={20}
+                onClick={() => {
+                  dispatch(deletetaskSetAction(ele?.id));
+                }}
+              />
+            </>
           )}
           <AccordionTrigger onClick={toggleTaskAccordion} />
         </div>
